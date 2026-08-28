@@ -48,6 +48,12 @@
 
     <div class="grid">
       <div class="dial-card">
+        <div class="dial-layout-switch" id="dial-layout-switch" role="tablist" aria-label="Dial layout">
+          <button type="button" data-mode="24h" role="tab" aria-pressed="true" title="One 24-hour ring">24h</button>
+          <button type="button" data-mode="ampm" role="tab" aria-pressed="false" title="Two 12-hour rings, side by side">AM+PM</button>
+          <button type="button" data-mode="ampm-toggle" role="tab" aria-pressed="false" title="One 12-hour ring, with an AM/PM switch">AM⇄PM</button>
+        </div>
+
         <div class="dial-wrap" id="dial-wrap-single">
           <svg class="dial-svg" id="dial" viewBox="0 0 460 460" role="img" aria-label="24-hour activity dial">
             <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
@@ -142,6 +148,11 @@
         <div id="goals-panel" hidden>
           <p class="section-label" title="Daily targets you set in Settings → Goals. A ✓ marks one you've met.">Today's goals</p>
           <div class="goal-rows" id="goal-rows"></div>
+        </div>
+
+        <div id="weekly-goals-panel" hidden>
+          <p class="section-label" title="Weekly targets you set in Settings → Goals, summed across the week starting on your configured week-start day. A ✓ marks one you've met.">This week's goals</p>
+          <div class="goal-rows" id="weekly-goal-rows"></div>
         </div>
 
         <div>
@@ -288,6 +299,10 @@
           <p class="section-label">Daily targets, per category</p>
           <div id="goals-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
           <p class="editor-note">Leave blank for no goal. Progress shows in the side panel once a target is set.</p>
+
+          <p class="section-label" style="margin-top:16px;" title="For things that don't happen every day — a target for the week as a whole instead of each individual day.">Weekly targets, per category</p>
+          <div id="weekly-goals-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
+          <p class="editor-note">Independent of the daily targets above — set either, both, or neither per category.</p>
         </section>
 
         <section class="settings-section" data-panel="data">
@@ -353,6 +368,16 @@
               <option value="0">Sunday</option>
               <option value="1">Monday</option>
             </select>
+          </div>
+
+          <p class="section-label" style="margin-top:16px;" title="The day's insight only counts untracked time in this window as &quot;still unlogged&quot; — so sleeping hours don't get flagged as a logging gap.">Waking hours</p>
+          <div class="reminder-row">
+            <label for="day-window-start">Day starts</label>
+            <input type="time" id="day-window-start" value="07:00">
+          </div>
+          <div class="reminder-row">
+            <label for="day-window-end">Day ends</label>
+            <input type="time" id="day-window-end" value="23:00">
           </div>
         </section>
 

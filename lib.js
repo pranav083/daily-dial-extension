@@ -49,6 +49,11 @@ export const DEFAULT_SETTINGS = {
   weeklyRecapDay: 0, // 0 = Sunday .. 6 = Saturday
   weeklyRecapTime: "20:00",
   lastExportAt: null, // epoch ms, or null if never exported
+  weeklyGoals: {}, // { [categoryId]: targetMinutesPerWeek } — separate from goals (per-day)
+  // Waking hours: the "still unlogged" nag in the day's insight only counts
+  // untracked time in this window, so overnight sleep isn't mistaken for a
+  // gap in logging.
+  dayWindow: { start: "07:00", end: "23:00" },
 };
 export const WEIGHT_GLYPH = { 1: "+", 0: "·", "-1": "–" };
 
@@ -148,6 +153,10 @@ export function normalizeSettings(saved) {
       : DEFAULT_SETTINGS.weeklyRecapDay;
   const weeklyRecapTime = isValidTime(saved?.weeklyRecapTime) ? saved.weeklyRecapTime : DEFAULT_SETTINGS.weeklyRecapTime;
   const lastExportAt = Number.isFinite(saved?.lastExportAt) ? saved.lastExportAt : null;
+  const dayWindow = {
+    start: isValidTime(saved?.dayWindow?.start) ? saved.dayWindow.start : DEFAULT_SETTINGS.dayWindow.start,
+    end: isValidTime(saved?.dayWindow?.end) ? saved.dayWindow.end : DEFAULT_SETTINGS.dayWindow.end,
+  };
 
   return {
     remindersOn: saved?.remindersOn === true,
@@ -157,14 +166,22 @@ export function normalizeSettings(saved) {
     dialMode,
     weekStart,
     goals: normalizeGoals(saved?.goals),
+    weeklyGoals: normalizeGoals(saved?.weeklyGoals),
     weeklyRecapOn: saved?.weeklyRecapOn === true,
     weeklyRecapDay,
     weeklyRecapTime,
     lastExportAt,
+    dayWindow,
   };
 }
 
 export const isValidTime = (s) => typeof s === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(s);
+
+/** "07:00" → 420. Assumes an already-validated "HH:MM" string. */
+export const hmToMinutes = (hhmm) => {
+  const [h, m] = hhmm.split(":").map(Number);
+  return h * 60 + m;
+};
 
 /* ---------- geometry ---------- */
 
@@ -254,18 +271,33 @@ export function fillRange(slots, from, to, cat) {
 /* ---------- stats ---------- */
 
 /**
- * @returns {{perCat:number[], untrackedSlots:number, trackedMin:number,
- *   productiveMin:number, distractionMin:number, productivePct:number,
- *   longestFocusMin:number, score:number|null}}
+ * @param {{startMin:number, endMin:number}|null} [dayWindow] Restricts
+ *   `untrackedInWindowMin` to this range (minutes since midnight) — the
+ *   waking-hours window the insight nags within, so overnight sleep doesn't
+ *   count as "still unlogged". Omit for the whole day.
+ * @returns {{perCat:number[], untrackedSlots:number, untrackedInWindowMin:number,
+ *   trackedMin:number, productiveMin:number, distractionMin:number,
+ *   productivePct:number, longestFocusMin:number, score:number|null}}
  *   `score` is null when nothing is logged — distinct from a score of 0.
  */
-export function computeStats(slots, categories) {
+export function computeStats(slots, categories, dayWindow = null) {
   const perCat = categories.map(() => 0);
   let untrackedSlots = 0;
 
   for (const v of slots) {
     if (v === UNTRACKED) untrackedSlots++;
     else if (perCat[v] !== undefined) perCat[v]++;
+  }
+
+  let untrackedInWindowMin;
+  if (dayWindow) {
+    const startSlot = Math.max(0, Math.round(dayWindow.startMin / SLOT_MIN));
+    const endSlot = Math.min(SLOTS, Math.round(dayWindow.endMin / SLOT_MIN));
+    let n = 0;
+    for (let i = startSlot; i < endSlot; i++) if (slots[i] === UNTRACKED) n++;
+    untrackedInWindowMin = n * SLOT_MIN;
+  } else {
+    untrackedInWindowMin = untrackedSlots * SLOT_MIN;
   }
 
   const trackedMin = (SLOTS - untrackedSlots) * SLOT_MIN;
@@ -291,6 +323,7 @@ export function computeStats(slots, categories) {
   return {
     perCat,
     untrackedSlots,
+    untrackedInWindowMin,
     trackedMin,
     productiveMin,
     distractionMin,
@@ -350,8 +383,11 @@ export function buildInsight(stats, categories) {
     parts.push(`Your longest unbroken stretch was <b>${fmtDuration(stats.longestFocusMin)}</b>.`);
   }
 
-  const untrackedMin = stats.untrackedSlots * SLOT_MIN;
-  if (untrackedMin >= 6 * 60) parts.push(`${fmtDuration(untrackedMin)} is still unlogged.`);
+  // Restricted to the caller's waking-hours window (via computeStats'
+  // dayWindow), so sleeping hours don't inflate this into a false nag.
+  if (stats.untrackedInWindowMin >= 6 * 60) {
+    parts.push(`${fmtDuration(stats.untrackedInWindowMin)} is still unlogged.`);
+  }
 
   return parts.join(" ");
 }
@@ -481,17 +517,21 @@ export function weeklyRecapMessage(recap) {
 /* ---------- goals ---------- */
 
 /**
- * @param {ReturnType<typeof computeStats>} stats
- * @param {Record<number, number>} goals category id → target minutes/day
+ * Takes plain per-category minutes rather than a computeStats() result, so
+ * the same function drives both a single day's goals (pass
+ * `stats.perCat.map(n => n * SLOT_MIN)`) and a week's (pass minutes summed
+ * across 7 days — see `weekPerCatMinutes`).
+ * @param {number[]} perCatMin minutes per category index
+ * @param {Record<number, number>} goals category id → target minutes
  * @returns {Array<{categoryId:number, name:string, cls:string, targetMin:number,
  *   actualMin:number, pct:number, met:boolean}>} one row per category with an active goal
  */
-export function goalProgress(stats, goals, categories) {
+export function goalProgress(perCatMin, goals, categories) {
   const rows = [];
   categories.forEach((c, i) => {
     const target = goals?.[c.id];
     if (!c.enabled || !Number.isFinite(target) || target <= 0) return;
-    const actualMin = stats.perCat[i] * SLOT_MIN;
+    const actualMin = perCatMin[i];
     rows.push({
       categoryId: c.id,
       name: c.name,
@@ -503,6 +543,21 @@ export function goalProgress(stats, goals, categories) {
     });
   });
   return rows;
+}
+
+/** Per-category minutes summed across the 7 days starting weekStartDate —
+ *  the input weekly goalProgress() checks a week's total against. */
+export function weekPerCatMinutes(days, categories, weekStartDate) {
+  const start = new Date(weekStartDate);
+  start.setHours(0, 0, 0, 0);
+  const perCatMin = categories.map(() => 0);
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    const slots = days.get(dateKey(d))?.slots ?? new Array(SLOTS).fill(UNTRACKED);
+    computeStats(slots, categories).perCat.forEach((n, idx) => (perCatMin[idx] += n * SLOT_MIN));
+  }
+  return perCatMin;
 }
 
 /* ---------- personal bests ---------- */

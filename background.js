@@ -13,6 +13,7 @@ import {
   SLOTS,
   SLOT_MIN,
   UNTRACKED,
+  computeStats,
   dateKey,
   mostRecentWeekStart,
   nextOccurrence,
@@ -21,13 +22,20 @@ import {
   normalizeDay,
   normalizeSettings,
   reminderMessage,
+  scoreBucket,
   weeklyRecap,
   weeklyRecapMessage,
 } from "./lib.js";
 
 const ALARM_PREFIX = "reminder-";
 const WEEKLY_RECAP_ALARM = "weekly-recap";
+const BADGE_ALARM = "badge-refresh";
 const OPEN_TAB_KEY = "openTabId";
+
+// Toolbar-badge colours by score bucket — fixed hex, since the badge sits on
+// the browser chrome rather than the page and can't read the dial's CSS
+// theme variables.
+const BADGE_COLORS = { good: "#16a34a", warning: "#d97706", critical: "#dc2626", muted: "#6b7280" };
 
 async function getSettings() {
   const { [SETTINGS_KEY]: saved } = await chrome.storage.local.get(SETTINGS_KEY);
@@ -73,6 +81,35 @@ async function rescheduleAlarms() {
       periodInMinutes: 7 * 24 * 60,
     });
   }
+}
+
+/** Today's score on the toolbar icon, so it's readable without opening the
+ *  dial — text is the score itself (e.g. "+42", "-15"), colour matches the
+ *  same good/warning/critical bucket the dial's own score badge uses. Blank
+ *  until today has at least one painted block. */
+async function refreshBadge() {
+  const key = DAY_PREFIX + dateKey(new Date());
+  const [{ [key]: raw }, categories] = await Promise.all([chrome.storage.local.get(key), getCategories()]);
+  const slots = Array.isArray(raw?.slots) && raw.slots.length === SLOTS ? raw.slots : null;
+
+  if (!slots || slots.every((v) => v === UNTRACKED)) {
+    await chrome.action.setBadgeText({ text: "" });
+    return;
+  }
+
+  const stats = computeStats(slots, categories);
+  const bucket = scoreBucket(stats.score);
+  await chrome.action.setBadgeText({ text: `${stats.score > 0 ? "+" : ""}${stats.score}` });
+  await chrome.action.setBadgeBackgroundColor({ color: BADGE_COLORS[bucket.tone] ?? BADGE_COLORS.muted });
+}
+
+/** The badge alarm runs independently of reminders/recap (which the user can
+ *  turn off) and isn't touched by rescheduleAlarms' clear-and-recreate, so
+ *  it only needs creating once. Mainly covers the midnight rollover to a
+ *  fresh, unpainted day for anyone who leaves Chrome running overnight. */
+async function ensureBadgeAlarm() {
+  const existing = await chrome.alarms.get(BADGE_ALARM);
+  if (!existing) chrome.alarms.create(BADGE_ALARM, { periodInMinutes: 30 });
 }
 
 /** Minutes of today still carrying no category. */
@@ -146,7 +183,16 @@ chrome.notifications.onClicked.addListener((id) => {
   openDial();
 });
 
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName !== "local") return;
+  if (changes[DAY_PREFIX + dateKey(new Date())] || changes[CATEGORIES_KEY]) refreshBadge();
+});
+
 chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === BADGE_ALARM) {
+    refreshBadge();
+    return;
+  }
   if (alarm.name === WEEKLY_RECAP_ALARM) {
     notifyWeeklyRecap();
     return;
@@ -166,5 +212,12 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   return true; // keep the channel open for the async response
 });
 
+function initBadge() {
+  ensureBadgeAlarm();
+  refreshBadge();
+}
+
 chrome.runtime.onInstalled.addListener(rescheduleAlarms);
 chrome.runtime.onStartup.addListener(rescheduleAlarms);
+chrome.runtime.onInstalled.addListener(initBadge);
+chrome.runtime.onStartup.addListener(initBadge);

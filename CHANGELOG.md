@@ -8,6 +8,34 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.4.0] — 2026-08-28
+
+### Added
+
+- **Waking hours**, in Settings → Appearance: the "still unlogged" line in
+  the day's insight now only counts untracked time inside this window, so a
+  normal night's sleep no longer reads as a logging gap. Defaults to
+  7:00–23:00; set either end to change it.
+- **A toolbar badge** showing today's score (e.g. "+42", "-15") right on the
+  extension icon, coloured to match the same good/warning/critical bucket
+  the dial's own score badge uses — no new permission, since badge APIs are
+  part of `action`, which the extension already declares. Refreshes on
+  every change to today's data and every 30 minutes (to catch the midnight
+  rollover), and clears once a fresh day starts.
+- **A quick dial-layout switcher** right on the Day view, above the dial —
+  the same three layouts as Settings → Appearance → Dial layout, one click
+  away instead of four. Both controls stay in sync with each other.
+- **Weekly goals**, alongside the existing daily ones: Settings → Goals now
+  has a second per-category target for a week's total rather than each
+  individual day, for things that don't happen daily (e.g. "5h of
+  Applications per week"). Shown in a new "This week's goals" panel next to
+  "Today's goals".
+
+### Fixed
+
+- The day's insight could count a normal night's sleep as "still unlogged"
+  — see Waking hours, above.
+
 ## [1.3.0] — 2026-08-28
 
 ### Added

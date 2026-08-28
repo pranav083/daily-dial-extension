@@ -285,6 +285,31 @@ body {
 .ampm-toggle-switch button.active { background: var(--accent-fill); color: var(--accent-ink); }
 .ampm-toggle-switch button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: -2px; }
 
+/* Quick layout switcher, top-right of the dial card — the same three modes
+   as Settings → Appearance → Dial layout, one click away instead of four. */
+.dial-layout-switch {
+  display: flex;
+  width: fit-content;
+  margin: 0 0 14px auto;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.dial-layout-switch button {
+  padding: 5px 12px;
+  border: none;
+  background: var(--panel-2);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+.dial-layout-switch button + button { border-left: 1px solid var(--border); }
+.dial-layout-switch button.active { background: var(--accent-fill); color: var(--accent-ink); }
+.dial-layout-switch button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: -2px; }
+
 .seg { cursor: pointer; }
 .cat-0 { fill: var(--cat-0); }
 .cat-1 { fill: var(--cat-1); }

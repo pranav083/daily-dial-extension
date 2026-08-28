@@ -69,9 +69,11 @@ it, and load that folder the same way.
 | **Copy yesterday** | Fills today from the previous day; confirms before overwriting |
 | **Undo / redo** | <kbd>⌘Z</kbd> / <kbd>⇧⌘Z</kbd> (<kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd>) — 30 deep |
 | **Past days** | Arrows beside the date, or click a bar in the week strip |
-| **Dial layout** | One 24-hour ring (default), two 12-hour AM/PM rings side by side, or one 12-hour ring with an AM/PM switch — Settings → Appearance |
+| **Dial layout** | One 24-hour ring, two 12-hour AM/PM rings side by side, or one 12-hour ring with a switch — pick one via the quick switcher above the dial, or Settings → Appearance |
+| **Toolbar badge** | Today's score on the extension icon itself, coloured to match — no click needed |
 | **Streaks** | 🔥 counts any day with at least one block; one missed day a week is forgiven |
-| **Goals** | Optional per-category daily minute targets, with progress in the side panel |
+| **Goals** | Optional per-category targets, daily or weekly, with progress shown in the side panel |
+| **Waking hours** | The "still unlogged" nag only counts time inside this window, so sleep isn't mistaken for a gap |
 | **Reminders** | Two a day plus an optional weekly recap, all off by default, times are yours |
 | **Settings** | Categories, reminders, goals, data, appearance, and about — behind the ☰ button |
 | **Export / import** | CSV or a full-fidelity JSON backup; import merges or replaces, your choice |

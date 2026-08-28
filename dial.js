@@ -34,8 +34,10 @@ import {
   fmtClock,
   fmtDuration,
   goalProgress,
+  hmToMinutes,
   isValidTime,
   mergeDayMaps,
+  mostRecentWeekStart,
   normalizeCategories,
   normalizeDay,
   normalizeSettings,
@@ -53,6 +55,7 @@ import {
   summarizeImport,
   toneVar,
   wedgePath,
+  weekPerCatMinutes,
 } from "./lib.js";
 import { renderHistory } from "./history.js";
 
@@ -465,12 +468,32 @@ function setToggleHalf(half) {
 /** Shows the wrap for the current dial layout and redraws it — an engine
  *  that was hidden may be stale, since only a visible one re-renders on
  *  every data change. */
+function syncLayoutSwitch() {
+  for (const btn of $("dial-layout-switch").children) {
+    const active = btn.dataset.mode === settings.dialMode;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-pressed", String(active));
+  }
+}
+
 function applyDialMode() {
   const twin = isTwinLayout(settings.dialMode);
   $("dial-wrap-single").hidden = twin;
   $("dial-wrap-twin").hidden = !twin;
   applyToggleVisibility();
+  syncLayoutSwitch();
   renderDial();
+}
+
+/** The quick switcher on the Day view and the Settings → Appearance dropdown
+ *  both just set settings.dialMode — whichever one the user touches, the
+ *  other stays in sync via syncLayoutSwitch()/syncAppearanceInputs(). */
+function setDialMode(mode) {
+  if (mode === settings.dialMode) return;
+  settings = normalizeSettings({ ...settings, dialMode: mode });
+  persistSettings();
+  applyDialMode();
+  syncAppearanceInputs();
 }
 
 /* ---------- keyboard shortcuts ---------- */
@@ -578,8 +601,17 @@ function catBarRow(name, cls, slotCount, maxSlots, isUntracked) {
   return row;
 }
 
+/** The window the "still unlogged" nag applies to — null (unrestricted) if
+ *  the two times are misconfigured (end at or before start), rather than
+ *  silently hiding the nag entirely or producing a negative duration. */
+function dayWindowMinutes() {
+  const startMin = hmToMinutes(settings.dayWindow.start);
+  const endMin = hmToMinutes(settings.dayWindow.end);
+  return endMin > startMin ? { startMin, endMin } : null;
+}
+
 function renderSide() {
-  const stats = computeStats(state.slots, categories);
+  const stats = computeStats(state.slots, categories, dayWindowMinutes());
 
   $("stat-tracked").textContent = fmtDuration(stats.trackedMin);
   $("stat-productive").textContent = stats.trackedMin ? `${stats.productivePct}%` : "—";
@@ -602,52 +634,71 @@ function renderSide() {
   barsEl.appendChild(catBarRow("Untracked", null, stats.untrackedSlots, maxSlots, true));
 
   renderGoalRows(stats);
+  renderWeeklyGoalRows();
 }
 
 /* ---------- goals ---------- */
 
+function buildGoalRow(row) {
+  const wrap = document.createElement("div");
+  wrap.className = "goal-row";
+
+  const name = document.createElement("span");
+  name.className = "name";
+  const sw = document.createElement("span");
+  sw.className = "sw";
+  sw.style.background = `var(--${row.cls})`;
+  name.append(sw, document.createTextNode(row.name));
+
+  const track = document.createElement("span");
+  track.className = "track";
+  const fill = document.createElement("span");
+  fill.className = "fill";
+  fill.style.width = `${row.pct}%`;
+  fill.style.background = `var(--${row.cls})`;
+  track.appendChild(fill);
+
+  const amount = document.createElement("span");
+  amount.className = "amount";
+  amount.textContent = `${fmtDuration(row.actualMin)} / ${fmtDuration(row.targetMin)}`;
+  if (row.met) {
+    const check = document.createElement("span");
+    check.className = "met";
+    check.textContent = " ✓";
+    amount.appendChild(check);
+  }
+
+  wrap.append(name, track, amount);
+  return wrap;
+}
+
 function renderGoalRows(stats) {
-  const rows = goalProgress(stats, settings.goals, categories);
+  const rows = goalProgress(
+    stats.perCat.map((n) => n * SLOT_MIN),
+    settings.goals,
+    categories
+  );
   $("goals-panel").hidden = rows.length === 0;
   const el = $("goal-rows");
   el.replaceChildren();
-
-  for (const row of rows) {
-    const wrap = document.createElement("div");
-    wrap.className = "goal-row";
-
-    const name = document.createElement("span");
-    name.className = "name";
-    const sw = document.createElement("span");
-    sw.className = "sw";
-    sw.style.background = `var(--${row.cls})`;
-    name.append(sw, document.createTextNode(row.name));
-
-    const track = document.createElement("span");
-    track.className = "track";
-    const fill = document.createElement("span");
-    fill.className = "fill";
-    fill.style.width = `${row.pct}%`;
-    fill.style.background = `var(--${row.cls})`;
-    track.appendChild(fill);
-
-    const amount = document.createElement("span");
-    amount.className = "amount";
-    amount.textContent = `${fmtDuration(row.actualMin)} / ${fmtDuration(row.targetMin)}`;
-    if (row.met) {
-      const check = document.createElement("span");
-      check.className = "met";
-      check.textContent = " ✓";
-      amount.appendChild(check);
-    }
-
-    wrap.append(name, track, amount);
-    el.appendChild(wrap);
-  }
+  for (const row of rows) el.appendChild(buildGoalRow(row));
 }
 
-function renderGoalsEditor() {
-  const rowsEl = $("goals-editor-rows");
+function renderWeeklyGoalRows() {
+  const weekStart = mostRecentWeekStart(settings.weekStart, new Date());
+  const perCatMin = weekPerCatMinutes(days, categories, weekStart);
+  const rows = goalProgress(perCatMin, settings.weeklyGoals, categories);
+  $("weekly-goals-panel").hidden = rows.length === 0;
+  const el = $("weekly-goal-rows");
+  el.replaceChildren();
+  for (const row of rows) el.appendChild(buildGoalRow(row));
+}
+
+/** Drives both the daily (`goals`, "min/day") and weekly (`weeklyGoals`,
+ *  "min/wk") editor rows in Settings → Goals — same fields, different
+ *  settings key, unit label, and step size. */
+function renderGoalsEditorFor(rowsElId, goalsKey, unitLabel, step) {
+  const rowsEl = $(rowsElId);
   rowsEl.replaceChildren();
 
   for (const c of categories) {
@@ -666,17 +717,17 @@ function renderGoalsEditor() {
     const input = document.createElement("input");
     input.type = "number";
     input.min = "0";
-    input.step = "5";
+    input.step = String(step);
     input.placeholder = "off";
-    input.value = settings.goals[c.id] ?? "";
+    input.value = settings[goalsKey][c.id] ?? "";
     input.disabled = !c.enabled;
-    input.setAttribute("aria-label", `Daily goal for ${c.name}, in minutes`);
+    input.setAttribute("aria-label", `${unitLabel === "min/day" ? "Daily" : "Weekly"} goal for ${c.name}, in minutes`);
     input.addEventListener("change", () => {
       const v = Number(input.value);
-      const nextGoals = { ...settings.goals };
-      if (input.value.trim() === "" || !(v > 0)) delete nextGoals[c.id];
-      else nextGoals[c.id] = Math.round(v);
-      settings = normalizeSettings({ ...settings, goals: nextGoals });
+      const next = { ...settings[goalsKey] };
+      if (input.value.trim() === "" || !(v > 0)) delete next[c.id];
+      else next[c.id] = Math.round(v);
+      settings = normalizeSettings({ ...settings, [goalsKey]: next });
       persistSettings();
       renderSide();
       renderAboutBests();
@@ -684,11 +735,16 @@ function renderGoalsEditor() {
 
     const unit = document.createElement("span");
     unit.className = "unit";
-    unit.textContent = "min/day";
+    unit.textContent = unitLabel;
 
     row.append(swatch, label, input, unit);
     rowsEl.appendChild(row);
   }
+}
+
+function renderGoalsEditor() {
+  renderGoalsEditorFor("goals-editor-rows", "goals", "min/day", 5);
+  renderGoalsEditorFor("weekly-goals-editor-rows", "weeklyGoals", "min/wk", 15);
 }
 
 /* ---------- streak ---------- */
@@ -997,20 +1053,29 @@ function syncAppearanceInputs() {
   $("time-format-select").value = settings.timeFormat;
   $("dial-mode-select").value = settings.dialMode;
   $("week-start-select").value = String(settings.weekStart);
+  $("day-window-start").value = settings.dayWindow.start;
+  $("day-window-end").value = settings.dayWindow.end;
 }
 
 function saveAppearance() {
+  const startVal = $("day-window-start").value;
+  const endVal = $("day-window-end").value;
   settings = normalizeSettings({
     ...settings,
     theme: $("theme-select").value,
     timeFormat: $("time-format-select").value,
     dialMode: $("dial-mode-select").value,
     weekStart: Number($("week-start-select").value),
+    dayWindow: {
+      start: isValidTime(startVal) ? startVal : settings.dayWindow.start,
+      end: isValidTime(endVal) ? endVal : settings.dayWindow.end,
+    },
   });
   persistSettings();
   applyTheme();
   applyDialMode();
   renderStrip();
+  renderSide();
   toast("Appearance updated");
 }
 
@@ -1320,6 +1385,12 @@ function wireEvents() {
     toast("Day cleared — ⌘Z to undo");
   });
 
+  // ---- quick dial layout switcher ----
+  $("dial-layout-switch").addEventListener("click", (evt) => {
+    const btn = evt.target.closest("button[data-mode]");
+    if (btn) setDialMode(btn.dataset.mode);
+  });
+
   // ---- ampm-toggle dial layout ----
   $("toggle-am-btn").addEventListener("click", () => setToggleHalf("am"));
   $("toggle-pm-btn").addEventListener("click", () => setToggleHalf("pm"));
@@ -1346,7 +1417,10 @@ function wireEvents() {
   }
 
   // ---- appearance ----
-  for (const id of ["theme-select", "time-format-select", "dial-mode-select", "week-start-select"]) {
+  for (const id of [
+    "theme-select", "time-format-select", "dial-mode-select", "week-start-select",
+    "day-window-start", "day-window-end",
+  ]) {
     $(id).addEventListener("change", saveAppearance);
   }
 

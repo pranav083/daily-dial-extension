@@ -6,6 +6,7 @@ import {
   DEFAULT_SETTINGS,
   SCHEMA_VERSION,
   SLOTS,
+  SLOT_MIN,
   UNTRACKED,
   buildBackup,
   buildCsv,
@@ -40,6 +41,7 @@ import {
   slotFromAngle,
   summarizeImport,
   angleAt,
+  weekPerCatMinutes,
   weeklyRecap,
   weeklyRecapMessage,
   weightLabel,
@@ -137,6 +139,9 @@ test("normalizeSettings validates appearance, goals, and recap fields", () => {
   });
   assert.deepEqual(normalizeSettings({ goals: "nope" }).goals, {});
 
+  assert.deepEqual(normalizeSettings({ weeklyGoals: { 1: 300 } }).weeklyGoals, { 1: 300 });
+  assert.deepEqual(normalizeSettings(null).weeklyGoals, {}, "independent of the daily goals map");
+
   assert.equal(normalizeSettings({ weeklyRecapOn: true }).weeklyRecapOn, true);
   assert.equal(normalizeSettings({ weeklyRecapDay: 3 }).weeklyRecapDay, 3);
   assert.equal(normalizeSettings({ weeklyRecapDay: 9 }).weeklyRecapDay, 0);
@@ -146,6 +151,17 @@ test("normalizeSettings validates appearance, goals, and recap fields", () => {
   assert.equal(normalizeSettings({ lastExportAt: 12345 }).lastExportAt, 12345);
   assert.equal(normalizeSettings({ lastExportAt: "nope" }).lastExportAt, null);
   assert.equal(normalizeSettings(null).lastExportAt, null);
+
+  assert.deepEqual(normalizeSettings(null).dayWindow, { start: "07:00", end: "23:00" });
+  assert.deepEqual(normalizeSettings({ dayWindow: { start: "06:30", end: "22:30" } }).dayWindow, {
+    start: "06:30",
+    end: "22:30",
+  });
+  assert.deepEqual(
+    normalizeSettings({ dayWindow: { start: "bad", end: "22:30" } }).dayWindow,
+    { start: "07:00", end: "22:30" },
+    "an invalid half falls back on its own, not the whole pair"
+  );
 });
 
 test("isValidTime accepts 24h clock only", () => {
@@ -252,6 +268,20 @@ test("computeStats totals a mixed day", () => {
   assert.equal(s.untrackedSlots, SLOTS - 24);
 });
 
+test("computeStats.untrackedInWindowMin defaults to the whole day without a dayWindow", () => {
+  const slots = paint(blank(), 9, 13, 0); // 9am–1pm logged, rest untracked
+  const s = computeStats(slots, cats);
+  assert.equal(s.untrackedInWindowMin, s.untrackedSlots * SLOT_MIN);
+});
+
+test("computeStats.untrackedInWindowMin only counts untracked time inside the window — e.g. sleep excluded", () => {
+  const slots = paint(blank(), 9, 13, 0); // 9am–1pm logged; midnight–7am and 11pm–midnight are "asleep"
+  const wholeDay = computeStats(slots, cats).untrackedInWindowMin;
+  const wakingOnly = computeStats(slots, cats, { startMin: 7 * 60, endMin: 23 * 60 }).untrackedInWindowMin;
+  assert.ok(wakingOnly < wholeDay, "restricting to waking hours should count less untracked time");
+  assert.equal(wakingOnly, 12 * 60, "7am–9am and 1pm–11pm, minus the logged 9am–1pm");
+});
+
 test("computeStats reports null score for an empty day, not zero", () => {
   const s = computeStats(blank(), cats);
   assert.equal(s.score, null, "null means 'no data', 0 means 'balanced'");
@@ -312,6 +342,15 @@ test("buildInsight flags fragmented time", () => {
 
 test("buildInsight prompts when the day is empty", () => {
   assert.match(buildInsight(computeStats(blank(), cats), cats), /Nothing logged yet/);
+});
+
+test("buildInsight's 'still unlogged' nag respects the day window — no false nag about sleep", () => {
+  // Fully logged waking hours (7am–11pm); only overnight is untracked.
+  const slots = paint(blank(), 7, 23, 0);
+  const wholeDay = buildInsight(computeStats(slots, cats), cats);
+  const wakingOnly = buildInsight(computeStats(slots, cats, { startMin: 7 * 60, endMin: 23 * 60 }), cats);
+  assert.match(wholeDay, /still unlogged/, "8h of 'sleep' reads as unlogged without a window");
+  assert.doesNotMatch(wakingOnly, /still unlogged/, "same day, but nothing is unlogged within waking hours");
 });
 
 /* ---------- CSV ---------- */
@@ -670,10 +709,12 @@ test("weeklyRecapMessage reports a blank week plainly", () => {
 
 /* ---------- goals ---------- */
 
+const perCatMin = (stats) => stats.perCat.map((n) => n * SLOT_MIN);
+
 test("goalProgress reports only categories with an active goal", () => {
   const slots = paint(blank(), 9, 10, 0); // 1h Deep Work
   const stats = computeStats(slots, cats);
-  const rows = goalProgress(stats, { 0: 120, 5: 30 }, cats);
+  const rows = goalProgress(perCatMin(stats), { 0: 120, 5: 30 }, cats);
 
   assert.equal(rows.length, 2);
   const deepWork = rows.find((r) => r.categoryId === 0);
@@ -688,7 +729,7 @@ test("goalProgress reports only categories with an active goal", () => {
 
 test("goalProgress marks a goal as met once the target is reached, and caps the bar at 100%", () => {
   const stats = computeStats(paint(blank(), 9, 12, 0), cats); // 3h Deep Work
-  const rows = goalProgress(stats, { 0: 90 }, cats);
+  const rows = goalProgress(perCatMin(stats), { 0: 90 }, cats);
   assert.equal(rows[0].met, true);
   assert.equal(rows[0].pct, 100, "never exceeds 100%");
 });
@@ -696,7 +737,33 @@ test("goalProgress marks a goal as met once the target is reached, and caps the 
 test("goalProgress skips a disabled category even with a goal set", () => {
   const disabled = cats.map((c, i) => (i === 0 ? { ...c, enabled: false } : c));
   const stats = computeStats(paint(blank(), 9, 10, 0), disabled);
-  assert.equal(goalProgress(stats, { 0: 60 }, disabled).length, 0);
+  assert.equal(goalProgress(perCatMin(stats), { 0: 60 }, disabled).length, 0);
+});
+
+test("goalProgress works the same way against a week's summed minutes, for weekly goals", () => {
+  // A weekly goal check just needs a different perCatMin input — 3h summed
+  // across the week, against a 3h/week target.
+  const rows = goalProgress([180, 0, 0, 0, 0, 0], { 0: 180 }, cats);
+  assert.equal(rows[0].actualMin, 180);
+  assert.equal(rows[0].met, true);
+});
+
+test("weekPerCatMinutes sums a category's minutes across all 7 days of the week", () => {
+  const days = new Map();
+  const monday = new Date("2026-08-24T00:00:00"); // a Monday
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(d.getDate() + i);
+    days.set(dateKey(d), { slots: paint(blank(), 9, 10, 0), reflection: "" }); // 1h Deep Work/day
+  }
+  const totals = weekPerCatMinutes(days, cats, monday);
+  assert.equal(totals[0], 7 * 60, "1h/day × 7 days");
+  assert.equal(totals[1], 0);
+});
+
+test("weekPerCatMinutes treats a day with no entry as fully untracked, not an error", () => {
+  const totals = weekPerCatMinutes(new Map(), cats, new Date("2026-08-24T00:00:00"));
+  assert.deepEqual(totals, cats.map(() => 0));
 });
 
 /* ---------- personal bests ---------- */
