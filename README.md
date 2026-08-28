@@ -69,7 +69,7 @@ it, and load that folder the same way.
 | **Copy yesterday** | Fills today from the previous day; confirms before overwriting |
 | **Undo / redo** | <kbd>⌘Z</kbd> / <kbd>⇧⌘Z</kbd> (<kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd>) — 30 deep |
 | **Past days** | Arrows beside the date, or click a bar in the week strip |
-| **Dial layout** | One 24-hour ring (default), or two 12-hour AM/PM rings side by side — Settings → Appearance |
+| **Dial layout** | One 24-hour ring (default), two 12-hour AM/PM rings side by side, or one 12-hour ring with an AM/PM switch — Settings → Appearance |
 | **Streaks** | 🔥 counts any day with at least one block; one missed day a week is forgiven |
 | **Goals** | Optional per-category daily minute targets, with progress in the side panel |
 | **Reminders** | Two a day plus an optional weekly recap, all off by default, times are yours |

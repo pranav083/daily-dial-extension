@@ -70,6 +70,9 @@ const state = {
   reflection: "",
   activePen: 0,
   reflectTimer: null,
+  // Which half the "ampm-toggle" dial layout shows. Starts on whichever half
+  // holds the current time; not persisted, so it resets to that each visit.
+  toggleHalf: new Date().getHours() < 12 ? "am" : "pm",
 };
 
 /* ---------- storage ---------- */
@@ -277,12 +280,23 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     }
   }
 
+  /** Minutes into this window if wall-clock "now" falls inside it, else null.
+   *  Independent of which day is being viewed — same as the single 24-hour
+   *  dial's centre clock always having read live regardless of viewDate.
+   *  Shared by the needle (which additionally only draws on today) and the
+   *  centre clock (so the PM face doesn't also claim "10:30am" just because
+   *  its AM twin does). */
+  function nowLocalMinutes() {
+    const now = new Date();
+    const localMin = now.getHours() * 60 + now.getMinutes() - slotOffset * SLOT_MIN;
+    return localMin >= 0 && localMin < minutesInView ? localMin : null;
+  }
+
   function renderNeedle() {
     needleLayer.replaceChildren();
     if (!isToday(state.viewDate)) return;
-    const now = new Date();
-    const localMin = now.getHours() * 60 + now.getMinutes() - slotOffset * SLOT_MIN;
-    if (localMin < 0 || localMin >= minutesInView) return; // "now" isn't in this window
+    const localMin = nowLocalMinutes();
+    if (localMin === null) return;
     const angle = (localMin / minutesInView) * 360;
     const p1 = polar(R_IN - 8, angle);
     const p2 = polar(R_OUT + 10, angle);
@@ -297,11 +311,14 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   }
 
   function renderCenter() {
+    const localMin = nowLocalMinutes();
     const now = new Date();
-    centerTimeEl.textContent = fmtClock(
-      Math.round((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN),
-      settings.timeFormat
-    );
+    // Only the half actually containing "now" gets a live clock reading —
+    // the other one isn't 10:30am just because this half's twin is.
+    centerTimeEl.textContent =
+      localMin === null
+        ? "--:--"
+        : fmtClock(Math.round((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN), settings.timeFormat);
     const pen = categories[state.activePen];
     centerSubEl.textContent = pen ? `pen: ${pen.name}` : "eraser";
   }
@@ -399,7 +416,12 @@ const dialEngines = {
   }),
 };
 
-const activeEngines = () => (settings.dialMode === "ampm" ? [dialEngines.am, dialEngines.pm] : [dialEngines.single]);
+/** "ampm" (both halves side by side) and "ampm-toggle" (one half at a time,
+ *  switched manually) share the same pair of engines and DOM — the toggle
+ *  variant just hides whichever half isn't selected. */
+const isTwinLayout = (mode) => mode === "ampm" || mode === "ampm-toggle";
+
+const activeEngines = () => (isTwinLayout(settings.dialMode) ? [dialEngines.am, dialEngines.pm] : [dialEngines.single]);
 
 function renderDial() {
   for (const engine of activeEngines()) engine.render();
@@ -420,13 +442,34 @@ function refreshLive() {
   }
 }
 
-/** Shows the wrap for the current dial layout and redraws it — the engine
- *  that was hidden may be stale, since only the visible one re-renders on
+/** In "ampm-toggle" mode, shows only state.toggleHalf and hides the other —
+ *  both engines still render (cheap), just one half is visually hidden. */
+function applyToggleVisibility() {
+  const isToggle = settings.dialMode === "ampm-toggle";
+  $("dial-toggle-switch").hidden = !isToggle;
+  $("dial-wrap-twin").classList.toggle("toggle-mode", isToggle);
+  $("dial-half-am").hidden = isToggle && state.toggleHalf !== "am";
+  $("dial-half-pm").hidden = isToggle && state.toggleHalf !== "pm";
+  if (!isToggle) return;
+  $("toggle-am-btn").classList.toggle("active", state.toggleHalf === "am");
+  $("toggle-pm-btn").classList.toggle("active", state.toggleHalf === "pm");
+  $("toggle-am-btn").setAttribute("aria-pressed", String(state.toggleHalf === "am"));
+  $("toggle-pm-btn").setAttribute("aria-pressed", String(state.toggleHalf === "pm"));
+}
+
+function setToggleHalf(half) {
+  state.toggleHalf = half;
+  applyToggleVisibility();
+}
+
+/** Shows the wrap for the current dial layout and redraws it — an engine
+ *  that was hidden may be stale, since only a visible one re-renders on
  *  every data change. */
 function applyDialMode() {
-  const twin = settings.dialMode === "ampm";
+  const twin = isTwinLayout(settings.dialMode);
   $("dial-wrap-single").hidden = twin;
   $("dial-wrap-twin").hidden = !twin;
+  applyToggleVisibility();
   renderDial();
 }
 
@@ -1276,6 +1319,10 @@ function wireEvents() {
     renderAll();
     toast("Day cleared — ⌘Z to undo");
   });
+
+  // ---- ampm-toggle dial layout ----
+  $("toggle-am-btn").addEventListener("click", () => setToggleHalf("am"));
+  $("toggle-pm-btn").addEventListener("click", () => setToggleHalf("pm"));
 
   // ---- settings panel ----
   wireViewNav();

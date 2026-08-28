@@ -41,7 +41,8 @@ export const DEFAULT_SETTINGS = {
   times: ["13:00", "21:00"],
   theme: "system", // "system" | "light" | "dark"
   timeFormat: "24h", // "24h" | "12h"
-  dialMode: "24h", // "24h" | "ampm" — one 24-hour ring, or two 12-hour rings side by side
+  dialMode: "24h", // "24h" | "ampm" | "ampm-toggle" — one 24-hour ring, two 12-hour
+  // rings side by side, or one 12-hour ring with a switch between AM and PM
   weekStart: 0, // 0 = Sunday, 1 = Monday
   goals: {}, // { [categoryId]: targetMinutesPerDay }
   weeklyRecapOn: false,
@@ -118,6 +119,7 @@ export function normalizeCategories(saved) {
 }
 
 const THEMES = ["system", "light", "dark"];
+const DIAL_MODES = ["24h", "ampm", "ampm-toggle"];
 
 /** Goals are keyed by category id (0–5); only positive integer minute targets survive. */
 function normalizeGoals(saved) {
@@ -138,7 +140,7 @@ export function normalizeSettings(saved) {
       : [...DEFAULT_SETTINGS.times];
   const theme = THEMES.includes(saved?.theme) ? saved.theme : DEFAULT_SETTINGS.theme;
   const timeFormat = saved?.timeFormat === "12h" ? "12h" : "24h";
-  const dialMode = saved?.dialMode === "ampm" ? "ampm" : "24h";
+  const dialMode = DIAL_MODES.includes(saved?.dialMode) ? saved.dialMode : DEFAULT_SETTINGS.dialMode;
   const weekStart = saved?.weekStart === 1 ? 1 : 0;
   const weeklyRecapDay =
     Number.isInteger(saved?.weeklyRecapDay) && saved.weeklyRecapDay >= 0 && saved.weeklyRecapDay <= 6

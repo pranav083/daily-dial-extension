@@ -8,16 +8,22 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.3.0] — 2026-08-28
+
 ### Added
 
-- **AM/PM dial mode**: an alternative to the single 24-hour ring — two
-  smaller 12-hour rings side by side, one for midnight–noon and one for
-  noon–midnight, each a full clock face on its own. Switch in Settings →
-  Appearance → Dial layout. Painting, undo/redo, the typed-entry box, and
-  the live needle all work the same as the 24-hour ring; the needle only
-  appears on whichever half currently contains "now". The two halves share
-  the same underlying day, so switching back to the 24-hour ring shows
-  everything merged.
+- **AM/PM dial modes**: two alternatives to the single 24-hour ring, chosen
+  in Settings → Appearance → Dial layout —
+  - *Two 12-hour rings, side by side*: AM and PM as two full clock faces at
+    once, sized to whatever room the card actually has.
+  - *One 12-hour ring, with an AM/PM switch*: a single dial at full size,
+    with a small AM/PM toggle above it to flip which half you're looking at.
+  Both reuse the same 12-hour engine, so painting, undo/redo, the typed-entry
+  box, and the live needle work identically to the 24-hour ring; the needle
+  and the centre clock only show on the half that actually contains "now"
+  (the other reads `--:--`, rather than both claiming the same time). All
+  three layouts share the same underlying day, so switching between them
+  never loses or duplicates anything.
 - **History view**: a month heatmap (colour by score, with unlogged days
   shown as visibly empty rather than scored 0), a month summary (days
   logged, tracked time, average score/productivity, best day, in-month

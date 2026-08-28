@@ -256,6 +256,35 @@ body {
   .dial-half { max-width: 340px; width: 100%; }
 }
 
+/* "ampm-toggle" layout: only one .dial-half is visible at a time (the other
+   gets [hidden]), so it may as well use the same generous cap the single
+   24-hour dial gets, rather than the twin layout's shared-space cap. */
+.dial-wrap-twin.toggle-mode { justify-content: center; }
+.dial-wrap-twin.toggle-mode .dial-half { max-width: 460px; }
+
+.ampm-toggle-switch {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.ampm-toggle-switch button {
+  padding: 6px 22px;
+  border: none;
+  background: var(--panel-2);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.ampm-toggle-switch button + button { border-left: 1px solid var(--border); }
+.ampm-toggle-switch button.active { background: var(--accent-fill); color: var(--accent-ink); }
+.ampm-toggle-switch button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: -2px; }
+
 .seg { cursor: pointer; }
 .cat-0 { fill: var(--cat-0); }
 .cat-1 { fill: var(--cat-1); }

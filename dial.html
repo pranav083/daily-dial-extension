@@ -59,8 +59,13 @@
           </svg>
         </div>
 
+        <div class="ampm-toggle-switch" id="dial-toggle-switch" hidden role="tablist" aria-label="Show the AM or PM half">
+          <button type="button" id="toggle-am-btn" role="tab" aria-pressed="true">AM</button>
+          <button type="button" id="toggle-pm-btn" role="tab" aria-pressed="false">PM</button>
+        </div>
+
         <div class="dial-wrap-twin" id="dial-wrap-twin" hidden>
-          <div class="dial-half">
+          <div class="dial-half" id="dial-half-am">
             <svg class="dial-svg" id="dial-am" viewBox="0 0 460 460" role="img" aria-label="AM activity dial, midnight to noon">
               <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
               <g id="segments-am"></g>
@@ -71,7 +76,7 @@
             </svg>
             <div class="dial-half-label">AM <span class="muted">· 12a&ndash;12p</span></div>
           </div>
-          <div class="dial-half">
+          <div class="dial-half" id="dial-half-pm">
             <svg class="dial-svg" id="dial-pm" viewBox="0 0 460 460" role="img" aria-label="PM activity dial, noon to midnight">
               <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
               <g id="segments-pm"></g>
@@ -338,7 +343,8 @@
             <label for="dial-mode-select" title="One ring covering all 24 hours, or two smaller rings — one for AM, one for PM.">Dial layout</label>
             <select id="dial-mode-select">
               <option value="24h">One 24-hour ring</option>
-              <option value="ampm">Two 12-hour rings (AM / PM)</option>
+              <option value="ampm">Two 12-hour rings, side by side</option>
+              <option value="ampm-toggle">One 12-hour ring, with an AM/PM switch</option>
             </select>
           </div>
           <div class="reminder-row">

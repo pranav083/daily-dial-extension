@@ -125,6 +125,7 @@ test("normalizeSettings validates appearance, goals, and recap fields", () => {
 
   assert.equal(normalizeSettings(null).dialMode, "24h");
   assert.equal(normalizeSettings({ dialMode: "ampm" }).dialMode, "ampm");
+  assert.equal(normalizeSettings({ dialMode: "ampm-toggle" }).dialMode, "ampm-toggle");
   assert.equal(normalizeSettings({ dialMode: "nonsense" }).dialMode, "24h");
 
   assert.equal(normalizeSettings({ weekStart: 1 }).weekStart, 1);
