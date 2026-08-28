@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Verify before releasing
+        run: npm run check
+
+      - name: Tag matches manifest version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          MANIFEST=$(node -p "require('./manifest.json').version")
+          if [ "$TAG" != "$MANIFEST" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match manifest version $MANIFEST"
+            exit 1
+          fi
+          echo "Releasing $MANIFEST"
+
+      - name: Build extension zip
+        run: |
+          zip -r "daily-dial-${GITHUB_REF_NAME}.zip" \
+            manifest.json dial.html dial.css dial.js lib.js background.js \
+            fonts icons LICENSE \
+            -x '.*'
+          unzip -l "daily-dial-${GITHUB_REF_NAME}.zip"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: daily-dial-${{ github.ref_name }}.zip
+          generate_release_notes: true
+          body: |
+            Install the zip by unpacking it and loading the folder via
+            `chrome://extensions` → Developer mode → **Load unpacked**.
+
+            See [CHANGELOG.md](CHANGELOG.md) for what changed.

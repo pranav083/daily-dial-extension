@@ -50,4 +50,9 @@ export default [
     files: ["test/**/*.js"],
     languageOptions: { globals: { console: "readonly" } },
   },
+  {
+    files: ["scripts/**/*.mjs"],
+    languageOptions: { globals: { console: "readonly", process: "readonly" } },
+    rules: { "no-console": "off" },
+  },
 ];

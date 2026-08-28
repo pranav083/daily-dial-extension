@@ -8,9 +8,25 @@
   "scripts": {
     "test": "node --test \"test/**/*.test.js\"",
     "lint": "eslint .",
-    "check": "npm run lint && npm test",
-    "package": "zip -r daily-dial-$npm_package_version.zip manifest.json dial.html dial.css dial.js lib.js background.js fonts icons -x '.*'"
+    "check:version": "node scripts/check-version.mjs",
+    "check": "npm run lint && npm test && npm run check:version",
+    "package": "zip -r daily-dial-v$npm_package_version.zip manifest.json dial.html dial.css dial.js lib.js background.js fonts icons LICENSE -x '.*'"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranav083/daily-dial-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pranav083/daily-dial-extension/issues"
+  },
+  "homepage": "https://github.com/pranav083/daily-dial-extension#readme",
+  "keywords": [
+    "chrome-extension",
+    "time-tracking",
+    "productivity",
+    "privacy",
+    "local-first"
+  ],
   "devDependencies": {
     "eslint": "^9.15.0"
   },

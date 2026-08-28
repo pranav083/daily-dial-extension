@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, test, version check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["20", "22"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Version consistency
+        run: npm run check:version
+
+  manifest:
+    name: Manifest sanity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: manifest.json is valid JSON
+        run: node -e "JSON.parse(require('node:fs').readFileSync('manifest.json','utf8'))"
+
+      - name: Every referenced file exists
+        run: |
+          node -e "
+            const fs = require('node:fs');
+            const m = JSON.parse(fs.readFileSync('manifest.json','utf8'));
+            const files = [
+              m.background.service_worker,
+              ...Object.values(m.icons),
+              ...Object.values(m.action.default_icon ?? {}),
+            ];
+            const missing = files.filter(f => !fs.existsSync(f));
+            if (missing.length) {
+              console.error('Missing files referenced by manifest.json:', missing);
+              process.exit(1);
+            }
+            console.log('All', files.length, 'referenced files present.');
+          "
+
+      - name: No network permissions crept in
+        run: |
+          node -e "
+            const m = JSON.parse(require('node:fs').readFileSync('manifest.json','utf8'));
+            const banned = ['tabs', 'webRequest', '<all_urls>'];
+            const found = (m.permissions ?? []).filter(p => banned.includes(p));
+            if (found.length || m.host_permissions?.length || m.content_scripts?.length) {
+              console.error('This extension is deliberately network- and page-free.');
+              console.error('Found:', { found, host: m.host_permissions, scripts: m.content_scripts });
+              process.exit(1);
+            }
+            console.log('Permission set is clean:', m.permissions.join(', '));
+          "

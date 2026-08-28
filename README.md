@@ -1,105 +1,175 @@
+<div align="center">
+
+<img src="icons/icon-128.png" width="88" alt="">
+
 # Daily Dial
 
-A Chrome extension for logging your day on a 24-hour dial. Pick a category, drag
-around the ring, and see whether your time went where you meant it to.
+**Paint your day on a 24-hour dial, and see whether the time went where you meant it to.**
 
-Built for a specific problem: most time trackers either make you fill in a form
-per entry (too slow to keep up daily) or record your app usage automatically
-(which can't see a mock interview, a printed textbook, or thinking). This one
-takes ten seconds and records what you actually chose to do.
+[![CI](https://github.com/pranav083/daily-dial-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/pranav083/daily-dial-extension/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Manifest V3](https://img.shields.io/badge/manifest-v3-4285F4.svg)](manifest.json)
+[![No dependencies](https://img.shields.io/badge/runtime%20deps-0-success.svg)](package.json)
+[![Local only](https://img.shields.io/badge/data-local%20only-success.svg)](#your-data)
 
-![The dial](docs/screenshot.png)
+[Install](#install) · [How it works](#how-it-works) · [Your data](#your-data) · [Privacy](PRIVACY.md) · [Contributing](CONTRIBUTING.md)
+
+<img src="docs/screenshot.png" width="820" alt="The dial showing a painted morning, with the day's stats alongside">
+
+</div>
+
+---
+
+## Why this exists
+
+Most time trackers make you choose between two bad options. Form-based ones ask
+for a category, description, date, start time and end time per entry — too slow
+to keep up for more than a few days. Automatic ones record which app was in
+focus, which can't see a mock interview, a printed textbook, or an hour of
+thinking, and quietly reduce your day to window titles.
+
+Daily Dial asks for about ten seconds. Pick a category, drag across the hours you
+spent on it, done. It records what you *chose* to do, including everything that
+happened away from the keyboard.
+
+It was built for a specific situation — a student splitting time between
+coursework and job applications, wanting to know at the end of the day whether
+the hours actually went toward the applications.
 
 ## Install
 
-No build step — the repository *is* the extension.
+No build step, no store account, no payment. The repository *is* the extension.
+
+```bash
+git clone https://github.com/pranav083/daily-dial-extension.git
+```
 
 1. Open `chrome://extensions`
 2. Enable **Developer mode** (top right)
-3. **Load unpacked** → select this folder
-4. Pin it to the toolbar; the icon opens the dial
+3. Click **Load unpacked** and select the folder
+4. Pin it to the toolbar — the icon opens the dial
 
-> Chrome derives an unpacked extension's ID from its path, and your data is keyed
-> to that ID. **Moving this folder orphans your logged days** — export a CSV
-> first if you need to relocate it.
+Prefer a download? Grab the zip from
+[Releases](https://github.com/pranav083/daily-dial-extension/releases), unpack
+it, and load that folder the same way.
 
-## Using it
+> [!IMPORTANT]
+> Chrome derives an unpacked extension's ID from its folder path, and your data
+> is keyed to that ID. **Moving the folder later orphans your logged days.**
+> Put it somewhere permanent, and export a CSV before relocating it.
+
+## How it works
 
 | | |
 |---|---|
 | **Paint** | Pick a category, then click or drag around the ring |
-| **Erase** | Select the Eraser pen and drag over a block |
+| **Erase** | Choose the Eraser pen and drag over a block |
 | **Undo** | <kbd>⌘Z</kbd> / <kbd>Ctrl+Z</kbd> — one step per stroke, 30 deep |
 | **Past days** | Arrows beside the date, or click a bar in the week strip |
-| **Reminders** | Two a day, off by default. Times are yours to set |
-| **Export** | CSV — one row per block, shaped for a spreadsheet pivot |
+| **Reminders** | Two a day, off by default, times are yours |
+| **Export** | CSV — one row per block, ready to pivot in a spreadsheet |
 
-Each category carries a weight: `+` counts toward your daily score, `·` is
-neutral, `–` counts against it. The score is
-`(productive − distraction) ÷ tracked`, so it measures the *shape* of your day
-rather than its length — a well-spent four hours beats a scattered ten.
+### The score
 
-Rename categories or change their weights under **Edit categories**. Days store
-the category slot, not its name, so renaming never rewrites your history.
+Each category carries a weight: `+` counts toward your score, `·` is neutral,
+`–` counts against it. The daily score is:
+
+```
+(productive − distraction) ÷ tracked
+```
+
+It measures the *shape* of a day rather than its length, so a well-spent four
+hours beats a scattered ten. Alongside it you get tracked time, productive
+percentage, your longest unbroken stretch of focus, and a plain-language read of
+the day — the answer to "was I productive?" without having to interpret a chart.
+
+Untracked time is shown rather than hidden, so gaps in logging stay visible
+instead of silently flattering your numbers.
+
+### Categories
+
+Six slots, renameable, reweightable, hideable. Days store the slot *index*, not
+the name, so renaming a category never rewrites your history.
+
+The defaults assume a job or university search — **Deep Work, Applications,
+Study, Admin, Break, Distraction** — with Applications broken out deliberately,
+so you can see at a glance whether you actually spent time on applications or
+only on studying.
 
 ## Your data
 
-Everything stays in `chrome.storage.local` on this machine. No account, no
-server, no analytics, no network access of any kind — the extension requests no
-host permissions and runs no content scripts.
+Everything stays in `chrome.storage.local`, on your machine.
 
-Permissions requested, and why:
+**No account. No server. No analytics. No network access of any kind** — the
+extension requests no host permissions, runs no content scripts, and ships no
+third-party runtime code. It *cannot* phone home; it has no ability to make a
+request.
 
 | Permission | Why |
 |---|---|
 | `storage` | Save your days, categories, and settings |
-| `unlimitedStorage` | Keep years of history without hitting the default quota |
-| `alarms` | Fire the two daily reminders |
+| `unlimitedStorage` | Keep years of history past the default quota |
+| `alarms` | Schedule the two daily reminders |
 | `notifications` | Show them |
 
-Notably absent is `tabs`, which Chrome presents to users as *"read your browsing
-history"*. The extension tracks its own tab through `chrome.storage.session`
-instead.
+Conspicuously absent is `tabs`, which Chrome presents to users as *"read your
+browsing history"*. The service worker tracks its own tab through
+`chrome.storage.session` instead.
 
-Data lives in your Chrome profile. It survives restarts and clearing browsing
-data, but not deleting the profile or the extension — **export a CSV
-periodically** if the history matters to you.
+Data survives browser restarts and clearing browsing data, but not deleting your
+Chrome profile or the extension. **Export a CSV periodically** if the history
+matters — it takes five seconds and opens straight in Excel.
+
+The full policy is in [PRIVACY.md](PRIVACY.md).
+
+## Known limits
+
+Stated up front, because they're inherent rather than unfinished:
+
+- **Reminders only fire while Chrome is running.** Extensions can't wake a
+  closed browser; that needs a native app.
+- **Storage is per-browser-profile.** No cross-device sync, by design — sync
+  would mean either a server or a tight quota.
+- **15-minute granularity.** The dial has 96 slots; shorter bursts round.
 
 ## Development
 
 ```bash
-npm install     # eslint only; the extension itself has no dependencies
+npm install     # eslint only — the extension itself has no dependencies
 npm test        # 31 unit tests, node's built-in runner
 npm run lint
-npm run check   # both
-npm run package # zip for the Chrome Web Store
+npm run check   # lint + tests + version consistency
+npm run package # zip for distribution
 ```
 
-### Layout
-
-| Path | |
+| Path | Responsibility |
 |---|---|
 | `manifest.json` | MV3 manifest |
 | `dial.html` / `dial.css` | Page shell and styles |
-| `dial.js` | Page controller — owns the DOM and `chrome.storage` |
+| `dial.js` | Page controller — DOM and `chrome.storage` |
 | `lib.js` | All calculation: geometry, stats, CSV, scheduling. No DOM, no `chrome.*` |
-| `background.js` | Service worker — reminders and opening the dial |
+| `background.js` | Service worker — reminders, opening the dial |
 | `test/lib.test.js` | Unit tests over `lib.js` |
 | `fonts/` | Manrope + JetBrains Mono, bundled (MV3's CSP blocks remote fonts) |
 
-The `lib.js` / `dial.js` split is what makes the logic testable: anything that
-can be a pure function over plain data lives in `lib.js` and is covered by tests;
-`dial.js` is left with wiring that only a browser can exercise.
+The `lib.js` / `dial.js` split is the one structural rule: anything expressible
+as a function from data to data lives in `lib.js`, where it costs nothing to
+test, leaving `dial.js` with only the wiring that needs a browser.
 
-### Conventions
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, conventions that aren't
+obvious from the code, and what to check before opening a PR.
 
-- A day is 96 slots of 15 minutes; `-1` means untracked
-- Angles run clockwise from midnight at the top
-- Dates are keyed `YYYY-MM-DD` in **local** time — never `toISOString()`, which
-  is UTC and would file a late-evening entry under the wrong day
-- Anything read from storage goes through a `normalize*` function first; stored
-  data is user-editable and outlives any given version
+## Contributing
+
+Contributions are welcome, including "this was confusing" filed as an issue.
+Start with [CONTRIBUTING.md](CONTRIBUTING.md); by participating you agree to the
+[Code of Conduct](CODE_OF_CONDUCT.md). Security issues go through
+[private reporting](SECURITY.md), not public issues.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+[MIT](LICENSE) — do what you like with it.
+
+Fonts are bundled under the [SIL Open Font License](https://openfontlicense.org):
+[Manrope](https://github.com/sharanda/manrope) and
+[JetBrains Mono](https://github.com/JetBrains/JetBrainsMono).

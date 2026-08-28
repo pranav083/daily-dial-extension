@@ -1,0 +1,43 @@
+name: Feature request
+description: Suggest something that would make logging faster or clearer
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The project's scope is deliberately narrow: log a day quickly, and see
+        whether the time went where you meant it to. Ideas that serve that are
+        very welcome.
+
+        Two constraints worth knowing before you write:
+        - Notifications only fire while Chrome is running.
+        - Storage is per-browser-profile; there is no server, by design.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's the problem?
+      description: What were you trying to do when this came up?
+      placeholder: >
+        I log at the end of the day and can never remember exactly when I
+        stopped for lunch, so I end up guessing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: A rough idea is fine — no need for a full design.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This keeps the extension local-only (no server, no network calls)
+          required: true
+        - label: I've checked the open issues for something similar
+          required: true

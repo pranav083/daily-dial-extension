@@ -1,0 +1,59 @@
+name: Bug report
+description: Something in the dial doesn't behave the way it should
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please don't paste your exported CSV — that's
+        personal data. Describing the shape of the day ("three blocks, one
+        crossing midnight") is plenty.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, and what did you see instead of what you expected?
+      placeholder: |
+        I dragged from 23:00 to 01:00 expecting a two-hour block, but it
+        painted 22 hours the other way around the dial.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The dial has interacting state (day boundaries, undo, category edits), so exact steps help a lot.
+      placeholder: |
+        1. Open the dial on a fresh day
+        2. Select "Deep Work"
+        3. Drag clockwise from 23:00 past midnight to 01:00
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Extension version
+      description: Shown beside the "Daily Dial" wordmark, top left.
+      placeholder: "1.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: chrome
+    attributes:
+      label: Browser and OS
+      placeholder: "Chrome 131 on macOS 15"
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console output
+      description: >
+        Optional. Right-click the dial page → Inspect → Console. Paste anything
+        red.
+      render: text

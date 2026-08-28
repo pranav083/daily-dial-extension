@@ -8,6 +8,24 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+### Added
+
+- Open-source project scaffolding: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
+  `SECURITY.md`, issue and pull request templates.
+- `PRIVACY.md` — the privacy policy the Chrome Web Store requires at a public
+  URL.
+- `docs/STORE_LISTING.md` — every field the Web Store submission asks for,
+  written out, including permission justifications and review notes.
+- Store graphics at Google's exact required sizes: three 1280×800 screenshots
+  and 440×280 / 1400×560 promo tiles.
+- GitHub Actions: CI runs lint, tests, and the version check on Node 20 and 22,
+  plus a manifest job that fails if a referenced file is missing or if a network
+  permission is ever added. A release workflow builds and attaches the zip on a
+  version tag.
+- `npm run check:version` — fails if `manifest.json`, `package.json`, and
+  `CHANGELOG.md` disagree about the version, which otherwise drifts silently and
+  gets a Web Store upload rejected.
+
 ## [1.1.0] — 2026-08-28
 
 ### Added
