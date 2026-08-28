@@ -65,7 +65,8 @@ it, and load that folder the same way.
 | **Paint** | Pick a category, then click or drag around the ring |
 | **Erase** | Choose the Eraser pen, or press <kbd>0</kbd>/<kbd>E</kbd>, then drag over a block |
 | **Pick a pen** | Click one, or press <kbd>1</kbd>–<kbd>6</kbd> |
-| **Type an entry** | `9-11 deep work`, `13:30-15 applications`, `9pm-11pm study` |
+| **Type an entry** | `9-11 deep work`, `13:30-15 applications`, `9pm-11pm study` — or your own alias, e.g. `9-11 leetcode` |
+| **Category aliases** | Link your own words to a category (Settings → Categories) so typed entries recognize them |
 | **Copy yesterday** | Fills today from the previous day; confirms before overwriting |
 | **Undo / redo** | <kbd>⌘Z</kbd> / <kbd>⇧⌘Z</kbd> (<kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd>) — 30 deep |
 | **Past days** | Arrows beside the date, or click a bar in the week strip |

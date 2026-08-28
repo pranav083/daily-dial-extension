@@ -38,6 +38,7 @@ import {
   isValidTime,
   mergeDayMaps,
   mostRecentWeekStart,
+  normalizeAliases,
   normalizeCategories,
   normalizeDay,
   normalizeSettings,
@@ -106,7 +107,7 @@ function persistDay() {
 
 const persistCategories = () =>
   chrome.storage.local
-    .set({ [CATEGORIES_KEY]: categories.map(({ name, weight, enabled }) => ({ name, weight, enabled })) })
+    .set({ [CATEGORIES_KEY]: categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases })) })
     .catch(reportStorageFailure);
 
 const persistSettings = () =>
@@ -1001,7 +1002,26 @@ function renderCategoryEditor() {
     });
 
     row.append(swatch, input, seg, toggle);
-    rowsEl.appendChild(row);
+
+    const aliasRow = document.createElement("div");
+    aliasRow.className = "cat-alias-row";
+    const aliasInput = document.createElement("input");
+    aliasInput.type = "text";
+    aliasInput.value = c.aliases.join(", ");
+    aliasInput.disabled = !c.enabled;
+    aliasInput.placeholder = "also match: leetcode, resume, mock interview…";
+    aliasInput.setAttribute("aria-label", `Aliases for ${c.name} — other words the typed entry box recognizes`);
+    aliasInput.addEventListener("change", () => {
+      c.aliases = normalizeAliases(aliasInput.value.split(","));
+      aliasInput.value = c.aliases.join(", "); // reflect trimming/dedup/caps back
+      persistCategories();
+    });
+    aliasRow.appendChild(aliasInput);
+
+    const item = document.createElement("div");
+    item.className = "cat-edit-item";
+    item.append(row, aliasRow);
+    rowsEl.appendChild(item);
   }
 }
 
@@ -1197,7 +1217,7 @@ function applyImport(mode) {
   const toSet = {};
   for (const [key, day] of days) toSet[DAY_PREFIX + key] = day;
   if (mode === "replace" && pendingImport.categories) {
-    toSet[CATEGORIES_KEY] = categories.map(({ name, weight, enabled }) => ({ name, weight, enabled }));
+    toSet[CATEGORIES_KEY] = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
   }
   if (mode === "replace" && pendingImport.settings) toSet[SETTINGS_KEY] = settings;
 

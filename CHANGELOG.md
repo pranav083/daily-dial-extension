@@ -8,6 +8,19 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.5.0] — 2026-08-28
+
+### Added
+
+- **Category aliases**: each category can now have a handful of personal
+  alias words, set under it in Settings → Categories (e.g. "leetcode",
+  "resume", "mock interview" all linked to Applications). The typed-entry
+  box matches on these the same way it already matches a category's own
+  name — exact match wins, an ambiguous partial still asks you to be more
+  specific — so you can type however you actually think about your day
+  while it still paints in that category's one weighted colour. Included
+  in JSON backups.
+
 ## [1.4.0] — 2026-08-28
 
 ### Added

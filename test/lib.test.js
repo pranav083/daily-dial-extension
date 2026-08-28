@@ -110,6 +110,21 @@ test("normalizeCategories rejects an out-of-range weight", () => {
   assert.equal(out[0].weight, DEFAULT_CATEGORIES[0].weight);
 });
 
+test("normalizeCategories defaults to no aliases, and trims/lowercases/dedupes provided ones", () => {
+  assert.deepEqual(normalizeCategories(null)[0].aliases, []);
+  const out = normalizeCategories([{ name: "Applications", aliases: ["  LeetCode ", "Resume", "leetcode", ""] }]);
+  assert.deepEqual(out[0].aliases, ["leetcode", "resume"], "trimmed, lowercased, deduped, blanks dropped");
+});
+
+test("normalizeCategories caps alias count and per-alias length", () => {
+  const many = Array.from({ length: 20 }, (_, i) => `alias-${i}`);
+  const out = normalizeCategories([{ name: "Applications", aliases: many }]);
+  assert.equal(out[0].aliases.length, 8, "capped at 8");
+
+  const longOne = normalizeCategories([{ name: "Applications", aliases: ["x".repeat(60)] }]);
+  assert.equal(longOne[0].aliases[0].length, 24, "capped at 24 chars");
+});
+
 test("normalizeSettings validates reminder times", () => {
   assert.deepEqual(normalizeSettings(null), DEFAULT_SETTINGS);
   assert.deepEqual(normalizeSettings({ remindersOn: true, times: ["07:30", "19:45"] }).times, ["07:30", "19:45"]);
@@ -826,6 +841,34 @@ test("parseTimeEntry matches a category by partial, case-insensitive name", () =
   const r = parseTimeEntry("9-10 appl", cats);
   assert.equal(r.ok, true);
   assert.equal(r.categoryId, 1, "matches Applications");
+});
+
+test("parseTimeEntry matches a category by a personal alias, not just its own name", () => {
+  const withAliases = cats.map((c) => (c.id === 1 ? { ...c, aliases: ["leetcode", "resume"] } : c));
+  const r = parseTimeEntry("9-10 leetcode", withAliases);
+  assert.equal(r.ok, true);
+  assert.equal(r.categoryId, 1, "leetcode is aliased to Applications");
+});
+
+test("parseTimeEntry prefers an exact alias match over a partial name match elsewhere", () => {
+  // "app" partially matches "Applications" (id 1) by name, but is also an
+  // exact alias of Admin (id 3) here — the exact match should win, same as
+  // an exact *name* match already does.
+  const reAliased = cats.map((c) => (c.id === 3 ? { ...c, aliases: ["app"] } : c));
+  const r = parseTimeEntry("9-10 app", reAliased);
+  assert.equal(r.ok, true);
+  assert.equal(r.categoryId, 3, "exact alias match beats a partial name match");
+});
+
+test("parseTimeEntry treats an ambiguous alias the same as an ambiguous name — asks to be more specific", () => {
+  const ambiguous = cats.map((c) => {
+    if (c.id === 3) return { ...c, aliases: ["chores"] };
+    if (c.id === 4) return { ...c, aliases: ["chore time"] };
+    return c;
+  });
+  const r = parseTimeEntry("9-10 chore", ambiguous); // partially matches both aliases, exactly neither
+  assert.equal(r.ok, false);
+  assert.match(r.error, /be more specific/);
 });
 
 test("parseTimeEntry crosses midnight for a short overnight range", () => {

@@ -27,13 +27,16 @@ export const SCHEMA_VERSION_KEY = "schemaVersion";
  *  read. Stored alongside the data and stamped into every export. */
 export const SCHEMA_VERSION = 1;
 
+// `aliases` are extra words the typed-entry parser matches against a
+// category besides its own name — e.g. "leetcode" or "mock interview" both
+// resolving to Applications — without needing a 7th category slot.
 export const DEFAULT_CATEGORIES = [
-  { id: 0, name: "Deep Work", weight: 1, enabled: true, cls: "cat-0" },
-  { id: 1, name: "Applications", weight: 1, enabled: true, cls: "cat-1" },
-  { id: 2, name: "Study", weight: 1, enabled: true, cls: "cat-2" },
-  { id: 3, name: "Admin", weight: 0, enabled: true, cls: "cat-3" },
-  { id: 4, name: "Break", weight: 0, enabled: true, cls: "cat-4" },
-  { id: 5, name: "Distraction", weight: -1, enabled: true, cls: "cat-5" },
+  { id: 0, name: "Deep Work", weight: 1, enabled: true, cls: "cat-0", aliases: [] },
+  { id: 1, name: "Applications", weight: 1, enabled: true, cls: "cat-1", aliases: [] },
+  { id: 2, name: "Study", weight: 1, enabled: true, cls: "cat-2", aliases: [] },
+  { id: 3, name: "Admin", weight: 0, enabled: true, cls: "cat-3", aliases: [] },
+  { id: 4, name: "Break", weight: 0, enabled: true, cls: "cat-4", aliases: [] },
+  { id: 5, name: "Distraction", weight: -1, enabled: true, cls: "cat-5", aliases: [] },
 ];
 
 export const DEFAULT_SETTINGS = {
@@ -109,8 +112,29 @@ export function normalizeDay(raw) {
 /** A day "counts" for streaks/nudges/bests once at least one slot is painted. */
 export const dayHasEntries = (day) => !!day && Array.isArray(day.slots) && day.slots.some((v) => v !== UNTRACKED);
 
-/** Categories are six fixed colour slots; only name/weight/enabled are editable.
- *  Days store the slot index, so renaming never rewrites history. */
+const MAX_ALIASES = 8;
+
+/** Extra match words for a category, beyond its own name — lowercased,
+ *  trimmed, deduped, capped in count and length so a stray paste can't
+ *  balloon storage. */
+export function normalizeAliases(saved) {
+  if (!Array.isArray(saved)) return [];
+  const seen = new Set();
+  const out = [];
+  for (const raw of saved) {
+    if (typeof raw !== "string") continue;
+    const alias = raw.trim().toLowerCase().slice(0, 24);
+    if (!alias || seen.has(alias)) continue;
+    seen.add(alias);
+    out.push(alias);
+    if (out.length >= MAX_ALIASES) break;
+  }
+  return out;
+}
+
+/** Categories are six fixed colour slots; only name/weight/enabled/aliases
+ *  are editable. Days store the slot index, so renaming never rewrites
+ *  history. */
 export function normalizeCategories(saved) {
   const defaults = DEFAULT_CATEGORIES.map((c) => ({ ...c }));
   if (!Array.isArray(saved)) return defaults;
@@ -119,7 +143,7 @@ export function normalizeCategories(saved) {
     if (!s || typeof s !== "object") return base;
     const name = typeof s.name === "string" && s.name.trim() ? s.name.trim().slice(0, 24) : base.name;
     const weight = s.weight === 1 || s.weight === 0 || s.weight === -1 ? s.weight : base.weight;
-    return { id: base.id, cls: base.cls, name, weight, enabled: s.enabled !== false };
+    return { id: base.id, cls: base.cls, name, weight, enabled: s.enabled !== false, aliases: normalizeAliases(s.aliases) };
   });
 }
 
@@ -642,9 +666,12 @@ export function parseTimeEntry(text, categories) {
   const wanted = catText.trim().toLowerCase();
   if (!wanted) return { ok: false, error: 'Add a category, like "9-11 deep work".' };
 
+  // A category matches by its own name or by any of its aliases (personal
+  // vocabulary a user has linked to it, e.g. "leetcode" → Applications).
+  const labelsOf = (c) => [c.name.toLowerCase(), ...(c.aliases ?? [])];
   const enabled = categories.filter((c) => c.enabled);
-  const exact = enabled.find((c) => c.name.toLowerCase() === wanted);
-  const matches = exact ? [exact] : enabled.filter((c) => c.name.toLowerCase().includes(wanted));
+  const exact = enabled.find((c) => labelsOf(c).includes(wanted));
+  const matches = exact ? [exact] : enabled.filter((c) => labelsOf(c).some((label) => label.includes(wanted)));
 
   if (matches.length === 0) return { ok: false, error: `No category matches "${catText.trim()}".` };
   if (matches.length > 1) {
@@ -795,7 +822,7 @@ export function buildBackup(days, categories, settings, appVersion, now = new Da
     schemaVersion: SCHEMA_VERSION,
     exportedAt: now.toISOString(),
     appVersion,
-    categories: categories.map(({ name, weight, enabled }) => ({ name, weight, enabled })),
+    categories: categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases })),
     settings: { ...settings },
     days: daysObj,
   };
