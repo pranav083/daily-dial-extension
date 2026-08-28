@@ -492,6 +492,21 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 .icon-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
 .icon-btn:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
 
+/* Settings lives top-right, where people look for it — not buried beside the
+   destructive "Clear day" button in the side panel footer. */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.settings-btn {
+  width: 30px;
+  height: 30px;
+  font-size: 0.95rem;
+  background: var(--panel);
+}
+.settings-btn:hover { border-color: var(--accent); color: var(--ink); }
+
 /* ---- streak ---- */
 /* Sits inline in the top bar rather than as its own band: the dial is the
    product, and three stacked full-width bars pushed it below the fold. */

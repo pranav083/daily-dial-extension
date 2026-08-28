@@ -20,11 +20,15 @@
               title="Log at least one block today to keep the streak alive.">not logged yet today</span>
       </div>
 
-      <div class="datenav">
-        <button id="prev-day" aria-label="Previous day" title="Previous day">‹</button>
-        <span class="label" id="date-label">Today</span>
-        <button id="next-day" aria-label="Next day" title="Next day">›</button>
-        <button class="today-jump" id="today-jump" hidden title="Jump back to today">Today</button>
+      <div class="topbar-right">
+        <div class="datenav">
+          <button id="prev-day" aria-label="Previous day" title="Previous day">‹</button>
+          <span class="label" id="date-label">Today</span>
+          <button id="next-day" aria-label="Next day" title="Next day">›</button>
+          <button class="today-jump" id="today-jump" hidden title="Jump back to today">Today</button>
+        </div>
+        <button class="icon-btn settings-btn" id="open-settings" aria-haspopup="dialog"
+                aria-label="Settings" title="Categories, reminders, goals, backup, and appearance">☰</button>
       </div>
     </div>
 
@@ -110,7 +114,6 @@
 
         <div class="footer-actions">
           <button class="ghost-btn danger" id="clear-day" title="Erase every block on this day. Undoable with ⌘Z.">Clear day</button>
-          <button class="ghost-btn" id="open-settings" aria-haspopup="dialog" aria-label="Settings" title="Categories, reminders, goals, backup, and appearance">☰ Settings</button>
         </div>
       </div>
     </div>
