@@ -7,18 +7,26 @@
  */
 
 import {
+  CATEGORIES_KEY,
   DAY_PREFIX,
   SETTINGS_KEY,
   SLOTS,
   SLOT_MIN,
   UNTRACKED,
   dateKey,
+  mostRecentWeekStart,
   nextOccurrence,
+  nextWeeklyOccurrence,
+  normalizeCategories,
+  normalizeDay,
   normalizeSettings,
   reminderMessage,
+  weeklyRecap,
+  weeklyRecapMessage,
 } from "./lib.js";
 
 const ALARM_PREFIX = "reminder-";
+const WEEKLY_RECAP_ALARM = "weekly-recap";
 const OPEN_TAB_KEY = "openTabId";
 
 async function getSettings() {
@@ -26,21 +34,45 @@ async function getSettings() {
   return normalizeSettings(saved);
 }
 
+async function getCategories() {
+  const { [CATEGORIES_KEY]: saved } = await chrome.storage.local.get(CATEGORIES_KEY);
+  return normalizeCategories(saved);
+}
+
+async function getAllDays() {
+  const all = await chrome.storage.local.get(null);
+  const days = new Map();
+  for (const [key, value] of Object.entries(all)) {
+    if (key.startsWith(DAY_PREFIX)) days.set(key.slice(DAY_PREFIX.length), normalizeDay(value));
+  }
+  return days;
+}
+
 async function rescheduleAlarms() {
   const existing = await chrome.alarms.getAll();
   await Promise.all(
-    existing.filter((a) => a.name.startsWith(ALARM_PREFIX)).map((a) => chrome.alarms.clear(a.name))
+    existing
+      .filter((a) => a.name.startsWith(ALARM_PREFIX) || a.name === WEEKLY_RECAP_ALARM)
+      .map((a) => chrome.alarms.clear(a.name))
   );
 
-  const { remindersOn, times } = await getSettings();
-  if (!remindersOn) return;
+  const settings = await getSettings();
 
-  times.forEach((time, i) => {
-    chrome.alarms.create(`${ALARM_PREFIX}${i}`, {
-      when: nextOccurrence(time),
-      periodInMinutes: 24 * 60,
+  if (settings.remindersOn) {
+    settings.times.forEach((time, i) => {
+      chrome.alarms.create(`${ALARM_PREFIX}${i}`, {
+        when: nextOccurrence(time),
+        periodInMinutes: 24 * 60,
+      });
     });
-  });
+  }
+
+  if (settings.weeklyRecapOn) {
+    chrome.alarms.create(WEEKLY_RECAP_ALARM, {
+      when: nextWeeklyOccurrence(settings.weeklyRecapDay, settings.weeklyRecapTime),
+      periodInMinutes: 7 * 24 * 60,
+    });
+  }
 }
 
 /** Minutes of today still carrying no category. */
@@ -59,6 +91,24 @@ async function notify(index) {
     iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
     title: index === 1 ? "Close out your day" : "Daily Dial",
     message: reminderMessage(index, untracked),
+    priority: 1,
+  });
+}
+
+/** The week just gone — the recap fires after it ends, so the most recent
+ *  occurrence of the chosen week-start day is the *current* (in-progress)
+ *  week; the completed one is exactly 7 days before that. */
+async function notifyWeeklyRecap() {
+  const [settings, categories, days] = await Promise.all([getSettings(), getCategories(), getAllDays()]);
+  const weekStart = mostRecentWeekStart(settings.weekStart, new Date());
+  weekStart.setDate(weekStart.getDate() - 7);
+
+  const recap = weeklyRecap(days, categories, weekStart);
+  chrome.notifications.create(`dial-recap-${Date.now()}`, {
+    type: "basic",
+    iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
+    title: "Weekly recap",
+    message: weeklyRecapMessage(recap),
     priority: 1,
   });
 }
@@ -97,6 +147,10 @@ chrome.notifications.onClicked.addListener((id) => {
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === WEEKLY_RECAP_ALARM) {
+    notifyWeeklyRecap();
+    return;
+  }
   if (!alarm.name.startsWith(ALARM_PREFIX)) return;
   notify(Number(alarm.name.slice(ALARM_PREFIX.length)));
 });

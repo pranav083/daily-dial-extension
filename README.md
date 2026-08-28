@@ -63,11 +63,17 @@ it, and load that folder the same way.
 | | |
 |---|---|
 | **Paint** | Pick a category, then click or drag around the ring |
-| **Erase** | Choose the Eraser pen and drag over a block |
-| **Undo** | <kbd>⌘Z</kbd> / <kbd>Ctrl+Z</kbd> — one step per stroke, 30 deep |
+| **Erase** | Choose the Eraser pen, or press <kbd>0</kbd>/<kbd>E</kbd>, then drag over a block |
+| **Pick a pen** | Click one, or press <kbd>1</kbd>–<kbd>6</kbd> |
+| **Type an entry** | `9-11 deep work`, `13:30-15 applications`, `9pm-11pm study` |
+| **Copy yesterday** | Fills today from the previous day; confirms before overwriting |
+| **Undo / redo** | <kbd>⌘Z</kbd> / <kbd>⇧⌘Z</kbd> (<kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd>) — 30 deep |
 | **Past days** | Arrows beside the date, or click a bar in the week strip |
-| **Reminders** | Two a day, off by default, times are yours |
-| **Export** | CSV — one row per block, ready to pivot in a spreadsheet |
+| **Streaks** | 🔥 counts any day with at least one block; one missed day a week is forgiven |
+| **Goals** | Optional per-category daily minute targets, with progress in the side panel |
+| **Reminders** | Two a day plus an optional weekly recap, all off by default, times are yours |
+| **Settings** | Categories, reminders, goals, data, appearance, and about — behind the ☰ button |
+| **Export / import** | CSV or a full-fidelity JSON backup; import merges or replaces, your choice |
 
 ### The score
 
@@ -117,8 +123,12 @@ browsing history"*. The service worker tracks its own tab through
 `chrome.storage.session` instead.
 
 Data survives browser restarts and clearing browsing data, but not deleting your
-Chrome profile or the extension. **Export a CSV periodically** if the history
-matters — it takes five seconds and opens straight in Excel.
+Chrome profile or the extension. **Export a backup periodically** if the
+history matters — CSV opens straight in a spreadsheet, and a JSON backup keeps
+everything (days, categories, settings) for a full restore later via
+**Settings → Data**. If it's been a couple of weeks since your last export and
+you have real history logged, the dial nudges you — dismissible, and it goes
+away once you export.
 
 The full policy is in [PRIVACY.md](PRIVACY.md).
 
@@ -126,8 +136,8 @@ The full policy is in [PRIVACY.md](PRIVACY.md).
 
 Stated up front, because they're inherent rather than unfinished:
 
-- **Reminders only fire while Chrome is running.** Extensions can't wake a
-  closed browser; that needs a native app.
+- **Reminders and the weekly recap only fire while Chrome is running.**
+  Extensions can't wake a closed browser; that needs a native app.
 - **Storage is per-browser-profile.** No cross-device sync, by design — sync
   would mean either a server or a tight quota.
 - **15-minute granularity.** The dial has 96 slots; shorter bursts round.
@@ -136,7 +146,7 @@ Stated up front, because they're inherent rather than unfinished:
 
 ```bash
 npm install     # eslint only — the extension itself has no dependencies
-npm test        # 31 unit tests, node's built-in runner
+npm test        # 77 unit tests, node's built-in runner
 npm run lint
 npm run check   # lint + tests + version consistency
 npm run package # zip for distribution

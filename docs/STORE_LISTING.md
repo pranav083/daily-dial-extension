@@ -17,7 +17,7 @@ Build the upload zip:
 
 ```bash
 npm run check     # never upload something that hasn't passed
-npm run package   # produces daily-dial-v1.1.0.zip
+npm run package   # produces daily-dial-v1.2.0.zip
 ```
 
 The zip contains only what the extension needs to run: `manifest.json`,
@@ -70,8 +70,10 @@ Daily Dial takes a middle path. You tell it what you were doing, but the interac
 
 HOW IT WORKS
 
-• Pick a category, then click or drag around the ring to paint that stretch of time
-• Made a mistake? Ctrl+Z (Cmd+Z on Mac) undoes one stroke at a time, thirty deep
+• Pick a category, then click or drag around the ring to paint that stretch of time — or press 1-6 to pick a pen, 0 or E for the eraser
+• Type it instead: "9-11 deep work" or "9pm-11pm study" fills the block for you
+• Made a mistake? Ctrl+Z (Cmd+Z on Mac) undoes one stroke at a time, thirty deep — Ctrl+Shift+Z redoes
+• Copy yesterday into today with one click when you're logging the same routine
 • A live needle marks the current time, so you always know where "now" is
 • Navigate to earlier days with the arrows, or click any bar in the seven-day strip
 
@@ -83,6 +85,10 @@ Underneath sits a plain-language summary of the day: which category led, whether
 
 Untracked time is shown rather than hidden, so gaps in your logging stay visible instead of quietly flattering your numbers.
 
+STAY WITH IT
+
+A 🔥 streak counter tracks consecutive logged days, with one missed day per week forgiven as a streak freeze — a single slip doesn't wipe out weeks of consistency. Set an optional daily minutes goal per category and watch a progress bar fill in. An optional weekly recap notification sums up the week just gone: time tracked, top category, best day, current streak.
+
 MADE YOUR OWN
 
 Six category slots, all renameable and reweightable, and you can hide the ones you don't use. The defaults suit a job hunt or university application — Deep Work, Applications, Study, Admin, Break, Distraction — with Applications broken out on purpose, so you can see whether you actually spent time applying or only studying.
@@ -91,7 +97,7 @@ Rename freely: days store the category slot, never its name, so renaming never r
 
 GENTLE REMINDERS
 
-Two optional daily nudges, off until you turn them on, at times you choose. The default pair is a midday check-in and an evening wrap-up. The evening one tells you how much of the day is still unlogged, so you close the gap while you still remember it.
+Two optional daily nudges, off until you turn them on, at times you choose. The default pair is a midday check-in and an evening wrap-up. The evening one tells you how much of the day is still unlogged, so you close the gap while you still remember it. An optional weekly recap notification, also off by default, adds a once-a-week summary on a day and time you pick.
 
 YOUR DATA STAYS YOURS
 
@@ -106,7 +112,7 @@ This is the part that matters most, and it is built into the structure rather th
 
 It also does not request the "tabs" permission, which Chrome shows to users as "read your browsing history". A time logger has no business asking for that.
 
-Everything lives in your browser's local storage. Export your full history to CSV whenever you like — it opens straight in Excel, Numbers or Google Sheets, with one row per block, ready to pivot.
+Everything lives in your browser's local storage. Export your full history to CSV whenever you like — it opens straight in Excel, Numbers or Google Sheets, with one row per block, ready to pivot. Or export a full JSON backup and import it back later — merge it into your existing days, or replace everything outright. The dial gently nudges you to back up if it's been a while and you have real history logged.
 
 OPEN SOURCE
 
@@ -238,7 +244,7 @@ All JavaScript is unminified and dependency-free, so the submitted package can b
 
 - Add the store link and an "Available in the Chrome Web Store" badge to
   `README.md`
-- Tag the release: `git tag -a v1.1.0 -m "..." && git push --tags` — CI builds
+- Tag the release: `git tag -a v1.2.0 -m "..." && git push --tags` — CI builds
   the zip and attaches it to a GitHub release
 - Watch the [developer dashboard](https://chrome.google.com/webstore/devconsole)
   for the review outcome

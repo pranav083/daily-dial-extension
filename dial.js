@@ -13,31 +13,44 @@ import {
   DAY_PREFIX,
   R_IN,
   R_OUT,
+  SCHEMA_VERSION,
+  SCHEMA_VERSION_KEY,
   SETTINGS_KEY,
   SLOTS,
   SLOT_MIN,
   UNTRACKED,
   WEIGHT_GLYPH,
   angleAt,
+  buildBackup,
   buildCsv,
   buildInsight,
   computeRuns,
   computeStats,
+  computeStreak,
   dateKey,
+  dayHasEntries,
   emptyDay,
   fillRange,
+  fmtClock,
   fmtDuration,
-  fmtHM,
+  goalProgress,
   isValidTime,
+  mergeDayMaps,
   normalizeCategories,
   normalizeDay,
   normalizeSettings,
   pad2,
+  parseBackup,
+  parseCsv,
+  parseTimeEntry,
+  personalBests,
   polar,
   runAt,
   sameDay,
   scoreBucket,
+  shouldNudgeBackup,
   slotFromAngle,
+  summarizeImport,
   toneVar,
   wedgePath,
 } from "./lib.js";
@@ -69,6 +82,12 @@ async function loadAll() {
   }
   categories = normalizeCategories(all[CATEGORIES_KEY]);
   settings = normalizeSettings(all[SETTINGS_KEY]);
+
+  if (all[SCHEMA_VERSION_KEY] !== SCHEMA_VERSION) {
+    chrome.storage.local.set({ [SCHEMA_VERSION_KEY]: SCHEMA_VERSION }).catch(() => {
+      // Non-critical bookkeeping; a retry next boot is fine.
+    });
+  }
 }
 
 const getDay = (key) => days.get(key) ?? emptyDay();
@@ -91,6 +110,14 @@ const persistSettings = () =>
 function reportStorageFailure(err) {
   console.error("Daily Dial: could not save", err);
   toast("Couldn't save — your last change may be lost.");
+}
+
+/* ---------- theme ---------- */
+
+function applyTheme() {
+  const root = document.documentElement;
+  if (settings.theme === "light" || settings.theme === "dark") root.dataset.theme = settings.theme;
+  else delete root.dataset.theme;
 }
 
 /* ---------- SVG scaffolding ---------- */
@@ -173,7 +200,10 @@ function renderNeedle() {
 
 function renderCenter() {
   const now = new Date();
-  $("center-time").textContent = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+  $("center-time").textContent = fmtClock(
+    Math.round((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN),
+    settings.timeFormat
+  );
   const pen = categories[state.activePen];
   $("center-sub").textContent = pen ? `pen: ${pen.name}` : "eraser";
 }
@@ -188,9 +218,10 @@ const renderDial = () => {
 
 function showTooltip(evt, idx) {
   const run = runAt(state.slots, idx);
+  const fmt = (i) => fmtClock(i, settings.timeFormat);
   tooltip.textContent = run
-    ? `${fmtHM(run.start)}–${fmtHM(run.end)}  ·  ${categories[run.cat].name}`
-    : `${fmtHM(idx)}–${fmtHM(idx + 1)}  ·  untracked`;
+    ? `${fmt(run.start)}–${fmt(run.end)}  ·  ${categories[run.cat].name}`
+    : `${fmt(idx)}–${fmt(idx + 1)}  ·  untracked`;
   tooltip.classList.add("show");
   tooltip.style.left = `${evt.clientX}px`;
   tooltip.style.top = `${evt.clientY}px`;
@@ -198,16 +229,19 @@ function showTooltip(evt, idx) {
 
 const hideTooltip = () => tooltip.classList.remove("show");
 
-/* ---------- undo ---------- */
+/* ---------- undo / redo ---------- */
 
 /** One entry per completed gesture, tagged with its day so stepping back
- *  through history can't drop a stroke onto the wrong date. */
+ *  through history can't drop a stroke onto the wrong date. Redo mirrors undo
+ *  exactly, and a new stroke clears whatever was available to redo. */
 const undoStack = [];
+const redoStack = [];
 const UNDO_LIMIT = 30;
 
 function pushUndo() {
   undoStack.push({ key: dateKey(state.viewDate), slots: [...state.slots] });
   if (undoStack.length > UNDO_LIMIT) undoStack.shift();
+  redoStack.length = 0;
 }
 
 function undo() {
@@ -218,10 +252,28 @@ function undo() {
     toast("Nothing to undo");
     return;
   }
+  redoStack.push({ key, slots: [...state.slots] });
+  if (redoStack.length > UNDO_LIMIT) redoStack.shift();
   state.slots = entry.slots;
   persistDay();
   renderAll();
   toast("Undone");
+}
+
+function redo() {
+  const key = dateKey(state.viewDate);
+  while (redoStack.length && redoStack.at(-1).key !== key) redoStack.pop();
+  const entry = redoStack.pop();
+  if (!entry) {
+    toast("Nothing to redo");
+    return;
+  }
+  undoStack.push({ key, slots: [...state.slots] });
+  if (undoStack.length > UNDO_LIMIT) undoStack.shift();
+  state.slots = entry.slots;
+  persistDay();
+  renderAll();
+  toast("Redone");
 }
 
 /* ---------- painting ---------- */
@@ -282,6 +334,8 @@ function endPaint() {
   persistDay();
   renderSide();
   renderStrip();
+  renderStreak();
+  renderBackupStatus();
 }
 
 svg.addEventListener("pointerup", endPaint);
@@ -289,11 +343,35 @@ svg.addEventListener("pointercancel", endPaint);
 window.addEventListener("pointerup", endPaint);
 svg.addEventListener("pointerleave", hideTooltip);
 
+/* ---------- keyboard shortcuts ---------- */
+
 window.addEventListener("keydown", (evt) => {
-  if (!(evt.metaKey || evt.ctrlKey) || evt.key.toLowerCase() !== "z") return;
-  if (evt.target instanceof HTMLTextAreaElement || evt.target instanceof HTMLInputElement) return;
-  evt.preventDefault();
-  undo();
+  if (!$("settings-overlay").hidden) return; // settings panel owns its own keys (Esc, focus trap)
+  const inField = evt.target instanceof HTMLTextAreaElement || evt.target instanceof HTMLInputElement;
+
+  if ((evt.metaKey || evt.ctrlKey) && evt.key.toLowerCase() === "z" && !inField) {
+    evt.preventDefault();
+    if (evt.shiftKey) redo();
+    else undo();
+    return;
+  }
+  if (inField) return;
+
+  if (/^[1-6]$/.test(evt.key)) {
+    const id = Number(evt.key) - 1;
+    const cat = categories.find((c) => c.id === id);
+    if (cat?.enabled) {
+      state.activePen = id;
+      renderPens();
+      renderCenter();
+    }
+    return;
+  }
+  if (evt.key === "0" || evt.key.toLowerCase() === "e") {
+    state.activePen = UNTRACKED;
+    renderPens();
+    renderCenter();
+  }
 });
 
 /* ---------- pens ---------- */
@@ -392,6 +470,150 @@ function renderSide() {
   const maxSlots = Math.max(...stats.perCat, stats.untrackedSlots, 1);
   categories.forEach((c, i) => barsEl.appendChild(catBarRow(c.name, c.cls, stats.perCat[i], maxSlots, false)));
   barsEl.appendChild(catBarRow("Untracked", null, stats.untrackedSlots, maxSlots, true));
+
+  renderGoalRows(stats);
+}
+
+/* ---------- goals ---------- */
+
+function renderGoalRows(stats) {
+  const rows = goalProgress(stats, settings.goals, categories);
+  $("goals-panel").hidden = rows.length === 0;
+  const el = $("goal-rows");
+  el.replaceChildren();
+
+  for (const row of rows) {
+    const wrap = document.createElement("div");
+    wrap.className = "goal-row";
+
+    const name = document.createElement("span");
+    name.className = "name";
+    const sw = document.createElement("span");
+    sw.className = "sw";
+    sw.style.background = `var(--${row.cls})`;
+    name.append(sw, document.createTextNode(row.name));
+
+    const track = document.createElement("span");
+    track.className = "track";
+    const fill = document.createElement("span");
+    fill.className = "fill";
+    fill.style.width = `${row.pct}%`;
+    fill.style.background = `var(--${row.cls})`;
+    track.appendChild(fill);
+
+    const amount = document.createElement("span");
+    amount.className = "amount";
+    amount.textContent = `${fmtDuration(row.actualMin)} / ${fmtDuration(row.targetMin)}`;
+    if (row.met) {
+      const check = document.createElement("span");
+      check.className = "met";
+      check.textContent = " ✓";
+      amount.appendChild(check);
+    }
+
+    wrap.append(name, track, amount);
+    el.appendChild(wrap);
+  }
+}
+
+function renderGoalsEditor() {
+  const rowsEl = $("goals-editor-rows");
+  rowsEl.replaceChildren();
+
+  for (const c of categories) {
+    const row = document.createElement("div");
+    row.className = "goal-edit-row";
+
+    const swatch = document.createElement("span");
+    swatch.className = "sw";
+    swatch.style.background = `var(--${c.cls})`;
+    swatch.style.opacity = c.enabled ? "1" : "0.35";
+
+    const label = document.createElement("span");
+    label.className = "goal-name";
+    label.textContent = c.name;
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.step = "5";
+    input.placeholder = "off";
+    input.value = settings.goals[c.id] ?? "";
+    input.disabled = !c.enabled;
+    input.setAttribute("aria-label", `Daily goal for ${c.name}, in minutes`);
+    input.addEventListener("change", () => {
+      const v = Number(input.value);
+      const nextGoals = { ...settings.goals };
+      if (input.value.trim() === "" || !(v > 0)) delete nextGoals[c.id];
+      else nextGoals[c.id] = Math.round(v);
+      settings = normalizeSettings({ ...settings, goals: nextGoals });
+      persistSettings();
+      renderSide();
+      renderAboutBests();
+    });
+
+    const unit = document.createElement("span");
+    unit.className = "unit";
+    unit.textContent = "min/day";
+
+    row.append(swatch, label, input, unit);
+    rowsEl.appendChild(row);
+  }
+}
+
+/* ---------- streak ---------- */
+
+function renderStreak() {
+  const streak = computeStreak(days, new Date());
+  $("streak-current").textContent = streak.current;
+  $("streak-best").textContent = streak.longest;
+  $("streak-icon").textContent = streak.current > 0 ? "🔥" : "○";
+  $("streak-freeze").hidden = streak.freezesUsedThisWeek === 0;
+  $("streak-risk").hidden = !streak.isAtRisk;
+}
+
+/* ---------- personal bests (About tab) ---------- */
+
+function renderAboutBests() {
+  const bests = personalBests(days, categories, new Date());
+  $("bests-streak").textContent = `${bests.longestStreak} day${bests.longestStreak === 1 ? "" : "s"}`;
+  $("bests-score").textContent = bests.bestScore
+    ? `${bests.bestScore.score > 0 ? "+" : ""}${bests.bestScore.score} · ${bests.bestScore.key}`
+    : "—";
+  $("bests-day").textContent = bests.mostProductiveDay
+    ? `${fmtDuration(bests.mostProductiveDay.productiveMin)} · ${bests.mostProductiveDay.key}`
+    : "—";
+}
+
+/* ---------- backup nudge ---------- */
+
+let nudgeDismissed = false;
+
+function loggedDayCount() {
+  let n = 0;
+  for (const day of days.values()) if (dayHasEntries(day)) n++;
+  return n;
+}
+
+function renderBackupStatus() {
+  $("backup-status").textContent = settings.lastExportAt
+    ? `Last backup: ${new Date(settings.lastExportAt).toLocaleDateString()}`
+    : "You haven't exported a backup yet.";
+
+  const due = !nudgeDismissed && shouldNudgeBackup(settings.lastExportAt, loggedDayCount(), new Date());
+  $("backup-nudge").hidden = !due;
+  $("data-backup-nudge").hidden = !due;
+}
+
+function dismissNudge() {
+  nudgeDismissed = true;
+  renderBackupStatus();
+}
+
+function markExported() {
+  settings = { ...settings, lastExportAt: Date.now() };
+  persistSettings();
+  renderBackupStatus();
 }
 
 /* ---------- 7-day strip ---------- */
@@ -471,6 +693,47 @@ function switchDay(d) {
   renderAll();
 }
 
+/* ---------- copy yesterday ---------- */
+
+function copyYesterday() {
+  const y = new Date(state.viewDate);
+  y.setDate(y.getDate() - 1);
+  const yDay = getDay(dateKey(y));
+
+  if (!dayHasEntries(yDay)) {
+    toast("Yesterday has nothing to copy.");
+    return;
+  }
+  const todayHasData = state.slots.some((v) => v !== UNTRACKED);
+  if (todayHasData && !window.confirm("Today already has entries — overwrite them with yesterday's?")) {
+    return;
+  }
+
+  pushUndo();
+  state.slots = [...yDay.slots];
+  persistDay();
+  renderAll();
+  toast("Copied yesterday — ⌘Z to undo");
+}
+
+/* ---------- typed entry ---------- */
+
+function submitTypedEntry(evt) {
+  evt.preventDefault();
+  const input = $("typed-entry-input");
+  const result = parseTimeEntry(input.value, categories);
+  if (!result.ok) {
+    toast(result.error);
+    return;
+  }
+  pushUndo();
+  for (let i = result.startSlot; i < result.endSlot; i++) state.slots[i % SLOTS] = result.categoryId;
+  persistDay();
+  renderAll();
+  input.value = "";
+  toast("Added");
+}
+
 /* ---------- toast ---------- */
 
 let toastTimer = null;
@@ -510,6 +773,7 @@ function renderCategoryEditor() {
       renderPens();
       renderCenter();
       renderSide();
+      renderGoalsEditor();
     });
 
     const seg = document.createElement("div");
@@ -544,6 +808,7 @@ function renderCategoryEditor() {
       if (!c.enabled && state.activePen === c.id) state.activePen = UNTRACKED;
       persistCategories();
       renderCategoryEditor();
+      renderGoalsEditor();
       renderPens();
       renderCenter();
       renderSide();
@@ -554,7 +819,7 @@ function renderCategoryEditor() {
   }
 }
 
-/* ---------- reminders ---------- */
+/* ---------- reminders + weekly recap ---------- */
 
 function syncReminderInputs() {
   $("reminders-on").checked = settings.remindersOn;
@@ -562,14 +827,26 @@ function syncReminderInputs() {
   $("reminder-2").value = settings.times[1];
   $("reminder-1").disabled = !settings.remindersOn;
   $("reminder-2").disabled = !settings.remindersOn;
+
+  $("weekly-recap-on").checked = settings.weeklyRecapOn;
+  $("weekly-recap-day").value = String(settings.weeklyRecapDay);
+  $("weekly-recap-time").value = settings.weeklyRecapTime;
+  $("weekly-recap-day").disabled = !settings.weeklyRecapOn;
+  $("weekly-recap-time").disabled = !settings.weeklyRecapOn;
 }
 
 function saveReminders() {
   const t1 = $("reminder-1").value;
   const t2 = $("reminder-2").value;
+  const recapTime = $("weekly-recap-time").value;
+
   settings = normalizeSettings({
+    ...settings,
     remindersOn: $("reminders-on").checked,
     times: [isValidTime(t1) ? t1 : settings.times[0], isValidTime(t2) ? t2 : settings.times[1]],
+    weeklyRecapOn: $("weekly-recap-on").checked,
+    weeklyRecapDay: Number($("weekly-recap-day").value),
+    weeklyRecapTime: isValidTime(recapTime) ? recapTime : settings.weeklyRecapTime,
   });
   syncReminderInputs();
   persistSettings();
@@ -583,7 +860,29 @@ function saveReminders() {
   );
 }
 
-/* ---------- CSV export ---------- */
+/* ---------- appearance ---------- */
+
+function syncAppearanceInputs() {
+  $("theme-select").value = settings.theme;
+  $("time-format-select").value = settings.timeFormat;
+  $("week-start-select").value = String(settings.weekStart);
+}
+
+function saveAppearance() {
+  settings = normalizeSettings({
+    ...settings,
+    theme: $("theme-select").value,
+    timeFormat: $("time-format-select").value,
+    weekStart: Number($("week-start-select").value),
+  });
+  persistSettings();
+  applyTheme();
+  renderDial();
+  renderStrip();
+  toast("Appearance updated");
+}
+
+/* ---------- export ---------- */
 
 function exportCsv() {
   const csv = buildCsv(days, categories);
@@ -599,20 +898,182 @@ function exportCsv() {
   a.download = `daily-dial-${dateKey(new Date())}.csv`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  markExported();
   toast("Exported CSV");
 }
 
-/* ---------- disclosure panels ---------- */
+function exportJson() {
+  if (days.size === 0) {
+    toast("Nothing logged yet to export.");
+    return;
+  }
+  const backup = buildBackup(days, categories, settings, chrome.runtime.getManifest().version);
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `daily-dial-${dateKey(new Date())}.json`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  markExported();
+  toast("Exported JSON backup");
+}
 
-function wireDisclosure(btnId, panelId, openLabel, closedLabel, onOpen) {
-  const btn = $(btnId);
-  const panel = $(panelId);
-  btn.addEventListener("click", () => {
-    const open = panel.classList.toggle("open");
-    btn.setAttribute("aria-expanded", String(open));
-    btn.textContent = open ? openLabel : closedLabel;
-    if (open) onOpen?.();
+/* ---------- import ---------- */
+
+/** {kind:"json"|"csv", days:Map, categories?:Array, settings?:object} awaiting Merge/Replace. */
+let pendingImport = null;
+let replaceArmed = false;
+let replaceArmTimer = null;
+
+function readFileAsText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ""));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsText(file);
   });
+}
+
+async function handleImportFile(file) {
+  let text;
+  try {
+    text = await readFileAsText(file);
+  } catch {
+    toast("Couldn't read that file.");
+    return;
+  }
+
+  const looksJson = file.name.toLowerCase().endsWith(".json") || text.trim().startsWith("{");
+  const result = looksJson ? parseBackup(text) : parseCsv(text, categories);
+
+  if (!result.ok) {
+    toast(result.error);
+    $("import-file").value = "";
+    return;
+  }
+
+  pendingImport = {
+    kind: looksJson ? "json" : "csv",
+    days: looksJson ? result.data.days : result.data,
+    categories: looksJson ? result.data.categories : null,
+    settings: looksJson ? result.data.settings : null,
+  };
+  showImportConfirm();
+}
+
+function showImportConfirm() {
+  const summary = summarizeImport(days, pendingImport.days);
+  $("import-confirm").hidden = false;
+  $("import-summary").textContent =
+    `${summary.incomingCount} day${summary.incomingCount === 1 ? "" : "s"} in the file, ` +
+    `${summary.overlapping} overlapping your ${summary.existingCount} existing. ` +
+    `Merge adds ${summary.newCount} new day${summary.newCount === 1 ? "" : "s"}. ` +
+    `Replace erases all ${summary.existingCount} existing day${summary.existingCount === 1 ? "" : "s"} and restores exactly what's in the file.`;
+  replaceArmed = false;
+  clearTimeout(replaceArmTimer);
+  $("import-replace").textContent = "Replace everything";
+}
+
+function cancelImport() {
+  pendingImport = null;
+  replaceArmed = false;
+  clearTimeout(replaceArmTimer);
+  $("import-confirm").hidden = true;
+  $("import-file").value = "";
+}
+
+function applyImport(mode) {
+  if (!pendingImport) return;
+
+  const merged = mergeDayMaps(days, pendingImport.days, mode);
+  const removeKeys = [];
+  if (mode === "replace") {
+    for (const key of days.keys()) if (!merged.has(key)) removeKeys.push(DAY_PREFIX + key);
+  }
+  days.clear();
+  for (const [key, day] of merged) days.set(key, day);
+
+  if (mode === "replace" && pendingImport.categories) categories = pendingImport.categories;
+  if (mode === "replace" && pendingImport.settings) settings = pendingImport.settings;
+
+  const toSet = {};
+  for (const [key, day] of days) toSet[DAY_PREFIX + key] = day;
+  if (mode === "replace" && pendingImport.categories) {
+    toSet[CATEGORIES_KEY] = categories.map(({ name, weight, enabled }) => ({ name, weight, enabled }));
+  }
+  if (mode === "replace" && pendingImport.settings) toSet[SETTINGS_KEY] = settings;
+
+  chrome.storage.local.set(toSet).catch(reportStorageFailure);
+  if (removeKeys.length) chrome.storage.local.remove(removeKeys).catch(reportStorageFailure);
+  if (mode === "replace" && pendingImport.settings) {
+    chrome.runtime.sendMessage({ type: "reschedule" }).catch(() => {});
+  }
+
+  cancelImport();
+  switchDay(state.viewDate);
+  applyTheme();
+  syncReminderInputs();
+  syncAppearanceInputs();
+  renderCategoryEditor();
+  renderGoalsEditor();
+  renderBackupStatus();
+  toast(mode === "replace" ? "Backup restored" : "Backup merged in");
+}
+
+/* ---------- settings panel ---------- */
+
+let settingsLastFocused = null;
+
+function switchSettingsTab(tab) {
+  for (const btn of $("settings-tabs").children) {
+    const active = btn.dataset.tab === tab;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-selected", String(active));
+  }
+  for (const sec of $("settings-body").children) {
+    sec.classList.toggle("active", sec.dataset.panel === tab);
+  }
+}
+
+function settingsFocusables() {
+  return [...$("settings-panel").querySelectorAll('button, [href], input, select, textarea, [tabindex]')].filter(
+    (el) => !el.disabled && el.offsetParent !== null
+  );
+}
+
+function onSettingsKeydown(evt) {
+  if (evt.key === "Escape") {
+    evt.preventDefault();
+    closeSettings();
+    return;
+  }
+  if (evt.key !== "Tab") return;
+  const focusables = settingsFocusables();
+  if (focusables.length === 0) return;
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  if (evt.shiftKey && document.activeElement === first) {
+    evt.preventDefault();
+    last.focus();
+  } else if (!evt.shiftKey && document.activeElement === last) {
+    evt.preventDefault();
+    first.focus();
+  }
+}
+
+function openSettings(tab = "categories") {
+  settingsLastFocused = document.activeElement;
+  switchSettingsTab(tab);
+  $("settings-overlay").hidden = false;
+  document.addEventListener("keydown", onSettingsKeydown, true);
+  $("settings-panel").focus();
+}
+
+function closeSettings() {
+  $("settings-overlay").hidden = true;
+  document.removeEventListener("keydown", onSettingsKeydown, true);
+  if (settingsLastFocused instanceof HTMLElement) settingsLastFocused.focus();
 }
 
 /* ---------- wiring ---------- */
@@ -623,6 +1084,8 @@ function renderAll() {
   renderPens();
   renderSide();
   renderStrip();
+  renderStreak();
+  renderBackupStatus();
 }
 
 function wireEvents() {
@@ -647,10 +1110,8 @@ function wireEvents() {
     }, 500);
   });
 
-  $("export-csv").addEventListener("click", exportCsv);
-  for (const id of ["reminders-on", "reminder-1", "reminder-2"]) {
-    $(id).addEventListener("change", saveReminders);
-  }
+  $("copy-yesterday").addEventListener("click", copyYesterday);
+  $("typed-entry-form").addEventListener("submit", submitTypedEntry);
 
   // Two-step confirm rather than a modal — destructive, but undoable.
   const clearBtn = $("clear-day");
@@ -676,24 +1137,81 @@ function wireEvents() {
     toast("Day cleared — ⌘Z to undo");
   });
 
-  wireDisclosure("toggle-categories", "cat-editor", "Done editing", "Edit categories", renderCategoryEditor);
-  wireDisclosure("toggle-reminders", "reminder-editor", "Done", "Reminders", syncReminderInputs);
+  // ---- settings panel ----
+  $("open-settings").addEventListener("click", () => openSettings());
+  // The hint line names one shortcut; the rest live in About rather than
+  // crowding the dial.
+  $("hint-shortcuts").addEventListener("click", () => openSettings("about"));
+  $("settings-close").addEventListener("click", closeSettings);
+  $("settings-overlay").addEventListener("click", (evt) => {
+    if (evt.target === $("settings-overlay")) closeSettings();
+  });
+  $("settings-tabs").addEventListener("click", (evt) => {
+    const btn = evt.target.closest("button[data-tab]");
+    if (btn) switchSettingsTab(btn.dataset.tab);
+  });
+
+  // ---- reminders + weekly recap ----
+  for (const id of ["reminders-on", "reminder-1", "reminder-2", "weekly-recap-on", "weekly-recap-day", "weekly-recap-time"]) {
+    $(id).addEventListener("change", saveReminders);
+  }
+
+  // ---- appearance ----
+  for (const id of ["theme-select", "time-format-select", "week-start-select"]) {
+    $(id).addEventListener("change", saveAppearance);
+  }
+
+  // ---- data: export/import ----
+  $("export-csv").addEventListener("click", exportCsv);
+  $("export-json").addEventListener("click", exportJson);
+  $("backup-nudge-export").addEventListener("click", exportJson);
+  $("backup-nudge-dismiss").addEventListener("click", dismissNudge);
+  $("data-nudge-dismiss").addEventListener("click", dismissNudge);
+
+  $("import-trigger").addEventListener("click", () => $("import-file").click());
+  $("import-file").addEventListener("change", (evt) => {
+    const file = evt.target.files?.[0];
+    if (file) handleImportFile(file);
+  });
+  $("import-cancel").addEventListener("click", cancelImport);
+  $("import-merge").addEventListener("click", () => applyImport("merge"));
+  $("import-replace").addEventListener("click", () => {
+    if (!replaceArmed) {
+      replaceArmed = true;
+      $("import-replace").textContent = "Click again to erase existing days";
+      replaceArmTimer = setTimeout(() => {
+        replaceArmed = false;
+        $("import-replace").textContent = "Replace everything";
+      }, 4000);
+      return;
+    }
+    clearTimeout(replaceArmTimer);
+    applyImport("replace");
+  });
 
   window.addEventListener("beforeunload", flushReflection);
 }
 
 async function boot() {
-  $("version").textContent = `v${chrome.runtime.getManifest().version}`;
+  const version = chrome.runtime.getManifest().version;
+  $("version").textContent = `v${version}`;
+  $("about-version").textContent = `v${version}`;
   renderTicks();
   wireEvents();
 
   await loadAll();
+  applyTheme();
 
   const day = getDay(dateKey(state.viewDate));
   state.slots = [...day.slots];
   state.reflection = day.reflection;
   $("reflection").value = state.reflection;
+
   syncReminderInputs();
+  syncAppearanceInputs();
+  renderCategoryEditor();
+  renderGoalsEditor();
+  renderAboutBests();
   renderAll();
 
   setInterval(() => {

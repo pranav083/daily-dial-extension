@@ -3,26 +3,45 @@ import assert from "node:assert/strict";
 
 import {
   DEFAULT_CATEGORIES,
+  DEFAULT_SETTINGS,
+  SCHEMA_VERSION,
   SLOTS,
   UNTRACKED,
+  buildBackup,
   buildCsv,
   buildInsight,
   computeRuns,
   computeStats,
+  computeStreak,
   dateKey,
+  dayHasEntries,
   fillRange,
+  fmtClock,
   fmtDuration,
   fmtHM,
   csvCell,
+  goalProgress,
   isValidTime,
+  mergeDayMaps,
+  mostRecentWeekStart,
   nextOccurrence,
+  nextWeeklyOccurrence,
   normalizeCategories,
   normalizeDay,
   normalizeSettings,
+  parseBackup,
+  parseCsv,
+  parseTimeEntry,
+  personalBests,
+  reminderMessage,
   runAt,
   scoreBucket,
+  shouldNudgeBackup,
   slotFromAngle,
+  summarizeImport,
   angleAt,
+  weeklyRecap,
+  weeklyRecapMessage,
   weightLabel,
 } from "../lib.js";
 
@@ -90,10 +109,38 @@ test("normalizeCategories rejects an out-of-range weight", () => {
 });
 
 test("normalizeSettings validates reminder times", () => {
-  assert.deepEqual(normalizeSettings(null), { remindersOn: false, times: ["13:00", "21:00"] });
+  assert.deepEqual(normalizeSettings(null), DEFAULT_SETTINGS);
   assert.deepEqual(normalizeSettings({ remindersOn: true, times: ["07:30", "19:45"] }).times, ["07:30", "19:45"]);
   assert.deepEqual(normalizeSettings({ times: ["25:00", "19:45"] }).times, ["13:00", "21:00"], "bad hour rejected");
   assert.equal(normalizeSettings({ remindersOn: "yes" }).remindersOn, false, "only true enables");
+});
+
+test("normalizeSettings validates appearance, goals, and recap fields", () => {
+  assert.equal(normalizeSettings(null).theme, "system");
+  assert.equal(normalizeSettings({ theme: "dark" }).theme, "dark");
+  assert.equal(normalizeSettings({ theme: "purple" }).theme, "system", "unknown theme falls back");
+
+  assert.equal(normalizeSettings({ timeFormat: "12h" }).timeFormat, "12h");
+  assert.equal(normalizeSettings({ timeFormat: "nonsense" }).timeFormat, "24h");
+
+  assert.equal(normalizeSettings({ weekStart: 1 }).weekStart, 1);
+  assert.equal(normalizeSettings({ weekStart: 5 }).weekStart, 0, "only 0 or 1 are valid");
+
+  assert.deepEqual(normalizeSettings({ goals: { 0: 120, 1: 60.7, 9: 30, bad: 10, 2: -5 } }).goals, {
+    0: 120,
+    1: 61,
+  });
+  assert.deepEqual(normalizeSettings({ goals: "nope" }).goals, {});
+
+  assert.equal(normalizeSettings({ weeklyRecapOn: true }).weeklyRecapOn, true);
+  assert.equal(normalizeSettings({ weeklyRecapDay: 3 }).weeklyRecapDay, 3);
+  assert.equal(normalizeSettings({ weeklyRecapDay: 9 }).weeklyRecapDay, 0);
+  assert.equal(normalizeSettings({ weeklyRecapTime: "09:15" }).weeklyRecapTime, "09:15");
+  assert.equal(normalizeSettings({ weeklyRecapTime: "bad" }).weeklyRecapTime, "20:00");
+
+  assert.equal(normalizeSettings({ lastExportAt: 12345 }).lastExportAt, 12345);
+  assert.equal(normalizeSettings({ lastExportAt: "nope" }).lastExportAt, null);
+  assert.equal(normalizeSettings(null).lastExportAt, null);
 });
 
 test("isValidTime accepts 24h clock only", () => {
@@ -274,6 +321,152 @@ test("buildCsv escapes a comma in the note", () => {
   assert.match(buildCsv(days, cats), /"good, mostly"/);
 });
 
+/* ---------- CSV import ---------- */
+
+test("parseCsv round-trips what buildCsv emits", () => {
+  const days = new Map([
+    ["2026-08-26", { slots: paint(blank(), 9, 11, 0), reflection: "earlier, with a comma" }],
+    ["2026-08-27", { slots: paint(blank(), 14, 15, 1), reflection: "later day" }],
+  ]);
+  const csv = buildCsv(days, cats);
+  const result = parseCsv(csv, cats);
+
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.data.get("2026-08-26"), { slots: paint(blank(), 9, 11, 0), reflection: "earlier, with a comma" });
+  assert.deepEqual(result.data.get("2026-08-27"), { slots: paint(blank(), 14, 15, 1), reflection: "later day" });
+});
+
+test("parseCsv rejects a file with the wrong header", () => {
+  const result = parseCsv("A,B,C\n1,2,3", cats);
+  assert.equal(result.ok, false);
+  assert.match(result.error, /doesn't look like/);
+});
+
+test("parseCsv rejects an unknown category", () => {
+  const csv = "Date,Start,End,Duration (min),Category,Weight,Note\n2026-08-26,09:00,10:00,60,Nonexistent,productive,";
+  const result = parseCsv(csv, cats);
+  assert.equal(result.ok, false);
+  assert.match(result.error, /unknown category/i);
+});
+
+test("parseCsv rejects a malformed date or time", () => {
+  const header = "Date,Start,End,Duration (min),Category,Weight,Note";
+  assert.equal(parseCsv(`${header}\nnot-a-date,09:00,10:00,60,Deep Work,productive,`, cats).ok, false);
+  assert.equal(parseCsv(`${header}\n2026-08-26,25:00,10:00,60,Deep Work,productive,`, cats).ok, false);
+});
+
+test("parseCsv treats an empty or whitespace-only file as empty", () => {
+  assert.match(parseCsv("", cats).error, /empty/);
+  assert.match(parseCsv("   \n  ", cats).error, /empty/);
+});
+
+/* ---------- backup (JSON import/export) ---------- */
+
+test("buildBackup stamps the schema version and app version", () => {
+  const days = new Map([["2026-08-26", { slots: paint(blank(), 9, 10, 0), reflection: "" }]]);
+  const backup = buildBackup(days, cats, DEFAULT_SETTINGS, "1.2.0", new Date(2026, 7, 27, 12, 0));
+  assert.equal(backup.schemaVersion, SCHEMA_VERSION);
+  assert.equal(backup.appVersion, "1.2.0");
+  assert.ok(backup.days["2026-08-26"]);
+  assert.equal(backup.categories.length, DEFAULT_CATEGORIES.length);
+});
+
+test("parseBackup round-trips a backup built by buildBackup", () => {
+  const days = new Map([["2026-08-26", { slots: paint(blank(), 9, 10, 0), reflection: "note" }]]);
+  const backup = buildBackup(days, cats, { ...DEFAULT_SETTINGS, theme: "dark" }, "1.2.0");
+  const result = parseBackup(JSON.stringify(backup));
+
+  assert.equal(result.ok, true);
+  assert.equal(result.data.settings.theme, "dark");
+  assert.deepEqual(result.data.days.get("2026-08-26"), { slots: paint(blank(), 9, 10, 0), reflection: "note" });
+});
+
+test("parseBackup rejects invalid JSON", () => {
+  const result = parseBackup("{not json");
+  assert.equal(result.ok, false);
+  assert.match(result.error, /valid JSON/);
+});
+
+test("parseBackup rejects a file with no schema version", () => {
+  const result = parseBackup(JSON.stringify({ days: {} }));
+  assert.equal(result.ok, false);
+  assert.match(result.error, /schema version/);
+});
+
+test("parseBackup rejects a backup from a newer schema", () => {
+  const result = parseBackup(JSON.stringify({ schemaVersion: SCHEMA_VERSION + 1, days: {} }));
+  assert.equal(result.ok, false);
+  assert.match(result.error, /newer version/);
+});
+
+test("parseBackup never trusts the file — malformed data is normalized, not passed through", () => {
+  const result = parseBackup(
+    JSON.stringify({
+      schemaVersion: 1,
+      categories: [{ name: "X", weight: 99 }],
+      settings: { theme: "nonsense" },
+      days: { "not-a-date": { slots: [] }, "2026-08-26": { slots: "nope" } },
+    })
+  );
+  assert.equal(result.ok, true);
+  assert.equal(result.data.categories[0].weight, DEFAULT_CATEGORIES[0].weight, "bad weight falls back");
+  assert.equal(result.data.settings.theme, "system", "bad theme falls back");
+  assert.equal(result.data.days.has("not-a-date"), false, "malformed key dropped");
+  assert.equal(result.data.days.get("2026-08-26").slots.length, SLOTS, "malformed slots repaired");
+});
+
+test("summarizeImport counts new vs overlapping days", () => {
+  const existing = new Map([
+    ["2026-08-25", {}],
+    ["2026-08-26", {}],
+  ]);
+  const incoming = new Map([
+    ["2026-08-26", {}],
+    ["2026-08-27", {}],
+    ["2026-08-28", {}],
+  ]);
+  assert.deepEqual(summarizeImport(existing, incoming), {
+    incomingCount: 3,
+    overlapping: 1,
+    newCount: 2,
+    existingCount: 2,
+  });
+});
+
+test("mergeDayMaps merge keeps existing days on conflict", () => {
+  const existing = new Map([["2026-08-26", { slots: paint(blank(), 9, 10, 0), reflection: "mine" }]]);
+  const incoming = new Map([
+    ["2026-08-26", { slots: paint(blank(), 1, 2, 5), reflection: "theirs" }],
+    ["2026-08-27", { slots: paint(blank(), 3, 4, 2), reflection: "" }],
+  ]);
+  const merged = mergeDayMaps(existing, incoming, "merge");
+  assert.equal(merged.get("2026-08-26").reflection, "mine", "existing day wins on conflict");
+  assert.ok(merged.has("2026-08-27"), "missing day is added");
+  assert.equal(merged.size, 2);
+});
+
+test("mergeDayMaps replace discards days not in the backup", () => {
+  const existing = new Map([
+    ["2026-08-25", { slots: blank(), reflection: "will be wiped" }],
+    ["2026-08-26", { slots: paint(blank(), 9, 10, 0), reflection: "mine" }],
+  ]);
+  const incoming = new Map([["2026-08-26", { slots: paint(blank(), 1, 2, 5), reflection: "theirs" }]]);
+  const replaced = mergeDayMaps(existing, incoming, "replace");
+  assert.equal(replaced.has("2026-08-25"), false, "day absent from the backup is gone");
+  assert.equal(replaced.get("2026-08-26").reflection, "theirs", "incoming wins outright");
+  assert.equal(replaced.size, 1);
+});
+
+test("shouldNudgeBackup requires real history and staleness", () => {
+  const now = new Date(2026, 7, 28);
+  assert.equal(shouldNudgeBackup(null, 3, now), false, "not enough logged days yet");
+  assert.equal(shouldNudgeBackup(null, 7, now), true, "never exported, enough history");
+  const fifteenDaysAgo = now.getTime() - 15 * 24 * 60 * 60 * 1000;
+  const tenDaysAgo = now.getTime() - 10 * 24 * 60 * 60 * 1000;
+  assert.equal(shouldNudgeBackup(fifteenDaysAgo, 7, now), true, "stale export");
+  assert.equal(shouldNudgeBackup(tenDaysAgo, 7, now), false, "recent enough export");
+});
+
 /* ---------- reminders ---------- */
 
 test("nextOccurrence picks today when the time is still ahead", () => {
@@ -294,4 +487,294 @@ test("nextOccurrence rolls over month end", () => {
   const at = new Date(nextOccurrence("09:00", now));
   assert.equal(at.getMonth(), 8, "September");
   assert.equal(at.getDate(), 1);
+});
+
+test("reminderMessage varies morning vs evening, and reports what's left", () => {
+  assert.match(reminderMessage(0, 999), /morning/);
+  assert.match(reminderMessage(1, 60), /1h.*isn't logged/);
+  assert.match(reminderMessage(1, 0), /fully logged/);
+});
+
+test("nextWeeklyOccurrence finds the next matching weekday, rolling a week if today's slot passed", () => {
+  const fri = new Date(2026, 7, 28, 12, 0); // Friday
+  const sunday8pm = new Date(nextWeeklyOccurrence(0, "20:00", fri));
+  assert.equal(sunday8pm.getDate(), 30, "next Sunday");
+
+  const alreadyPast = new Date(nextWeeklyOccurrence(5, "09:00", fri)); // Friday 09:00 already passed
+  assert.equal(alreadyPast.getDate(), 4, "rolls to Friday next week (Sep 4)");
+  assert.equal(alreadyPast.getMonth(), 8);
+
+  const stillAhead = new Date(nextWeeklyOccurrence(5, "18:00", fri)); // later today
+  assert.equal(stillAhead.getDate(), 28, "today, since 18:00 hasn't passed");
+});
+
+test("mostRecentWeekStart finds the most recent occurrence of the chosen weekday", () => {
+  const fri = new Date(2026, 7, 28, 12, 0);
+  assert.equal(dateKey(mostRecentWeekStart(0, fri)), "2026-08-23", "most recent Sunday");
+  assert.equal(dateKey(mostRecentWeekStart(1, fri)), "2026-08-24", "most recent Monday");
+  assert.equal(dateKey(mostRecentWeekStart(5, fri)), "2026-08-28", "today, if today is the chosen day");
+});
+
+/* ---------- streaks ---------- */
+
+/** Marks a set of dates (YYYY-MM-DD) as logged with a single trivial block. */
+function loggedDays(...keys) {
+  const days = new Map();
+  for (const key of keys) days.set(key, { slots: paint(blank(), 9, 10, 0), reflection: "" });
+  return days;
+}
+
+test("computeStreak counts an unbroken run of consecutive days", () => {
+  const days = loggedDays("2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28");
+  const now = new Date(2026, 7, 28, 12, 0);
+  const streak = computeStreak(days, now);
+  assert.equal(streak.current, 5);
+  assert.equal(streak.longest, 5);
+  assert.equal(streak.freezesUsedThisWeek, 0);
+  assert.equal(streak.isAtRisk, false);
+});
+
+test("computeStreak absorbs a single missed day as a freeze", () => {
+  // 24, 25, 26 logged, 27 missed, 28 (today) logged.
+  const days = loggedDays("2026-08-24", "2026-08-25", "2026-08-26", "2026-08-28");
+  const now = new Date(2026, 7, 28, 12, 0);
+  const streak = computeStreak(days, now);
+  assert.equal(streak.current, 4, "the gap didn't reset the streak");
+  assert.equal(streak.freezesUsedThisWeek, 1);
+});
+
+test("computeStreak breaks on a second gap within the same rolling 7 days", () => {
+  // 20, 21 logged, 22 missed (freeze), 23, 24 logged, 25 missed (second gap, 3 days
+  // after the first — still inside a rolling 7-day window, so it breaks), 26, 27, 28 logged.
+  const days = loggedDays(
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-23",
+    "2026-08-24",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28"
+  );
+  const now = new Date(2026, 7, 28, 12, 0);
+  const streak = computeStreak(days, now);
+  assert.equal(streak.current, 3, "only the days since the second gap count");
+  assert.equal(streak.longest, 4, "the pre-break run was longer");
+});
+
+test("computeStreak: today not yet logged doesn't break the streak, but can flag it as at risk", () => {
+  const days = loggedDays("2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27");
+
+  const midday = computeStreak(days, new Date(2026, 7, 28, 10, 0));
+  assert.equal(midday.current, 4, "yesterday's streak still stands");
+  assert.equal(midday.isAtRisk, false, "not late yet");
+
+  const evening = computeStreak(days, new Date(2026, 7, 28, 21, 0));
+  assert.equal(evening.current, 4);
+  assert.equal(evening.isAtRisk, true, "late and still not logged");
+});
+
+test("computeStreak tracks the longest streak even once the current one is shorter", () => {
+  // A 6-day run early on, a full break, then a fresh 2-day run.
+  const days = loggedDays(
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-05",
+    "2026-08-06",
+    // gap of many days, well past any freeze window
+    "2026-08-27",
+    "2026-08-28"
+  );
+  const now = new Date(2026, 7, 28, 12, 0);
+  const streak = computeStreak(days, now);
+  assert.equal(streak.current, 2);
+  assert.equal(streak.longest, 6);
+});
+
+test("computeStreak on an empty history", () => {
+  assert.deepEqual(computeStreak(new Map(), new Date(2026, 7, 28)), {
+    current: 0,
+    longest: 0,
+    freezesUsedThisWeek: 0,
+    isAtRisk: false,
+  });
+});
+
+/* ---------- weekly recap ---------- */
+
+test("weeklyRecap summarizes a 7-day window", () => {
+  const days = new Map([
+    ["2026-08-24", { slots: paint(blank(), 9, 13, 0), reflection: "" }], // 4h Deep Work, score 100
+    ["2026-08-26", { slots: paint(blank(), 9, 10, 5), reflection: "" }], // 1h Distraction, score -100
+  ]);
+  const recap = weeklyRecap(days, cats, new Date(2026, 7, 24)); // Monday
+  assert.equal(recap.trackedMin, 300);
+  assert.equal(recap.topCategory.name, "Deep Work");
+  assert.equal(recap.bestDay.key, "2026-08-24");
+  assert.ok(recap.streak);
+});
+
+test("weeklyRecap handles a week with nothing logged", () => {
+  const recap = weeklyRecap(new Map(), cats, new Date(2026, 7, 24));
+  assert.equal(recap.trackedMin, 0);
+  assert.equal(recap.topCategory, null);
+  assert.equal(recap.bestDay, null);
+});
+
+test("weeklyRecapMessage summarizes tracked time and the top category", () => {
+  const days = new Map([["2026-08-24", { slots: paint(blank(), 9, 13, 0), reflection: "" }]]);
+  const msg = weeklyRecapMessage(weeklyRecap(days, cats, new Date(2026, 7, 24)));
+  assert.match(msg, /4h tracked/);
+  assert.match(msg, /Deep Work/);
+});
+
+test("weeklyRecapMessage reports a blank week plainly", () => {
+  assert.equal(weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24))), "No time logged last week.");
+});
+
+/* ---------- goals ---------- */
+
+test("goalProgress reports only categories with an active goal", () => {
+  const slots = paint(blank(), 9, 10, 0); // 1h Deep Work
+  const stats = computeStats(slots, cats);
+  const rows = goalProgress(stats, { 0: 120, 5: 30 }, cats);
+
+  assert.equal(rows.length, 2);
+  const deepWork = rows.find((r) => r.categoryId === 0);
+  assert.equal(deepWork.actualMin, 60);
+  assert.equal(deepWork.pct, 50);
+  assert.equal(deepWork.met, false);
+
+  const distraction = rows.find((r) => r.categoryId === 5);
+  assert.equal(distraction.actualMin, 0);
+  assert.equal(distraction.met, false);
+});
+
+test("goalProgress marks a goal as met once the target is reached, and caps the bar at 100%", () => {
+  const stats = computeStats(paint(blank(), 9, 12, 0), cats); // 3h Deep Work
+  const rows = goalProgress(stats, { 0: 90 }, cats);
+  assert.equal(rows[0].met, true);
+  assert.equal(rows[0].pct, 100, "never exceeds 100%");
+});
+
+test("goalProgress skips a disabled category even with a goal set", () => {
+  const disabled = cats.map((c, i) => (i === 0 ? { ...c, enabled: false } : c));
+  const stats = computeStats(paint(blank(), 9, 10, 0), disabled);
+  assert.equal(goalProgress(stats, { 0: 60 }, disabled).length, 0);
+});
+
+/* ---------- personal bests ---------- */
+
+test("personalBests finds the longest streak, best score, and most productive day", () => {
+  const days = new Map([
+    ["2026-08-24", { slots: paint(blank(), 9, 13, 0), reflection: "" }], // 4h productive, score 100
+    ["2026-08-25", { slots: paint(blank(), 9, 10, 0), reflection: "" }], // 1h productive, score 100 too, but shorter
+    ["2026-08-26", { slots: paint(blank(), 9, 10, 5), reflection: "" }], // 1h distraction, score -100
+  ]);
+  const bests = personalBests(days, cats, new Date(2026, 7, 26, 12, 0));
+  assert.equal(bests.longestStreak, 3);
+  assert.equal(bests.bestScore.score, 100);
+  assert.equal(bests.mostProductiveDay.key, "2026-08-24", "4h beats 1h");
+  assert.equal(bests.mostProductiveDay.productiveMin, 240);
+});
+
+test("personalBests on an empty history", () => {
+  const bests = personalBests(new Map(), cats, new Date(2026, 7, 28));
+  assert.equal(bests.longestStreak, 0);
+  assert.equal(bests.bestScore, null);
+  assert.equal(bests.mostProductiveDay, null);
+});
+
+/* ---------- typed entry ---------- */
+
+test("parseTimeEntry reads 24h ranges", () => {
+  const r = parseTimeEntry("9-11 deep work", cats);
+  assert.equal(r.ok, true);
+  assert.equal(r.startSlot, 36);
+  assert.equal(r.endSlot, 44);
+  assert.equal(r.categoryId, 0);
+});
+
+test("parseTimeEntry reads 24h ranges with minutes and a colon", () => {
+  const r = parseTimeEntry("13:30-15 applications", cats);
+  assert.equal(r.ok, true);
+  assert.equal(r.startSlot, 54);
+  assert.equal(r.endSlot, 60);
+  assert.equal(r.categoryId, 1);
+});
+
+test("parseTimeEntry reads 12h ranges with am/pm", () => {
+  const r = parseTimeEntry("9pm-11pm study", cats);
+  assert.equal(r.ok, true);
+  assert.equal(r.startSlot, 84);
+  assert.equal(r.endSlot, 92);
+  assert.equal(r.categoryId, 2);
+});
+
+test("parseTimeEntry accepts \"to\" as a separator and is case-insensitive", () => {
+  const r = parseTimeEntry("9AM to 10AM Admin", cats);
+  assert.equal(r.ok, true);
+  assert.equal(r.startSlot, 36);
+  assert.equal(r.endSlot, 40);
+  assert.equal(r.categoryId, 3);
+});
+
+test("parseTimeEntry matches a category by partial, case-insensitive name", () => {
+  const r = parseTimeEntry("9-10 appl", cats);
+  assert.equal(r.ok, true);
+  assert.equal(r.categoryId, 1, "matches Applications");
+});
+
+test("parseTimeEntry crosses midnight for a short overnight range", () => {
+  const r = parseTimeEntry("11pm-1am study", cats);
+  assert.equal(r.ok, true);
+  assert.equal(r.startSlot, 92);
+  assert.equal(r.endSlot, 100, "wraps past slot 96");
+});
+
+test("parseTimeEntry rejects an inverted range that isn't a plausible overnight entry", () => {
+  const r = parseTimeEntry("15-9 study", cats); // 3pm to 9am — an 18h "wrap", not overnight
+  assert.equal(r.ok, false);
+  assert.match(r.error, /before the start/);
+});
+
+test("parseTimeEntry rejects an unknown category", () => {
+  const r = parseTimeEntry("9-10 nonexistent", cats);
+  assert.equal(r.ok, false);
+  assert.match(r.error, /no category matches/i);
+});
+
+test("parseTimeEntry rejects an ambiguous category", () => {
+  const overlapping = [
+    { id: 0, name: "Study", weight: 1, enabled: true, cls: "cat-0" },
+    { id: 1, name: "Study Group", weight: 1, enabled: true, cls: "cat-1" },
+  ];
+  const r = parseTimeEntry("9-10 stu", overlapping);
+  assert.equal(r.ok, false);
+  assert.match(r.error, /be more specific/);
+});
+
+test("parseTimeEntry rejects unreadable input", () => {
+  assert.equal(parseTimeEntry("", cats).ok, false);
+  assert.equal(parseTimeEntry("not a time entry at all", cats).ok, false);
+  assert.equal(parseTimeEntry("9-11", cats).ok, false, "missing category");
+  assert.equal(parseTimeEntry("13pm-14pm study", cats).ok, false, "13pm is not a valid 12h hour");
+});
+
+/* ---------- misc ---------- */
+
+test("dayHasEntries distinguishes a painted day from an empty one", () => {
+  assert.equal(dayHasEntries({ slots: paint(blank(), 9, 10, 0) }), true);
+  assert.equal(dayHasEntries({ slots: blank() }), false);
+  assert.equal(dayHasEntries(null), false);
+  assert.equal(dayHasEntries({}), false);
+});
+
+test("fmtClock switches between 24h and 12h", () => {
+  assert.equal(fmtClock(36), "09:00");
+  assert.equal(fmtClock(36, "12h"), "9:00am");
+  assert.equal(fmtClock(0, "12h"), "12:00am");
+  assert.equal(fmtClock(48, "12h"), "12:00pm");
+  assert.equal(fmtClock(84, "12h"), "9:00pm");
 });

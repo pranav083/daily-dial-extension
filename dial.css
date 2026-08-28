@@ -41,8 +41,11 @@
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
+/* Dark palette, applied when the system prefers dark and the user hasn't
+   explicitly chosen light, OR the user explicitly chose dark regardless of
+   the system setting. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
     --surface: #0e1116;
     --panel: #171c24;
@@ -66,8 +69,36 @@
     --cat-5: #008300;
   }
 }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #0e1116;
+  --panel: #171c24;
+  --panel-2: #1d232c;
+  --ink: #e7ebee;
+  --ink-2: #aeb6bf;
+  --ink-muted: #7c8590;
+  --border: rgba(231, 235, 238, 0.12);
+  --border-soft: rgba(231, 235, 238, 0.07);
+  --accent: #e8ab5c;
+  --accent-fill: #e0a458;
+  --accent-ink: #1a1206;
+  --ring-track: rgba(231, 235, 238, 0.08);
+  --status-warning: #fab219;
+
+  --cat-0: #3987e5;
+  --cat-1: #d95926;
+  --cat-2: #199e70;
+  --cat-3: #c98500;
+  --cat-4: #d55181;
+  --cat-5: #008300;
+}
 
 * { box-sizing: border-box; }
+
+/* Author rules setting display:flex on these elements would otherwise beat
+   the UA [hidden] rule, since author styles always win over user-agent ones
+   regardless of specificity. */
+[hidden] { display: none !important; }
 
 body {
   margin: 0;
@@ -445,3 +476,244 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   z-index: 30;
 }
 .toast.show { opacity: 1; }
+
+/* ---- icon button (shared: settings ✕, nudge dismiss) ---- */
+.icon-btn {
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--ink-muted);
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  line-height: 1;
+  flex: none;
+}
+.icon-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
+.icon-btn:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+
+/* ---- streak ---- */
+/* Sits inline in the top bar rather than as its own band: the dial is the
+   product, and three stacked full-width bars pushed it below the fold. */
+.streak-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px 5px 10px;
+  font-size: 0.82rem;
+  cursor: default;
+}
+.streak-icon { font-size: 1rem; }
+.streak-text b { font-family: var(--font-mono); font-size: 1rem; }
+.streak-text .muted { color: var(--ink-muted); font-size: 0.8rem; }
+.streak-freeze {
+  font-size: 0.72rem;
+  color: var(--status-warning);
+  background: color-mix(in oklab, var(--status-warning) 16%, transparent);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.streak-risk {
+  font-size: 0.72rem;
+  color: var(--status-critical);
+  background: color-mix(in oklab, var(--status-critical) 14%, transparent);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+/* ---- backup nudge bar ---- */
+.nudge-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--status-warning);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.nudge-bar .ghost-btn { margin-left: auto; }
+.nudge-bar.inline { margin: 8px 0; }
+
+/* ---- quick entry (copy yesterday + typed entry) ---- */
+.quick-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 14px;
+}
+.typed-entry { display: flex; gap: 6px; flex: 1; min-width: 220px; max-width: 320px; }
+.typed-entry input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+}
+.typed-entry input:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+.typed-entry button {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.typed-entry button:hover { border-color: var(--accent); }
+
+/* ---- goal progress rows (side panel) ---- */
+.goal-rows { display: flex; flex-direction: column; gap: 9px; }
+.goal-row { display: flex; align-items: center; gap: 9px; }
+.goal-row .name { flex: none; width: 92px; font-size: 0.78rem; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+.goal-row .name .sw { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.goal-row .track { flex: 1; height: 8px; border-radius: 999px; background: var(--ring-track); overflow: hidden; }
+.goal-row .fill { height: 100%; border-radius: 999px; }
+.goal-row .amount { flex: none; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted); white-space: nowrap; }
+.goal-row .met { color: var(--status-good); font-weight: 700; }
+
+/* ---- goals editor (settings) ---- */
+.goal-edit-row { display: flex; align-items: center; gap: 8px; }
+.goal-edit-row .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.goal-edit-row .goal-name { flex: 1; font-size: 0.82rem; color: var(--ink); }
+.goal-edit-row input[type="number"] {
+  width: 64px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 7px;
+  padding: 5px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.goal-edit-row input[type="number"]:disabled { opacity: 0.45; }
+
+/* ---- settings modal ---- */
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 12, 15, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 40;
+}
+.settings-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  max-height: min(680px, 90vh);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.settings-panel:focus-visible,
+.settings-panel:focus { outline: none; }
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 10px;
+}
+.settings-header h2 { margin: 0; font-size: 1.05rem; font-weight: 800; }
+.settings-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border-soft);
+  overflow-x: auto;
+}
+.settings-tabs .tab {
+  border: none;
+  background: none;
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 9px 10px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.settings-tabs .tab:hover { color: var(--ink); }
+.settings-tabs .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.settings-tabs .tab:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: -2px; }
+.settings-body { padding: 16px 18px 20px; overflow-y: auto; }
+.settings-section { display: none; flex-direction: column; gap: 8px; }
+.settings-section.active { display: flex; }
+
+.shortcut-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.shortcut-list li { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--ink-2); }
+.shortcut-list kbd {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: var(--panel-2);
+  flex: none;
+  min-width: 60px;
+  text-align: center;
+}
+
+.import-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--panel-2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 8px 0;
+}
+
+select {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 7px;
+  padding: 5px 8px;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  .streak-risk { margin-left: 0; }
+}
+
+/* A button that reads as a link — used for the "all shortcuts" hint. */
+.link-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.link-btn:hover { color: var(--ink); }
+.link-btn:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; border-radius: 3px; }
+
+/* The top bar carries the wordmark, streak, and date nav on one line; it wraps
+   to stacked rows on narrow windows rather than overflowing. */
+@media (max-width: 720px) {
+  .topbar { align-items: flex-start; }
+  .streak-banner { order: 3; }
+}

@@ -17,8 +17,10 @@ const browserGlobals = {
   ...extensionGlobals,
   window: "readonly",
   document: "readonly",
+  HTMLElement: "readonly",
   HTMLTextAreaElement: "readonly",
   HTMLInputElement: "readonly",
+  FileReader: "readonly",
 };
 
 export default [

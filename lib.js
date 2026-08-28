@@ -21,6 +21,11 @@ export const R_IN = 118;
 export const DAY_PREFIX = "day:";
 export const CATEGORIES_KEY = "categories";
 export const SETTINGS_KEY = "settings";
+export const SCHEMA_VERSION_KEY = "schemaVersion";
+
+/** Bumped when the shape of a backup file changes in a way older code can't
+ *  read. Stored alongside the data and stamped into every export. */
+export const SCHEMA_VERSION = 1;
 
 export const DEFAULT_CATEGORIES = [
   { id: 0, name: "Deep Work", weight: 1, enabled: true, cls: "cat-0" },
@@ -31,7 +36,18 @@ export const DEFAULT_CATEGORIES = [
   { id: 5, name: "Distraction", weight: -1, enabled: true, cls: "cat-5" },
 ];
 
-export const DEFAULT_SETTINGS = { remindersOn: false, times: ["13:00", "21:00"] };
+export const DEFAULT_SETTINGS = {
+  remindersOn: false,
+  times: ["13:00", "21:00"],
+  theme: "system", // "system" | "light" | "dark"
+  timeFormat: "24h", // "24h" | "12h"
+  weekStart: 0, // 0 = Sunday, 1 = Monday
+  goals: {}, // { [categoryId]: targetMinutesPerDay }
+  weeklyRecapOn: false,
+  weeklyRecapDay: 0, // 0 = Sunday .. 6 = Saturday
+  weeklyRecapTime: "20:00",
+  lastExportAt: null, // epoch ms, or null if never exported
+};
 export const WEIGHT_GLYPH = { 1: "+", 0: "·", "-1": "–" };
 
 /* ---------- dates & formatting ---------- */
@@ -48,6 +64,17 @@ export const sameDay = (a, b) => dateKey(a) === dateKey(b);
 export function fmtHM(slotIdx) {
   const total = slotIdx * SLOT_MIN;
   return `${pad2(Math.floor(total / 60) % 24)}:${pad2(total % 60)}`;
+}
+
+/** "HH:MM" (24h) or "H:MMam/pm" (12h) for a slot boundary, per the user's format setting. */
+export function fmtClock(slotIdx, format = "24h") {
+  if (format !== "12h") return fmtHM(slotIdx);
+  const total = slotIdx * SLOT_MIN;
+  const h = Math.floor(total / 60) % 24;
+  const m = total % 60;
+  const suffix = h < 12 ? "am" : "pm";
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h12}:${pad2(m)}${suffix}`;
 }
 
 export function fmtDuration(min) {
@@ -72,6 +99,9 @@ export function normalizeDay(raw) {
   return { slots, reflection: typeof raw.reflection === "string" ? raw.reflection : "" };
 }
 
+/** A day "counts" for streaks/nudges/bests once at least one slot is painted. */
+export const dayHasEntries = (day) => !!day && Array.isArray(day.slots) && day.slots.some((v) => v !== UNTRACKED);
+
 /** Categories are six fixed colour slots; only name/weight/enabled are editable.
  *  Days store the slot index, so renaming never rewrites history. */
 export function normalizeCategories(saved) {
@@ -86,12 +116,47 @@ export function normalizeCategories(saved) {
   });
 }
 
+const THEMES = ["system", "light", "dark"];
+
+/** Goals are keyed by category id (0–5); only positive integer minute targets survive. */
+function normalizeGoals(saved) {
+  const out = {};
+  if (!saved || typeof saved !== "object") return out;
+  for (const [k, v] of Object.entries(saved)) {
+    const id = Number(k);
+    if (!Number.isInteger(id) || id < 0 || id >= DEFAULT_CATEGORIES.length) continue;
+    if (Number.isFinite(v) && v > 0) out[id] = Math.round(v);
+  }
+  return out;
+}
+
 export function normalizeSettings(saved) {
   const times =
     Array.isArray(saved?.times) && saved.times.length === 2 && saved.times.every(isValidTime)
       ? [...saved.times]
       : [...DEFAULT_SETTINGS.times];
-  return { remindersOn: saved?.remindersOn === true, times };
+  const theme = THEMES.includes(saved?.theme) ? saved.theme : DEFAULT_SETTINGS.theme;
+  const timeFormat = saved?.timeFormat === "12h" ? "12h" : "24h";
+  const weekStart = saved?.weekStart === 1 ? 1 : 0;
+  const weeklyRecapDay =
+    Number.isInteger(saved?.weeklyRecapDay) && saved.weeklyRecapDay >= 0 && saved.weeklyRecapDay <= 6
+      ? saved.weeklyRecapDay
+      : DEFAULT_SETTINGS.weeklyRecapDay;
+  const weeklyRecapTime = isValidTime(saved?.weeklyRecapTime) ? saved.weeklyRecapTime : DEFAULT_SETTINGS.weeklyRecapTime;
+  const lastExportAt = Number.isFinite(saved?.lastExportAt) ? saved.lastExportAt : null;
+
+  return {
+    remindersOn: saved?.remindersOn === true,
+    times,
+    theme,
+    timeFormat,
+    weekStart,
+    goals: normalizeGoals(saved?.goals),
+    weeklyRecapOn: saved?.weeklyRecapOn === true,
+    weeklyRecapDay,
+    weeklyRecapTime,
+    lastExportAt,
+  };
 }
 
 export const isValidTime = (s) => typeof s === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(s);
@@ -277,6 +342,252 @@ export function buildInsight(stats, categories) {
   return parts.join(" ");
 }
 
+/* ---------- streaks ---------- */
+
+/**
+ * Consecutive-day logging streak, with a once-per-rolling-7-days freeze so a
+ * single missed day doesn't zero out weeks of history — unforgiving streaks
+ * make people quit for good after the first slip.
+ *
+ * Walks every calendar day from the first logged day through `now`. A missed
+ * day consumes a freeze if one hasn't been used in the trailing 7 days
+ * *as of that missed day*; otherwise the streak breaks there. Today not yet
+ * being logged never breaks anything — it's simply not counted yet.
+ *
+ * @param {Map<string, {slots:number[]}>} days
+ * @param {Date} now
+ * @param {{freezesPerWeek?: number}} [opts]
+ * @returns {{current:number, longest:number, freezesUsedThisWeek:number, isAtRisk:boolean}}
+ */
+export function computeStreak(days, now = new Date(), { freezesPerWeek = 1 } = {}) {
+  const loggedKeys = [...days.entries()].filter(([, day]) => dayHasEntries(day)).map(([key]) => key);
+
+  if (loggedKeys.length === 0) {
+    return { current: 0, longest: 0, freezesUsedThisWeek: 0, isAtRisk: false };
+  }
+
+  const loggedSet = new Set(loggedKeys);
+  const todayKey = dateKey(now);
+  const todayLogged = loggedSet.has(todayKey);
+
+  const cursor = new Date([...loggedKeys].sort()[0] + "T00:00:00");
+  const end = new Date(now);
+  end.setHours(0, 0, 0, 0);
+
+  let streak = 0;
+  let longest = 0;
+  let dayIndex = 0;
+  const freezeIndices = []; // day indices (relative to the walk) that consumed a freeze
+
+  while (cursor.getTime() <= end.getTime()) {
+    const key = dateKey(cursor);
+    if (loggedSet.has(key)) {
+      streak++;
+    } else if (key !== todayKey) {
+      // Drop freezes that fall outside the 7 days trailing this missed day.
+      while (freezeIndices.length && dayIndex - freezeIndices[0] >= 7) freezeIndices.shift();
+      if (freezeIndices.length < freezesPerWeek) {
+        freezeIndices.push(dayIndex);
+        // Streak survives the gap but doesn't grow on the missed day itself.
+      } else {
+        longest = Math.max(longest, streak);
+        streak = 0;
+      }
+    }
+    // Today not yet logged: neither increments nor resets — just not counted yet.
+    longest = Math.max(longest, streak);
+    cursor.setDate(cursor.getDate() + 1);
+    dayIndex++;
+  }
+
+  while (freezeIndices.length && dayIndex - 1 - freezeIndices[0] >= 7) freezeIndices.shift();
+
+  return {
+    current: streak,
+    longest,
+    freezesUsedThisWeek: freezeIndices.length,
+    isAtRisk: !todayLogged && now.getHours() >= 20,
+  };
+}
+
+/* ---------- weekly recap ---------- */
+
+/**
+ * Summary of a 7-day window starting `weekStartDate`, for the optional weekly
+ * recap notification. `streak` is evaluated as of the end of that window so
+ * the function stays pure (no implicit "current time").
+ */
+export function weeklyRecap(days, categories, weekStartDate) {
+  const start = new Date(weekStartDate);
+  start.setHours(0, 0, 0, 0);
+
+  let trackedMin = 0;
+  let productiveMin = 0;
+  const perCatMin = categories.map(() => 0);
+  let bestDay = null;
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    const key = dateKey(d);
+    const slots = days.get(key)?.slots ?? new Array(SLOTS).fill(UNTRACKED);
+    const stats = computeStats(slots, categories);
+
+    trackedMin += stats.trackedMin;
+    productiveMin += stats.productiveMin;
+    stats.perCat.forEach((n, idx) => (perCatMin[idx] += n * SLOT_MIN));
+    if (stats.score !== null && (bestDay === null || stats.score > bestDay.score)) {
+      bestDay = { key, score: stats.score };
+    }
+  }
+
+  const topIdx = perCatMin.reduce((best, m, i) => (m > perCatMin[best] ? i : best), 0);
+  const topCategory = perCatMin[topIdx] > 0 ? { name: categories[topIdx].name, min: perCatMin[topIdx] } : null;
+
+  const weekEnd = new Date(start);
+  weekEnd.setDate(weekEnd.getDate() + 7);
+
+  return {
+    trackedMin,
+    productivePct: trackedMin > 0 ? Math.round((productiveMin / trackedMin) * 100) : 0,
+    topCategory,
+    bestDay,
+    streak: computeStreak(days, weekEnd),
+  };
+}
+
+/** Short line for the notification itself; the dial shows the rest. */
+export function weeklyRecapMessage(recap) {
+  if (recap.trackedMin === 0) return "No time logged last week.";
+  const parts = [`${fmtDuration(recap.trackedMin)} tracked, ${recap.productivePct}% productive.`];
+  if (recap.topCategory) parts.push(`Most of it went to ${recap.topCategory.name}.`);
+  return parts.join(" ");
+}
+
+/* ---------- goals ---------- */
+
+/**
+ * @param {ReturnType<typeof computeStats>} stats
+ * @param {Record<number, number>} goals category id → target minutes/day
+ * @returns {Array<{categoryId:number, name:string, cls:string, targetMin:number,
+ *   actualMin:number, pct:number, met:boolean}>} one row per category with an active goal
+ */
+export function goalProgress(stats, goals, categories) {
+  const rows = [];
+  categories.forEach((c, i) => {
+    const target = goals?.[c.id];
+    if (!c.enabled || !Number.isFinite(target) || target <= 0) return;
+    const actualMin = stats.perCat[i] * SLOT_MIN;
+    rows.push({
+      categoryId: c.id,
+      name: c.name,
+      cls: c.cls,
+      targetMin: target,
+      actualMin,
+      pct: Math.min(100, Math.round((actualMin / target) * 100)),
+      met: actualMin >= target,
+    });
+  });
+  return rows;
+}
+
+/* ---------- personal bests ---------- */
+
+/**
+ * @returns {{longestStreak:number, bestScore:{key:string,score:number}|null,
+ *   mostProductiveDay:{key:string,productiveMin:number}|null}}
+ */
+export function personalBests(days, categories, now = new Date()) {
+  let bestScore = null;
+  let mostProductiveDay = null;
+
+  for (const [key, day] of days) {
+    const stats = computeStats(day.slots, categories);
+    if (stats.score !== null && (bestScore === null || stats.score > bestScore.score)) {
+      bestScore = { key, score: stats.score };
+    }
+    if (stats.productiveMin > 0 && (mostProductiveDay === null || stats.productiveMin > mostProductiveDay.productiveMin)) {
+      mostProductiveDay = { key, productiveMin: stats.productiveMin };
+    }
+  }
+
+  return { longestStreak: computeStreak(days, now).longest, bestScore, mostProductiveDay };
+}
+
+/* ---------- typed entry ---------- */
+
+/** "9", "9:30", "9am", "9:30pm", "13:30" → minutes since midnight, or null. */
+function parseClockToken(raw) {
+  const m = raw.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/i);
+  if (!m) return null;
+  let hour = Number(m[1]);
+  const min = m[2] ? Number(m[2]) : 0;
+  const meridiem = m[3]?.toLowerCase();
+  if (min > 59) return null;
+
+  if (meridiem) {
+    if (hour < 1 || hour > 12) return null;
+    hour = meridiem === "am" ? (hour === 12 ? 0 : hour) : hour === 12 ? 12 : hour + 12;
+  } else {
+    if (hour === 24 && min === 0) return 24 * 60; // "24:00" — end-of-day boundary
+    if (hour > 23) return null;
+  }
+  return hour * 60 + min;
+}
+
+/**
+ * Forgiving one-line time entry: "9-11 deep work", "13:30-15 applications",
+ * "9pm-11pm study". Accepts "-" or "to" as the separator, 24h or 12h clock
+ * (12h only when am/pm is present), and case-insensitive partial category
+ * matching. Never touches state — the caller applies the result.
+ *
+ * @returns {{ok:true, startSlot:number, endSlot:number, categoryId:number} | {ok:false, error:string}}
+ */
+export function parseTimeEntry(text, categories) {
+  if (typeof text !== "string" || !text.trim()) {
+    return { ok: false, error: 'Try something like "9-11 deep work".' };
+  }
+
+  const m = text
+    .trim()
+    .match(/^(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s*(?:-|to)\s*(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s+(.+)$/i);
+  if (!m) return { ok: false, error: 'Couldn\'t read that. Try "9-11 deep work" or "9pm-11pm study".' };
+
+  const [, startTok, endTok, catText] = m;
+  const startMin = parseClockToken(startTok);
+  const endMin = parseClockToken(endTok);
+  if (startMin === null || endMin === null) {
+    return { ok: false, error: "Couldn't read the time — use 24h (13:30) or 12h (1:30pm)." };
+  }
+
+  const startSlot = Math.round(startMin / SLOT_MIN);
+  let endSlot = Math.round(endMin / SLOT_MIN);
+  if (endSlot <= startSlot) {
+    const wrapped = endSlot + SLOTS;
+    // Allow a short wrap past midnight (an evening session); a long "wrap"
+    // is almost always a typo'd inverted range, so reject it instead.
+    if (wrapped - startSlot <= SLOTS / 2) endSlot = wrapped;
+    else return { ok: false, error: "End time is before the start time." };
+  }
+
+  const wanted = catText.trim().toLowerCase();
+  if (!wanted) return { ok: false, error: 'Add a category, like "9-11 deep work".' };
+
+  const enabled = categories.filter((c) => c.enabled);
+  const exact = enabled.find((c) => c.name.toLowerCase() === wanted);
+  const matches = exact ? [exact] : enabled.filter((c) => c.name.toLowerCase().includes(wanted));
+
+  if (matches.length === 0) return { ok: false, error: `No category matches "${catText.trim()}".` };
+  if (matches.length > 1) {
+    return {
+      ok: false,
+      error: `"${catText.trim()}" matches ${matches.map((c) => c.name).join(", ")} — be more specific.`,
+    };
+  }
+
+  return { ok: true, startSlot, endSlot, categoryId: matches[0].id };
+}
+
 /* ---------- CSV ---------- */
 
 export function csvCell(value) {
@@ -316,6 +627,186 @@ export function buildCsv(days, categories) {
   return rows.map((r) => r.map(csvCell).join(",")).join("\r\n");
 }
 
+const CSV_HEADER = ["Date", "Start", "End", "Duration (min)", "Category", "Weight", "Note"];
+
+/** RFC-4180-ish parse: quoted fields, "" escaping, embedded commas/newlines. */
+function parseCsvRows(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQuotes) {
+      if (ch === '"' && text[i + 1] === '"') {
+        field += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        field += ch;
+      }
+      continue;
+    }
+    if (ch === '"') inQuotes = true;
+    else if (ch === ",") {
+      row.push(field);
+      field = "";
+    } else if (ch === "\r") continue;
+    else if (ch === "\n") {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = "";
+    } else field += ch;
+  }
+  if (field.length > 0 || row.length > 0) {
+    row.push(field);
+    rows.push(row);
+  }
+  return rows;
+}
+
+const hmToSlot = (hm) => {
+  const [h, m] = hm.split(":").map(Number);
+  return (h * 60 + m) / SLOT_MIN;
+};
+
+/**
+ * Parses the exact shape `buildCsv` emits. Matches categories by exact name
+ * against the caller's current category list — never trust the file.
+ * @returns {{ok:true, data:Map<string,{slots:number[],reflection:string}>} | {ok:false, error:string}}
+ */
+export function parseCsv(text, categories) {
+  if (typeof text !== "string" || !text.trim()) return { ok: false, error: "That file is empty." };
+
+  const rows = parseCsvRows(text.replace(/^\uFEFF/, "")).filter((r) => !(r.length === 1 && r[0] === ""));
+  if (rows.length === 0) return { ok: false, error: "That file is empty." };
+
+  const header = rows[0].map((h) => h.trim());
+  if (header.length !== CSV_HEADER.length || header.some((h, i) => h !== CSV_HEADER[i])) {
+    return { ok: false, error: "That doesn't look like a Daily Dial CSV export." };
+  }
+
+  const days = new Map();
+  for (let r = 1; r < rows.length; r++) {
+    const [dateStr, startStr, endStr, , catName, , note] = rows[r];
+    if (rows[r].length === 1 && !rows[r][0]) continue; // stray blank line
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr ?? "")) return { ok: false, error: `Row ${r + 1}: bad date "${dateStr}".` };
+    if (!isValidTime(startStr)) return { ok: false, error: `Row ${r + 1}: bad start time "${startStr}".` };
+    if (!isValidTime(endStr) && endStr !== "00:00") {
+      return { ok: false, error: `Row ${r + 1}: bad end time "${endStr}".` };
+    }
+
+    const cat = categories.find((c) => c.name === catName);
+    if (!cat) return { ok: false, error: `Row ${r + 1}: unknown category "${catName}".` };
+
+    const startSlot = hmToSlot(startStr);
+    const endSlot = endStr === "00:00" ? SLOTS : hmToSlot(endStr);
+    if (endSlot <= startSlot) return { ok: false, error: `Row ${r + 1}: end is not after start.` };
+
+    if (!days.has(dateStr)) days.set(dateStr, emptyDay());
+    const day = days.get(dateStr);
+    for (let i = startSlot; i < endSlot; i++) day.slots[i] = cat.id;
+    if (note) day.reflection = note;
+  }
+
+  return { ok: true, data: days };
+}
+
+/* ---------- backup (import / export) ---------- */
+
+/** Full-fidelity snapshot: every day, category, and setting. */
+export function buildBackup(days, categories, settings, appVersion, now = new Date()) {
+  const daysObj = {};
+  for (const [key, day] of days) daysObj[key] = { slots: day.slots, reflection: day.reflection };
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    exportedAt: now.toISOString(),
+    appVersion,
+    categories: categories.map(({ name, weight, enabled }) => ({ name, weight, enabled })),
+    settings: { ...settings },
+    days: daysObj,
+  };
+}
+
+/**
+ * Validates and normalizes a backup file's text. Never trusts the contents —
+ * every field routes through the same `normalize*` functions storage does.
+ * @returns {{ok:true, data:{categories, settings, days:Map, exportedAt:string|null}} | {ok:false, error:string}}
+ */
+export function parseBackup(text) {
+  let obj;
+  try {
+    obj = JSON.parse(text);
+  } catch {
+    return { ok: false, error: "That file isn't valid JSON." };
+  }
+  if (!obj || typeof obj !== "object" || Array.isArray(obj)) {
+    return { ok: false, error: "That doesn't look like a Daily Dial backup." };
+  }
+  if (!Number.isInteger(obj.schemaVersion)) {
+    return { ok: false, error: "Missing schema version — this doesn't look like a Daily Dial backup." };
+  }
+  if (obj.schemaVersion > SCHEMA_VERSION) {
+    return {
+      ok: false,
+      error: `This backup was made by a newer version of Daily Dial (schema ${obj.schemaVersion}). Update the extension first.`,
+    };
+  }
+
+  const days = new Map();
+  if (obj.days && typeof obj.days === "object") {
+    for (const [key, raw] of Object.entries(obj.days)) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) continue;
+      days.set(key, normalizeDay(raw));
+    }
+  }
+
+  return {
+    ok: true,
+    data: {
+      categories: normalizeCategories(obj.categories),
+      settings: normalizeSettings(obj.settings),
+      days,
+      exportedAt: typeof obj.exportedAt === "string" ? obj.exportedAt : null,
+    },
+  };
+}
+
+/** Counts for the import confirm step: how many days would change under each mode. */
+export function summarizeImport(existingDays, incomingDays) {
+  const incomingKeys = [...incomingDays.keys()];
+  const overlapping = incomingKeys.filter((k) => existingDays.has(k)).length;
+  return {
+    incomingCount: incomingKeys.length,
+    overlapping,
+    newCount: incomingKeys.length - overlapping,
+    existingCount: existingDays.size,
+  };
+}
+
+/** Merge keeps existing days on conflict and adds missing ones; replace discards
+ *  existing days entirely and restores exactly what the backup had. Returns a
+ *  new Map — the caller decides whether/how to persist it. */
+export function mergeDayMaps(existing, incoming, mode) {
+  const result = new Map(mode === "replace" ? [] : existing);
+  for (const [key, day] of incoming) {
+    if (mode === "replace" || !result.has(key)) result.set(key, day);
+  }
+  return result;
+}
+
+/** Nudge to export a backup once there's real history and it's been a while. */
+export function shouldNudgeBackup(lastExportAt, dayCount, now = new Date()) {
+  if (dayCount < 7) return false;
+  if (!lastExportAt) return true;
+  const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+  return now.getTime() - lastExportAt > FOURTEEN_DAYS_MS;
+}
+
 /* ---------- reminders ---------- */
 
 /** Next local occurrence of "HH:MM" as epoch ms; tomorrow if already past. */
@@ -332,4 +823,26 @@ export function reminderMessage(index, untrackedMin) {
   return untrackedMin > 0
     ? `${fmtDuration(untrackedMin)} of today isn't logged yet. Close it out and add your one-line why.`
     : "Today is fully logged. Add your one-line why while it's fresh.";
+}
+
+/** Next local occurrence of a weekday (0=Sun..6=Sat) at "HH:MM" as epoch ms;
+ *  next week if that slot has already passed. Used for the weekly recap alarm. */
+export function nextWeeklyOccurrence(dayOfWeek, hhmm, now = new Date()) {
+  const [h, m] = hhmm.split(":").map(Number);
+  const when = new Date(now);
+  when.setHours(h, m, 0, 0);
+  let diff = (dayOfWeek - when.getDay() + 7) % 7;
+  if (diff === 0 && when.getTime() <= now.getTime()) diff = 7;
+  when.setDate(when.getDate() + diff);
+  return when.getTime();
+}
+
+/** Most recent occurrence of `weekStart` (0=Sun..6=Sat) on/before `now`, at
+ *  midnight local time — the start of the week a recap should cover. */
+export function mostRecentWeekStart(weekStart, now = new Date()) {
+  const d = new Date(now);
+  d.setHours(0, 0, 0, 0);
+  const diff = (d.getDay() - weekStart + 7) % 7;
+  d.setDate(d.getDate() - diff);
+  return d;
 }

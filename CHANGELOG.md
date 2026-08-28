@@ -8,23 +8,53 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-08-28
+
 ### Added
 
-- Open-source project scaffolding: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
-  `SECURITY.md`, issue and pull request templates.
-- `PRIVACY.md` — the privacy policy the Chrome Web Store requires at a public
-  URL.
-- `docs/STORE_LISTING.md` — every field the Web Store submission asks for,
-  written out, including permission justifications and review notes.
-- Store graphics at Google's exact required sizes: three 1280×800 screenshots
-  and 440×280 / 1400×560 promo tiles.
-- GitHub Actions: CI runs lint, tests, and the version check on Node 20 and 22,
-  plus a manifest job that fails if a referenced file is missing or if a network
-  permission is ever added. A release workflow builds and attaches the zip on a
-  version tag.
-- `npm run check:version` — fails if `manifest.json`, `package.json`, and
-  `CHANGELOG.md` disagree about the version, which otherwise drifts silently and
-  gets a Web Store upload rejected.
+- **JSON backup export/import**, so "export as backup" is finally a real
+  promise. Export writes every day, category, and setting with a
+  `schemaVersion`; import is a pure, never-trust-the-file `parseBackup` that
+  validates and normalizes everything before it touches storage. Choose
+  **Merge** (keep existing days, add missing ones) or **Replace** (wipe and
+  restore exactly what's in the file) — Replace requires a second confirming
+  click and names how many days it would erase first.
+- **CSV import** (`parseCsv`), reading back exactly what `buildCsv` emits,
+  matched against your current categories by name.
+- A **backup nudge**: a dismissible line in Settings → Data and on the day
+  view once it's been over two weeks since your last export and you have at
+  least a week of history.
+- A **☰ Settings** panel — Categories, Reminders, Goals, Data, Appearance, and
+  About in one keyboard-accessible modal (<kbd>Esc</kbd> closes, focus stays
+  trapped inside). The day view footer now holds only **Clear day** and
+  **☰**; category and reminder editing moved in, unchanged.
+- **Streaks** — 🔥 a day counts once it has one painted block, shown
+  prominently with your best streak. One missed day per rolling 7 days is
+  forgiven as a streak freeze rather than resetting you to zero; a second gap
+  in the same window still breaks it. An at-risk hint appears when today
+  isn't logged yet and it's getting late.
+- **Weekly recap** notification (off by default) — total tracked time,
+  productive %, top category, best day, and streak for the week just gone, on
+  a day and time you choose.
+- **Daily goals** — an optional per-category minutes target, edited in
+  Settings → Goals, with progress bars (and a ✓, not just colour, once met)
+  in the side panel.
+- **Personal bests** in Settings → About: longest streak, best single-day
+  score, most productive day.
+- Faster entry: number keys <kbd>1</kbd>–<kbd>6</kbd> pick a pen and
+  <kbd>0</kbd>/<kbd>E</kbd> picks the eraser (ignored while typing);
+  <kbd>⇧⌘Z</kbd> / <kbd>Ctrl+Shift+Z</kbd> redoes an undone stroke; **Copy
+  yesterday** fills today from the previous day (confirms before overwriting,
+  undoable); a typed entry field reads things like `9-11 deep work` or
+  `9pm-11pm study` via a forgiving pure parser (`parseTimeEntry`) that
+  understands 24h and 12h clocks, `-`/`to`, partial category names, and short
+  overnight ranges.
+- **Appearance settings**: theme (System/Light/Dark, applied via
+  `data-theme`), 12h/24h time display, and week-start day (Sun/Mon).
+
+### Changed
+
+- CSV export now also records `lastExportAt`, which the backup nudge reads.
 
 ## [1.1.0] — 2026-08-28
 
@@ -76,6 +106,7 @@ Initial version.
 - Local-only storage: no account, no server, no analytics, and no host
   permissions. `tabs` is deliberately not requested.
 
-[Unreleased]: https://github.com/pranav083/daily-dial-extension/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/pranav083/daily-dial-extension/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/pranav083/daily-dial-extension/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/pranav083/daily-dial-extension/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/pranav083/daily-dial-extension/releases/tag/v1.0.0

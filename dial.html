@@ -9,15 +9,32 @@
   <div class="app">
     <div class="topbar">
       <div class="wordmark">Daily Dial<span id="version">Time &amp; focus log</span></div>
+
+      <div class="streak-banner" id="streak-banner"
+           title="Days in a row with at least one block logged. One missed day a week is forgiven as a freeze.">
+        <span class="streak-icon" id="streak-icon">🔥</span>
+        <span class="streak-text"><b id="streak-current">0</b> day streak <span class="muted">· best: <span id="streak-best">0</span></span></span>
+        <span class="streak-freeze" id="streak-freeze" hidden
+              title="You missed a day this week, but your streak survived — one miss per rolling 7 days is forgiven.">❄ freeze used</span>
+        <span class="streak-risk" id="streak-risk" hidden
+              title="Log at least one block today to keep the streak alive.">not logged yet today</span>
+      </div>
+
       <div class="datenav">
-        <button id="prev-day" aria-label="Previous day">‹</button>
+        <button id="prev-day" aria-label="Previous day" title="Previous day">‹</button>
         <span class="label" id="date-label">Today</span>
-        <button id="next-day" aria-label="Next day">›</button>
-        <button class="today-jump" id="today-jump" hidden>Today</button>
+        <button id="next-day" aria-label="Next day" title="Next day">›</button>
+        <button class="today-jump" id="today-jump" hidden title="Jump back to today">Today</button>
       </div>
     </div>
 
-    <div class="strip" id="strip"></div>
+    <div class="nudge-bar" id="backup-nudge" hidden>
+      <span>You haven't backed up in a while — your data lives only in this browser.</span>
+      <button class="ghost-btn" id="backup-nudge-export" title="Save a JSON backup you can restore from later">Export now</button>
+      <button class="icon-btn" id="backup-nudge-dismiss" aria-label="Dismiss" title="Hide until next time">✕</button>
+    </div>
+
+    <div class="strip" id="strip" title="The last seven days. Bar height is that day's score; click one to view or edit it."></div>
 
     <div class="grid">
       <div class="dial-card">
@@ -33,58 +50,101 @@
           <div id="tooltip"></div>
         </div>
         <div class="pens" id="pens"></div>
-        <p class="hint">Click or drag around the ring to paint time · <kbd>⌘Z</kbd> undoes a stroke</p>
+
+        <div class="quick-entry">
+          <button class="ghost-btn" id="copy-yesterday"
+                  title="Fill today with yesterday's blocks — useful when your days rhyme">Copy yesterday</button>
+          <form class="typed-entry" id="typed-entry-form">
+            <input type="text" id="typed-entry-input" placeholder="9-11 deep work" aria-label="Typed time entry"
+                   title="Type a time range and category, e.g. &quot;9-11 deep work&quot;, &quot;13:30-15 applications&quot;, or &quot;9pm-11pm study&quot;">
+            <button type="submit" title="Add this block to the dial">Add</button>
+          </form>
+        </div>
+
+        <p class="hint">
+          Click or drag around the ring to paint ·
+          <kbd>⌘Z</kbd> undo ·
+          <button type="button" class="link-btn" id="hint-shortcuts">all shortcuts</button>
+        </p>
       </div>
 
       <div class="side-card">
         <div>
           <p class="section-label">Today's read</p>
           <div class="stat-row">
-            <div class="stat"><div class="v" id="stat-tracked">0h 0m</div><div class="l">Tracked</div></div>
-            <div class="stat"><div class="v" id="stat-productive">—</div><div class="l">Productive</div></div>
-            <div class="stat"><div class="v" id="stat-focus">0m</div><div class="l">Longest focus</div></div>
+            <div class="stat" title="Total time you've painted on the dial today. The rest of the day counts as untracked.">
+              <div class="v" id="stat-tracked">0h 0m</div><div class="l">Tracked</div></div>
+            <div class="stat" title="Share of your tracked time spent on categories weighted +. Untracked time is excluded.">
+              <div class="v" id="stat-productive">—</div><div class="l">Productive</div></div>
+            <div class="stat" title="Your longest unbroken run of productive time. It continues across different + categories, and breaks on neutral or distraction time.">
+              <div class="v" id="stat-focus">0m</div><div class="l">Longest focus</div></div>
           </div>
         </div>
 
         <div>
           <div class="score-top">
-            <span class="score-val" id="score-val">—</span>
+            <span class="score-val" id="score-val"
+                  title="(productive − distraction) ÷ tracked, as a percentage. Measures the shape of your day rather than its length, so a focused 4 hours beats a scattered 10.">—</span>
             <span class="score-badge muted" id="score-badge"><span class="dot"></span><span id="score-badge-text">No data yet</span></span>
           </div>
-          <div class="meter"><div class="meter-fill" id="meter-fill" style="width:50%"></div></div>
+          <div class="meter" title="Your score on a scale from −100 to +100."><div class="meter-fill" id="meter-fill" style="width:50%"></div></div>
         </div>
 
         <p class="insight" id="insight">Nothing logged yet. Pick a category and drag around the ring to paint your first block.</p>
 
         <div>
-          <p class="section-label">Where the time went</p>
+          <p class="section-label" title="How today's tracked time splits across categories, with untracked time shown so gaps stay visible.">Where the time went</p>
           <div class="cat-bars" id="cat-bars"></div>
         </div>
 
+        <div id="goals-panel" hidden>
+          <p class="section-label" title="Daily targets you set in Settings → Goals. A ✓ marks one you've met.">Today's goals</p>
+          <div class="goal-rows" id="goal-rows"></div>
+        </div>
+
         <div>
-          <p class="section-label">Why (a line is enough)</p>
+          <p class="section-label" title="One line on what helped or hurt today. Included in your CSV export.">Why (a line is enough)</p>
           <label for="reflection" style="position:absolute;left:-9999px;">Reflection</label>
           <textarea id="reflection" placeholder="What made today click — or drag?"></textarea>
         </div>
 
         <div class="footer-actions">
-          <button class="ghost-btn" id="toggle-categories" aria-expanded="false">Edit categories</button>
-          <button class="ghost-btn" id="toggle-reminders" aria-expanded="false">Reminders</button>
-          <button class="ghost-btn" id="export-csv">Export CSV</button>
-          <button class="ghost-btn danger" id="clear-day">Clear day</button>
+          <button class="ghost-btn danger" id="clear-day" title="Erase every block on this day. Undoable with ⌘Z.">Clear day</button>
+          <button class="ghost-btn" id="open-settings" aria-haspopup="dialog" aria-label="Settings" title="Categories, reminders, goals, backup, and appearance">☰ Settings</button>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <div class="editor" id="cat-editor">
+  <div class="settings-overlay" id="settings-overlay" hidden>
+    <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" tabindex="-1">
+      <div class="settings-header">
+        <h2 id="settings-title">Settings</h2>
+        <button class="icon-btn" id="settings-close" aria-label="Close settings">✕</button>
+      </div>
+
+      <div class="settings-tabs" id="settings-tabs" role="tablist">
+        <button type="button" class="tab active" data-tab="categories" role="tab" aria-selected="true">Categories</button>
+        <button type="button" class="tab" data-tab="reminders" role="tab" aria-selected="false">Reminders</button>
+        <button type="button" class="tab" data-tab="goals" role="tab" aria-selected="false">Goals</button>
+        <button type="button" class="tab" data-tab="data" role="tab" aria-selected="false">Data</button>
+        <button type="button" class="tab" data-tab="appearance" role="tab" aria-selected="false">Appearance</button>
+        <button type="button" class="tab" data-tab="about" role="tab" aria-selected="false">About</button>
+      </div>
+
+      <div class="settings-body" id="settings-body">
+        <section class="settings-section active" data-panel="categories">
           <div id="cat-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
           <p class="editor-note">
             <b>+</b> counts toward your score, <b>·</b> is neutral, <b>–</b> counts against it.
             The circle button hides a category you don't use.
           </p>
-        </div>
+        </section>
 
-        <div class="editor" id="reminder-editor">
+        <section class="settings-section" data-panel="reminders">
+          <p class="section-label">Daily reminders</p>
           <div class="reminder-row">
-            <label for="reminders-on">Remind me to log</label>
+            <label for="reminders-on" title="Two notifications a day at the times below. They only fire while Chrome is running.">Remind me to log</label>
             <input type="checkbox" id="reminders-on">
           </div>
           <div class="reminder-row">
@@ -99,7 +159,119 @@
             Notifications only fire while Chrome is running. The evening one tells you how much
             of the day is still unlogged.
           </p>
-        </div>
+
+          <p class="section-label" style="margin-top:16px;">Weekly recap</p>
+          <div class="reminder-row">
+            <label for="weekly-recap-on" title="A summary notification once a week: tracked time, top category, best day, and streak.">Send a weekly recap</label>
+            <input type="checkbox" id="weekly-recap-on">
+          </div>
+          <div class="reminder-row">
+            <label for="weekly-recap-day">Day</label>
+            <select id="weekly-recap-day">
+              <option value="0">Sunday</option>
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
+            </select>
+          </div>
+          <div class="reminder-row">
+            <label for="weekly-recap-time">Time</label>
+            <input type="time" id="weekly-recap-time" value="20:00">
+          </div>
+          <p class="editor-note">Off by default. A short summary of the week just gone — tracked time, top category, best day, streak.</p>
+        </section>
+
+        <section class="settings-section" data-panel="goals">
+          <p class="section-label">Daily targets, per category</p>
+          <div id="goals-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
+          <p class="editor-note">Leave blank for no goal. Progress shows in the side panel once a target is set.</p>
+        </section>
+
+        <section class="settings-section" data-panel="data">
+          <p class="section-label">Export</p>
+          <div class="footer-actions">
+            <button class="ghost-btn" id="export-csv" title="A spreadsheet of every block: one row per block, ready to pivot. Does not restore settings.">Export CSV</button>
+            <button class="ghost-btn" id="export-json" title="A complete backup — every day, category, and setting. This is the file to keep.">Export JSON backup</button>
+          </div>
+          <p class="editor-note" id="backup-status">You haven't exported a backup yet.</p>
+          <div class="nudge-bar inline" id="data-backup-nudge" hidden>
+            <span>It's been a while since your last backup.</span>
+            <button class="icon-btn" id="data-nudge-dismiss" aria-label="Dismiss">✕</button>
+          </div>
+
+          <p class="section-label" style="margin-top:16px;">Import</p>
+          <div class="footer-actions">
+            <button class="ghost-btn" id="import-trigger" title="Restore from a JSON backup or a CSV export">Choose backup file…</button>
+          </div>
+          <input type="file" id="import-file" accept=".json,.csv" hidden>
+          <div class="import-confirm" id="import-confirm" hidden>
+            <p class="editor-note" id="import-summary"></p>
+            <div class="footer-actions">
+              <button class="ghost-btn" id="import-merge" title="Add days from the file that you don't already have. Existing days are left untouched.">Merge</button>
+              <button class="ghost-btn danger" id="import-replace" title="Erase all current history and restore exactly what is in the file. Cannot be undone.">Replace everything</button>
+              <button class="ghost-btn" id="import-cancel">Cancel</button>
+            </div>
+          </div>
+          <p class="editor-note">
+            JSON backups keep everything (days, categories, settings). CSV files only restore blocks
+            of time, matched against your current categories by name. Merge adds missing days and
+            leaves existing ones untouched; Replace wipes your history and restores exactly what's
+            in the file.
+          </p>
+        </section>
+
+        <section class="settings-section" data-panel="appearance">
+          <div class="reminder-row">
+            <label for="theme-select">Theme</label>
+            <select id="theme-select">
+              <option value="system">System</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+          <div class="reminder-row">
+            <label for="time-format-select">Time format</label>
+            <select id="time-format-select">
+              <option value="24h">24-hour</option>
+              <option value="12h">12-hour</option>
+            </select>
+          </div>
+          <div class="reminder-row">
+            <label for="week-start-select" title="Which day begins a week, used by the weekly recap.">Week starts on</label>
+            <select id="week-start-select">
+              <option value="0">Sunday</option>
+              <option value="1">Monday</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="settings-section" data-panel="about">
+          <p class="section-label">Daily Dial <span id="about-version"></span></p>
+          <p class="editor-note">
+            <a href="https://github.com/pranav083/daily-dial-extension" target="_blank" rel="noopener">GitHub</a>
+            ·
+            <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
+          </p>
+
+          <p class="section-label" style="margin-top:16px;">Personal bests</p>
+          <div class="stat-row">
+            <div class="stat"><div class="v" id="bests-streak">0 days</div><div class="l">Longest streak</div></div>
+            <div class="stat"><div class="v" id="bests-score">—</div><div class="l">Best day score</div></div>
+            <div class="stat"><div class="v" id="bests-day">—</div><div class="l">Most productive day</div></div>
+          </div>
+
+          <p class="section-label" style="margin-top:16px;">Keyboard shortcuts</p>
+          <ul class="shortcut-list">
+            <li><kbd>1</kbd>–<kbd>6</kbd><span>Select a category pen</span></li>
+            <li><kbd>0</kbd> / <kbd>E</kbd><span>Select the eraser</span></li>
+            <li><kbd>⌘Z</kbd> / <kbd>Ctrl+Z</kbd><span>Undo</span></li>
+            <li><kbd>⇧⌘Z</kbd> / <kbd>Ctrl+Shift+Z</kbd><span>Redo</span></li>
+            <li><kbd>Esc</kbd><span>Close this panel</span></li>
+          </ul>
+        </section>
       </div>
     </div>
   </div>
