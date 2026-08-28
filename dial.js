@@ -54,6 +54,7 @@ import {
   toneVar,
   wedgePath,
 } from "./lib.js";
+import { renderHistory } from "./history.js";
 
 const $ = (id) => document.getElementById(id);
 const isToday = (d) => sameDay(d, new Date());
@@ -1087,6 +1088,10 @@ export function registerView(name, render) {
   viewRenderers.set(name, render);
 }
 
+/** Read-only snapshot for other views (History, Applications) to render
+ *  from, instead of each re-reading chrome.storage itself. */
+export const getAppData = () => ({ days, categories, settings });
+
 let currentView = "day";
 
 function showView(name) {
@@ -1103,6 +1108,14 @@ function showView(name) {
   // The date navigation only means anything on the Day view.
   $("datenav-wrap").hidden = name !== "day";
   viewRenderers.get(name)?.();
+}
+
+/** Jumps another view (e.g. a History heatmap cell or search result) to a
+ *  given date on the Day view — the same day-switching path the 7-day strip
+ *  uses, plus the view switch itself. */
+export function goToDay(d) {
+  switchDay(d);
+  showView("day");
 }
 
 function wireViewNav() {
@@ -1234,6 +1247,7 @@ function wireEvents() {
 }
 
 registerView("day", renderAll);
+registerView("history", renderHistory);
 
 async function boot() {
   const version = chrome.runtime.getManifest().version;

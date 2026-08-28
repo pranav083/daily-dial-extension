@@ -765,3 +765,178 @@ select {
   color: var(--ink-muted);
   font-size: 0.88rem;
 }
+
+/* ---- history view ---- */
+
+#history-content { display: flex; flex-direction: column; gap: 22px; }
+
+.hist-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.hist-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .hist-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Month nav mirrors .datenav so switching between Day and History feels
+   like the same control, not two different widgets. */
+.hist-month-nav { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); margin-bottom: 14px; }
+.hist-month-nav button {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.hist-month-nav button:hover { border-color: var(--accent); }
+.hist-month-nav button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+.hist-month-nav .label {
+  min-width: 140px;
+  text-align: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.hist-month-nav #hist-this-month { width: auto; padding: 0 10px; font-family: var(--font-ui); }
+
+/* ---- heatmap ---- */
+.hist-heatmap { display: flex; flex-direction: column; gap: 5px; }
+.hist-heatmap-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.hist-dow {
+  text-align: center;
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  padding-bottom: 2px;
+}
+
+.hist-day {
+  aspect-ratio: 1;
+  border-radius: 7px;
+  border: 1px solid var(--border-soft);
+  background: var(--panel-2);
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 4px 0 0 6px;
+  font-family: var(--font-mono);
+}
+.hist-day.out { opacity: 0.4; }
+.hist-day.today { border-color: var(--accent); border-width: 2px; }
+/* A day with nothing painted reads as visibly absent — a dotted outline on
+   the plain panel colour — rather than a bad score. Colour is reserved for
+   days that were actually logged. */
+.hist-day.empty {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--border);
+}
+.hist-day.logged { border-color: transparent; }
+/* A translucent chip behind the number, rather than relying on the heat
+   colour's contrast — a mid-intensity orange and a pale one both need the
+   date to stay readable. */
+.hist-day-num {
+  font-size: 0.68rem;
+  color: var(--ink);
+  background: color-mix(in oklab, var(--panel) 65%, transparent);
+  border-radius: 4px;
+  padding: 0 3px;
+  line-height: 1.4;
+}
+.hist-day.empty .hist-day-num { background: none; color: var(--ink-muted); }
+.hist-day:hover { border-color: var(--accent); }
+.hist-day:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+
+.hist-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-size: 0.72rem; color: var(--ink-muted); }
+.hist-legend-item { display: inline-flex; align-items: center; gap: 5px; }
+.hist-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.hist-swatch-empty { background: transparent; border: 1px dashed var(--border); }
+
+/* ---- month summary ---- */
+#hist-summary-extra { margin-top: 14px; display: flex; flex-direction: column; gap: 4px; }
+.hist-extra-line { margin: 0; font-size: 0.8rem; color: var(--ink-2); }
+
+/* ---- week over week ---- */
+.hist-wow { display: flex; flex-direction: column; gap: 10px; }
+.hist-wow-row { display: flex; align-items: center; gap: 10px; font-size: 0.84rem; }
+.hist-wow-label { flex: 1; color: var(--ink-2); }
+.hist-wow-val { font-family: var(--font-mono); font-weight: 700; color: var(--ink); }
+/* Direction is spelled out with a glyph, not just colour, so the comparison
+   still reads for anyone who can't rely on the good/bad colour cue. */
+.hist-wow-delta {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.hist-wow-delta.up { color: var(--status-good); background: color-mix(in oklab, var(--status-good) 16%, transparent); }
+.hist-wow-delta.down { color: var(--status-critical); background: color-mix(in oklab, var(--status-critical) 16%, transparent); }
+.hist-wow-delta.flat { color: var(--ink-muted); background: var(--panel-2); }
+
+/* ---- category trends ---- */
+.hist-trends { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+.hist-trend { display: flex; flex-direction: column; gap: 6px; }
+.hist-trend-head { display: flex; align-items: center; gap: 6px; }
+.hist-trend-head .sw { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.hist-trend-name { font-size: 0.76rem; font-weight: 600; color: var(--ink-2); flex: 1; }
+.hist-trend-dir { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; }
+.hist-trend-dir.up { color: var(--status-good); }
+.hist-trend-dir.down { color: var(--status-critical); }
+.hist-trend-dir.flat { color: var(--ink-muted); }
+.hist-trend-svg { width: 100%; height: 52px; display: block; }
+.hist-trend-svg rect.cat-0 { fill: var(--cat-0); }
+.hist-trend-svg rect.cat-1 { fill: var(--cat-1); }
+.hist-trend-svg rect.cat-2 { fill: var(--cat-2); }
+.hist-trend-svg rect.cat-3 { fill: var(--cat-3); }
+.hist-trend-svg rect.cat-4 { fill: var(--cat-4); }
+.hist-trend-svg rect.cat-5 { fill: var(--cat-5); }
+
+/* ---- note search ---- */
+.hist-search-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 8px 11px;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+.hist-search-input::placeholder { color: var(--ink-muted); }
+.hist-search-input:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+
+.hist-search-results { display: flex; flex-direction: column; gap: 6px; }
+.hist-search-result {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border-soft);
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.hist-search-result:hover { border-color: var(--accent); }
+.hist-search-result:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+.hist-search-date { flex: none; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
+.hist-search-snippet { font-size: 0.82rem; color: var(--ink-2); overflow-wrap: anywhere; }

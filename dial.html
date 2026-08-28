@@ -127,7 +127,59 @@
     </div>
 
     <!-- Filled in by the History feature. -->
-    <div class="view" id="view-history" hidden></div>
+    <div class="view" id="view-history" hidden>
+      <div class="view-placeholder" id="history-empty" hidden>
+        No history yet. Log a few days on the Day view — once you have a week or
+        two, this tab turns into a month-by-month picture: a heatmap, category
+        trends, and week-over-week comparisons.
+      </div>
+
+      <div id="history-content" hidden>
+        <div class="hist-card">
+          <div class="hist-month-nav">
+            <button type="button" id="hist-prev-month" aria-label="Previous month" title="Previous month">‹</button>
+            <span class="label" id="hist-month-label">—</span>
+            <button type="button" id="hist-next-month" aria-label="Next month" title="Next month">›</button>
+            <button type="button" class="ghost-btn" id="hist-this-month" hidden title="Jump back to the current month">This month</button>
+          </div>
+
+          <div class="hist-heatmap" id="hist-heatmap" role="grid" aria-label="Month heatmap, one cell per day"></div>
+
+          <p class="hist-legend">
+            <span class="hist-legend-item"><span class="hist-swatch hist-swatch-empty" aria-hidden="true"></span>Not logged</span>
+            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-critical)" aria-hidden="true"></span>Off track</span>
+            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-warning)" aria-hidden="true"></span>Mixed</span>
+            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-good)" aria-hidden="true"></span>Solid+</span>
+          </p>
+        </div>
+
+        <div class="hist-grid-2">
+          <div class="hist-card">
+            <p class="section-label" title="Averages count only days you logged — an unlogged day doesn't drag your average down.">Month summary</p>
+            <div class="stat-row" id="hist-summary-stats"></div>
+            <div id="hist-summary-extra"></div>
+          </div>
+
+          <div class="hist-card">
+            <p class="section-label" title="This week vs. last week, both starting on your configured week-start day.">Week over week</p>
+            <div class="hist-wow" id="hist-wow"></div>
+          </div>
+        </div>
+
+        <div class="hist-card">
+          <p class="section-label" title="Minutes per category, one bar per calendar week in the visible month. The arrow compares the first week shown to the last.">Category trends</p>
+          <div class="hist-trends" id="hist-trends"></div>
+        </div>
+
+        <div class="hist-card">
+          <p class="section-label">Search notes</p>
+          <input type="text" id="hist-search" class="hist-search-input"
+                 placeholder="Search your reflections…" aria-label="Search your reflections"
+                 title="Matches the one-line notes you leave on the Day view.">
+          <div class="hist-search-results" id="hist-search-results"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- Filled in by the Applications feature. -->
     <div class="view" id="view-applications" hidden></div>

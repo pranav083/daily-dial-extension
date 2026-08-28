@@ -8,6 +8,15 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+### Added
+
+- **History view**: a month heatmap (colour by score, with unlogged days
+  shown as visibly empty rather than scored 0), a month summary (days
+  logged, tracked time, average score/productivity, best day, in-month
+  streak), per-category weekly trends as small inline-SVG bar charts, a
+  this-week-vs-last-week comparison, and a search over your reflection
+  notes. Pure calculation lives in `historyLib.js`; the view is `history.js`.
+
 ## [1.2.0] — 2026-08-28
 
 ### Added
