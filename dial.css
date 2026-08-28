@@ -812,7 +812,10 @@ select {
 .hist-month-nav #hist-this-month { width: auto; padding: 0 10px; font-family: var(--font-ui); }
 
 /* ---- heatmap ---- */
-.hist-heatmap { display: flex; flex-direction: column; gap: 5px; }
+/* Square cells across seven full-width columns made a month over 1000px tall,
+   pushing the summary below the fold. Capping the calendar's width keeps cells
+   near 64px — a conventional month grid — and leaves the card room to breathe. */
+.hist-heatmap { display: flex; flex-direction: column; gap: 5px; max-width: 500px; }
 .hist-heatmap-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
 .hist-dow {
   text-align: center;
@@ -940,3 +943,14 @@ select {
 .hist-search-result:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
 .hist-search-date { flex: none; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
 .hist-search-snippet { font-size: 0.82rem; color: var(--ink-2); overflow-wrap: anywhere; }
+
+/* The calendar is capped at 500px, so it shares its card with the month
+   summary rather than leaving half the width empty. */
+.hist-month-split { display: flex; gap: 26px; align-items: flex-start; flex-wrap: wrap; }
+.hist-month-main { flex: none; }
+.hist-month-side { flex: 1; min-width: 240px; }
+.hist-month-side .stat-row { flex-wrap: wrap; }
+@media (max-width: 900px) {
+  .hist-month-split { flex-direction: column; }
+  .hist-month-side { width: 100%; }
+}

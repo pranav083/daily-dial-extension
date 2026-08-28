@@ -135,7 +135,9 @@
       </div>
 
       <div id="history-content" hidden>
-        <div class="hist-card">
+        <div class="hist-card hist-month-card">
+          <div class="hist-month-split">
+          <div class="hist-month-main">
           <div class="hist-month-nav">
             <button type="button" id="hist-prev-month" aria-label="Previous month" title="Previous month">‹</button>
             <span class="label" id="hist-month-label">—</span>
@@ -151,19 +153,18 @@
             <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-warning)" aria-hidden="true"></span>Mixed</span>
             <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-good)" aria-hidden="true"></span>Solid+</span>
           </p>
-        </div>
+          </div>
 
-        <div class="hist-grid-2">
-          <div class="hist-card">
+          <div class="hist-month-side">
             <p class="section-label" title="Averages count only days you logged — an unlogged day doesn't drag your average down.">Month summary</p>
             <div class="stat-row" id="hist-summary-stats"></div>
             <div id="hist-summary-extra"></div>
           </div>
+        </div>
 
-          <div class="hist-card">
-            <p class="section-label" title="This week vs. last week, both starting on your configured week-start day.">Week over week</p>
-            <div class="hist-wow" id="hist-wow"></div>
-          </div>
+        <div class="hist-card">
+          <p class="section-label" title="This week vs. last week, both starting on your configured week-start day.">Week over week</p>
+          <div class="hist-wow" id="hist-wow"></div>
         </div>
 
         <div class="hist-card">
