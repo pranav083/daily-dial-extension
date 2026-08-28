@@ -734,3 +734,34 @@ select {
   .topbar { align-items: flex-start; }
   .streak-banner { order: 3; }
 }
+
+/* ---- view switcher ---- */
+/* Three top-level views share the top bar; the date nav only applies to Day. */
+.view-nav { display: flex; gap: 4px; }
+.view-tab {
+  border: 1px solid transparent;
+  background: none;
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.view-tab:hover { color: var(--ink); background: var(--panel-2); }
+.view-tab.active { color: var(--ink); background: var(--panel); border-color: var(--border); }
+.view-tab:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+
+.view { display: flex; flex-direction: column; gap: 22px; }
+.view[hidden] { display: none; }
+
+.view-placeholder {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 22px;
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+}

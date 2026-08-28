@@ -20,8 +20,14 @@
               title="Log at least one block today to keep the streak alive.">not logged yet today</span>
       </div>
 
+      <nav class="view-nav" id="view-nav" aria-label="Views">
+        <button type="button" class="view-tab active" data-view="day" aria-current="page">Day</button>
+        <button type="button" class="view-tab" data-view="history" title="Your months at a glance, and how categories trend over time">History</button>
+        <button type="button" class="view-tab" data-view="applications" title="What all those Applications hours actually produced">Applications</button>
+      </nav>
+
       <div class="topbar-right">
-        <div class="datenav">
+        <div class="datenav" id="datenav-wrap">
           <button id="prev-day" aria-label="Previous day" title="Previous day">‹</button>
           <span class="label" id="date-label">Today</span>
           <button id="next-day" aria-label="Next day" title="Next day">›</button>
@@ -32,6 +38,7 @@
       </div>
     </div>
 
+    <div class="view active" id="view-day">
     <div class="nudge-bar" id="backup-nudge" hidden>
       <span>You haven't backed up in a while — your data lives only in this browser.</span>
       <button class="ghost-btn" id="backup-nudge-export" title="Save a JSON backup you can restore from later">Export now</button>
@@ -117,6 +124,13 @@
         </div>
       </div>
     </div>
+    </div>
+
+    <!-- Filled in by the History feature. -->
+    <div class="view" id="view-history" hidden></div>
+
+    <!-- Filled in by the Applications feature. -->
+    <div class="view" id="view-applications" hidden></div>
   </div>
 
   <div class="settings-overlay" id="settings-overlay" hidden>

@@ -1078,6 +1078,45 @@ function closeSettings() {
 
 /* ---------- wiring ---------- */
 
+/* ---------- view switching ---------- */
+
+/** Views render lazily: each registers a renderer here, called when shown. */
+const viewRenderers = new Map();
+
+export function registerView(name, render) {
+  viewRenderers.set(name, render);
+}
+
+let currentView = "day";
+
+function showView(name) {
+  currentView = name;
+  for (const tab of document.querySelectorAll(".view-tab")) {
+    const active = tab.dataset.view === name;
+    tab.classList.toggle("active", active);
+    if (active) tab.setAttribute("aria-current", "page");
+    else tab.removeAttribute("aria-current");
+  }
+  for (const view of document.querySelectorAll(".view")) {
+    view.hidden = view.id !== `view-${name}`;
+  }
+  // The date navigation only means anything on the Day view.
+  $("datenav-wrap").hidden = name !== "day";
+  viewRenderers.get(name)?.();
+}
+
+function wireViewNav() {
+  $("view-nav").addEventListener("click", (evt) => {
+    const tab = evt.target.closest(".view-tab");
+    if (tab) showView(tab.dataset.view);
+  });
+}
+
+/** Re-render whichever non-Day view is showing, after data changes. */
+export function refreshCurrentView() {
+  if (currentView !== "day") viewRenderers.get(currentView)?.();
+}
+
 function renderAll() {
   renderDateLabel();
   renderDial();
@@ -1138,6 +1177,8 @@ function wireEvents() {
   });
 
   // ---- settings panel ----
+  wireViewNav();
+
   $("open-settings").addEventListener("click", () => openSettings());
   // The hint line names one shortcut; the rest live in About rather than
   // crowding the dial.
@@ -1191,6 +1232,8 @@ function wireEvents() {
 
   window.addEventListener("beforeunload", flushReflection);
 }
+
+registerView("day", renderAll);
 
 async function boot() {
   const version = chrome.runtime.getManifest().version;
