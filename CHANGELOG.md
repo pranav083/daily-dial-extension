@@ -10,6 +10,14 @@ The version here always matches `manifest.json`.
 
 ### Added
 
+- **AM/PM dial mode**: an alternative to the single 24-hour ring — two
+  smaller 12-hour rings side by side, one for midnight–noon and one for
+  noon–midnight, each a full clock face on its own. Switch in Settings →
+  Appearance → Dial layout. Painting, undo/redo, the typed-entry box, and
+  the live needle all work the same as the 24-hour ring; the needle only
+  appears on whichever half currently contains "now". The two halves share
+  the same underlying day, so switching back to the 24-hour ring shows
+  everything merged.
 - **History view**: a month heatmap (colour by score, with unlogged days
   shown as visibly empty rather than scored 0), a month summary (days
   logged, tracked time, average score/productivity, best day, in-month

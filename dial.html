@@ -48,8 +48,8 @@
 
     <div class="grid">
       <div class="dial-card">
-        <div class="dial-wrap">
-          <svg id="dial" viewBox="0 0 460 460" role="img" aria-label="24-hour activity dial">
+        <div class="dial-wrap" id="dial-wrap-single">
+          <svg class="dial-svg" id="dial" viewBox="0 0 460 460" role="img" aria-label="24-hour activity dial">
             <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
             <g id="segments"></g>
             <g id="ticks"></g>
@@ -57,8 +57,35 @@
             <text id="center-time" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
             <text id="center-sub" class="center-sub" x="230" y="244" text-anchor="middle">pick a category</text>
           </svg>
-          <div id="tooltip"></div>
         </div>
+
+        <div class="dial-wrap-twin" id="dial-wrap-twin" hidden>
+          <div class="dial-half">
+            <svg class="dial-svg" id="dial-am" viewBox="0 0 460 460" role="img" aria-label="AM activity dial, midnight to noon">
+              <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
+              <g id="segments-am"></g>
+              <g id="ticks-am"></g>
+              <g id="needle-am"></g>
+              <text id="center-time-am" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
+              <text id="center-sub-am" class="center-sub" x="230" y="244" text-anchor="middle">pick a category</text>
+            </svg>
+            <div class="dial-half-label">AM <span class="muted">· 12a&ndash;12p</span></div>
+          </div>
+          <div class="dial-half">
+            <svg class="dial-svg" id="dial-pm" viewBox="0 0 460 460" role="img" aria-label="PM activity dial, noon to midnight">
+              <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
+              <g id="segments-pm"></g>
+              <g id="ticks-pm"></g>
+              <g id="needle-pm"></g>
+              <text id="center-time-pm" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
+              <text id="center-sub-pm" class="center-sub" x="230" y="244" text-anchor="middle">pick a category</text>
+            </svg>
+            <div class="dial-half-label">PM <span class="muted">· 12p&ndash;12a</span></div>
+          </div>
+        </div>
+
+        <div id="tooltip"></div>
+
         <div class="pens" id="pens"></div>
 
         <div class="quick-entry">
@@ -305,6 +332,13 @@
             <select id="time-format-select">
               <option value="24h">24-hour</option>
               <option value="12h">12-hour</option>
+            </select>
+          </div>
+          <div class="reminder-row">
+            <label for="dial-mode-select" title="One ring covering all 24 hours, or two smaller rings — one for AM, one for PM.">Dial layout</label>
+            <select id="dial-mode-select">
+              <option value="24h">One 24-hour ring</option>
+              <option value="ampm">Two 12-hour rings (AM / PM)</option>
             </select>
           </div>
           <div class="reminder-row">

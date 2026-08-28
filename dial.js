@@ -69,8 +69,6 @@ const state = {
   slots: new Array(SLOTS).fill(UNTRACKED),
   reflection: "",
   activePen: 0,
-  isPainting: false,
-  lastSlot: null,
   reflectTimer: null,
 };
 
@@ -124,10 +122,6 @@ function applyTheme() {
 /* ---------- SVG scaffolding ---------- */
 
 const NS = "http://www.w3.org/2000/svg";
-const svg = $("dial");
-const segLayer = $("segments");
-const tickLayer = $("ticks");
-const needleLayer = $("needle");
 const tooltip = $("tooltip");
 
 function svgEl(tag, attrs) {
@@ -136,11 +130,13 @@ function svgEl(tag, attrs) {
   return el;
 }
 
-function renderTicks() {
+/** Static hour ticks for one dial face. Ticks never depend on painted data,
+ *  so this runs once at boot for each physical SVG, not on every render. */
+function renderTicksInto(tickLayer, hourCount, labelFor) {
   tickLayer.replaceChildren();
-  for (let h = 0; h < 24; h++) {
-    const angle = h * 15;
-    const major = h % 3 === 0;
+  for (let h = 0; h < hourCount; h++) {
+    const angle = (h / hourCount) * 360;
+    const major = hourCount <= 12 || h % 3 === 0;
     const len = major ? 13 : 6;
     const p1 = polar(R_OUT + 3, angle);
     const p2 = polar(R_OUT + 3 + len, angle);
@@ -158,7 +154,7 @@ function renderTicks() {
         x: lp.x.toFixed(2), y: (lp.y + 4).toFixed(2),
         "text-anchor": "middle",
       });
-      label.textContent = pad2(h);
+      label.textContent = labelFor(h);
       tickLayer.appendChild(label);
     }
   }
@@ -166,54 +162,6 @@ function renderTicks() {
 
 /** Hairline gap between adjacent wedges so neighbouring blocks stay distinct. */
 const WEDGE_GAP_DEG = 0.55;
-
-function renderSegments() {
-  segLayer.replaceChildren();
-  for (const run of computeRuns(state.slots)) {
-    const a0 = run.start * (360 / SLOTS);
-    const a1 = run.end * (360 / SLOTS);
-    const gap = Math.min(WEDGE_GAP_DEG, (a1 - a0) * 0.3);
-    segLayer.appendChild(
-      svgEl("path", {
-        class: `seg ${categories[run.cat].cls}`,
-        d: wedgePath(R_IN, R_OUT, a0 + gap, a1 - gap),
-      })
-    );
-  }
-}
-
-function renderNeedle() {
-  needleLayer.replaceChildren();
-  if (!isToday(state.viewDate)) return;
-  const now = new Date();
-  const angle = ((now.getHours() * 60 + now.getMinutes()) / 1440) * 360;
-  const p1 = polar(R_IN - 8, angle);
-  const p2 = polar(R_OUT + 10, angle);
-  needleLayer.appendChild(
-    svgEl("line", {
-      class: "needle-line",
-      x1: p1.x.toFixed(2), y1: p1.y.toFixed(2),
-      x2: p2.x.toFixed(2), y2: p2.y.toFixed(2),
-    })
-  );
-  needleLayer.appendChild(svgEl("circle", { class: "needle-dot", cx: p2.x.toFixed(2), cy: p2.y.toFixed(2), r: 4 }));
-}
-
-function renderCenter() {
-  const now = new Date();
-  $("center-time").textContent = fmtClock(
-    Math.round((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN),
-    settings.timeFormat
-  );
-  const pen = categories[state.activePen];
-  $("center-sub").textContent = pen ? `pen: ${pen.name}` : "eraser";
-}
-
-const renderDial = () => {
-  renderSegments();
-  renderNeedle();
-  renderCenter();
-};
 
 /* ---------- tooltip ---------- */
 
@@ -279,59 +227,10 @@ function redo() {
 
 /* ---------- painting ---------- */
 
-function svgPointFromEvent(evt) {
-  const pt = svg.createSVGPoint();
-  pt.x = evt.clientX;
-  pt.y = evt.clientY;
-  return pt.matrixTransform(svg.getScreenCTM().inverse());
-}
-
-function paintAt(idx) {
-  const cat = state.activePen === null ? UNTRACKED : state.activePen;
-  if (state.lastSlot === null) state.slots[idx] = cat;
-  else state.slots = fillRange(state.slots, state.lastSlot, idx, cat);
-  state.lastSlot = idx;
-}
-
-svg.addEventListener("pointerdown", (evt) => {
-  if (evt.button !== 0) return;
-  const p = svgPointFromEvent(evt);
-  const { angle, dist } = angleAt(p.x, p.y);
-  if (dist < R_IN - 14 || dist > R_OUT + 18) return;
-
-  pushUndo();
-  state.isPainting = true;
-  state.lastSlot = null;
-  try {
-    svg.setPointerCapture(evt.pointerId);
-  } catch {
-    // Synthetic or already-released pointers can't be captured; painting still works.
-  }
-  const idx = slotFromAngle(angle);
-  paintAt(idx);
-  renderDial();
-  showTooltip(evt, idx);
-});
-
-svg.addEventListener("pointermove", (evt) => {
-  const p = svgPointFromEvent(evt);
-  const { angle, dist } = angleAt(p.x, p.y);
-  if (dist < R_IN - 30 || dist > R_OUT + 40) {
-    hideTooltip();
-    return;
-  }
-  const idx = slotFromAngle(angle);
-  if (state.isPainting) {
-    paintAt(idx);
-    renderDial();
-  }
-  showTooltip(evt, idx);
-});
-
-function endPaint() {
-  if (!state.isPainting) return;
-  state.isPainting = false;
-  state.lastSlot = null;
+/** Runs once when any dial's pointer gesture ends, regardless of which
+ *  physical SVG (or which half, in AM/PM mode) it happened on — the data is
+ *  already written into state.slots by then. */
+function onStrokeEnd() {
   persistDay();
   renderSide();
   renderStrip();
@@ -339,10 +238,197 @@ function endPaint() {
   renderBackupStatus();
 }
 
-svg.addEventListener("pointerup", endPaint);
-svg.addEventListener("pointercancel", endPaint);
-window.addEventListener("pointerup", endPaint);
-svg.addEventListener("pointerleave", hideTooltip);
+/**
+ * One engine drives one physical SVG. `slotOffset`/`slotsInView` define the
+ * window into state.slots it reads and paints: the whole day (0, 96) for the
+ * single 24-hour dial, or one 12-hour half (0, 48) / (48, 48) in AM/PM mode.
+ * Geometry (CX/CY/R_IN/R_OUT) is identical across every dial — each SVG is
+ * its own 460×460 coordinate space, just displayed at a different size — so
+ * the only thing that differs between instances is which slots they own.
+ */
+function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, slotOffset, slotsInView }) {
+  const svgNode = $(svgId);
+  const segLayer = $(segId);
+  const needleLayer = $(needleId);
+  const centerTimeEl = $(centerTimeId);
+  const centerSubEl = $(centerSubId);
+  const minutesInView = slotsInView * SLOT_MIN;
+
+  let isPaintingLocal = false;
+  let lastLocal = null;
+
+  const localSlice = () => state.slots.slice(slotOffset, slotOffset + slotsInView);
+  const writeSlice = (sub) => {
+    for (let i = 0; i < slotsInView; i++) state.slots[slotOffset + i] = sub[i];
+  };
+
+  function renderSegments() {
+    segLayer.replaceChildren();
+    for (const run of computeRuns(localSlice())) {
+      const a0 = run.start * (360 / slotsInView);
+      const a1 = run.end * (360 / slotsInView);
+      const gap = Math.min(WEDGE_GAP_DEG, (a1 - a0) * 0.3);
+      segLayer.appendChild(
+        svgEl("path", {
+          class: `seg ${categories[run.cat].cls}`,
+          d: wedgePath(R_IN, R_OUT, a0 + gap, a1 - gap),
+        })
+      );
+    }
+  }
+
+  function renderNeedle() {
+    needleLayer.replaceChildren();
+    if (!isToday(state.viewDate)) return;
+    const now = new Date();
+    const localMin = now.getHours() * 60 + now.getMinutes() - slotOffset * SLOT_MIN;
+    if (localMin < 0 || localMin >= minutesInView) return; // "now" isn't in this window
+    const angle = (localMin / minutesInView) * 360;
+    const p1 = polar(R_IN - 8, angle);
+    const p2 = polar(R_OUT + 10, angle);
+    needleLayer.appendChild(
+      svgEl("line", {
+        class: "needle-line",
+        x1: p1.x.toFixed(2), y1: p1.y.toFixed(2),
+        x2: p2.x.toFixed(2), y2: p2.y.toFixed(2),
+      })
+    );
+    needleLayer.appendChild(svgEl("circle", { class: "needle-dot", cx: p2.x.toFixed(2), cy: p2.y.toFixed(2), r: 4 }));
+  }
+
+  function renderCenter() {
+    const now = new Date();
+    centerTimeEl.textContent = fmtClock(
+      Math.round((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN),
+      settings.timeFormat
+    );
+    const pen = categories[state.activePen];
+    centerSubEl.textContent = pen ? `pen: ${pen.name}` : "eraser";
+  }
+
+  function render() {
+    renderSegments();
+    renderNeedle();
+    renderCenter();
+  }
+
+  function svgPointFromEvent(evt) {
+    const pt = svgNode.createSVGPoint();
+    pt.x = evt.clientX;
+    pt.y = evt.clientY;
+    return pt.matrixTransform(svgNode.getScreenCTM().inverse());
+  }
+
+  function paintAtLocal(localIdx) {
+    const cat = state.activePen === null ? UNTRACKED : state.activePen;
+    if (lastLocal === null) {
+      const sub = localSlice();
+      sub[localIdx] = cat;
+      writeSlice(sub);
+    } else {
+      writeSlice(fillRange(localSlice(), lastLocal, localIdx, cat));
+    }
+    lastLocal = localIdx;
+  }
+
+  function endPaintLocal() {
+    if (!isPaintingLocal) return;
+    isPaintingLocal = false;
+    lastLocal = null;
+    onStrokeEnd();
+  }
+
+  svgNode.addEventListener("pointerdown", (evt) => {
+    if (evt.button !== 0) return;
+    const p = svgPointFromEvent(evt);
+    const { angle, dist } = angleAt(p.x, p.y);
+    if (dist < R_IN - 14 || dist > R_OUT + 18) return;
+
+    pushUndo();
+    isPaintingLocal = true;
+    lastLocal = null;
+    try {
+      svgNode.setPointerCapture(evt.pointerId);
+    } catch {
+      // Synthetic or already-released pointers can't be captured; painting still works.
+    }
+    const idx = slotFromAngle(angle, slotsInView);
+    paintAtLocal(idx);
+    render();
+    showTooltip(evt, slotOffset + idx);
+  });
+
+  svgNode.addEventListener("pointermove", (evt) => {
+    const p = svgPointFromEvent(evt);
+    const { angle, dist } = angleAt(p.x, p.y);
+    if (dist < R_IN - 30 || dist > R_OUT + 40) {
+      hideTooltip();
+      return;
+    }
+    const idx = slotFromAngle(angle, slotsInView);
+    if (isPaintingLocal) {
+      paintAtLocal(idx);
+      render();
+    }
+    showTooltip(evt, slotOffset + idx);
+  });
+
+  svgNode.addEventListener("pointerup", endPaintLocal);
+  svgNode.addEventListener("pointercancel", endPaintLocal);
+  window.addEventListener("pointerup", endPaintLocal);
+  svgNode.addEventListener("pointerleave", hideTooltip);
+
+  return { render, renderSegments, renderNeedle, renderCenter };
+}
+
+const dialEngines = {
+  single: createDialEngine({
+    svgId: "dial", segId: "segments", needleId: "needle",
+    centerTimeId: "center-time", centerSubId: "center-sub",
+    slotOffset: 0, slotsInView: SLOTS,
+  }),
+  am: createDialEngine({
+    svgId: "dial-am", segId: "segments-am", needleId: "needle-am",
+    centerTimeId: "center-time-am", centerSubId: "center-sub-am",
+    slotOffset: 0, slotsInView: SLOTS / 2,
+  }),
+  pm: createDialEngine({
+    svgId: "dial-pm", segId: "segments-pm", needleId: "needle-pm",
+    centerTimeId: "center-time-pm", centerSubId: "center-sub-pm",
+    slotOffset: SLOTS / 2, slotsInView: SLOTS / 2,
+  }),
+};
+
+const activeEngines = () => (settings.dialMode === "ampm" ? [dialEngines.am, dialEngines.pm] : [dialEngines.single]);
+
+function renderDial() {
+  for (const engine of activeEngines()) engine.render();
+}
+
+/** The pen name shown in the middle of the dial(s) — refreshed on its own
+ *  when only the active pen changed, without redrawing segments/needle. */
+function refreshCenters() {
+  for (const engine of activeEngines()) engine.renderCenter();
+}
+
+/** The clock-face upkeep a 30-second timer does: move the needle, refresh
+ *  the centre time. No data changed, so segments are left alone. */
+function refreshLive() {
+  for (const engine of activeEngines()) {
+    engine.renderNeedle();
+    engine.renderCenter();
+  }
+}
+
+/** Shows the wrap for the current dial layout and redraws it — the engine
+ *  that was hidden may be stale, since only the visible one re-renders on
+ *  every data change. */
+function applyDialMode() {
+  const twin = settings.dialMode === "ampm";
+  $("dial-wrap-single").hidden = twin;
+  $("dial-wrap-twin").hidden = !twin;
+  renderDial();
+}
 
 /* ---------- keyboard shortcuts ---------- */
 
@@ -364,14 +450,14 @@ window.addEventListener("keydown", (evt) => {
     if (cat?.enabled) {
       state.activePen = id;
       renderPens();
-      renderCenter();
+      refreshCenters();
     }
     return;
   }
   if (evt.key === "0" || evt.key.toLowerCase() === "e") {
     state.activePen = UNTRACKED;
     renderPens();
-    renderCenter();
+    refreshCenters();
   }
 });
 
@@ -398,7 +484,7 @@ function renderPens() {
     btn.addEventListener("click", () => {
       state.activePen = c.id;
       renderPens();
-      renderCenter();
+      refreshCenters();
     });
     pensEl.appendChild(btn);
   }
@@ -412,7 +498,7 @@ function renderPens() {
   eraser.addEventListener("click", () => {
     state.activePen = UNTRACKED;
     renderPens();
-    renderCenter();
+    refreshCenters();
   });
   pensEl.appendChild(eraser);
 }
@@ -772,7 +858,7 @@ function renderCategoryEditor() {
       c.name = input.value.trim() || c.name;
       persistCategories();
       renderPens();
-      renderCenter();
+      refreshCenters();
       renderSide();
       renderGoalsEditor();
     });
@@ -811,7 +897,7 @@ function renderCategoryEditor() {
       renderCategoryEditor();
       renderGoalsEditor();
       renderPens();
-      renderCenter();
+      refreshCenters();
       renderSide();
     });
 
@@ -866,6 +952,7 @@ function saveReminders() {
 function syncAppearanceInputs() {
   $("theme-select").value = settings.theme;
   $("time-format-select").value = settings.timeFormat;
+  $("dial-mode-select").value = settings.dialMode;
   $("week-start-select").value = String(settings.weekStart);
 }
 
@@ -874,11 +961,12 @@ function saveAppearance() {
     ...settings,
     theme: $("theme-select").value,
     timeFormat: $("time-format-select").value,
+    dialMode: $("dial-mode-select").value,
     weekStart: Number($("week-start-select").value),
   });
   persistSettings();
   applyTheme();
-  renderDial();
+  applyDialMode();
   renderStrip();
   toast("Appearance updated");
 }
@@ -1211,7 +1299,7 @@ function wireEvents() {
   }
 
   // ---- appearance ----
-  for (const id of ["theme-select", "time-format-select", "week-start-select"]) {
+  for (const id of ["theme-select", "time-format-select", "dial-mode-select", "week-start-select"]) {
     $(id).addEventListener("change", saveAppearance);
   }
 
@@ -1253,7 +1341,12 @@ async function boot() {
   const version = chrome.runtime.getManifest().version;
   $("version").textContent = `v${version}`;
   $("about-version").textContent = `v${version}`;
-  renderTicks();
+
+  renderTicksInto($("ticks"), 24, pad2);
+  const clockFaceLabel = (h) => (h === 0 ? "12" : String(h));
+  renderTicksInto($("ticks-am"), 12, clockFaceLabel);
+  renderTicksInto($("ticks-pm"), 12, clockFaceLabel);
+
   wireEvents();
 
   await loadAll();
@@ -1269,12 +1362,10 @@ async function boot() {
   renderCategoryEditor();
   renderGoalsEditor();
   renderAboutBests();
+  applyDialMode();
   renderAll();
 
-  setInterval(() => {
-    renderNeedle();
-    renderCenter();
-  }, 30_000);
+  setInterval(refreshLive, 30_000);
 }
 
 boot();

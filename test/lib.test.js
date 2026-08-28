@@ -123,6 +123,10 @@ test("normalizeSettings validates appearance, goals, and recap fields", () => {
   assert.equal(normalizeSettings({ timeFormat: "12h" }).timeFormat, "12h");
   assert.equal(normalizeSettings({ timeFormat: "nonsense" }).timeFormat, "24h");
 
+  assert.equal(normalizeSettings(null).dialMode, "24h");
+  assert.equal(normalizeSettings({ dialMode: "ampm" }).dialMode, "ampm");
+  assert.equal(normalizeSettings({ dialMode: "nonsense" }).dialMode, "24h");
+
   assert.equal(normalizeSettings({ weekStart: 1 }).weekStart, 1);
   assert.equal(normalizeSettings({ weekStart: 5 }).weekStart, 0, "only 0 or 1 are valid");
 
@@ -198,6 +202,36 @@ test("fillRange does not mutate its input", () => {
   const before = blank();
   fillRange(before, 10, 20, 0);
   assert.ok(before.every((v) => v === UNTRACKED));
+});
+
+/* ---------- AM/PM half-dial (a 48-slot window instead of the full 96) ---------- */
+
+test("slotFromAngle scales to a smaller window, e.g. a 48-slot half-dial", () => {
+  assert.equal(slotFromAngle(0, 48), 0);
+  assert.equal(slotFromAngle(180, 48), 24);
+  assert.equal(slotFromAngle(359.99, 48), 47);
+  assert.equal(slotFromAngle(360, 48), 47, "clamped");
+});
+
+test("computeRuns and runAt operate on whatever window they're given, not always all 96 slots", () => {
+  const half = new Array(48).fill(UNTRACKED);
+  half[10] = 0;
+  half[11] = 0;
+  const runs = computeRuns(half);
+  assert.deepEqual(runs, [{ cat: 0, start: 10, end: 12 }]);
+  assert.deepEqual(runAt(half, 10), { cat: 0, start: 10, end: 12 });
+});
+
+test("fillRange wraps within its own window, so a 48-slot half stays confined to that half", () => {
+  // Slot 46 → slot 2 is 4 slots forward within a 48-slot window, not 44 backward.
+  const half = new Array(48).fill(UNTRACKED);
+  const out = fillRange(half, 46, 2, 0);
+  const painted = out.filter((v) => v === 0).length;
+  assert.equal(painted, 5, "inclusive of both ends, wrapping at 48 rather than 96");
+  assert.equal(out[46], 0);
+  assert.equal(out[0], 0);
+  assert.equal(out[2], 0);
+  assert.equal(out[24], UNTRACKED, "the other side of the half untouched");
 });
 
 /* ---------- stats ---------- */

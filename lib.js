@@ -41,6 +41,7 @@ export const DEFAULT_SETTINGS = {
   times: ["13:00", "21:00"],
   theme: "system", // "system" | "light" | "dark"
   timeFormat: "24h", // "24h" | "12h"
+  dialMode: "24h", // "24h" | "ampm" — one 24-hour ring, or two 12-hour rings side by side
   weekStart: 0, // 0 = Sunday, 1 = Monday
   goals: {}, // { [categoryId]: targetMinutesPerDay }
   weeklyRecapOn: false,
@@ -137,6 +138,7 @@ export function normalizeSettings(saved) {
       : [...DEFAULT_SETTINGS.times];
   const theme = THEMES.includes(saved?.theme) ? saved.theme : DEFAULT_SETTINGS.theme;
   const timeFormat = saved?.timeFormat === "12h" ? "12h" : "24h";
+  const dialMode = saved?.dialMode === "ampm" ? "ampm" : "24h";
   const weekStart = saved?.weekStart === 1 ? 1 : 0;
   const weeklyRecapDay =
     Number.isInteger(saved?.weeklyRecapDay) && saved.weeklyRecapDay >= 0 && saved.weeklyRecapDay <= 6
@@ -150,6 +152,7 @@ export function normalizeSettings(saved) {
     times,
     theme,
     timeFormat,
+    dialMode,
     weekStart,
     goals: normalizeGoals(saved?.goals),
     weeklyRecapOn: saved?.weeklyRecapOn === true,
@@ -192,19 +195,25 @@ export function angleAt(x, y) {
   return { angle: (((raw + 90) % 360) + 360) % 360, dist: Math.hypot(dx, dy) };
 }
 
-export const slotFromAngle = (angle) => Math.min(SLOTS - 1, Math.floor(angle / DEG_PER_SLOT));
+/** `slotsInView` lets the same math drive a 48-slot half-dial (AM/PM mode)
+ *  as well as the default 96-slot full dial. */
+export const slotFromAngle = (angle, slotsInView = SLOTS) =>
+  Math.min(slotsInView - 1, Math.floor(angle / (360 / slotsInView)));
 
-/** Collapse consecutive same-category slots into runs, one wedge per run. */
+/** Collapse consecutive same-category slots into runs, one wedge per run.
+ *  Operates on whatever array it's given — the full day, or a 48-slot half —
+ *  so the caller decides what window it represents. */
 export function computeRuns(slots) {
+  const n = slots.length;
   const runs = [];
   let i = 0;
-  while (i < SLOTS) {
+  while (i < n) {
     if (slots[i] === UNTRACKED) {
       i++;
       continue;
     }
     let j = i;
-    while (j < SLOTS && slots[j] === slots[i]) j++;
+    while (j < n && slots[j] === slots[i]) j++;
     runs.push({ cat: slots[i], start: i, end: j });
     i = j;
   }
@@ -218,21 +227,24 @@ export function runAt(slots, idx) {
   let s = idx;
   let e = idx;
   while (s > 0 && slots[s - 1] === cat) s--;
-  while (e < SLOTS - 1 && slots[e + 1] === cat) e++;
+  while (e < slots.length - 1 && slots[e + 1] === cat) e++;
   return { cat, start: s, end: e + 1 };
 }
 
-/** Paint from→to the short way round, so a drag across midnight fills the
- *  stretch you dragged over rather than the 22 hours the other way. Returns a
- *  new array; the caller decides whether to keep it. */
+/** Paint from→to the short way round, so a drag across midnight (or across a
+ *  half-dial's own 12-hour wrap point) fills the stretch you dragged over
+ *  rather than the long way round. Wraps within `slots.length`, so a 48-slot
+ *  half fed in stays confined to its own half. Returns a new array; the
+ *  caller decides whether to keep it. */
 export function fillRange(slots, from, to, cat) {
+  const n = slots.length;
   const next = [...slots];
-  const forward = (to - from + SLOTS) % SLOTS;
-  const backward = SLOTS - forward;
+  const forward = (to - from + n) % n;
+  const backward = n - forward;
   if (forward <= backward) {
-    for (let i = 0; i <= forward; i++) next[(from + i) % SLOTS] = cat;
+    for (let i = 0; i <= forward; i++) next[(from + i) % n] = cat;
   } else {
-    for (let i = 0; i <= backward; i++) next[((from - i) % SLOTS + SLOTS) % SLOTS] = cat;
+    for (let i = 0; i <= backward; i++) next[((from - i) % n + n) % n] = cat;
   }
   return next;
 }
