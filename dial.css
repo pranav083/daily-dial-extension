@@ -339,7 +339,9 @@ input[type="time"]:focus-visible {
 .cat-bar-row .name { flex: none; width: 92px; font-size: 0.78rem; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
 .cat-bar-row .name .sw { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .cat-bar-row .track { flex: 1; height: 8px; border-radius: 999px; background: var(--ring-track); overflow: hidden; }
-.cat-bar-row .fill { height: 100%; border-radius: 999px; }
+/* display:block matters: the fill is a <span>, and an inline element ignores
+   width and height, so every bar rendered 0px wide however it was styled. */
+.cat-bar-row .fill { display: block; height: 100%; border-radius: 999px; }
 .cat-bar-row .dur { flex: none; width: 54px; text-align: right; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
 .cat-bar-row.untracked .fill { background: var(--ink-muted); opacity: 0.45; }
 
@@ -597,7 +599,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 .goal-row .name { flex: none; width: 92px; font-size: 0.78rem; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
 .goal-row .name .sw { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .goal-row .track { flex: 1; height: 8px; border-radius: 999px; background: var(--ring-track); overflow: hidden; }
-.goal-row .fill { height: 100%; border-radius: 999px; }
+.goal-row .fill { display: block; height: 100%; border-radius: 999px; }
 .goal-row .amount { flex: none; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted); white-space: nowrap; }
 .goal-row .met { color: var(--status-good); font-weight: 700; }
 
