@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Daily Dial</title>
+  <link rel="stylesheet" href="dial.css">
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="wordmark">Daily Dial<span id="version">Time &amp; focus log</span></div>
+      <div class="datenav">
+        <button id="prev-day" aria-label="Previous day">‹</button>
+        <span class="label" id="date-label">Today</span>
+        <button id="next-day" aria-label="Next day">›</button>
+        <button class="today-jump" id="today-jump" hidden>Today</button>
+      </div>
+    </div>
+
+    <div class="strip" id="strip"></div>
+
+    <div class="grid">
+      <div class="dial-card">
+        <div class="dial-wrap">
+          <svg id="dial" viewBox="0 0 460 460" role="img" aria-label="24-hour activity dial">
+            <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
+            <g id="segments"></g>
+            <g id="ticks"></g>
+            <g id="needle"></g>
+            <text id="center-time" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
+            <text id="center-sub" class="center-sub" x="230" y="244" text-anchor="middle">pick a category</text>
+          </svg>
+          <div id="tooltip"></div>
+        </div>
+        <div class="pens" id="pens"></div>
+        <p class="hint">Click or drag around the ring to paint time · <kbd>⌘Z</kbd> undoes a stroke</p>
+      </div>
+
+      <div class="side-card">
+        <div>
+          <p class="section-label">Today's read</p>
+          <div class="stat-row">
+            <div class="stat"><div class="v" id="stat-tracked">0h 0m</div><div class="l">Tracked</div></div>
+            <div class="stat"><div class="v" id="stat-productive">—</div><div class="l">Productive</div></div>
+            <div class="stat"><div class="v" id="stat-focus">0m</div><div class="l">Longest focus</div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="score-top">
+            <span class="score-val" id="score-val">—</span>
+            <span class="score-badge muted" id="score-badge"><span class="dot"></span><span id="score-badge-text">No data yet</span></span>
+          </div>
+          <div class="meter"><div class="meter-fill" id="meter-fill" style="width:50%"></div></div>
+        </div>
+
+        <p class="insight" id="insight">Nothing logged yet. Pick a category and drag around the ring to paint your first block.</p>
+
+        <div>
+          <p class="section-label">Where the time went</p>
+          <div class="cat-bars" id="cat-bars"></div>
+        </div>
+
+        <div>
+          <p class="section-label">Why (a line is enough)</p>
+          <label for="reflection" style="position:absolute;left:-9999px;">Reflection</label>
+          <textarea id="reflection" placeholder="What made today click — or drag?"></textarea>
+        </div>
+
+        <div class="footer-actions">
+          <button class="ghost-btn" id="toggle-categories" aria-expanded="false">Edit categories</button>
+          <button class="ghost-btn" id="toggle-reminders" aria-expanded="false">Reminders</button>
+          <button class="ghost-btn" id="export-csv">Export CSV</button>
+          <button class="ghost-btn danger" id="clear-day">Clear day</button>
+        </div>
+
+        <div class="editor" id="cat-editor">
+          <div id="cat-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
+          <p class="editor-note">
+            <b>+</b> counts toward your score, <b>·</b> is neutral, <b>–</b> counts against it.
+            The circle button hides a category you don't use.
+          </p>
+        </div>
+
+        <div class="editor" id="reminder-editor">
+          <div class="reminder-row">
+            <label for="reminders-on">Remind me to log</label>
+            <input type="checkbox" id="reminders-on">
+          </div>
+          <div class="reminder-row">
+            <label for="reminder-1">Midday nudge</label>
+            <input type="time" id="reminder-1" value="13:00">
+          </div>
+          <div class="reminder-row">
+            <label for="reminder-2">Evening wrap-up</label>
+            <input type="time" id="reminder-2" value="21:00">
+          </div>
+          <p class="editor-note">
+            Notifications only fire while Chrome is running. The evening one tells you how much
+            of the day is still unlogged.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="dial.js"></script>
+</body>
+</html>
