@@ -182,7 +182,7 @@ Displays the two optional daily reminders described above. Notifications appear 
 
 **`identity`**
 ```
-Used only if the user opts into the optional Google Drive backup feature in Settings → Data. Lets the user sign in with their own Google account (via Chrome's identity API, which handles the OAuth flow — the extension never sees the user's password) so their backup can be written to a private, app-only folder in their own Drive. Not used for anything else, and never triggers a sign-in prompt on its own.
+Used only if the user opts into the optional Google Drive backup feature in Settings → Data. Lets the user sign in with their own Google account (via Chrome's identity API, which handles the OAuth flow — the extension never sees the user's password) so their backup can be written to a private, app-only folder in their own Drive. The OAuth request also asks for the account's email address (the userinfo.email scope) so the extension can show the user, locally in Settings, which Google account is currently connected — nothing else about the profile is requested, and the email is never transmitted anywhere or included in a backup. Not used for anything else, and never triggers a sign-in prompt on its own.
 ```
 
 **Host permissions**
@@ -210,13 +210,20 @@ set to **Yes**, since the form asks about capability, not whether a given
 installer has opted in. What's transmitted is exactly the user's own logged
 time blocks, category names, and settings — sent only after the user signs
 in and clicks Back Up, only to a Google Drive folder in their own account.
-None of it is personally-identifying beyond what the user chose to type into
-a reflection note. It doesn't cleanly match any of Google's listed
-categories (personally identifiable information, health, financial,
-authentication, personal communications, location, web history, user
-activity) — this is closest to none of them, but confirm against the
-dashboard's current category descriptions at submission time rather than
-trusting this note, since Google revises that list independently of this repo.
+
+As of the account-email feature (v1.14.0), the extension also **reads** the
+connected account's email address back from Google — for local display only
+in Settings → Data, never transmitted onward, never stored in a backup. This
+tips "personally identifiable information" from "doesn't apply" to "probably
+does": an email address is one of Google's own listed examples of PII, and
+the honest answer is that this extension now has it, even though it never
+leaves the user's device. Tick **personally identifiable information** for
+that reason. The logged time/category/settings data still doesn't cleanly
+match any of the *other* listed categories (health, financial, authentication,
+personal communications, location, web history, user activity) — but confirm
+both answers against the dashboard's current category descriptions at
+submission time rather than trusting this note, since Google revises that
+list independently of this repo.
 
 Still applicable regardless of how the category question is answered:
 
@@ -256,7 +263,7 @@ This is an open-source, local-first time logging tool. The complete source is at
 
 By default the extension makes no network requests. It declares no host permissions, runs no content scripts, and bundles all assets (including fonts) locally. All user data stays in chrome.storage.local on the user's own device unless the user explicitly opts into the one optional feature below.
 
-That feature is Google Drive backup (Settings → Data), off until the user signs in and clicks "Back up to Google Drive". It writes the user's backup to a private, app-only folder in their own Drive (the appDataFolder space, invisible in their regular Drive and unreachable by any other app), using the drive.appdata OAuth scope, which cannot see or touch any other file. Sign-in goes through Chrome's own identity API, so the extension never handles the user's Google password. Disconnecting revokes access; a separate "Delete Drive backup" action removes the file itself.
+That feature is Google Drive backup (Settings → Data), off until the user signs in and clicks "Back up to Google Drive". It writes the user's backup to a private, app-only folder in their own Drive (the appDataFolder space, invisible in their regular Drive and unreachable by any other app), using the drive.appdata OAuth scope, which cannot see or touch any other file. The OAuth request also includes the narrow userinfo.email scope, used only to display which Google account is currently connected in Settings → Data — the address is read once per connection, shown locally, and never transmitted anywhere else or included in a backup. Sign-in goes through Chrome's own identity API, so the extension never handles the user's Google password. Disconnecting revokes access; a separate "Delete Drive backup" action removes the file itself.
 
 The five permissions requested are storage and unlimitedStorage (to save the user's logged days locally), alarms and notifications (for two optional daily reminders that the user turns on and schedules themselves), and identity (only exercised if the user turns on Google Drive backup).
 

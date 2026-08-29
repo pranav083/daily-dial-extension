@@ -8,6 +8,24 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.14.1] — 2026-08-29
+
+### Fixed
+
+- **The Chrome Web Store name never actually changed.** The name decided
+  earlier this session ("Daily Dial – Time Tracker & Focus") had only been
+  written into the submission planning doc, not `manifest.json` — and the
+  Store, `chrome://extensions`, and every notification title all read the
+  name from the manifest, not from a doc. The in-app wordmark stays plain
+  "Daily Dial", as intended; only the manifest's store-facing name changes.
+- The Store submission doc's permission justifications and review notes
+  still only described the `drive.appdata` scope — stale since v1.14.0 added
+  `userinfo.email` to show the connected account. Both now mention it, and
+  the data-usage guidance now flags that "personally identifiable
+  information" likely needs to be ticked, since an email address is one of
+  Google's own listed examples of PII, even though it's never transmitted
+  anywhere beyond local display.
+
 ## [1.14.0] — 2026-08-29
 
 ### Added
