@@ -56,8 +56,9 @@
     <div class="stale-banner" id="stale-banner" hidden role="alert">
       <span class="stale-banner-mark">⚠️</span>
       <span class="stale-banner-text">
-        <b>Another tab changed your data.</b> Editing is paused here so this
-        tab can't overwrite it. Reload to pick up the newer version.
+        <b>Another tab changed <span id="stale-banner-what">your data</span>.</b>
+        Editing is paused here so this tab can't overwrite it. Reload to pick
+        up the newer version.
       </span>
       <button type="button" class="stale-banner-reload" id="stale-banner-reload">Reload</button>
     </div>
@@ -69,7 +70,15 @@
       <button class="icon-btn" id="backup-nudge-dismiss" aria-label="Dismiss" title="Hide until next time">✕</button>
     </div>
 
-    <div class="strip" id="strip" title="The last seven days. Bar height is that day's score; click one to view or edit it."></div>
+    <!-- The strip showed bare day numbers with nothing to say which month
+         they belonged to, which is ambiguous at every month boundary. -->
+    <div class="strip-wrap">
+      <div class="strip-header">
+        <span class="strip-month" id="strip-month"></span>
+        <span class="strip-hint">Last 7 days · click one to open it</span>
+      </div>
+      <div class="strip" id="strip" title="The last seven days. Bar height is that day's score; click one to view or edit it."></div>
+    </div>
 
     <div class="grid">
       <div class="dial-card">

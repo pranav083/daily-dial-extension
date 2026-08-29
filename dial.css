@@ -188,6 +188,10 @@ body {
 }
 
 /* ---- 7-day strip ---- */
+.strip-wrap { display: flex; flex-direction: column; gap: 6px; }
+.strip-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 2px; }
+.strip-month { font-size: 0.8rem; font-weight: 700; color: var(--ink-2); }
+.strip-hint { font-size: 0.72rem; color: var(--ink-muted); }
 .strip {
   display: flex;
   gap: 8px;
@@ -772,7 +776,10 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   border-radius: 16px;
   width: 100%;
   max-width: 560px;
-  max-height: min(680px, 90vh);
+  /* A fixed height, not a max: the tabs hold very different amounts of
+     content, and sizing to each one made the dialog jump every time you
+     switched. It stays put and the body scrolls instead. */
+  height: min(680px, 90vh);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -808,7 +815,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 .settings-tabs .tab:hover { color: var(--ink); }
 .settings-tabs .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 .settings-tabs .tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
-.settings-body { padding: 16px 18px 20px; overflow-y: auto; }
+.settings-body { padding: 16px 18px 20px; overflow-y: auto; flex: 1; }
 .settings-section { display: none; flex-direction: column; gap: 8px; }
 .settings-section.active { display: flex; }
 

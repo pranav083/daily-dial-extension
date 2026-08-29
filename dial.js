@@ -144,9 +144,11 @@ const getDay = (key) => days.get(key) ?? emptyDay();
    reconcile. */
 let tabIsStale = false;
 
-function markTabStale() {
+function markTabStale(what) {
   if (tabIsStale) return;
   tabIsStale = true;
+  console.warn("Daily Dial: another tab changed", what, "— editing paused here.");
+  $("stale-banner-what").textContent = what;
   $("stale-banner").hidden = false;
   document.body.classList.add("is-stale");
   closeSettings();
@@ -163,7 +165,20 @@ function markTabStale() {
 const ownWrites = new Map();
 
 const REMOVED = "\u0000removed";
-const serializeValue = (v) => (v === undefined ? REMOVED : JSON.stringify(v));
+
+/** Key-order-independent serialization. Plain JSON.stringify would call two
+ *  structurally identical objects different if their keys were inserted in a
+ *  different order — a difference that means nothing here, and which would
+ *  surface as a phantom conflict. */
+function stableStringify(v) {
+  if (v === undefined) return REMOVED;
+  if (v === null || typeof v !== "object") return JSON.stringify(v) ?? "null";
+  if (Array.isArray(v)) return `[${v.map(stableStringify).join(",")}]`;
+  const keys = Object.keys(v).sort();
+  return `{${keys.map((k) => `${JSON.stringify(k)}:${stableStringify(v[k])}`).join(",")}}`;
+}
+
+const serializeValue = stableStringify;
 
 function recordOwnWrite(keys, removal = false) {
   const entries = removal
@@ -188,30 +203,80 @@ function removeLocal(keys) {
   return chrome.storage.local.remove(keys);
 }
 
-/** True when a change came from somewhere else, rather than echoing one of
- *  our own writes back at us. */
-function isForeignChange(changes) {
+/** True when this change is one of our own writes echoing back. Consumes the
+ *  match, along with anything staler for that key — events arrive in write
+ *  order, so earlier entries will never be matched now. */
+function isOwnWrite(key, newValue) {
+  const list = ownWrites.get(key);
+  if (!list) return false;
+  const i = list.indexOf(serializeValue(newValue));
+  if (i === -1) return false;
+  list.splice(0, i + 1);
+  if (list.length === 0) ownWrites.delete(key);
+  return true;
+}
+
+/** Whether our in-memory copy already agrees with what landed. A second
+ *  signal on top of the write log: if the value matches what we hold, there
+ *  is nothing to lose regardless of who wrote it, so it can never be worth
+ *  freezing over. */
+function alreadyMatchesMemory(key, newValue) {
+  let mine;
+  if (key.startsWith(DAY_PREFIX)) mine = days.get(key.slice(DAY_PREFIX.length));
+  else if (key === CATEGORIES_KEY) mine = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
+  else if (key === SETTINGS_KEY) mine = settings;
+  else if (key === SAMPLE_DAY_KEYS_KEY) mine = sampleDayKeys;
+  else return false;
+  return serializeValue(newValue) === serializeValue(mine);
+}
+
+/**
+ * Freezing on *any* write from elsewhere was far too blunt: it stopped the
+ * tab over changes that couldn't cost anything, and any write path that
+ * slipped past the log froze a perfectly healthy tab mid-edit.
+ *
+ * Only two things can actually be lost here, because they're the only things
+ * this tab writes wholesale: the day currently on screen, and the shared
+ * settings/categories. A change to any *other* day is simply adopted — two
+ * tabs sitting on different days now work rather than fighting.
+ */
+function onStorageChanged(changes, area) {
+  if (area !== "local" || tabIsStale) return;
+  const viewedKey = DAY_PREFIX + dateKey(state.viewDate);
+  let adopted = false;
+  let conflict = null;
+
   for (const [key, { newValue }] of Object.entries(changes)) {
-    const list = ownWrites.get(key);
-    const serialized = serializeValue(newValue);
-    const i = list ? list.indexOf(serialized) : -1;
-    if (i !== -1) {
-      // Ours. Drop it and everything staler for this key — events arrive in
-      // write order, so anything before it will never be matched.
-      list.splice(0, i + 1);
-      if (list.length === 0) ownWrites.delete(key);
+    if (isOwnWrite(key, newValue) || alreadyMatchesMemory(key, newValue)) continue;
+
+    if (key.startsWith(DAY_PREFIX)) {
+      if (key === viewedKey) {
+        conflict = `the day you're looking at`;
+        continue;
+      }
+      const dayKey = key.slice(DAY_PREFIX.length);
+      if (newValue === undefined) days.delete(dayKey);
+      else days.set(dayKey, normalizeDay(newValue));
+      adopted = true;
       continue;
     }
-    return true;
+    if (key === CATEGORIES_KEY) conflict = "your categories";
+    else if (key === SETTINGS_KEY) conflict = "your settings";
+    else if (key === SAMPLE_DAY_KEYS_KEY) conflict = "demo mode";
+    // Anything else is bookkeeping this tab can't clobber — ignore it.
   }
-  return false;
+
+  if (adopted && !conflict) {
+    renderStrip();
+    renderStreak();
+    renderAboutBests();
+    refreshCurrentView();
+  }
+  if (conflict) markTabStale(conflict);
 }
 
 function watchForOtherTabs() {
-  chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== "local" || tabIsStale) return;
-    if (isForeignChange(changes)) markTabStale();
-  });
+  chrome.storage.onChanged.addListener(onStorageChanged);
 }
 
 function persistDay() {
@@ -1302,6 +1367,18 @@ function renderStrip() {
   const stripEl = $("strip");
   stripEl.replaceChildren();
   const today = new Date();
+
+  // Name the month(s) the seven days fall in — "24–30" alone doesn't say
+  // which month, and at a boundary the strip spans two.
+  const first = new Date(today);
+  first.setDate(first.getDate() - 6);
+  const monthOf = (d) => new Intl.DateTimeFormat(undefined, { month: "long" }).format(d);
+  $("strip-month").textContent =
+    first.getMonth() === today.getMonth()
+      ? `${monthOf(today)} ${today.getFullYear()}`
+      : first.getFullYear() === today.getFullYear()
+        ? `${monthOf(first)} – ${monthOf(today)} ${today.getFullYear()}`
+        : `${monthOf(first)} ${first.getFullYear()} – ${monthOf(today)} ${today.getFullYear()}`;
 
   for (let offset = -6; offset <= 0; offset++) {
     const d = new Date(today);

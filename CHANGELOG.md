@@ -8,6 +8,30 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.12.1] — 2026-08-29
+
+### Fixed
+
+- **Editing still froze the tab, claiming another tab had changed the data.**
+  The previous attempt fixed one cause; the guard itself was the deeper
+  problem. It froze on *any* write it hadn't recorded, so a single missed
+  write path — or two structurally identical objects whose keys happened to
+  be in a different order — stopped a perfectly healthy tab mid-edit. It's
+  now narrowed to what can actually be lost: only the day currently on
+  screen, and the shared settings and categories, are worth freezing over.
+  A change to any other day is simply adopted, so two tabs sitting on
+  different days now work together instead of fighting. Comparisons ignore
+  key order, and the banner names what actually conflicted.
+- **The Settings dialog resized every time you switched tabs**, because it
+  sized itself to whichever tab was showing and they hold very different
+  amounts. It now keeps one height and scrolls its body.
+
+### Added
+
+- **The week strip says which month it's showing.** It listed bare day
+  numbers, which is ambiguous at any month boundary — and it names both
+  months when the seven days span two.
+
 ## [1.12.0] — 2026-08-29
 
 ### Added
