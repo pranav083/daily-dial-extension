@@ -8,6 +8,16 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.12.2] — 2026-08-29
+
+### Fixed
+
+- **The keyboard cursor stopped dead at midnight instead of going round.**
+  The ring is a circle, so hitting an invisible wall at the top read as the
+  cursor being stuck. Arrows now run round and round in either direction,
+  and a selection can cross midnight — it draws as two arcs and paints both
+  sides as one block, matching what a mouse drag across the top already did.
+
 ## [1.12.1] — 2026-08-29
 
 ### Fixed

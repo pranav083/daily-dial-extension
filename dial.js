@@ -602,46 +602,68 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   let caret = null;      // slot the cursor sits on, local to this view
   let caretAnchor = null; // where a Shift-selection started
 
+  /**
+   * The cursor wraps rather than stopping at midnight: the ring is a circle,
+   * so hitting an invisible wall at the top read as the cursor being stuck.
+   * Arrows now run round and round in either direction.
+   *
+   * A wrapped selection is expressed as a start plus a length rather than
+   * from/to, since `to` can be less than `from` once it crosses the top.
+   * Which way round a Shift-selection goes is decided the same way the mouse
+   * decides it — the shorter arc — so both input methods behave alike.
+   */
   function caretRange() {
     if (caret === null) return null;
-    const from = Math.min(caret, caretAnchor ?? caret);
-    const to = Math.max(caret, caretAnchor ?? caret) + 1;
-    return { from, to };
+    const anchor = caretAnchor ?? caret;
+    const n = slotsInView;
+    const forward = (caret - anchor + n) % n;
+    const backward = (anchor - caret + n) % n;
+    return forward <= backward
+      ? { from: anchor, len: forward + 1 }
+      : { from: caret, len: backward + 1 };
   }
+
+  const rangeSlots = (range) =>
+    Array.from({ length: range.len }, (_, k) => (range.from + k) % slotsInView);
 
   function renderCaret() {
     caretLayer.replaceChildren();
     const range = caretRange();
     if (range === null) return;
     const per = 360 / slotsInView;
-    caretLayer.appendChild(
-      svgEl("path", {
-        class: "caret-band",
-        d: wedgePath(R_IN - 3, R_OUT + 3, range.from * per, range.to * per),
-      })
-    );
+    const end = range.from + range.len;
+    // Drawn as two arcs when it crosses the top, since one path can't.
+    const spans = end <= slotsInView
+      ? [[range.from, end]]
+      : [[range.from, slotsInView], [0, end - slotsInView]];
+    for (const [a, b] of spans) {
+      caretLayer.appendChild(
+        svgEl("path", { class: "caret-band", d: wedgePath(R_IN - 3, R_OUT + 3, a * per, b * per) })
+      );
+    }
   }
 
   function announceCaret() {
     const range = caretRange();
     if (!range) return;
-    const g = (i) => fmtSlotClock(slotOffset + i);
+    const g = (i) => fmtSlotClock(slotOffset + (i % slotsInView));
     const sub = localSlice();
-    const cat = sub[range.from];
-    const same = sub.slice(range.from, range.to).every((v) => v === cat);
-    const what = same ? nameOf(cat) : "mixed";
-    announce(`${g(range.from)} to ${g(range.to)}, ${what}`);
+    const slots = rangeSlots(range);
+    const cat = sub[slots[0]];
+    const what = slots.every((i) => sub[i] === cat) ? nameOf(cat) : "mixed";
+    announce(`${g(range.from)} to ${g(range.from + range.len)}, ${what}`);
   }
 
   function moveCaret(delta, extend) {
-    if (caret === null) caret = slotsInView > 48 ? 32 : 0; // 08:00 on the full ring
-    else caret = Math.max(0, Math.min(slotsInView - 1, caret + delta));
+    const n = slotsInView;
+    if (caret === null) caret = n > 48 ? 32 : 0; // 08:00 on the full ring
+    else caret = ((caret + delta) % n + n) % n;
     if (!extend) caretAnchor = caret;
     else if (caretAnchor === null) caretAnchor = caret;
     renderCaret();
     announceCaret();
     const r = caretRange();
-    if (r) setSelection(slotOffset + r.from, slotOffset + r.to);
+    if (r) setSelection(slotOffset + r.from, slotOffset + r.from + r.len);
   }
 
   function commitCaret(cat) {
@@ -651,13 +673,13 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     checkDayRollover();
     pushUndo();
     const sub = localSlice();
-    for (let i = range.from; i < range.to; i++) sub[i] = cat;
+    for (const i of rangeSlots(range)) sub[i] = cat;
     writeSlice(sub);
     render();
     renderCaret();
     onStrokeEnd();
-    const g = (i) => fmtSlotClock(slotOffset + i);
-    announce(`${nameOf(cat)} set for ${g(range.from)} to ${g(range.to)}`);
+    const g = (i) => fmtSlotClock(slotOffset + (i % slotsInView));
+    announce(`${nameOf(cat)} set for ${g(range.from)} to ${g(range.from + range.len)}`);
   }
 
   svgNode.addEventListener("focus", () => {
@@ -690,6 +712,8 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
       if (!evt.shiftKey) caretAnchor = caret;
       renderCaret();
       announceCaret();
+      const r = caretRange();
+      if (r) setSelection(slotOffset + r.from, slotOffset + r.from + r.len);
       return;
     }
     if (evt.key === "Enter" || evt.key === " ") {

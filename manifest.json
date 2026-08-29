@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Daily Dial",
-  "version": "1.12.1",
+  "version": "1.12.2",
   "description": "Paint your day on a 24-hour dial, then see whether the time went where you meant it to.",
   "permissions": ["storage", "unlimitedStorage", "alarms", "notifications", "identity"],
   "background": {
