@@ -130,8 +130,12 @@ const getDay = (key) => days.get(key) ?? emptyDay();
 function persistDay() {
   const key = dateKey(state.viewDate);
   const data = { slots: state.slots, reflection: state.reflection };
+  const wasEmpty = days.size === 0;
   days.set(key, data);
   chrome.storage.local.set({ [DAY_PREFIX + key]: data }).catch(reportStorageFailure);
+  // The first block ever painted is exactly when the "paint your first
+  // block" hint stops being true, so it retires itself here.
+  if (wasEmpty) renderFirstRunHint();
 }
 
 const persistCategories = () =>
@@ -1341,33 +1345,44 @@ function applyImport(mode) {
 
 /* ---------- sample data (demo mode) ---------- */
 
-/** "Load" only makes sense before there's any real data — once anything
- *  real exists, offering to overwrite it with fake days risks real
- *  confusion for no real benefit. "Clear" only makes sense once sample data
- *  is actually the thing currently loaded. */
+/** Demo mode is a two-way door. It used to be offered only while `days` was
+ *  completely empty, which meant that after painting a single real block you
+ *  could never see the demo again — the most common way people ask for it
+ *  ("show me what this looks like full") was exactly the one that couldn't
+ *  be answered. It's now always available, made safe by only ever writing
+ *  into dates that hold no real day (see loadSampleData), so entering and
+ *  leaving it can never cost you anything you logged yourself. */
 function renderSampleDataUI() {
-  const offerable = days.size === 0;
   const active = sampleDayKeys.length > 0;
-  // Once real data exists and sample data was never loaded, this whole
-  // block has nothing useful to say — showing the section label and blurb
-  // with no reachable button under it read as broken, not just inactive.
-  $("sample-data-block").hidden = !offerable && !active;
-  $("load-sample-data").hidden = !offerable;
+  $("sample-data-block").hidden = false;
+  $("load-sample-data").hidden = active;
   $("clear-sample-data").hidden = !active;
   $("sample-data-note").textContent = active
-    ? "Loaded. Check History for the heatmap and trends, or clear it below whenever you're ready to log for real."
-    : "See how History, streaks, and goals look with three weeks of varied (fake) days, before you've logged anything of your own.";
+    ? "Demo mode is on. Sample days fill only dates you hadn't logged — leaving it removes exactly those, and nothing of yours."
+    : "See how History, streaks, and goals look with three weeks of varied (fake) days. Your own days are left as they are.";
+  renderDemoBanner();
+}
+
+/** The banner is the only thing distinguishing a demo streak from a real
+ *  one at a glance, so it follows the data, not the view. */
+function renderDemoBanner() {
+  $("demo-banner").hidden = sampleDayKeys.length === 0;
 }
 
 function loadSampleData() {
-  if (days.size > 0) return; // the button is hidden in this case, but don't trust that alone
+  if (sampleDayKeys.length > 0) return; // already on; the button is hidden, but don't trust that alone
   const sample = buildSampleDays(new Date());
   const toSet = {};
+  const claimed = [];
+  // Real days win every collision. Demo mode is meant to illustrate, never
+  // to overwrite — so it fills the gaps around your data instead.
   for (const [key, day] of sample) {
+    if (days.has(key)) continue;
     days.set(key, day);
     toSet[DAY_PREFIX + key] = day;
+    claimed.push(key);
   }
-  sampleDayKeys = [...sample.keys()];
+  sampleDayKeys = claimed;
   toSet[SAMPLE_DAY_KEYS_KEY] = sampleDayKeys;
   chrome.storage.local.set(toSet).catch(reportStorageFailure);
 
@@ -1377,7 +1392,12 @@ function loadSampleData() {
   renderAboutBests();
   refreshCurrentView();
   renderSampleDataUI();
-  toast("Loaded sample data — see History, or clear it below");
+  renderFirstRunHint();
+  toast(
+    claimed.length
+      ? "Demo mode on — sample days added around your own"
+      : "Every day in the sample range is already yours — nothing to add"
+  );
 }
 
 function clearSampleData() {
@@ -1394,7 +1414,8 @@ function clearSampleData() {
   renderAboutBests();
   refreshCurrentView();
   renderSampleDataUI();
-  toast("Sample data cleared");
+  renderFirstRunHint();
+  toast("Demo mode off — your own days are untouched");
 }
 
 /* ---------- google drive backup ---------- */
@@ -1551,10 +1572,10 @@ function closeSettings() {
 
 function showOnboarding() {
   $("onboarding-overlay").hidden = false;
-  // Only a real offer the first time (or a replay before anything's been
-  // logged) — once real data exists, loadSampleData() would no-op anyway,
-  // same as the equivalent link in Settings → About.
-  $("onboarding-sample-link-wrap").hidden = days.size > 0;
+  // Demo mode fills only unlogged dates now, so this offer stays honest at
+  // any point in an account's life — it's hidden only while demo mode is
+  // already on, when the action would be a no-op.
+  $("onboarding-sample-link-wrap").hidden = sampleDayKeys.length > 0;
   $("onboarding-overlay").querySelector(".onboarding-panel").focus();
 }
 
@@ -1565,23 +1586,28 @@ function dismissOnboarding() {
   chrome.storage.local.set({ [ONBOARDING_SEEN_KEY]: true }).catch(reportStorageFailure);
 }
 
-/** "Let's start" closing into total silence reads as a dead end, whether
- *  or not there was a reason to skip the "go paint" nudge specifically —
- *  a click should never produce zero visible feedback. So this always
- *  toasts something; only the message adapts to whether *any* real data
- *  exists yet (same criterion the sample-data link uses) — not just
- *  whether today specifically is blank, which would wrongly greet someone
- *  who's used this for weeks but just hasn't painted yet today as if
- *  they'd never opened it before. Skip and clicking outside stay silent —
- *  both already mean "I don't need the help," and get to mean that. */
+/** A toast alone was the wrong instrument here: "Let's start" hands a brand
+ *  new user an empty dial, and a message that erases itself after 2.6s left
+ *  them staring at one with no idea what to touch. The durable half of the
+ *  handoff is the first-run hint pinned above the pens — the toast is now
+ *  just the acknowledgement that the click registered. */
 function dismissOnboardingAndNudge() {
   dismissOnboarding();
-  const neverUsed = days.size === 0;
+  renderFirstRunHint();
   toast(
-    neverUsed
+    days.size === 0
       ? "Pick a category below, then drag around the ring to paint"
       : "You're set — Settings (☰, top right) has categories, reminders, goals, and backup"
   );
+}
+
+/** Only for someone who has genuinely nothing logged — it disappears for
+ *  good the moment a first block lands, and demo mode counts as "something
+ *  on screen" too, since the dial is no longer bare. */
+let firstRunHintDismissed = false;
+
+function renderFirstRunHint() {
+  $("first-run-hint").hidden = firstRunHintDismissed || days.size > 0;
 }
 
 /* ---------- wiring ---------- */
@@ -1739,6 +1765,11 @@ function wireEvents() {
     showView("history");
   });
   $("history-empty-sample-data").addEventListener("click", loadSampleData);
+  $("demo-banner-exit").addEventListener("click", clearSampleData);
+  $("first-run-hint-dismiss").addEventListener("click", () => {
+    firstRunHintDismissed = true;
+    renderFirstRunHint();
+  });
 
   // ---- reminders + weekly recap ----
   for (const id of ["reminders-on", "reminder-1", "reminder-2", "weekly-recap-on", "weekly-recap-day", "weekly-recap-time"]) {
@@ -1846,7 +1877,10 @@ async function boot() {
   renderSampleDataUI();
   applyDialMode();
   renderAll();
-  if (!onboardingSeen) showOnboarding();
+  // Only after the overlay is dealt with: a returning user who never
+  // painted anything still gets the hint, but not stacked under a modal.
+  if (onboardingSeen) renderFirstRunHint();
+  else showOnboarding();
 
   setInterval(refreshLive, 30_000);
 }

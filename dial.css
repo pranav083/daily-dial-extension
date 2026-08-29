@@ -839,6 +839,59 @@ select {
   .streak-banner { order: 3; }
 }
 
+/* ---- demo mode banner ---- */
+/* Deliberately not the accent colour: this is a state warning, not a
+   feature highlight, and it has to stay legible above every view. */
+.demo-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in oklab, var(--status-warning) 14%, var(--panel));
+  border: 1px solid color-mix(in oklab, var(--status-warning) 45%, transparent);
+  border-radius: 12px;
+  padding: 9px 14px;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+.demo-banner[hidden] { display: none; }
+.demo-banner-mark { font-size: 1rem; line-height: 1; flex: none; }
+.demo-banner-text { flex: 1; color: var(--ink-2); }
+.demo-banner-text b { color: var(--ink); }
+.demo-banner-exit {
+  flex: none;
+  border: 1px solid color-mix(in oklab, var(--status-warning) 55%, transparent);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.demo-banner-exit:hover { background: color-mix(in oklab, var(--status-warning) 22%, transparent); }
+.demo-banner-exit:focus-visible { outline: 2px solid var(--status-warning); outline-offset: 2px; }
+
+/* ---- first-run hint ---- */
+/* Sits directly above the pens, because the pens are the thing the hint
+   is pointing at — a line in the stats column opposite them was too far
+   from the action to read as an instruction. */
+.first-run-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 0 10px;
+  padding: 8px 14px;
+  border: 1px dashed var(--accent);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+.first-run-hint[hidden] { display: none; }
+
 /* ---- onboarding (first run) ---- */
 .onboarding-panel {
   background: var(--panel);

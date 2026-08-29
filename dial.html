@@ -37,6 +37,18 @@
       </div>
     </div>
 
+    <!-- Sample data is indistinguishable from real data once rendered, so
+         while it's active this bar stays on screen across every view — the
+         only honest way to answer "is this streak mine or the demo's?" -->
+    <div class="demo-banner" id="demo-banner" hidden>
+      <span class="demo-banner-mark">🎬</span>
+      <span class="demo-banner-text">
+        <b>Demo mode</b> — the days below include sample data, not just yours.
+      </span>
+      <button type="button" class="demo-banner-exit" id="demo-banner-exit"
+              title="Removes exactly the sample days that were loaded. Anything you logged yourself is untouched.">Exit demo</button>
+    </div>
+
     <div class="view active" id="view-day">
     <div class="nudge-bar" id="backup-nudge" hidden>
       <span>You haven't backed up in a while — your data lives only in this browser.</span>
@@ -96,6 +108,15 @@
         </div>
 
         <div id="tooltip"></div>
+
+        <!-- "Let's start" used to close into an empty dial with only a
+             2.6s toast, which read as nothing having happened. This points
+             at the actual next action and stays until the first block
+             is painted. -->
+        <p class="first-run-hint" id="first-run-hint" hidden>
+          👇 Pick a category, then drag around the ring to paint your first block.
+          <button type="button" class="link-btn" id="first-run-hint-dismiss">Got it</button>
+        </p>
 
         <div class="pens" id="pens"></div>
 
@@ -423,17 +444,22 @@
             <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
           </p>
 
-          <p class="section-label" style="margin-top:16px;">Demo mode</p>
+          <p class="section-label" style="margin-top:16px;">Welcome tour</p>
           <div class="footer-actions">
             <button class="ghost-btn" id="replay-onboarding"
                     title="Shows the same three-card welcome screen you saw (or would have seen) on first open">Replay welcome tour</button>
           </div>
+          <p class="editor-note">
+            The three-card intro from first open. Reading it again changes nothing about your data.
+          </p>
+
+          <p class="section-label" style="margin-top:16px;">Demo mode</p>
           <div id="sample-data-block" style="margin-top:8px;">
             <div class="footer-actions">
               <button class="ghost-btn" id="load-sample-data"
-                      title="Fills in three realistic (fake) weeks so History, streaks, and goals have something to show. Only available before you've logged anything for real.">Load sample data</button>
+                      title="Fills three weeks of realistic (fake) days into dates you haven't logged, so History, streaks, and goals have something to show.">Load sample data</button>
               <button class="ghost-btn danger" id="clear-sample-data" hidden
-                      title="Removes exactly the sample days that were loaded. Any real data you've logged since is untouched.">Clear sample data</button>
+                      title="Removes exactly the sample days that were loaded. Anything you logged yourself is untouched.">Exit demo mode</button>
             </div>
             <p class="editor-note" id="sample-data-note">
               See how History, streaks, and goals look with three weeks of varied (fake) days, before

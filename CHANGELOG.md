@@ -8,6 +8,40 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.5] — 2026-08-29
+
+### Changed
+
+- **Demo mode is now a two-way door, at any point in an account's life.**
+  It was previously offered only while you had logged absolutely nothing,
+  so the most common way people actually ask for it — "let me see what
+  this looks like once it's full" — was the one request it couldn't
+  answer: paint a single real block and the option disappeared forever.
+  It's now always available, and made safe by construction: sample days
+  fill only dates that hold no day of your own, so entering and leaving
+  demo mode can never touch, overwrite, or lose anything you logged. The
+  round trip is verified byte-identical across repeated cycles.
+- **Demo mode is now visibly signposted while it's on.** Sample data
+  rendered identically to real data, so a 6-day streak or a +65 average
+  gave no clue which it was. A banner now sits above every view for as
+  long as sample data is loaded, saying so plainly and carrying its own
+  one-click "Exit demo" — previously a three-level trip into
+  Settings → About.
+- **Settings → About no longer files a guided tour and fake data under one
+  heading.** "Welcome tour" and "Demo mode" are separate sections with
+  their own explanations, since replaying an intro and loading three weeks
+  of fabricated days have nothing to do with each other.
+
+### Fixed
+
+- **"Let's start" no longer hands a new user a blank screen.** The only
+  guidance after it was a toast that erased itself in 2.6 seconds, plus a
+  line in the stats column on the opposite side of the window from the
+  thing it was describing — so the tour ended by dumping you on an empty
+  dial with nothing to act on. A hint now sits directly above the category
+  pens, which is what it's pointing at, and stays until the first block is
+  painted (or is dismissed outright).
+
 ## [1.9.4] — 2026-08-29
 
 ### Fixed
