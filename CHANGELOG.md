@@ -8,6 +8,53 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.11.0] — 2026-08-29
+
+Accessibility. Two of these locked people out of the app completely.
+
+### Added
+
+- **The dial can now be used without a mouse.** It was pointer-only — not
+  focusable, no key handling — so anyone who can't use a pointer could not
+  log time at all. The ring now takes focus and carries a cursor: arrow keys
+  move it (hold Alt for hour steps), Shift+arrows extend a selection, Home
+  and End jump to the ends, Enter paints with the active pen, and Delete
+  clears. It runs through the same fill-and-commit path the mouse uses, so
+  the two can't drift apart.
+- **Typed entry can erase.** `9-11 erase` (or `clear`, `untracked`, `none`,
+  `empty`) clears a range. Previously typed entry could only add, so without
+  a pointer the only way to fix a wrong block was Clear day — wiping all 24
+  hours. A category you've named "Empty" still wins over the reserved word.
+- **Screen readers are told what happened.** Painting and score changes were
+  completely silent: the toast is the only live region and it never fires
+  for an edit. There's now a live region announcing each change, and each
+  dial's label lists the day's actual blocks instead of being a fixed
+  string on an unlabelled shape.
+
+### Fixed
+
+- **Two default categories were the same colour to a red-green colourblind
+  reader.** Study and Break sat at a colour difference of 5.9 under
+  deuteranopia — indistinguishable — and they're on opposite sides of the
+  score, so an unreadable day was also a misleading one. The palette was
+  re-picked against simulated deuteranopia and protanopia: the worst pair
+  now separates at 18, and every category also clears 3:1 contrast against
+  the panel, which four of them previously failed.
+- **Muted text failed contrast throughout the light theme.** Section
+  labels, hints, stat captions, the dial's hour numbers and the import
+  summary all sat near 3.4–3.9:1 against 4.5:1. Muted ink is darker, and
+  status colours now have separate text-weight variants, since a colour
+  bright enough to fill a shape is too light to read as a word.
+- **The focus ring itself failed contrast in light mode** at 2.42:1 against
+  a 3:1 requirement — the indicator telling you where you are was the least
+  visible thing on screen.
+- **The welcome dialog wasn't managed like a dialog.** It claimed
+  `aria-modal` but Tab walked straight out of it, Escape did nothing, focus
+  was never restored, and the shortcut keys still changed the pen behind it.
+- **The dial layout switchers announced nothing useful.** They used
+  `role="tab"` with `aria-pressed`, which isn't valid together, so which
+  layout was active simply wasn't conveyed. They're button groups now.
+
 ## [1.10.0] — 2026-08-29
 
 ### Fixed

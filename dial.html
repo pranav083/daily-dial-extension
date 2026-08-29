@@ -73,14 +73,15 @@
 
     <div class="grid">
       <div class="dial-card">
-        <div class="dial-layout-switch" id="dial-layout-switch" role="tablist" aria-label="Dial layout">
-          <button type="button" data-mode="24h" role="tab" aria-pressed="true" title="One 24-hour ring">24h</button>
-          <button type="button" data-mode="ampm" role="tab" aria-pressed="false" title="Two 12-hour rings, side by side">AM+PM</button>
-          <button type="button" data-mode="ampm-toggle" role="tab" aria-pressed="false" title="One 12-hour ring, with an AM/PM switch">AM⇄PM</button>
+        <div class="dial-layout-switch" id="dial-layout-switch" role="group" aria-label="Dial layout">
+          <button type="button" data-mode="24h" aria-pressed="true" title="One 24-hour ring">24h</button>
+          <button type="button" data-mode="ampm" aria-pressed="false" title="Two 12-hour rings, side by side">AM+PM</button>
+          <button type="button" data-mode="ampm-toggle" aria-pressed="false" title="One 12-hour ring, with an AM/PM switch">AM⇄PM</button>
         </div>
 
         <div class="dial-wrap" id="dial-wrap-single">
-          <svg class="dial-svg" id="dial" viewBox="0 0 460 460" role="img" aria-label="24-hour activity dial">
+          <svg class="dial-svg" id="dial" viewBox="0 0 460 460" role="application" tabindex="0"
+               aria-label="24-hour activity dial. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
             <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
             <g id="segments"></g>
             <g id="ticks"></g>
@@ -90,14 +91,15 @@
           </svg>
         </div>
 
-        <div class="ampm-toggle-switch" id="dial-toggle-switch" hidden role="tablist" aria-label="Show the AM or PM half">
-          <button type="button" id="toggle-am-btn" role="tab" aria-pressed="true">AM</button>
-          <button type="button" id="toggle-pm-btn" role="tab" aria-pressed="false">PM</button>
+        <div class="ampm-toggle-switch" id="dial-toggle-switch" hidden role="group" aria-label="Show the AM or PM half">
+          <button type="button" id="toggle-am-btn" aria-pressed="true">AM</button>
+          <button type="button" id="toggle-pm-btn" aria-pressed="false">PM</button>
         </div>
 
         <div class="dial-wrap-twin" id="dial-wrap-twin" hidden>
           <div class="dial-half" id="dial-half-am">
-            <svg class="dial-svg" id="dial-am" viewBox="0 0 460 460" role="img" aria-label="AM activity dial, midnight to noon">
+            <svg class="dial-svg" id="dial-am" viewBox="0 0 460 460" role="application" tabindex="0"
+                 aria-label="AM activity dial, midnight to noon. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
               <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
               <g id="segments-am"></g>
               <g id="ticks-am"></g>
@@ -108,7 +110,8 @@
             <div class="dial-half-label">AM <span class="muted">· 12a&ndash;12p</span></div>
           </div>
           <div class="dial-half" id="dial-half-pm">
-            <svg class="dial-svg" id="dial-pm" viewBox="0 0 460 460" role="img" aria-label="PM activity dial, noon to midnight">
+            <svg class="dial-svg" id="dial-pm" viewBox="0 0 460 460" role="application" tabindex="0"
+                 aria-label="PM activity dial, noon to midnight. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
               <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
               <g id="segments-pm"></g>
               <g id="ticks-pm"></g>
@@ -539,6 +542,9 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- Painting produced no announcement of any kind; the toast only fires
+       for messages, not for the edit itself. -->
+  <div id="dial-live" class="sr-only" role="status" aria-live="polite"></div>
   <script type="module" src="dial.js"></script>
 </body>
 </html>

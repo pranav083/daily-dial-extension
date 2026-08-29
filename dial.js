@@ -283,6 +283,24 @@ function showTooltip(evt, idx) {
   showTooltipText(evt, describeSlot(idx));
 }
 
+/** Speaks to screen readers. Painting and score changes were previously
+ *  silent: the toast is the app's only live region and it fires for
+ *  messages, never for the edit itself. */
+function announce(message) {
+  $("dial-live").textContent = message;
+}
+
+/** A readable summary of the whole day, kept on each dial's own label so
+ *  the timeline is enumerable rather than an unlabelled shape. */
+function dayLabelText(base, from, count) {
+  const runs = computeRuns(state.slots).filter((r) => r.end > from && r.start < from + count);
+  if (runs.length === 0) return `${base} Nothing logged yet.`;
+  const parts = runs.map(
+    (r) => `${fmtSlotClock(r.start)} to ${fmtSlotClock(r.end)} ${categories[r.cat].name}`
+  );
+  return `${base} ${parts.join(", ")}.`;
+}
+
 const hideTooltip = () => tooltip.classList.remove("show");
 
 /* ---------- undo / redo ---------- */
@@ -363,6 +381,9 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   // Added last so the seam handle draws above the wedges and the needle.
   const handleLayer = svgEl("g", { class: "edge-layer" });
   svgNode.appendChild(handleLayer);
+  const caretLayer = svgEl("g", { class: "caret-layer" });
+  svgNode.appendChild(caretLayer);
+  const baseLabel = svgNode.getAttribute("aria-label");
 
   let isPaintingLocal = false;
   let lastLocal = null;
@@ -438,6 +459,110 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     );
   }
 
+  /* ---- keyboard painting ----
+     The dial was pointer-only: no tabindex, no key handling, so anyone who
+     can't use a mouse could not log time at all. Typed entry was the only
+     way in, and it can't erase — so the only way to remove a wrong block
+     was to wipe the whole day. This gives the ring a cursor: arrows move
+     it, Shift+arrows extend a selection, Enter paints it with the active
+     pen, Delete clears it. It reuses the same fillRange/onStrokeEnd path
+     the pointer uses, so the two can't drift apart. */
+
+  let caret = null;      // slot the cursor sits on, local to this view
+  let caretAnchor = null; // where a Shift-selection started
+
+  function caretRange() {
+    if (caret === null) return null;
+    const from = Math.min(caret, caretAnchor ?? caret);
+    const to = Math.max(caret, caretAnchor ?? caret) + 1;
+    return { from, to };
+  }
+
+  function renderCaret() {
+    caretLayer.replaceChildren();
+    const range = caretRange();
+    if (range === null) return;
+    const per = 360 / slotsInView;
+    caretLayer.appendChild(
+      svgEl("path", {
+        class: "caret-band",
+        d: wedgePath(R_IN - 3, R_OUT + 3, range.from * per, range.to * per),
+      })
+    );
+  }
+
+  function announceCaret() {
+    const range = caretRange();
+    if (!range) return;
+    const g = (i) => fmtSlotClock(slotOffset + i);
+    const sub = localSlice();
+    const cat = sub[range.from];
+    const same = sub.slice(range.from, range.to).every((v) => v === cat);
+    const what = same ? nameOf(cat) : "mixed";
+    announce(`${g(range.from)} to ${g(range.to)}, ${what}`);
+  }
+
+  function moveCaret(delta, extend) {
+    if (caret === null) caret = slotsInView > 48 ? 32 : 0; // 08:00 on the full ring
+    else caret = Math.max(0, Math.min(slotsInView - 1, caret + delta));
+    if (!extend) caretAnchor = caret;
+    else if (caretAnchor === null) caretAnchor = caret;
+    renderCaret();
+    announceCaret();
+  }
+
+  function commitCaret(cat) {
+    const range = caretRange();
+    if (!range) return;
+    if (tabIsStale) return;
+    checkDayRollover();
+    pushUndo();
+    const sub = localSlice();
+    for (let i = range.from; i < range.to; i++) sub[i] = cat;
+    writeSlice(sub);
+    render();
+    renderCaret();
+    onStrokeEnd();
+    const g = (i) => fmtSlotClock(slotOffset + i);
+    announce(`${nameOf(cat)} set for ${g(range.from)} to ${g(range.to)}`);
+  }
+
+  svgNode.addEventListener("focus", () => {
+    if (caret === null) moveCaret(0, false);
+    else renderCaret();
+  });
+  svgNode.addEventListener("blur", () => {
+    caretLayer.replaceChildren();
+  });
+
+  svgNode.addEventListener("keydown", (evt) => {
+    const step = evt.key === "ArrowRight" || evt.key === "ArrowDown" ? 1
+      : evt.key === "ArrowLeft" || evt.key === "ArrowUp" ? -1
+        : 0;
+    if (step !== 0) {
+      evt.preventDefault();
+      moveCaret(caret === null ? 0 : step * (evt.altKey ? 4 : 1), evt.shiftKey);
+      return;
+    }
+    if (evt.key === "Home" || evt.key === "End") {
+      evt.preventDefault();
+      caret = evt.key === "Home" ? 0 : slotsInView - 1;
+      if (!evt.shiftKey) caretAnchor = caret;
+      renderCaret();
+      announceCaret();
+      return;
+    }
+    if (evt.key === "Enter" || evt.key === " ") {
+      evt.preventDefault();
+      commitCaret(state.activePen === null ? UNTRACKED : state.activePen);
+      return;
+    }
+    if (evt.key === "Delete" || evt.key === "Backspace") {
+      evt.preventDefault();
+      commitCaret(UNTRACKED);
+    }
+  });
+
   function renderSegments() {
     segLayer.replaceChildren();
     for (const run of computeRuns(localSlice())) {
@@ -509,6 +634,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     renderSegments();
     renderNeedle();
     renderCenter();
+    svgNode.setAttribute("aria-label", dayLabelText(baseLabel, slotOffset, slotsInView));
   }
 
   function svgPointFromEvent(evt) {
@@ -778,7 +904,9 @@ function setDialMode(mode) {
 /* ---------- keyboard shortcuts ---------- */
 
 window.addEventListener("keydown", (evt) => {
-  if (!$("settings-overlay").hidden) return; // settings panel owns its own keys (Esc, focus trap)
+  // Both modals own their own keys. Without the onboarding check, pressing
+  // 1-6 during the welcome tour silently changed the pen behind it.
+  if (!$("settings-overlay").hidden || !$("onboarding-overlay").hidden) return;
   const inField = evt.target instanceof HTMLTextAreaElement || evt.target instanceof HTMLInputElement;
 
   if ((evt.metaKey || evt.ctrlKey) && evt.key.toLowerCase() === "z" && !inField) {
@@ -1877,31 +2005,38 @@ function switchSettingsTab(tab) {
   }
 }
 
-function settingsFocusables() {
-  return [...$("settings-panel").querySelectorAll('button, [href], input, select, textarea, [tabindex]')].filter(
+function focusablesIn(panelId) {
+  return [...$(panelId).querySelectorAll('button, [href], input, select, textarea, [tabindex]')].filter(
     (el) => !el.disabled && el.offsetParent !== null
   );
 }
 
-function onSettingsKeydown(evt) {
-  if (evt.key === "Escape") {
-    evt.preventDefault();
-    closeSettings();
-    return;
-  }
-  if (evt.key !== "Tab") return;
-  const focusables = settingsFocusables();
-  if (focusables.length === 0) return;
-  const first = focusables[0];
-  const last = focusables[focusables.length - 1];
-  if (evt.shiftKey && document.activeElement === first) {
-    evt.preventDefault();
-    last.focus();
-  } else if (!evt.shiftKey && document.activeElement === last) {
-    evt.preventDefault();
-    first.focus();
-  }
+/** Escape closes, Tab cycles inside. Shared so every modal behaves the same
+ *  way — the onboarding dialog claimed aria-modal but trapped nothing. */
+function modalKeydownHandler(panelId, onClose) {
+  return function handler(evt) {
+    if (evt.key === "Escape") {
+      evt.preventDefault();
+      onClose();
+      return;
+    }
+    if (evt.key !== "Tab") return;
+    const focusables = focusablesIn(panelId);
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (evt.shiftKey && document.activeElement === first) {
+      evt.preventDefault();
+      last.focus();
+    } else if (!evt.shiftKey && document.activeElement === last) {
+      evt.preventDefault();
+      first.focus();
+    }
+  };
 }
+
+const onSettingsKeydown = modalKeydownHandler("settings-panel", () => closeSettings());
+const onOnboardingKeydown = modalKeydownHandler("onboarding-overlay", () => dismissOnboarding());
 
 function openSettings(tab = "categories") {
   settingsLastFocused = document.activeElement;
@@ -1919,7 +2054,11 @@ function closeSettings() {
 
 /* ---------- onboarding (first run) ---------- */
 
+let onboardingLastFocused = null;
+
 function showOnboarding() {
+  onboardingLastFocused = document.activeElement;
+  document.addEventListener("keydown", onOnboardingKeydown, true);
   $("onboarding-overlay").hidden = false;
   // Demo mode fills only unlogged dates now, so this offer stays honest at
   // any point in an account's life — it's hidden only while demo mode is
@@ -1930,6 +2069,8 @@ function showOnboarding() {
 
 function dismissOnboarding() {
   $("onboarding-overlay").hidden = true;
+  document.removeEventListener("keydown", onOnboardingKeydown, true);
+  if (onboardingLastFocused instanceof HTMLElement) onboardingLastFocused.focus();
   // Every exit from the tour leaves the hint behind, not just "Let's start".
   // Skipping means "don't lecture me", which a dismissible one-line pointer
   // respects — being dropped on a blank dial with no affordance at all does

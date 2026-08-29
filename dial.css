@@ -18,7 +18,7 @@
   --panel-2: #f4f6f5;
   --ink: #171b20;
   --ink-2: #454c53;
-  --ink-muted: #7b828a;
+  --ink-muted: #5f666e;
   --border: rgba(23, 27, 32, 0.12);
   --border-soft: rgba(23, 27, 32, 0.07);
   --accent: #a8661a;
@@ -29,13 +29,26 @@
   --status-good: #0ca30c;
   --status-warning: #b3790a;
   --status-critical: #d03b3b;
+  /* Status colours bright enough to fill a shape are too light to read as
+     text on a light panel; these are the same hues taken darker, used
+     wherever the colour carries a word rather than an area. */
+  --status-good-text: #0a7d0a;
+  --status-warning-text: #8a5a00;
+  --status-critical-text: #c02626;
+  /* The filled accent is only 2.42:1 on white — below the 3:1 a focus
+     indicator needs — so light mode rings with the darker accent. */
+  --focus-ring: #a8661a;
 
+  /* Chosen so no two stay confusable under deuteranopia or protanopia
+     (worst-pair CVD dE 12.1 -> 18.0) and every one clears 3:1 against the
+     panel. Study and Break were previously near-identical to a red-green
+     colourblind reader, and they sit on opposite sides of the score. */
   --cat-0: #2a78d6;
-  --cat-1: #eb6834;
-  --cat-2: #1baf7a;
-  --cat-3: #eda100;
-  --cat-4: #e87ba4;
-  --cat-5: #008300;
+  --cat-1: #ec6836;
+  --cat-2: #18a972;
+  --cat-3: #ac9400;
+  --cat-4: #df70a5;
+  --cat-5: #008200;
 
   --font-ui: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -52,7 +65,7 @@
     --panel-2: #1d232c;
     --ink: #e7ebee;
     --ink-2: #aeb6bf;
-    --ink-muted: #7c8590;
+    --ink-muted: #949dab;
     --border: rgba(231, 235, 238, 0.12);
     --border-soft: rgba(231, 235, 238, 0.07);
     --accent: #e8ab5c;
@@ -60,12 +73,16 @@
     --accent-ink: #1a1206;
     --ring-track: rgba(231, 235, 238, 0.08);
     --status-warning: #fab219;
+    --status-good-text: var(--status-good);
+    --status-warning-text: var(--status-warning);
+    --status-critical-text: #e86a6a;
+    --focus-ring: #e0a458;
 
     --cat-0: #3987e5;
-    --cat-1: #d95926;
-    --cat-2: #199e70;
-    --cat-3: #c98500;
-    --cat-4: #d55181;
+    --cat-1: #e56432;
+    --cat-2: #32a16e;
+    --cat-3: #d59105;
+    --cat-4: #d24c83;
     --cat-5: #008300;
   }
 }
@@ -76,7 +93,7 @@
   --panel-2: #1d232c;
   --ink: #e7ebee;
   --ink-2: #aeb6bf;
-  --ink-muted: #7c8590;
+  --ink-muted: #949dab;
   --border: rgba(231, 235, 238, 0.12);
   --border-soft: rgba(231, 235, 238, 0.07);
   --accent: #e8ab5c;
@@ -84,12 +101,16 @@
   --accent-ink: #1a1206;
   --ring-track: rgba(231, 235, 238, 0.08);
   --status-warning: #fab219;
+  --status-good-text: var(--status-good);
+  --status-warning-text: var(--status-warning);
+  --status-critical-text: #e86a6a;
+  --focus-ring: #e0a458;
 
   --cat-0: #3987e5;
-  --cat-1: #d95926;
-  --cat-2: #199e70;
-  --cat-3: #c98500;
-  --cat-4: #d55181;
+  --cat-1: #e56432;
+  --cat-2: #32a16e;
+  --cat-3: #d59105;
+  --cat-4: #d24c83;
   --cat-5: #008300;
 }
 
@@ -283,7 +304,7 @@ body {
 }
 .ampm-toggle-switch button + button { border-left: 1px solid var(--border); }
 .ampm-toggle-switch button.active { background: var(--accent-fill); color: var(--accent-ink); }
-.ampm-toggle-switch button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: -2px; }
+.ampm-toggle-switch button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 
 /* Quick layout switcher, top-right of the dial card — the same three modes
    as Settings → Appearance → Dial layout, one click away instead of four. */
@@ -308,7 +329,7 @@ body {
 }
 .dial-layout-switch button + button { border-left: 1px solid var(--border); }
 .dial-layout-switch button.active { background: var(--accent-fill); color: var(--accent-ink); }
-.dial-layout-switch button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: -2px; }
+.dial-layout-switch button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 
 .seg { cursor: pointer; }
 .cat-0 { fill: var(--cat-0); }
@@ -379,7 +400,7 @@ svg.edge-grab { cursor: ew-resize; }
 textarea:focus-visible,
 select:focus-visible,
 input[type="time"]:focus-visible {
-  outline: 2px solid var(--accent-fill);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -411,9 +432,9 @@ input[type="time"]:focus-visible {
   gap: 5px;
 }
 .score-badge .dot { width: 7px; height: 7px; border-radius: 50%; }
-.score-badge.good { color: var(--status-good); background: color-mix(in oklab, var(--status-good) 16%, transparent); }
-.score-badge.warning { color: var(--status-warning); background: color-mix(in oklab, var(--status-warning) 20%, transparent); }
-.score-badge.critical { color: var(--status-critical); background: color-mix(in oklab, var(--status-critical) 16%, transparent); }
+.score-badge.good { color: var(--status-good-text); background: color-mix(in oklab, var(--status-good) 16%, transparent); }
+.score-badge.warning { color: var(--status-warning-text); background: color-mix(in oklab, var(--status-warning) 20%, transparent); }
+.score-badge.critical { color: var(--status-critical-text); background: color-mix(in oklab, var(--status-critical) 16%, transparent); }
 .score-badge.muted { color: var(--ink-muted); background: var(--panel-2); }
 .meter { height: 7px; border-radius: 999px; background: var(--ring-track); overflow: hidden; }
 .meter-fill { height: 100%; border-radius: 999px; transition: width 0.25s ease; }
@@ -472,8 +493,8 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   cursor: pointer;
 }
 .ghost-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
-.ghost-btn.danger:hover { border-color: var(--status-critical); color: var(--status-critical); }
-.ghost-btn:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+.ghost-btn.danger:hover { border-color: var(--status-critical-text); color: var(--status-critical-text); }
+.ghost-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* ---- editors ---- */
 .editor {
@@ -499,7 +520,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 }
 .cat-alias-row input[type="text"]::placeholder { color: var(--ink-muted); }
 .cat-alias-row input[type="text"]:disabled { opacity: 0.45; }
-.cat-alias-row input[type="text"]:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+.cat-alias-row input[type="text"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 .cat-edit-row .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 .cat-edit-row input[type="text"] {
   flex: 1;
@@ -514,7 +535,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   font-weight: 600;
 }
 .cat-edit-row input[type="text"]:disabled { opacity: 0.45; }
-.cat-edit-row input[type="text"]:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+.cat-edit-row input[type="text"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 .weight-seg { display: flex; flex: none; border: 1px solid var(--border); border-radius: 7px; overflow: hidden; }
 .weight-seg button {
   width: 26px; height: 26px;
@@ -529,7 +550,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 }
 .weight-seg button + button { border-left: 1px solid var(--border); }
 .weight-seg button[aria-pressed="true"] { background: var(--accent-fill); color: var(--accent-ink); }
-.weight-seg button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: -2px; }
+.weight-seg button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 .cat-edit-row .toggle {
   flex: none;
   width: 26px; height: 26px;
@@ -542,7 +563,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   padding: 0;
 }
 .cat-edit-row .toggle[aria-pressed="false"] { opacity: 0.5; }
-.cat-edit-row .toggle:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+.cat-edit-row .toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 .editor-note { font-size: 0.72rem; color: var(--ink-muted); margin: 0; }
 
 .reminder-row { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--ink-2); }
@@ -607,7 +628,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   flex: none;
 }
 .icon-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
-.icon-btn:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+.icon-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* Settings lives top-right, where people look for it — not buried beside the
    destructive "Clear day" button in the side panel footer. */
@@ -644,14 +665,14 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 .streak-text .muted { color: var(--ink-muted); font-size: 0.8rem; }
 .streak-freeze {
   font-size: 0.72rem;
-  color: var(--status-warning);
+  color: var(--status-warning-text);
   background: color-mix(in oklab, var(--status-warning) 16%, transparent);
   padding: 3px 9px;
   border-radius: 999px;
 }
 .streak-risk {
   font-size: 0.72rem;
-  color: var(--status-critical);
+  color: var(--status-critical-text);
   background: color-mix(in oklab, var(--status-critical) 14%, transparent);
   padding: 3px 9px;
   border-radius: 999px;
@@ -694,7 +715,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   font-family: var(--font-ui);
   font-size: 0.8rem;
 }
-.typed-entry input:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+.typed-entry input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 .typed-entry button {
   border: 1px solid var(--border);
   background: var(--panel-2);
@@ -716,7 +737,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 .goal-row .track { flex: 1; height: 8px; border-radius: 999px; background: var(--ring-track); overflow: hidden; }
 .goal-row .fill { display: block; height: 100%; border-radius: 999px; }
 .goal-row .amount { flex: none; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted); white-space: nowrap; }
-.goal-row .met { color: var(--status-good); font-weight: 700; }
+.goal-row .met { color: var(--status-good-text); font-weight: 700; }
 
 /* ---- goals editor (settings) ---- */
 .goal-edit-row { display: flex; align-items: center; gap: 8px; }
@@ -786,7 +807,7 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 }
 .settings-tabs .tab:hover { color: var(--ink); }
 .settings-tabs .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-.settings-tabs .tab:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: -2px; }
+.settings-tabs .tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 .settings-body { padding: 16px 18px 20px; overflow-y: auto; }
 .settings-section { display: none; flex-direction: column; gap: 8px; }
 .settings-section.active { display: flex; }
@@ -841,7 +862,7 @@ select {
   cursor: pointer;
 }
 .link-btn:hover { color: var(--ink); }
-.link-btn:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; border-radius: 3px; }
+.link-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 3px; }
 
 /* The top bar carries the wordmark, streak, and date nav on one line; it wraps
    to stacked rows on narrow windows rather than overflowing. */
@@ -849,6 +870,30 @@ select {
   .topbar { align-items: flex-start; }
   .streak-banner { order: 3; }
 }
+
+/* Visible to screen readers only. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- keyboard cursor on the dial ---- */
+.caret-layer { pointer-events: none; }
+.caret-band {
+  fill: none;
+  stroke: var(--focus-ring);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+/* The ring itself takes focus, so it needs a ring of its own. */
+.dial-svg:focus { outline: none; }
+.dial-svg:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: 12px; }
 
 /* ---- stale tab banner ---- */
 /* Critical tone rather than warning: unlike demo mode this is not a state
@@ -1020,7 +1065,7 @@ select {
   cursor: pointer;
 }
 .primary-btn:hover { filter: brightness(1.08); }
-.primary-btn:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+.primary-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* ---- view switcher ---- */
 /* Three top-level views share the top bar; the date nav only applies to Day. */
@@ -1038,7 +1083,7 @@ select {
 }
 .view-tab:hover { color: var(--ink); background: var(--panel-2); }
 .view-tab.active { color: var(--ink); background: var(--panel); border-color: var(--border); }
-.view-tab:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+.view-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 .view { display: flex; flex-direction: column; gap: 22px; }
 .view[hidden] { display: none; }
@@ -1088,7 +1133,7 @@ select {
   cursor: pointer;
 }
 .hist-month-nav button:hover { border-color: var(--accent); }
-.hist-month-nav button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+.hist-month-nav button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .hist-month-nav .label {
   min-width: 140px;
   text-align: center;
@@ -1149,7 +1194,7 @@ select {
 }
 .hist-day.empty .hist-day-num { background: none; color: var(--ink-muted); }
 .hist-day:hover { border-color: var(--accent); }
-.hist-day:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+.hist-day:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 .hist-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-size: 0.72rem; color: var(--ink-muted); }
 .hist-legend-item { display: inline-flex; align-items: center; gap: 5px; }
@@ -1175,8 +1220,8 @@ select {
   border-radius: 999px;
   white-space: nowrap;
 }
-.hist-wow-delta.up { color: var(--status-good); background: color-mix(in oklab, var(--status-good) 16%, transparent); }
-.hist-wow-delta.down { color: var(--status-critical); background: color-mix(in oklab, var(--status-critical) 16%, transparent); }
+.hist-wow-delta.up { color: var(--status-good-text); background: color-mix(in oklab, var(--status-good) 16%, transparent); }
+.hist-wow-delta.down { color: var(--status-critical-text); background: color-mix(in oklab, var(--status-critical) 16%, transparent); }
 .hist-wow-delta.flat { color: var(--ink-muted); background: var(--panel-2); }
 
 /* ---- category trends ---- */
@@ -1186,8 +1231,8 @@ select {
 .hist-trend-head .sw { width: 9px; height: 9px; border-radius: 50%; flex: none; }
 .hist-trend-name { font-size: 0.76rem; font-weight: 600; color: var(--ink-2); flex: 1; }
 .hist-trend-dir { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; }
-.hist-trend-dir.up { color: var(--status-good); }
-.hist-trend-dir.down { color: var(--status-critical); }
+.hist-trend-dir.up { color: var(--status-good-text); }
+.hist-trend-dir.down { color: var(--status-critical-text); }
 .hist-trend-dir.flat { color: var(--ink-muted); }
 .hist-trend-svg { width: 100%; height: 52px; display: block; }
 .hist-trend-svg rect.cat-0 { fill: var(--cat-0); }
@@ -1210,7 +1255,7 @@ select {
   margin-bottom: 12px;
 }
 .hist-search-input::placeholder { color: var(--ink-muted); }
-.hist-search-input:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+.hist-search-input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
 .hist-search-results { display: flex; flex-direction: column; gap: 6px; }
 .hist-search-result {
@@ -1227,7 +1272,7 @@ select {
   color: var(--ink);
 }
 .hist-search-result:hover { border-color: var(--accent); }
-.hist-search-result:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 1px; }
+.hist-search-result:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 .hist-search-date { flex: none; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
 .hist-search-snippet { font-size: 0.82rem; color: var(--ink-2); overflow-wrap: anywhere; }
 

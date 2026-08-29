@@ -1113,3 +1113,23 @@ test("computeStreak counts today in a timezone where DST springs forward at midn
   const streak = computeStreak(logged, now);
   assert.equal(streak.current, expected, "every logged day up to and including today counts");
 });
+
+/* ---------- typed entry: erasing ---------- */
+
+test("parseTimeEntry maps erase words to untracked", () => {
+  for (const word of ["erase", "clear", "untracked", "none", "empty"]) {
+    const r = parseTimeEntry(`9-11 ${word}`, cats);
+    assert.equal(r.ok, true, `"${word}" should parse`);
+    assert.equal(r.categoryId, UNTRACKED, `"${word}" should erase`);
+    assert.equal(r.startSlot, 36);
+    assert.equal(r.endSlot, 44);
+  }
+});
+
+test("a user's own category beats an erase word of the same name", () => {
+  // Renaming a category "Empty" must still get you that category, not a wipe.
+  const renamed = cats.map((c, i) => (i === 3 ? { ...c, name: "Empty" } : c));
+  const r = parseTimeEntry("9-11 empty", renamed);
+  assert.equal(r.ok, true);
+  assert.equal(r.categoryId, 3, "the real category wins over the reserved word");
+});

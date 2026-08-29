@@ -657,6 +657,9 @@ function parseClockToken(raw) {
  *
  * @returns {{ok:true, startSlot:number, endSlot:number, categoryId:number} | {ok:false, error:string}}
  */
+/** Words that clear a range instead of naming a category. */
+const ERASE_WORDS = ["erase", "clear", "untracked", "none", "empty"];
+
 export function parseTimeEntry(text, categories) {
   if (typeof text !== "string" || !text.trim()) {
     return { ok: false, error: 'Try something like "9-11 deep work".' };
@@ -687,6 +690,7 @@ export function parseTimeEntry(text, categories) {
   const wanted = catText.trim().toLowerCase();
   if (!wanted) return { ok: false, error: 'Add a category, like "9-11 deep work".' };
 
+
   // A category matches by its own name or by any of its aliases (personal
   // vocabulary a user has linked to it, e.g. "leetcode" → Applications).
   const labelsOf = (c) => [c.name.toLowerCase(), ...(c.aliases ?? [])];
@@ -694,6 +698,14 @@ export function parseTimeEntry(text, categories) {
   const exact = enabled.find((c) => labelsOf(c).includes(wanted));
   const matches = exact ? [exact] : enabled.filter((c) => labelsOf(c).some((label) => label.includes(wanted)));
 
+  // Typed entry could add a block but never remove one, so the only way for
+  // someone working without a pointer to fix a mistake was Clear day, which
+  // wipes all 24 hours. These words erase instead — checked only after a
+  // real category has failed to match, so renaming a category "Empty"
+  // still gets you that category rather than a wipe.
+  if (matches.length === 0 && ERASE_WORDS.includes(wanted)) {
+    return { ok: true, startSlot, endSlot, categoryId: UNTRACKED };
+  }
   if (matches.length === 0) return { ok: false, error: `No category matches "${catText.trim()}".` };
   if (matches.length > 1) {
     return {
