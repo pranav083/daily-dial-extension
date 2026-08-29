@@ -16,10 +16,15 @@ Load it unpacked for now (Chrome Web Store link goes here once published):
 ## What you'll see on first open
 
 A short welcome screen, once — three cards covering painting, your score, and
-where settings live. Dismiss it with **Let's start**, **Skip**, or by
-clicking outside it. It won't come back after that on its own — but you can
-bring it back anytime from Settings → **About** → **Replay welcome tour**,
-useful if you're showing someone else around or just want a refresher.
+where settings live, plus a link under them: **"Prefer to see it with real
+numbers first? Load sample data instead"** — one click fills in three weeks
+of realistic data and jumps straight to History, if you'd rather explore
+before painting anything of your own. Dismiss it normally with **Let's
+start** (shows a one-line nudge toward your first block, if the day's still
+blank), **Skip**, or by clicking outside it (both of those stay silent). It
+won't come back after that on its own — but you can bring it back anytime
+from Settings → **About** → **Replay welcome tour**, useful if you're
+showing someone else around or just want a refresher.
 
 ![Welcome screen](getting-started/01-onboarding.png)
 
@@ -77,6 +82,11 @@ data — nothing gets silently overwritten); **Clear sample data** removes
 exactly those days, whenever you're ready to start logging for real. The
 same "Demo mode" section also has **Replay welcome tour**, in case you want
 another look at the three-card welcome screen.
+
+Two other places offer the same shortcut, right where it's most obviously
+useful: the welcome screen itself (see above), and the **History** tab's
+empty state, if you open it before logging anything — "Load sample data"
+right there fills the heatmap in without leaving the page.
 
 ## Back up your data
 

@@ -1551,6 +1551,10 @@ function closeSettings() {
 
 function showOnboarding() {
   $("onboarding-overlay").hidden = false;
+  // Only a real offer the first time (or a replay before anything's been
+  // logged) — once real data exists, loadSampleData() would no-op anyway,
+  // same as the equivalent link in Settings → About.
+  $("onboarding-sample-link-wrap").hidden = days.size > 0;
   $("onboarding-overlay").querySelector(".onboarding-panel").focus();
 }
 
@@ -1722,6 +1726,12 @@ function wireEvents() {
     closeSettings();
     showOnboarding();
   });
+  $("onboarding-sample-data").addEventListener("click", () => {
+    dismissOnboarding(); // a different path was chosen — no "go paint" nudge
+    loadSampleData();
+    showView("history");
+  });
+  $("history-empty-sample-data").addEventListener("click", loadSampleData);
 
   // ---- reminders + weekly recap ----
   for (const id of ["reminders-on", "reminder-1", "reminder-2", "weekly-recap-on", "weekly-recap-day", "weekly-recap-time"]) {

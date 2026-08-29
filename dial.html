@@ -175,7 +175,9 @@
       <div class="view-placeholder" id="history-empty" hidden>
         No history yet. Log a few days on the Day view — once you have a week or
         two, this tab turns into a month-by-month picture: a heatmap, category
-        trends, and week-over-week comparisons.
+        trends, and week-over-week comparisons. Want to see what that looks like
+        right now? <button type="button" class="link-btn" id="history-empty-sample-data">Load sample data</button>
+        fills in three weeks instantly.
       </div>
 
       <div id="history-content" hidden>
@@ -484,6 +486,11 @@
           <p>Rename categories, set reminders and goals, or back up to Google Drive — all behind <b>☰</b> at the top right. Everything but painting is optional.</p>
         </div>
       </div>
+
+      <p class="onboarding-alt" id="onboarding-sample-link-wrap">
+        Prefer to see it with real numbers first?
+        <button type="button" class="link-btn" id="onboarding-sample-data">Load sample data instead</button>
+      </p>
 
       <div class="onboarding-footer">
         <button type="button" class="ghost-btn" id="onboarding-skip">Skip</button>

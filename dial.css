@@ -883,6 +883,12 @@ select {
   padding: 1px 5px;
 }
 
+.onboarding-alt {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin: 0 0 14px;
+}
 .onboarding-footer { display: flex; justify-content: flex-end; gap: 10px; }
 .primary-btn {
   border: none;

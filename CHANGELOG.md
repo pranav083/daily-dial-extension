@@ -8,6 +8,25 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.3] — 2026-08-29
+
+### Added
+
+- **Sample data is now discoverable where it actually matters**, not just
+  buried in Settings → About → Demo mode: the welcome overlay itself has a
+  "Prefer to see it with real numbers first? Load sample data instead" link
+  that loads it and jumps straight to History in one click, and History's
+  own empty state has the same shortcut inline, re-rendering in place with
+  no tab switch needed. Both stay hidden the moment real data exists, same
+  as every other sample-data entry point.
+
+This follows a full re-audit of the whole onboarding/demo journey end to
+end, not just the individual reports that prompted it — walked as a
+genuinely new user would, in one continuous 7-step session (fresh boot →
+sample data → Day view → Settings → clear → History's own link → replay
+with real data present), verifying every transition rather than only the
+one button in question. All 15 checks passed with zero exceptions.
+
 ## [1.9.2] — 2026-08-29
 
 ### Fixed
