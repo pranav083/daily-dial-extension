@@ -14,7 +14,7 @@
 
 [Install](#install) · [How it works](#how-it-works) · [Your data](#your-data) · [Privacy](PRIVACY.md) · [Contributing](CONTRIBUTING.md)
 
-<img src="docs/screenshot.png" width="820" alt="The dial showing a painted morning, with the day's stats alongside">
+<img src="docs/demo.gif" width="820" alt="Painting a day on the dial, typing a block in, and watching the score update live">
 
 </div>
 

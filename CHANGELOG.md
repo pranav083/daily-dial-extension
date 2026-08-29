@@ -8,6 +8,20 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.8.3] — 2026-08-29
+
+### Changed
+
+- Replaced the static, stale hero screenshot (`docs/screenshot.png`, predating
+  the current topbar/streak layout) with `docs/demo.gif` — a real recorded
+  sequence of painting the dial, a typed entry landing, and the score
+  updating live. Embedded at the top of the README and `GETTING_STARTED.md`.
+
+### Removed
+
+- `docs/screenshot.png` — superseded by the demo GIF above, and no longer
+  referenced anywhere.
+
 ## [1.8.2] — 2026-08-29
 
 ### Added

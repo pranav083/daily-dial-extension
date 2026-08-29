@@ -3,6 +3,8 @@
 Everything here also appears inside the extension the first time you open it
 — this is the same tour, written down, with screenshots.
 
+![Painting a day on the dial, typing a block in, and watching the score update live](demo.gif)
+
 ## Install
 
 Load it unpacked for now (Chrome Web Store link goes here once published):
