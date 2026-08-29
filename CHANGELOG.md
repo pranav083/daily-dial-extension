@@ -8,6 +8,16 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.7.4] — 2026-08-29
+
+### Fixed
+
+- The category alias field's placeholder showed the identical example —
+  "also match: leetcode, resume, mock interview…" — under all six
+  categories, including Break and Distraction, where it made no sense.
+  Now shows `other words for "<category name>"…`, staying correct even
+  through a rename.
+
 ## [1.7.3] — 2026-08-29
 
 ### Fixed
