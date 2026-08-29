@@ -15,7 +15,7 @@ import {
   UNTRACKED,
   computeStats,
   dateKey,
-  mostRecentWeekStart,
+  recapWeekStart,
   nextOccurrence,
   nextWeeklyOccurrence,
   normalizeCategories,
@@ -136,8 +136,10 @@ async function notify(index) {
  *  week; the completed one is exactly 7 days before that. */
 async function notifyWeeklyRecap() {
   const [settings, categories, days] = await Promise.all([getSettings(), getCategories(), getAllDays()]);
-  const weekStart = mostRecentWeekStart(settings.weekStart, new Date());
-  weekStart.setDate(weekStart.getDate() - 7);
+  // Anchored on when the recap actually fires, not on weekStart alone — the
+  // two disagreed whenever either setting moved off its default, and the
+  // recap then described a week up to seven days old.
+  const weekStart = recapWeekStart(settings.weekStart, new Date());
 
   const recap = weeklyRecap(days, categories, weekStart);
   chrome.notifications.create(`dial-recap-${Date.now()}`, {

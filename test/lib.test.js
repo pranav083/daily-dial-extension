@@ -27,6 +27,7 @@ import {
   isValidTime,
   mergeDayMaps,
   mostRecentWeekStart,
+  recapWeekStart,
   nextOccurrence,
   nextWeeklyOccurrence,
   normalizeCategories,
@@ -1750,4 +1751,46 @@ test("detectUntrackedLifeArea says nothing without three weeks of history", () =
   }
   const days = daysMap(PATTERN_NOW, entries);
   assert.equal(detectUntrackedLifeArea(days, cats, PATTERN_NOW), null, "only 20 days have elapsed");
+});
+
+/* ---------- which week the recap reports ---------- */
+
+test("recapWeekStart reports the week that just finished when the recap lands on its last day", () => {
+  // weekStart = Sunday, recap on Saturday. The week Aug 23-29 ends that night,
+  // and choosing Saturday is how someone asks to hear about it.
+  const start = recapWeekStart(0, new Date(2026, 7, 29, 20, 0));
+  assert.equal(dateKey(start), "2026-08-23");
+});
+
+test("recapWeekStart reports the previous week on any other day", () => {
+  // The default: weekStart and recap day both Sunday. The week containing
+  // "now" has only just begun, so the completed one before it is the subject.
+  const start = recapWeekStart(0, new Date(2026, 7, 23, 20, 0));
+  assert.equal(dateKey(start), "2026-08-16");
+});
+
+test("recapWeekStart follows a Monday week start", () => {
+  // weekStart = Monday, recap on Sunday — Sunday is that week's last day,
+  // so the week Aug 17-23 is the one to report, not Aug 10-16.
+  const start = recapWeekStart(1, new Date(2026, 7, 23, 20, 0));
+  assert.equal(dateKey(start), "2026-08-17");
+
+  // Mid-week keeps reporting the last complete week.
+  assert.equal(dateKey(recapWeekStart(1, new Date(2026, 7, 26, 20, 0))), "2026-08-17");
+});
+
+test("recapWeekStart never reports a week more than 7 days stale", () => {
+  // The bug it replaces: a window up to a week behind, whose numbers looked
+  // current. Whatever the pair of settings, the reported week must end within
+  // the last seven days.
+  for (const weekStart of [0, 1]) {
+    for (let day = 23; day <= 29; day++) {
+      const now = new Date(2026, 7, day, 20, 0);
+      const start = recapWeekStart(weekStart, now);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 7); // exclusive
+      const daysStale = Math.round((now - end) / 86400000);
+      assert.ok(daysStale < 7, `weekStart=${weekStart} on Aug ${day} was ${daysStale} days stale`);
+    }
+  }
 });

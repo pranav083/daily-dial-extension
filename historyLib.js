@@ -207,9 +207,12 @@ export function weekStats(days, categories, weekStartDate) {
 }
 
 /**
- * This week vs. last week, both anchored to `weekStart` via the same
- * `mostRecentWeekStart` lib.js uses for the weekly recap — so "this week"
- * here always agrees with the recap's definition of a week.
+ * This week vs. last week, both anchored to `weekStart` via
+ * `mostRecentWeekStart`, so week boundaries here line up with the heatmap
+ * rows and the weekly goals.
+ *
+ * The weekly recap deliberately uses `recapWeekStart` instead: it reports a
+ * week that has *finished*, whereas "this week" here is the one in progress.
  *
  * @returns {{currentStart:string, previousStart:string,
  *   current:ReturnType<typeof weekStats>, previous:ReturnType<typeof weekStats>,

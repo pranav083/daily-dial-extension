@@ -1512,6 +1512,32 @@ export function mostRecentWeekStart(weekStart, now = new Date()) {
   return d;
 }
 
+/**
+ * Which week a recap firing at `now` should actually summarise.
+ *
+ * The recap is scheduled on `weeklyRecapDay` but the window used to be
+ * derived from `weekStart` alone — "the last fully complete aligned week" —
+ * so the two disagreed the moment either setting moved off its default.
+ * Setting the recap to Saturday evening reported the week *before* the one
+ * just lived through, up to seven days stale, which is worse than no recap:
+ * the numbers look current and aren't.
+ *
+ * The rule: report the most recent aligned week that has ended — and count
+ * the current week as ended when the recap fires on its final day, since
+ * choosing that day is exactly how someone asks to hear about the week they
+ * just finished. Leaves the default (recap on the same day the week starts)
+ * behaving as it always did.
+ *
+ * @param {number} weekStart 0 = Sunday, 1 = Monday
+ * @returns {Date} local midnight on the first day of the week to summarise
+ */
+export function recapWeekStart(weekStart, now = new Date()) {
+  const start = mostRecentWeekStart(weekStart, now);
+  const dayWithinWeek = (now.getDay() - weekStart + 7) % 7;
+  if (dayWithinWeek !== 6) start.setDate(start.getDate() - 7);
+  return start;
+}
+
 /* ---------- shareable snapshot ---------- */
 
 /** Fixed hex values for the "Share as image" card. Deliberately not the

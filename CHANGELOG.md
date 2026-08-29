@@ -8,6 +8,22 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.16.2] — 2026-08-29
+
+### Fixed
+
+- **The weekly recap summarised the wrong week.** It was scheduled on
+  `weeklyRecapDay` but its window came from `weekStart` alone, so the two
+  disagreed the moment either setting moved off its default. Set the recap to
+  Saturday evening and it reported the week *before* the one you had just
+  lived through — up to seven days stale, with numbers that looked current.
+  Worse than no recap, since it's the one thing that reaches out unprompted.
+  It now reports the most recent week that has actually ended, counting the
+  current week as ended when the recap fires on its final day — because
+  choosing that day is exactly how someone asks to hear about the week they
+  just finished. The default (recap on the same day the week starts) behaves
+  as it always did.
+
 ## [1.16.1] — 2026-08-29
 
 ### Fixed
