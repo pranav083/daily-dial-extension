@@ -15,7 +15,9 @@ Load it unpacked for now (Chrome Web Store link goes here once published):
 
 A short welcome screen, once — three cards covering painting, your score, and
 where settings live. Dismiss it with **Let's start**, **Skip**, or by
-clicking outside it. It won't come back after that.
+clicking outside it. It won't come back after that on its own — but you can
+bring it back anytime from Settings → **About** → **Replay welcome tour**,
+useful if you're showing someone else around or just want a refresher.
 
 ![Welcome screen](getting-started/01-onboarding.png)
 

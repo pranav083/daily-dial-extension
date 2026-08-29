@@ -8,6 +8,16 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.8.2] — 2026-08-29
+
+### Added
+
+- **Replay welcome tour** (Settings → About): brings back the same first-run
+  welcome overlay on demand — for showing someone else around, or just a
+  refresher, without needing to clear real data or dig through DevTools.
+  Also linked the written [Getting started](docs/GETTING_STARTED.md) guide
+  from the same spot, next to GitHub and Privacy.
+
 ## [1.8.1] — 2026-08-29
 
 ### Fixed

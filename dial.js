@@ -1627,11 +1627,15 @@ function wireEvents() {
     if (btn) switchSettingsTab(btn.dataset.tab);
   });
 
-  // ---- onboarding (first run) ----
+  // ---- onboarding (first run, and replayable from About) ----
   $("onboarding-start").addEventListener("click", dismissOnboarding);
   $("onboarding-skip").addEventListener("click", dismissOnboarding);
   $("onboarding-overlay").addEventListener("click", (evt) => {
     if (evt.target === $("onboarding-overlay")) dismissOnboarding();
+  });
+  $("replay-onboarding").addEventListener("click", () => {
+    closeSettings();
+    showOnboarding();
   });
 
   // ---- reminders + weekly recap ----
