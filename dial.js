@@ -1346,12 +1346,17 @@ function applyImport(mode) {
  *  confusion for no real benefit. "Clear" only makes sense once sample data
  *  is actually the thing currently loaded. */
 function renderSampleDataUI() {
-  $("load-sample-data").hidden = days.size > 0;
-  $("clear-sample-data").hidden = sampleDayKeys.length === 0;
-  $("sample-data-note").textContent =
-    sampleDayKeys.length > 0
-      ? "Loaded. Check History for the heatmap and trends, or clear it below whenever you're ready to log for real."
-      : "See how History, streaks, and goals look with three weeks of varied (fake) days, before you've logged anything of your own.";
+  const offerable = days.size === 0;
+  const active = sampleDayKeys.length > 0;
+  // Once real data exists and sample data was never loaded, this whole
+  // block has nothing useful to say — showing the section label and blurb
+  // with no reachable button under it read as broken, not just inactive.
+  $("sample-data-block").hidden = !offerable && !active;
+  $("load-sample-data").hidden = !offerable;
+  $("clear-sample-data").hidden = !active;
+  $("sample-data-note").textContent = active
+    ? "Loaded. Check History for the heatmap and trends, or clear it below whenever you're ready to log for real."
+    : "See how History, streaks, and goals look with three weeks of varied (fake) days, before you've logged anything of your own.";
 }
 
 function loadSampleData() {

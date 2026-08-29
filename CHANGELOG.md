@@ -8,6 +8,22 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.1] — 2026-08-29
+
+### Changed
+
+- Moved "Load sample data" / "Clear sample data" from Settings → Data into
+  a new "Demo mode" section in Settings → About, next to "Replay welcome
+  tour" — the two exploration features now live together.
+
+### Fixed
+
+- Once real data existed, the "Try it with sample data" section stayed
+  visible with both its buttons hidden — a section header and description
+  pointing at nothing, which read as broken rather than inactive. The
+  whole block now hides together whenever it has nothing reachable to
+  offer, and reappears if sample data is later loaded or cleared.
+
 ## [1.9.0] — 2026-08-29
 
 ### Added

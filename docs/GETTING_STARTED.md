@@ -68,12 +68,15 @@ gave it.
 
 ## Not ready to paint real data yet?
 
-Settings → **Data** → **Load sample data** fills in three realistic (fake)
-weeks — varied scores, a running streak, a couple of unlogged days — so
-History's heatmap, streaks, and goals all have something to show before
-you've logged anything of your own. Only offered while your history is
-genuinely empty; **Clear sample data** removes exactly those days, whenever
-you're ready to start logging for real.
+Settings → **About** → **Demo mode** → **Load sample data** fills in three
+realistic (fake) weeks — varied scores, a running streak, a couple of
+unlogged days — so History's heatmap, streaks, and goals all have something
+to show before you've logged anything of your own. Only offered while your
+history is genuinely empty (the button disappears the moment you have real
+data — nothing gets silently overwritten); **Clear sample data** removes
+exactly those days, whenever you're ready to start logging for real. The
+same "Demo mode" section also has **Replay welcome tour**, in case you want
+another look at the three-card welcome screen.
 
 ## Back up your data
 
