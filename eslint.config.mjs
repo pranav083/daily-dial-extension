@@ -11,6 +11,7 @@ const extensionGlobals = {
   URL: "readonly",
   Blob: "readonly",
   Intl: "readonly",
+  fetch: "readonly",
 };
 
 const browserGlobals = {
@@ -47,7 +48,7 @@ export default [
     languageOptions: { globals: browserGlobals },
   },
   {
-    files: ["background.js"],
+    files: ["background.js", "drive.js"],
     languageOptions: { globals: extensionGlobals },
   },
   {

@@ -343,6 +343,29 @@
             leaves existing ones untouched; Replace wipes your history and restores exactly what's
             in the file.
           </p>
+
+          <p class="section-label" style="margin-top:16px;">Google Drive backup</p>
+          <div class="footer-actions">
+            <button class="ghost-btn" id="drive-backup"
+                    title="Signs you in with Google and saves a backup to a private, app-only folder in your own Drive — invisible in your normal Drive, and never seen by anyone but you.">Back up to Google Drive</button>
+            <button class="ghost-btn" id="drive-restore"
+                    title="Downloads your most recent Google Drive backup and opens the same merge/replace confirmation as a file import.">Restore from Google Drive</button>
+          </div>
+          <p class="editor-note" id="drive-status">Not backed up to Google Drive yet.</p>
+          <div class="footer-actions">
+            <button class="ghost-btn danger" id="drive-disconnect" hidden
+                    title="Signs this account out of Daily Dial. Your backup file stays in your Drive; nothing is deleted.">Disconnect Google Drive</button>
+            <button class="ghost-btn danger" id="drive-delete" hidden
+                    title="Permanently deletes the backup file from your Google Drive. Cannot be undone. Your local data on this device is untouched.">Delete Drive backup</button>
+          </div>
+          <p class="editor-note">
+            Optional, and off unless you use it. Uses Google's <code>appDataFolder</code> — a
+            storage space private to this extension that doesn't show up in your regular Drive and
+            that no other app can read. This is the only feature in Daily Dial that sends data
+            anywhere; everything else stays on this device. See
+            <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
+            for details.
+          </p>
         </section>
 
         <section class="settings-section" data-panel="appearance">

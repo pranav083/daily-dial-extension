@@ -1,6 +1,6 @@
 {
   "name": "daily-dial-extension",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "private": true,
   "description": "Chrome extension: paint your day on a 24-hour dial and see where the time went.",
   "type": "module",
@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "check:version": "node scripts/check-version.mjs",
     "check": "npm run lint && npm test && npm run check:version",
-    "package": "zip -r daily-dial-v$npm_package_version.zip manifest.json dial.html dial.css dial.js lib.js background.js fonts icons LICENSE -x '.*'"
+    "package": "zip -r daily-dial-v$npm_package_version.zip manifest.json dial.html dial.css dial.js lib.js history.js historyLib.js drive.js background.js fonts icons LICENSE -x '.*'"
   },
   "repository": {
     "type": "git",

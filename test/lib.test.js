@@ -42,6 +42,13 @@ import {
   summarizeImport,
   angleAt,
   buildShareSvgMarkup,
+  DRIVE_BACKUP_FILENAME,
+  driveCreateMultipartBody,
+  driveDeleteUrl,
+  driveDownloadUrl,
+  driveListUrl,
+  driveParseListResponse,
+  driveUploadUrl,
   weekPerCatMinutes,
   weeklyRecap,
   weeklyRecapMessage,
@@ -955,4 +962,46 @@ test("buildShareSvgMarkup only includes the streak line when asked and streak is
   assert.doesNotMatch(buildShareSvgMarkup(slots, cats, "Today"), /day streak/);
   assert.doesNotMatch(buildShareSvgMarkup(slots, cats, "Today", { current: 0 }), /day streak/);
   assert.match(buildShareSvgMarkup(slots, cats, "Today", { current: 5 }), />🔥 5 day streak</);
+});
+
+/* ---------- Google Drive backup ---------- */
+
+test("driveListUrl scopes the search to appDataFolder and this app's filename", () => {
+  const url = driveListUrl();
+  assert.match(url, /^https:\/\/www\.googleapis\.com\/drive\/v3\/files\?/);
+  assert.match(url, /spaces=appDataFolder/);
+  assert.match(decodeURIComponent(url), new RegExp(`name='${DRIVE_BACKUP_FILENAME}'`));
+  assert.match(decodeURIComponent(url), /trashed=false/);
+});
+
+test("driveParseListResponse finds the file id, or null for a first-ever backup", () => {
+  assert.deepEqual(driveParseListResponse({ files: [{ id: "abc123", modifiedTime: "2026-08-28T00:00:00Z" }] }), {
+    id: "abc123",
+    modifiedTime: "2026-08-28T00:00:00Z",
+  });
+  assert.equal(driveParseListResponse({ files: [] }), null);
+  assert.equal(driveParseListResponse({}), null);
+  assert.equal(driveParseListResponse(null), null);
+});
+
+test("driveUploadUrl picks PATCH-in-place with an id, multipart create without one", () => {
+  assert.match(driveUploadUrl("abc123"), /^https:\/\/www\.googleapis\.com\/upload\/drive\/v3\/files\/abc123\?uploadType=media$/);
+  assert.match(driveUploadUrl(null), /^https:\/\/www\.googleapis\.com\/upload\/drive\/v3\/files\?uploadType=multipart$/);
+});
+
+test("driveCreateMultipartBody wraps metadata and content in the given boundary", () => {
+  const body = driveCreateMultipartBody('{"days":{}}', "BOUND1");
+  assert.match(body, /^--BOUND1\r\n/);
+  assert.match(body, /"parents":\["appDataFolder"\]/);
+  assert.match(body, new RegExp(`"name":"${DRIVE_BACKUP_FILENAME}"`));
+  assert.match(body, /\{"days":\{\}\}/);
+  assert.match(body, /--BOUND1--$/);
+});
+
+test("driveDownloadUrl requests the raw file content", () => {
+  assert.equal(driveDownloadUrl("abc123"), "https://www.googleapis.com/drive/v3/files/abc123?alt=media");
+});
+
+test("driveDeleteUrl targets the file itself, not just a query", () => {
+  assert.equal(driveDeleteUrl("abc123"), "https://www.googleapis.com/drive/v3/files/abc123");
 });

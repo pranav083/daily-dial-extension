@@ -8,6 +8,44 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.7.0] — 2026-08-29
+
+### Added
+
+- **Optional Google Drive backup** (Settings → Data): sign in with Google to
+  back up to, and restore from, a private folder in your own Drive
+  (`appDataFolder` — invisible in your regular Drive, unreachable by any
+  other app). Off by default; nothing about the extension's other behavior
+  changes unless you connect it. Restoring reuses the exact same
+  merge/replace confirmation as a local file import. A separate "Delete
+  Drive backup" action permanently removes the file itself, since
+  disconnecting only revokes access and doesn't touch it. New `identity`
+  permission, exercised only once you connect an account; still zero host
+  permissions, since the Drive API calls are plain authenticated `fetch()`
+  requests. See `docs/GOOGLE_DRIVE_SETUP.md` for the one manual step this
+  needs (creating your own OAuth Client ID) and [PRIVACY.md](PRIVACY.md) for
+  exactly what this does and doesn't send anywhere.
+
+### Changed
+
+- Rewrote PRIVACY.md, SECURITY.md, README.md, and the Chrome Web Store
+  submission doc to accurately describe the new optional Drive backup
+  feature — this is the first version where the "no network access" claim
+  needed a stated exception rather than being unconditionally true.
+
+### Fixed
+
+- **`npm run package` (and the release workflow) produced a broken zip.**
+  Both hardcoded a file list that predated the History feature and never
+  picked up `history.js` or `historyLib.js` — every packaged build since
+  then was missing modules `dial.js` actually imports, and would have
+  failed to load entirely if uploaded to the Web Store or downloaded from a
+  GitHub release. Added the missing files plus this version's new
+  `drive.js`, and pointed the release workflow at `npm run package` instead
+  of maintaining its own separate, driftable copy of the list. Verified by
+  building the zip, extracting it, and loading it in a real browser: no
+  failed requests, no exceptions.
+
 ## [1.6.0] — 2026-08-28
 
 ### Added

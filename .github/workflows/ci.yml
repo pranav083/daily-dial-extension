@@ -64,14 +64,20 @@ jobs:
             console.log('All', files.length, 'referenced files present.');
           "
 
-      - name: No network permissions crept in
+      - name: No broad network or page-access permissions crept in
         run: |
           node -e "
+            // Guards the *shape* of the permission set, not whether it makes any
+            // network request at all — the optional Google Drive backup feature
+            // does that deliberately, through a plain fetch() that needs none of
+            // these. What must never appear is a permission that would let the
+            // extension see arbitrary sites (host_permissions, content_scripts,
+            // tabs) or intercept/redirect requests generally (webRequest).
             const m = JSON.parse(require('node:fs').readFileSync('manifest.json','utf8'));
             const banned = ['tabs', 'webRequest', '<all_urls>'];
             const found = (m.permissions ?? []).filter(p => banned.includes(p));
             if (found.length || m.host_permissions?.length || m.content_scripts?.length) {
-              console.error('This extension is deliberately network- and page-free.');
+              console.error('This extension is deliberately page- and browsing-history-free.');
               console.error('Found:', { found, host: m.host_permissions, scripts: m.content_scripts });
               process.exit(1);
             }

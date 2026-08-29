@@ -23,6 +23,13 @@ export const CATEGORIES_KEY = "categories";
 export const SETTINGS_KEY = "settings";
 export const SCHEMA_VERSION_KEY = "schemaVersion";
 
+/** Device-local connection bookkeeping for Google Drive backup — deliberately
+ *  NOT part of `settings`, since a file id belongs to one Google account's
+ *  Drive and would be meaningless (or wrong) if it round-tripped through a
+ *  JSON backup onto a different device or account. */
+export const DRIVE_FILE_ID_KEY = "driveBackupFileId";
+export const DRIVE_LAST_SYNC_KEY = "driveLastSyncAt";
+
 /** Bumped when the shape of a backup file changes in a way older code can't
  *  read. Stored alongside the data and stamped into every export. */
 export const SCHEMA_VERSION = 1;
@@ -1045,4 +1052,66 @@ export function buildShareSvgMarkup(slots, categories, dateLabel, streak = null)
     ${parts.join("\n    ")}
     <text x="${rightX}" y="${H - 34}" font-family="monospace" font-size="12" fill="#7c8590">Daily Dial · github.com/pranav083/daily-dial-extension</text>
   </svg>`;
+}
+
+/* ---------- Google Drive backup (appDataFolder) ---------- */
+
+/**
+ * Request/response shaping for Drive v3, kept pure and DOM-free like the
+ * rest of this file: no fetch, no chrome.identity — drive.js does the
+ * actual network calls and imports these. appDataFolder is Google's own
+ * sandboxed per-app storage space, invisible in the user's normal Drive UI
+ * and inaccessible to any other app, so this never touches the rest of
+ * their Drive.
+ */
+export const DRIVE_BACKUP_FILENAME = "daily-dial-backup.json";
+
+/** Finds this app's one backup file, if it's ever written one from this
+ *  Google account. `trashed=false` so a deleted-then-recreated file doesn't
+ *  collide with the trash. */
+export function driveListUrl() {
+  const q = encodeURIComponent(`name='${DRIVE_BACKUP_FILENAME}' and trashed=false`);
+  return `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${q}&fields=files(id,modifiedTime)&pageSize=1`;
+}
+
+/** @returns {{id:string, modifiedTime:string}|null} null when this account
+ *  has never backed up before. */
+export function driveParseListResponse(json) {
+  const file = json?.files?.[0];
+  return file && typeof file.id === "string" ? { id: file.id, modifiedTime: file.modifiedTime ?? null } : null;
+}
+
+/** A known file id updates in place (plain media PATCH); no id means this is
+ *  the very first backup from this account, which Drive requires a
+ *  multipart create for (metadata + content in one request). */
+export function driveUploadUrl(fileId) {
+  return fileId
+    ? `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`
+    : "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
+}
+
+/** multipart/related body for the first-ever backup from an account: Drive
+ *  needs the {name, parents} metadata part and the file content part
+ *  together in one request, since there's no file id yet to PATCH. */
+export function driveCreateMultipartBody(jsonText, boundary) {
+  const metadata = JSON.stringify({ name: DRIVE_BACKUP_FILENAME, parents: ["appDataFolder"] });
+  return (
+    `--${boundary}\r\n` +
+    `Content-Type: application/json; charset=UTF-8\r\n\r\n${metadata}\r\n` +
+    `--${boundary}\r\n` +
+    `Content-Type: application/json\r\n\r\n${jsonText}\r\n` +
+    `--${boundary}--`
+  );
+}
+
+export function driveDownloadUrl(fileId) {
+  return `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`;
+}
+
+/** Permanently removes the backup file itself — not just disconnecting the
+ *  account. appDataFolder files don't show up in the user's regular Drive UI
+ *  at all, so this DELETE call is the only way to actually get rid of one;
+ *  revoking OAuth access alone leaves the file sitting there. */
+export function driveDeleteUrl(fileId) {
+  return `https://www.googleapis.com/drive/v3/files/${fileId}`;
 }

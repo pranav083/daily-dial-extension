@@ -11,6 +11,8 @@
 import {
   CATEGORIES_KEY,
   DAY_PREFIX,
+  DRIVE_FILE_ID_KEY,
+  DRIVE_LAST_SYNC_KEY,
   R_IN,
   R_OUT,
   SCHEMA_VERSION,
@@ -60,6 +62,14 @@ import {
   weekPerCatMinutes,
 } from "./lib.js";
 import { renderHistory } from "./history.js";
+import {
+  driveConnect,
+  driveDeleteBackup,
+  driveDisconnect,
+  driveDownloadBackup,
+  driveFindBackupFile,
+  driveUploadBackup,
+} from "./drive.js";
 
 const $ = (id) => document.getElementById(id);
 const isToday = (d) => sameDay(d, new Date());
@@ -68,6 +78,9 @@ const isToday = (d) => sameDay(d, new Date());
 const days = new Map();
 let categories = normalizeCategories(null);
 let settings = normalizeSettings(null);
+/** Device-local Google Drive connection bookkeeping — see DRIVE_FILE_ID_KEY. */
+let driveFileId = null;
+let driveLastSyncAt = null;
 
 const state = {
   viewDate: new Date(),
@@ -89,6 +102,8 @@ async function loadAll() {
   }
   categories = normalizeCategories(all[CATEGORIES_KEY]);
   settings = normalizeSettings(all[SETTINGS_KEY]);
+  driveFileId = typeof all[DRIVE_FILE_ID_KEY] === "string" ? all[DRIVE_FILE_ID_KEY] : null;
+  driveLastSyncAt = Number.isFinite(all[DRIVE_LAST_SYNC_KEY]) ? all[DRIVE_LAST_SYNC_KEY] : null;
 
   if (all[SCHEMA_VERSION_KEY] !== SCHEMA_VERSION) {
     chrome.storage.local.set({ [SCHEMA_VERSION_KEY]: SCHEMA_VERSION }).catch(() => {
@@ -1298,6 +1313,101 @@ function applyImport(mode) {
   toast(mode === "replace" ? "Backup restored" : "Backup merged in");
 }
 
+/* ---------- google drive backup ---------- */
+
+function renderDriveStatus() {
+  $("drive-status").textContent = driveLastSyncAt
+    ? `Last synced to Google Drive: ${new Date(driveLastSyncAt).toLocaleString()}`
+    : "Not backed up to Google Drive yet.";
+  $("drive-disconnect").hidden = !driveLastSyncAt;
+  $("drive-delete").hidden = !driveLastSyncAt;
+}
+
+async function driveBackupNow() {
+  toast("Connecting to Google Drive…");
+  try {
+    const token = await driveConnect();
+    const existing = driveFileId ? { id: driveFileId } : await driveFindBackupFile(token);
+    const backup = buildBackup(days, categories, settings, chrome.runtime.getManifest().version);
+    driveFileId = await driveUploadBackup(token, existing?.id ?? null, JSON.stringify(backup));
+    driveLastSyncAt = Date.now();
+    await chrome.storage.local
+      .set({ [DRIVE_FILE_ID_KEY]: driveFileId, [DRIVE_LAST_SYNC_KEY]: driveLastSyncAt })
+      .catch(reportStorageFailure);
+    renderDriveStatus();
+    toast("Backed up to Google Drive");
+  } catch (err) {
+    console.error("Daily Dial: Google Drive backup failed", err);
+    toast("Couldn't back up to Google Drive.");
+  }
+}
+
+/** Downloads whatever this Google account's backup holds, then hands it to
+ *  the exact same merge/replace confirmation flow a file import uses — Drive
+ *  is just another place the same backup JSON can come from. */
+async function driveRestore() {
+  toast("Checking Google Drive…");
+  try {
+    const token = await driveConnect();
+    const existing = await driveFindBackupFile(token);
+    if (!existing) {
+      toast("No Daily Dial backup found in this Google account.");
+      return;
+    }
+    const text = await driveDownloadBackup(token, existing.id);
+    const result = parseBackup(text);
+    if (!result.ok) {
+      toast(result.error);
+      return;
+    }
+    driveFileId = existing.id;
+    chrome.storage.local.set({ [DRIVE_FILE_ID_KEY]: driveFileId }).catch(reportStorageFailure);
+    pendingImport = {
+      kind: "json",
+      days: result.data.days,
+      categories: result.data.categories,
+      settings: result.data.settings,
+    };
+    showImportConfirm();
+  } catch (err) {
+    console.error("Daily Dial: Google Drive restore failed", err);
+    toast("Couldn't reach Google Drive.");
+  }
+}
+
+async function driveDisconnectClick() {
+  await driveDisconnect();
+  driveFileId = null;
+  driveLastSyncAt = null;
+  chrome.storage.local.remove([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY]).catch(reportStorageFailure);
+  renderDriveStatus();
+  toast("Disconnected from Google Drive");
+}
+
+/** Disconnecting only revokes this app's access to the account — the backup
+ *  file itself keeps sitting in appDataFolder, invisible in the user's
+ *  regular Drive, until something explicitly deletes it. This is that. */
+async function driveDeleteBackupClick() {
+  toast("Deleting from Google Drive…");
+  try {
+    const token = await driveConnect();
+    const existing = driveFileId ? { id: driveFileId } : await driveFindBackupFile(token);
+    if (!existing) {
+      toast("No Daily Dial backup found in this Google account.");
+      return;
+    }
+    await driveDeleteBackup(token, existing.id);
+    driveFileId = null;
+    driveLastSyncAt = null;
+    chrome.storage.local.remove([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY]).catch(reportStorageFailure);
+    renderDriveStatus();
+    toast("Deleted your Google Drive backup");
+  } catch (err) {
+    console.error("Daily Dial: Google Drive delete failed", err);
+    toast("Couldn't delete from Google Drive.");
+  }
+}
+
 /* ---------- settings panel ---------- */
 
 let settingsLastFocused = null;
@@ -1533,6 +1643,32 @@ function wireEvents() {
     applyImport("replace");
   });
 
+  // ---- data: google drive ----
+  $("drive-backup").addEventListener("click", driveBackupNow);
+  $("drive-restore").addEventListener("click", driveRestore);
+  $("drive-disconnect").addEventListener("click", driveDisconnectClick);
+
+  // Two-step confirm rather than a modal — destructive, and unlike local
+  // data this one isn't covered by ⌘Z.
+  const deleteBtn = $("drive-delete");
+  let deleteArmed = false;
+  let deleteArmTimer = null;
+  deleteBtn.addEventListener("click", () => {
+    if (!deleteArmed) {
+      deleteArmed = true;
+      deleteBtn.textContent = "Click again to delete permanently";
+      deleteArmTimer = setTimeout(() => {
+        deleteArmed = false;
+        deleteBtn.textContent = "Delete Drive backup";
+      }, 4000);
+      return;
+    }
+    clearTimeout(deleteArmTimer);
+    deleteArmed = false;
+    deleteBtn.textContent = "Delete Drive backup";
+    driveDeleteBackupClick();
+  });
+
   window.addEventListener("beforeunload", flushReflection);
 }
 
@@ -1564,6 +1700,7 @@ async function boot() {
   renderCategoryEditor();
   renderGoalsEditor();
   renderAboutBests();
+  renderDriveStatus();
   applyDialMode();
   renderAll();
 

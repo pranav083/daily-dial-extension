@@ -36,6 +36,7 @@ of it.**
 | `lib.js` | Pure functions over plain data. No DOM, no `chrome.*`. Fully unit tested. |
 | `dial.js` | The page — DOM, events, `chrome.storage`. |
 | `background.js` | Service worker — alarms, notifications, opening the dial. |
+| `drive.js` | Optional Google Drive backup — `chrome.identity` + `fetch`, no DOM. Its request/response shaping (URLs, the multipart body) still lives in `lib.js` and is unit tested; `drive.js` itself is the thin, untested, impure wrapper, same tier as `background.js`. |
 
 If you find yourself wanting to test something, that is usually a sign it
 belongs in `lib.js`. Anything that can be expressed as a function from data to
@@ -77,8 +78,11 @@ Please also:
   history"); please don't add it without a strong reason.
 - **Don't add runtime dependencies.** The extension ships no third-party code,
   which keeps review easy and the download small. `devDependencies` are fine.
-- **Don't add network calls.** The extension has no host permissions and should
-  stay that way; data is local and stays local.
+- **Don't add network calls beyond the existing, opt-in Google Drive backup.**
+  Everything else is local and should stay that way. `drive.js` is the one
+  place `fetch` is expected; if you're touching it, make sure the request
+  only ever fires after the user has explicitly connected an account, and
+  only ever targets `www.googleapis.com` / `accounts.google.com`.
 - **Update `CHANGELOG.md`** under `## [Unreleased]`.
 
 ## Reporting bugs

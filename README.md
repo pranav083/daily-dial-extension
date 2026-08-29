@@ -78,6 +78,8 @@ it, and load that folder the same way.
 | **Reminders** | Two a day plus an optional weekly recap, all off by default, times are yours |
 | **Settings** | Categories, reminders, goals, data, appearance, and about — behind the ☰ button |
 | **Export / import** | CSV or a full-fidelity JSON backup; import merges or replaces, your choice |
+| **Share as image** | Renders the day — dial, score, top category, streak — as a PNG, built entirely on-device |
+| **Google Drive backup** | Optional, off by default — backs up to a private folder in your own Drive; see [PRIVACY.md](PRIVACY.md) |
 
 ### The score
 
@@ -110,10 +112,10 @@ only on studying.
 
 Everything stays in `chrome.storage.local`, on your machine.
 
-**No account. No server. No analytics. No network access of any kind** — the
-extension requests no host permissions, runs no content scripts, and ships no
-third-party runtime code. It *cannot* phone home; it has no ability to make a
-request.
+**No account with us. No server of ours. No analytics.** By default, no
+network access of any kind — the extension requests no host permissions, runs
+no content scripts, and ships no third-party runtime code. It *cannot* phone
+home unless you turn on the one optional exception below.
 
 | Permission | Why |
 |---|---|
@@ -121,6 +123,7 @@ request.
 | `unlimitedStorage` | Keep years of history past the default quota |
 | `alarms` | Schedule the two daily reminders |
 | `notifications` | Show them |
+| `identity` | Sign in with Google, only if you turn on Drive backup |
 
 Conspicuously absent is `tabs`, which Chrome presents to users as *"read your
 browsing history"*. The service worker tracks its own tab through
@@ -133,6 +136,14 @@ everything (days, categories, settings) for a full restore later via
 **Settings → Data**. If it's been a couple of weeks since your last export and
 you have real history logged, the dial nudges you — dismissible, and it goes
 away once you export.
+
+**Optional: Google Drive backup.** Settings → Data also has "Back up to
+Google Drive" — off until you connect it, and even then it only ever writes
+to a private, app-only folder in your own Drive (`appDataFolder`), invisible
+in your regular Drive and unreachable by any other app. It's the only thing
+in Daily Dial that sends data anywhere. See [PRIVACY.md](PRIVACY.md) for
+exactly what that means, and `docs/GOOGLE_DRIVE_SETUP.md` if you're building
+from source and want to enable it yourself.
 
 The full policy is in [PRIVACY.md](PRIVACY.md).
 
@@ -163,6 +174,7 @@ npm run package # zip for distribution
 | `dial.js` | Page controller — DOM and `chrome.storage` |
 | `lib.js` | All calculation: geometry, stats, CSV, scheduling. No DOM, no `chrome.*` |
 | `background.js` | Service worker — reminders, opening the dial |
+| `drive.js` | Optional Google Drive backup — `chrome.identity` + `fetch`, no DOM |
 | `test/lib.test.js` | Unit tests over `lib.js` |
 | `fonts/` | Manrope + JetBrains Mono, bundled (MV3's CSP blocks remote fonts) |
 
