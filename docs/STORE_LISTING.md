@@ -46,9 +46,9 @@ Daily Dial
 ```
 
 ### Summary
-*(max 132 characters — this is 116)*
+*(max 132 characters — this is 119)*
 ```
-Paint your day on a 24-hour dial and see where the time really went. Local-first, with optional Google Drive backup.
+🕐 Paint your day on a 24-hour dial and see where the time really went. Local-first, with optional Google Drive backup.
 ```
 
 ### Category
@@ -64,79 +64,68 @@ English (United States)
 ### Detailed description
 
 ```
-Daily Dial turns your day into a 24-hour clock face you paint on. Pick a category, drag across the hours you spent on it, and you're done — logging a full day takes about ten seconds.
+🕐 Paint your day on a 24-hour dial. Pick a category, drag across the hours — a full day logged in about 10 seconds.
 
-WHY ANOTHER TIME TRACKER
+🤔 WHY ANOTHER TIME TRACKER
+📝 Forms are slow — a category, date, start, end, times eight blocks a day. Nobody keeps that up.
+🤖 Auto-trackers miss real life — no interview, no textbook, no conversation, just window titles.
+✅ Daily Dial: one drag. Fast enough for every day, honest enough to catch everything.
 
-Most tools force a choice between two frustrating options.
+✍️ HOW IT WORKS
+🖱️ Drag around the ring to paint — or press 1-6 for a pen, 0/E for the eraser
+⌨️ Type it instead: "9-11 deep work" or "9pm-11pm study"
+↩️ Ctrl+Z / Cmd+Z undoes one stroke at a time, 30 deep — Ctrl+Shift+Z redoes
+📋 Copy yesterday into today in one click
+🧭 A live needle always marks "now"
+📅 Jump days with the arrows, or click any bar in the 7-day strip
 
-Form-based trackers ask for a category, description, date, start time and end time for every single entry. Logging eight blocks means filling in that form eight times, which almost nobody keeps up for more than a few days.
+📊 WAS TODAY ACTUALLY PRODUCTIVE?
+🎯 A daily score, from your categories' weights
+📈 % of tracked time that was productive
+⏳ Your longest unbroken focus streak
+💬 A plain-language read: what led, what dragged, blocks or fragments
+👁️ Untracked time shown, never hidden — no quietly flattered numbers
 
-Automatic trackers record whichever app had focus. That sounds effortless until you realise it cannot see a job interview, a printed textbook, a conversation with a professor, or an hour spent thinking — and it quietly reduces your day to a list of window titles.
+🔥 STAY WITH IT
+🔥 Streak counter — one missed day a week forgiven, so one slip doesn't cost you weeks
+🎯 Optional daily goals per category, with a progress bar
+📬 Optional weekly recap: time tracked, top category, best day, streak
 
-Daily Dial takes a middle path. You tell it what you were doing, but the interaction is a single drag rather than a form, so it stays fast enough to actually do every day. And because you're the one saying what happened, it captures everything that goes on away from the keyboard.
+🎨 MADE YOUR OWN
+6 category slots — rename, reweight, hide the ones you don't use.
+Defaults: Deep Work · Applications · Study · Admin · Break · Distraction
+🔒 Renaming is safe — days store the slot, never the name, so history never rewrites.
 
-HOW IT WORKS
+🔔 GENTLE REMINDERS
+⏰ Two optional daily nudges, times you choose (default: midday + evening wrap-up)
+📬 Optional weekly recap, also off by default
+🤫 Everything here is off until you turn it on
 
-• Pick a category, then click or drag around the ring to paint that stretch of time — or press 1-6 to pick a pen, 0 or E for the eraser
-• Type it instead: "9-11 deep work" or "9pm-11pm study" fills the block for you
-• Made a mistake? Ctrl+Z (Cmd+Z on Mac) undoes one stroke at a time, thirty deep — Ctrl+Shift+Z redoes
-• Copy yesterday into today with one click when you're logging the same routine
-• A live needle marks the current time, so you always know where "now" is
-• Navigate to earlier days with the arrows, or click any bar in the seven-day strip
+🔒 YOUR DATA STAYS YOURS
+🚫 No account with us, no sign-in required
+🚫 No server of ours — nowhere for your data to go, by default
+🚫 No analytics, no telemetry, no tracking
+🚫 No host permissions — Chrome won't let it contact arbitrary sites even if it tried
+🚫 No content scripts — never touches your other tabs
+🚫 No third-party code, and no "tabs" permission (that's "read your browsing history" — a time logger has no business asking)
+📤 Export to CSV (opens in Excel/Sheets) or a full JSON backup, restore by merge or replace
+🖼️ "Share as image" renders your day as a PNG, built entirely on-device
 
-WAS TODAY ACTUALLY PRODUCTIVE?
+☁️ OPTIONAL: BACK UP TO YOUR OWN GOOGLE DRIVE
+The one exception to "nothing leaves your device" — and it's off until you switch it on.
+🔑 Sign in with Google → backup goes to a private, app-only folder in your own Drive (appDataFolder)
+👻 Invisible in your regular Drive, unreachable by any other app
+🔌 Disconnect anytime to revoke access, or permanently delete the file with one more click
+🙅 Nothing syncs in the background — every backup and restore is a click you make
 
-Each category carries a weight — counts toward your score, neutral, or counts against it. From that you get a daily score, the percentage of tracked time that was productive, and your longest unbroken stretch of focus.
+💻 OPEN SOURCE
+MIT licensed. A few small files of plain, unminified JavaScript — readable in an afternoon.
+🔗 github.com/pranav083/daily-dial-extension
 
-Underneath sits a plain-language summary of the day: which category led, whether distraction outweighed real work, whether your focus came in solid blocks or scattered fragments. It answers "was I productive?" directly, instead of leaving you to interpret a chart.
-
-Untracked time is shown rather than hidden, so gaps in your logging stay visible instead of quietly flattering your numbers.
-
-STAY WITH IT
-
-A 🔥 streak counter tracks consecutive logged days, with one missed day per week forgiven as a streak freeze — a single slip doesn't wipe out weeks of consistency. Set an optional daily minutes goal per category and watch a progress bar fill in. An optional weekly recap notification sums up the week just gone: time tracked, top category, best day, current streak.
-
-MADE YOUR OWN
-
-Six category slots, all renameable and reweightable, and you can hide the ones you don't use. The defaults suit a job hunt or university application — Deep Work, Applications, Study, Admin, Break, Distraction — with Applications broken out on purpose, so you can see whether you actually spent time applying or only studying.
-
-Rename freely: days store the category slot, never its name, so renaming never rewrites your history.
-
-GENTLE REMINDERS
-
-Two optional daily nudges, off until you turn them on, at times you choose. The default pair is a midday check-in and an evening wrap-up. The evening one tells you how much of the day is still unlogged, so you close the gap while you still remember it. An optional weekly recap notification, also off by default, adds a once-a-week summary on a day and time you pick.
-
-YOUR DATA STAYS YOURS
-
-This is the part that matters most, and it is built into the structure rather than promised in a policy:
-
-• No account with us, and no sign-in required to use the extension
-• No server of ours — by default there is nowhere for your data to go
-• No analytics, no telemetry, no tracking of any kind
-• No host permissions, so Chrome will not let it contact arbitrary sites even if it tried
-• No content scripts — it never runs code in your pages and cannot read them
-• No third-party code at all
-
-It also does not request the "tabs" permission, which Chrome shows to users as "read your browsing history". A time logger has no business asking for that.
-
-Everything lives in your browser's local storage. Export your full history to CSV whenever you like — it opens straight in Excel, Numbers or Google Sheets, with one row per block, ready to pivot. Or export a full JSON backup and import it back later — merge it into your existing days, or replace everything outright. The dial gently nudges you to back up if it's been a while and you have real history logged. A "Share as image" button renders the day as a PNG, built entirely on-device, if you want to send someone a snapshot.
-
-OPTIONAL: BACK UP TO YOUR OWN GOOGLE DRIVE
-
-The one exception to "nothing leaves your device," and it's off until you turn it on yourself. Settings → Data has "Back up to Google Drive" and "Restore from Google Drive" — sign in with Google, and your backup is written to a private, app-only folder in your own Drive (Google calls this appDataFolder): invisible in your regular Drive, and unreachable by any other app. Disconnect at any time to revoke access, or permanently delete the file with one more click. Nothing syncs automatically in the background; every backup and restore is something you click.
-
-OPEN SOURCE
-
-MIT licensed, and the complete source is on GitHub. It is a few small files of unminified JavaScript, so you can read exactly what it does in an afternoon:
-
-https://github.com/pranav083/daily-dial-extension
-
-WORTH KNOWING BEFOREHAND
-
-• Reminders only fire while Chrome is running — extensions cannot wake a closed browser
-• Data is stored per browser profile with no automatic sync; Google Drive backup lets you carry it to another profile or device manually via Restore
-• Blocks are 15 minutes, so shorter bursts round to the nearest quarter hour
+ℹ️ WORTH KNOWING
+⏰ Reminders only fire while Chrome is running
+🔄 No automatic cross-device sync — Google Drive backup covers manual restore instead
+⏱️ Blocks round to the nearest 15 minutes
 ```
 
 ---
