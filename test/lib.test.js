@@ -9,6 +9,7 @@ import {
   SLOT_MIN,
   UNTRACKED,
   buildBackup,
+  excludeDays,
   buildCsv,
   buildInsight,
   computeRuns,
@@ -459,6 +460,31 @@ test("parseCsv treats an empty or whitespace-only file as empty", () => {
 });
 
 /* ---------- backup (JSON import/export) ---------- */
+
+test("excludeDays keeps demo days out of a backup without touching the original", () => {
+  const real = { slots: paint(blank(), 9, 10, 0), reflection: "mine" };
+  const fake = { slots: paint(blank(), 14, 15, 1), reflection: "sample" };
+  const days = new Map([
+    ["2026-08-26", real],
+    ["2026-08-20", fake],
+    ["2026-08-21", fake],
+  ]);
+  const mine = excludeDays(days, ["2026-08-20", "2026-08-21"]);
+
+  assert.deepEqual([...mine.keys()], ["2026-08-26"]);
+  assert.equal(days.size, 3, "the source map must not be mutated");
+
+  const backup = buildBackup(mine, cats, DEFAULT_SETTINGS, "1.2.0");
+  assert.ok(backup.days["2026-08-26"]);
+  assert.equal(backup.days["2026-08-20"], undefined, "demo days must never reach a backup");
+  assert.equal(backup.days["2026-08-21"], undefined);
+});
+
+test("excludeDays returns every day untouched when demo mode is off", () => {
+  const days = new Map([["2026-08-26", { slots: blank(), reflection: "" }]]);
+  assert.equal(excludeDays(days, []), days);
+  assert.equal(excludeDays(days, undefined), days);
+});
 
 test("buildBackup stamps the schema version and app version", () => {
   const days = new Map([["2026-08-26", { slots: paint(blank(), 9, 10, 0), reflection: "" }]]);

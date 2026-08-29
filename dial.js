@@ -26,6 +26,7 @@ import {
   WEIGHT_GLYPH,
   angleAt,
   buildBackup,
+  excludeDays,
   buildCsv,
   buildInsight,
   buildSampleDays,
@@ -133,9 +134,18 @@ function persistDay() {
   const wasEmpty = days.size === 0;
   days.set(key, data);
   chrome.storage.local.set({ [DAY_PREFIX + key]: data }).catch(reportStorageFailure);
-  // The first block ever painted is exactly when the "paint your first
-  // block" hint stops being true, so it retires itself here.
-  if (wasEmpty) renderFirstRunHint();
+  // Editing a demo day makes it yours. Without this it stays on the sample
+  // list, and leaving demo mode would delete the day you just worked on.
+  const sampleIdx = sampleDayKeys.indexOf(key);
+  if (sampleIdx !== -1) {
+    sampleDayKeys.splice(sampleIdx, 1);
+    chrome.storage.local.set({ [SAMPLE_DAY_KEYS_KEY]: sampleDayKeys }).catch(reportStorageFailure);
+    renderSampleDataUI();
+  }
+  // The first block painted is when the hint stops being true. Only re-check
+  // while it's actually on screen, so the common case stays a cheap boolean
+  // read instead of a scan of every day on every commit.
+  if (wasEmpty || !$("first-run-hint").hidden) renderFirstRunHint();
 }
 
 const persistCategories = () =>
@@ -1199,9 +1209,16 @@ function saveAppearance() {
 /* ---------- export ---------- */
 
 function exportCsv() {
-  const csv = buildCsv(days, categories);
+  // Same rule as the JSON export and the Drive backup: demo days are not
+  // yours, so they never leave in a file that claims to be your history.
+  const mine = excludeDays(days, sampleDayKeys);
+  const csv = buildCsv(mine, categories);
   if (!csv) {
-    toast("Nothing logged yet to export.");
+    toast(
+      days.size === 0
+        ? "Nothing logged yet to export."
+        : "Only demo data is loaded — there's nothing of your own to export yet."
+    );
     return;
   }
   // Leading BOM so Excel reads it as UTF-8.
@@ -1217,11 +1234,16 @@ function exportCsv() {
 }
 
 function exportJson() {
-  if (days.size === 0) {
-    toast("Nothing logged yet to export.");
+  const mine = excludeDays(days, sampleDayKeys);
+  if (mine.size === 0) {
+    toast(
+      days.size === 0
+        ? "Nothing logged yet to export."
+        : "Only demo data is loaded — there's nothing of your own to export yet."
+    );
     return;
   }
-  const backup = buildBackup(days, categories, settings, chrome.runtime.getManifest().version);
+  const backup = buildBackup(mine, categories, settings, chrome.runtime.getManifest().version);
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -1277,13 +1299,17 @@ async function handleImportFile(file) {
 }
 
 function showImportConfirm() {
-  const summary = summarizeImport(days, pendingImport.days);
+  // Counted against real days only: applyImport drops demo data before it
+  // merges, so counting overlaps against fabricated days would describe an
+  // import that isn't the one about to happen.
+  const summary = summarizeImport(excludeDays(days, sampleDayKeys), pendingImport.days);
   $("import-confirm").hidden = false;
   $("import-summary").textContent =
     `${summary.incomingCount} day${summary.incomingCount === 1 ? "" : "s"} in the file, ` +
     `${summary.overlapping} overlapping your ${summary.existingCount} existing. ` +
     `Merge adds ${summary.newCount} new day${summary.newCount === 1 ? "" : "s"}. ` +
-    `Replace erases all ${summary.existingCount} existing day${summary.existingCount === 1 ? "" : "s"} and restores exactly what's in the file.`;
+    `Replace erases all ${summary.existingCount} existing day${summary.existingCount === 1 ? "" : "s"} and restores exactly what's in the file.` +
+    (sampleDayKeys.length ? " Demo data will be cleared first." : "");
   replaceArmed = false;
   clearTimeout(replaceArmTimer);
   $("import-replace").textContent = "Replace everything";
@@ -1299,6 +1325,20 @@ function cancelImport() {
 
 function applyImport(mode) {
   if (!pendingImport) return;
+
+  // Demo mode is dropped before anything is merged. mergeDayMaps keeps the
+  // existing day on a collision, and sample days occupy most of the last
+  // three weeks — so merging a real backup while demo mode was on silently
+  // skipped every real day those fake ones happened to shadow, and leaving
+  // demo mode afterwards then deleted those same dates outright. The data
+  // was neither imported nor kept.
+  if (sampleDayKeys.length) {
+    for (const key of sampleDayKeys) days.delete(key);
+    chrome.storage.local
+      .remove([...sampleDayKeys.map((k) => DAY_PREFIX + k), SAMPLE_DAY_KEYS_KEY])
+      .catch(reportStorageFailure);
+    sampleDayKeys = [];
+  }
 
   const merged = mergeDayMaps(days, pendingImport.days, mode);
   const removeKeys = [];
@@ -1317,14 +1357,6 @@ function applyImport(mode) {
     toSet[CATEGORIES_KEY] = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
   }
   if (mode === "replace" && pendingImport.settings) toSet[SETTINGS_KEY] = settings;
-  // A replace discards every prior day outright, sample ones included — the
-  // old bookkeeping would otherwise point at days that are now either gone
-  // or overwritten with the file's own content for that date.
-  if (mode === "replace" && sampleDayKeys.length) {
-    sampleDayKeys = [];
-    chrome.storage.local.remove(SAMPLE_DAY_KEYS_KEY).catch(reportStorageFailure);
-  }
-
   chrome.storage.local.set(toSet).catch(reportStorageFailure);
   if (removeKeys.length) chrome.storage.local.remove(removeKeys).catch(reportStorageFailure);
   if (mode === "replace" && pendingImport.settings) {
@@ -1423,17 +1455,44 @@ function clearSampleData() {
 function renderDriveStatus() {
   $("drive-status").textContent = driveLastSyncAt
     ? `Last synced to Google Drive: ${new Date(driveLastSyncAt).toLocaleString()}`
-    : "Not backed up to Google Drive yet.";
-  $("drive-disconnect").hidden = !driveLastSyncAt;
-  $("drive-delete").hidden = !driveLastSyncAt;
+    : driveFileId
+      ? "Connected to Google Drive. Restored from a backup; nothing uploaded from here yet."
+      : "Not backed up to Google Drive yet.";
+  // Gated on "is this account linked at all", not "have you uploaded". A
+  // restore links the account and leaves a file id behind without ever
+  // setting a sync time, so keying these off `driveLastSyncAt` meant someone
+  // who only ever restored could never revoke access or delete the cloud
+  // copy — they'd have to upload first, the exact thing they were avoiding.
+  // The file lives in appDataFolder, so there's no escape via Drive's UI.
+  const driveLinked = Boolean(driveLastSyncAt || driveFileId);
+  $("drive-disconnect").hidden = !driveLinked;
+  $("drive-delete").hidden = !driveLinked;
 }
 
 async function driveBackupNow() {
+  // Both file exports refuse to write an empty backup; this one used to run
+  // the whole OAuth consent flow first and then report success for a file
+  // containing nothing. Demo days don't count — they're excluded below.
+  if (excludeDays(days, sampleDayKeys).size === 0) {
+    toast(
+      days.size === 0
+        ? "Nothing logged yet to back up."
+        : "Only demo data is loaded — there's nothing of your own to back up yet."
+    );
+    return;
+  }
   toast("Connecting to Google Drive…");
   try {
     const token = await driveConnect();
     const existing = driveFileId ? { id: driveFileId } : await driveFindBackupFile(token);
-    const backup = buildBackup(days, categories, settings, chrome.runtime.getManifest().version);
+    // Demo days are excluded here too: a Drive backup taken during demo mode
+    // would otherwise restore fabricated history as if it were the user's.
+    const backup = buildBackup(
+      excludeDays(days, sampleDayKeys),
+      categories,
+      settings,
+      chrome.runtime.getManifest().version
+    );
     driveFileId = await driveUploadBackup(token, existing?.id ?? null, JSON.stringify(backup));
     driveLastSyncAt = Date.now();
     await chrome.storage.local
@@ -1467,6 +1526,9 @@ async function driveRestore() {
     }
     driveFileId = existing.id;
     chrome.storage.local.set({ [DRIVE_FILE_ID_KEY]: driveFileId }).catch(reportStorageFailure);
+    // The account is linked from here on, so the status line and the
+    // disconnect/delete controls have to reflect that immediately.
+    renderDriveStatus();
     pendingImport = {
       kind: "json",
       days: result.data.days,
@@ -1581,6 +1643,11 @@ function showOnboarding() {
 
 function dismissOnboarding() {
   $("onboarding-overlay").hidden = true;
+  // Every exit from the tour leaves the hint behind, not just "Let's start".
+  // Skipping means "don't lecture me", which a dismissible one-line pointer
+  // respects — being dropped on a blank dial with no affordance at all does
+  // not, and that was the whole complaint the tour was meant to answer.
+  renderFirstRunHint();
   if (onboardingSeen) return;
   onboardingSeen = true;
   chrome.storage.local.set({ [ONBOARDING_SEEN_KEY]: true }).catch(reportStorageFailure);
@@ -1601,13 +1668,16 @@ function dismissOnboardingAndNudge() {
   );
 }
 
-/** Only for someone who has genuinely nothing logged — it disappears for
- *  good the moment a first block lands, and demo mode counts as "something
- *  on screen" too, since the dial is no longer bare. */
+/** Only for someone who has genuinely nothing painted. `days.size` is the
+ *  wrong test here: saving a reflection, or clearing a day, writes a day
+ *  record whose slots are all untracked, which would retire the hint while
+ *  the ring is still empty. `dayHasEntries` is the same criterion the
+ *  heatmap, streak, and history-empty checks already use. */
 let firstRunHintDismissed = false;
 
 function renderFirstRunHint() {
-  $("first-run-hint").hidden = firstRunHintDismissed || days.size > 0;
+  const painted = [...days.values()].some(dayHasEntries);
+  $("first-run-hint").hidden = firstRunHintDismissed || painted;
 }
 
 /* ---------- wiring ---------- */

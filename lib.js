@@ -829,6 +829,24 @@ export function parseCsv(text, categories) {
 
 /* ---------- backup (import / export) ---------- */
 
+/**
+ * Returns `days` without the given keys; the original is left untouched.
+ * Used to keep demo-mode sample days out of backups. A backup is a copy of
+ * *your* history, and fabricated days carry no marker of their own — once
+ * they land in an export file there is nothing left to tell them apart from
+ * real days on the way back in.
+ * @param {Map<string, object>} days
+ * @param {string[]} keys
+ * @returns {Map<string, object>}
+ */
+export function excludeDays(days, keys) {
+  if (!keys || keys.length === 0) return days;
+  const drop = new Set(keys);
+  const out = new Map();
+  for (const [key, day] of days) if (!drop.has(key)) out.set(key, day);
+  return out;
+}
+
 /** Full-fidelity snapshot: every day, category, and setting. */
 export function buildBackup(days, categories, settings, appVersion, now = new Date()) {
   const daysObj = {};

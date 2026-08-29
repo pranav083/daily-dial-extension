@@ -8,6 +8,62 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.6] — 2026-08-29
+
+Found by auditing the demo/onboarding flow as a whole rather than fixing
+the reported symptom — several of these are considerably more serious than
+the bug that prompted the review.
+
+### Fixed
+
+- **Merging a backup while demo mode was on silently destroyed the days it
+  was supposed to restore.** A merge keeps the day already in place on any
+  date collision, and demo mode occupies most of the last three weeks — so
+  every real day in your file that landed on a demo date was skipped, the
+  toast still said "Backup merged in", and leaving demo mode afterwards
+  deleted those same dates. The data was neither imported nor kept, and the
+  confirmation screen counted overlaps against fabricated days, so its
+  numbers described an import that wasn't the one about to happen. Demo
+  data is now cleared before any import is applied, and the confirmation
+  counts only real days and says when demo data will be cleared.
+- **Demo data could permanently contaminate your real history through a
+  backup.** Exports and Google Drive backups serialized every day in
+  storage, sample days included, and nothing in a backup file marks a day
+  as fabricated. So: turn on demo mode, back up (the "you haven't backed
+  up in a while" nudge sits right below the demo banner, actively
+  suggesting it), turn demo off, and restore later — and seventeen
+  invented days come back indistinguishable from real ones, with no way
+  left to identify or remove them. Backups now exclude sample days, so a
+  backup is always a copy of your data and only your data.
+- **Editing a day while in demo mode, then leaving demo mode, deleted the
+  edit.** Painting on a sample day left it on the sample list, so exiting
+  demo removed the day you had just worked on. Editing a demo day now
+  makes it yours, and leaving demo mode never touches it.
+- **CSV export leaked demo days that JSON export had started refusing.**
+  Both exports and the Drive backup now apply the same rule.
+- **You couldn't revoke Google Drive access without first uploading to
+  it.** "Disconnect" and "Delete backup" were shown only once a *sync time*
+  existed, which only an upload sets — so restoring on a new machine linked
+  the account, stored a file id, and then hid both controls permanently.
+  The only way to earn the right to disconnect was to upload, the exact
+  thing a privacy-minded user is avoiding, and the file lives in Drive's
+  hidden app folder so there was no way out through Drive either. Both
+  controls now appear whenever the account is linked at all, and the status
+  line distinguishes "restored from" a backup from "synced to" one.
+- **Google Drive backup no longer runs the whole Google sign-in flow just
+  to upload an empty file.** Both file exports already refused to write an
+  empty backup; Drive didn't, and reported success afterwards.
+- **Skipping the welcome tour, or clicking outside it, left a new user on
+  a blank dial with no guidance at all.** Only "Let's start" showed the
+  first-run hint, so the two other ways out of the tour led straight back
+  to the problem the tour exists to prevent. Every exit now leaves the
+  hint (it's one dismissible line, not a lecture).
+- **The first-run hint retired itself while the dial was still empty.** It
+  keyed off "does any day record exist", but saving a reflection or
+  clearing a day writes a record with nothing painted in it. It now uses
+  the same "has anything actually been logged" test as the heatmap,
+  streaks, and History's own empty state.
+
 ## [1.9.5] — 2026-08-29
 
 ### Changed
