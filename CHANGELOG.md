@@ -8,6 +8,19 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.0] — 2026-08-29
+
+### Added
+
+- **Sample data mode** (Settings → Data → "Load sample data"): fills in
+  three realistic, varied weeks — a mix of strong and rough days, a couple
+  left deliberately unlogged, a running streak, a couple of reflections —
+  so History's heatmap, week-over-week, category trends, and the streak
+  counter all have something real to show on a genuinely empty install.
+  Only offered while there's zero real logged history, so it can never
+  overwrite anything real; "Clear sample data" removes exactly the days it
+  wrote, tracked by their own keys, regardless of what's been logged since.
+
 ## [1.8.3] — 2026-08-29
 
 ### Changed

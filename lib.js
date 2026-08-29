@@ -26,6 +26,10 @@ export const SCHEMA_VERSION_KEY = "schemaVersion";
  *  rather than inferring from `days.size === 0`, so someone who clears all
  *  their history later doesn't see it again. */
 export const ONBOARDING_SEEN_KEY = "onboardingSeen";
+/** Exact date keys sample/demo data wrote, so "Clear sample data" can remove
+ *  precisely those days — never a blanket wipe — regardless of whatever real
+ *  data has been logged since. */
+export const SAMPLE_DAY_KEYS_KEY = "sampleDayKeys";
 
 /** Device-local connection bookkeeping for Google Drive backup — deliberately
  *  NOT part of `settings`, since a file id belongs to one Google account's
@@ -1118,4 +1122,65 @@ export function driveDownloadUrl(fileId) {
  *  revoking OAuth access alone leaves the file sitting there. */
 export function driveDeleteUrl(fileId) {
   return `https://www.googleapis.com/drive/v3/files/${fileId}`;
+}
+
+/* ---------- sample data (demo mode) ---------- */
+
+/** Builds one day's slot array from `[startHour, endHour, categoryId]`
+ *  segments — fractional hours are fine (`15.5` = 15:30). */
+function sampleDay(segments, reflection = "") {
+  const slots = new Array(SLOTS).fill(UNTRACKED);
+  for (const [startH, endH, cat] of segments) {
+    for (let i = Math.round(startH * 4); i < Math.round(endH * 4); i++) slots[i] = cat;
+  }
+  return { slots, reflection };
+}
+
+/**
+ * Three realistic, varied weeks ending today — for exploring History,
+ * streaks, and goals on a genuinely empty install, before there's any real
+ * data to look at. A handful of days are deliberately left unlogged (not
+ * every day is a good day, and the heatmap should show that distinction),
+ * and scores range from strong to rough rather than all looking the same.
+ *
+ * Pure and deterministic given `now`, so it's fully unit-testable; dial.js
+ * only writes the result to storage and remembers which keys it used.
+ *
+ * @returns {Map<string, {slots:number[], reflection:string}>}
+ */
+export function buildSampleDays(now = new Date()) {
+  // Category ids: 0 Deep Work, 1 Applications, 2 Study, 3 Admin, 4 Break, 5 Distraction.
+  // `offset` is days before today (0 = today); `null` = left unlogged on purpose.
+  const plan = [
+    { offset: 0, day: sampleDay([[7, 9, 0], [9, 11, 2], [13, 15.5, 1], [16, 18, 0], [18, 19, 4]], "Good focus after lunch.") },
+    { offset: -1, day: sampleDay([[8, 10, 2], [10, 11, 3], [13, 16, 0], [19, 20, 4]]) },
+    { offset: -2, day: sampleDay([[9, 10, 3], [14, 15, 1], [20, 22, 5]], "Distracted most of the evening.") },
+    { offset: -3, day: sampleDay([[7, 9, 0], [9, 12, 2], [13, 17, 1]]) },
+    { offset: -4, day: sampleDay([[10, 12, 0], [15, 16, 4], [16, 18, 2]]) },
+    { offset: -5, day: sampleDay([[9, 11, 1], [11, 12, 3], [20, 21, 5]]) },
+    { offset: -6, day: null },
+    { offset: -7, day: sampleDay([[8, 10, 0], [10, 13, 2], [14, 16, 1]]) },
+    { offset: -8, day: sampleDay([[9, 11, 0], [13, 14, 4], [14, 17, 0]]) },
+    { offset: -9, day: sampleDay([[11, 12, 3], [19, 22, 5]], "Rough day, mostly scrolling.") },
+    { offset: -10, day: sampleDay([[7, 9, 2], [9, 11, 0], [13, 16, 1]]) },
+    { offset: -11, day: null },
+    { offset: -12, day: sampleDay([[8, 11, 0], [11, 13, 2], [15, 17, 1]]) },
+    { offset: -13, day: sampleDay([[10, 12, 1], [14, 15, 4]]) },
+    { offset: -14, day: null },
+    { offset: -15, day: sampleDay([[7, 10, 0], [10, 12, 2], [13, 17, 1], [18, 19, 4]]) },
+    { offset: -16, day: sampleDay([[9, 12, 0], [13, 14, 3]]) },
+    { offset: -17, day: sampleDay([[9, 10, 4], [10, 13, 2], [20, 22, 5]]) },
+    { offset: -18, day: null },
+    { offset: -19, day: sampleDay([[8, 11, 0], [11, 14, 1], [15, 17, 2]]) },
+    { offset: -20, day: sampleDay([[9, 11, 2], [13, 16, 0]]) },
+  ];
+
+  const days = new Map();
+  for (const { offset, day } of plan) {
+    if (!day) continue;
+    const d = new Date(now);
+    d.setDate(d.getDate() + offset);
+    days.set(dateKey(d), day);
+  }
+  return days;
 }

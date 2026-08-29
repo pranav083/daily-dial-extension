@@ -16,6 +16,7 @@ import {
   ONBOARDING_SEEN_KEY,
   R_IN,
   R_OUT,
+  SAMPLE_DAY_KEYS_KEY,
   SCHEMA_VERSION,
   SCHEMA_VERSION_KEY,
   SETTINGS_KEY,
@@ -27,6 +28,7 @@ import {
   buildBackup,
   buildCsv,
   buildInsight,
+  buildSampleDays,
   buildShareSvgMarkup,
   computeRuns,
   computeStats,
@@ -83,6 +85,10 @@ let settings = normalizeSettings(null);
 let driveFileId = null;
 let driveLastSyncAt = null;
 let onboardingSeen = false;
+/** Exact date keys the currently-loaded sample data (if any) wrote — see
+ *  SAMPLE_DAY_KEYS_KEY. Empty when sample data has never been loaded, or has
+ *  already been cleared. */
+let sampleDayKeys = [];
 
 const state = {
   viewDate: new Date(),
@@ -110,6 +116,7 @@ async function loadAll() {
   // never show a first-run "welcome" to someone mid-way through real use,
   // even though the flag itself was never explicitly set for them.
   onboardingSeen = all[ONBOARDING_SEEN_KEY] === true || days.size > 0;
+  sampleDayKeys = Array.isArray(all[SAMPLE_DAY_KEYS_KEY]) ? all[SAMPLE_DAY_KEYS_KEY] : [];
 
   if (all[SCHEMA_VERSION_KEY] !== SCHEMA_VERSION) {
     chrome.storage.local.set({ [SCHEMA_VERSION_KEY]: SCHEMA_VERSION }).catch(() => {
@@ -1306,6 +1313,13 @@ function applyImport(mode) {
     toSet[CATEGORIES_KEY] = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
   }
   if (mode === "replace" && pendingImport.settings) toSet[SETTINGS_KEY] = settings;
+  // A replace discards every prior day outright, sample ones included — the
+  // old bookkeeping would otherwise point at days that are now either gone
+  // or overwritten with the file's own content for that date.
+  if (mode === "replace" && sampleDayKeys.length) {
+    sampleDayKeys = [];
+    chrome.storage.local.remove(SAMPLE_DAY_KEYS_KEY).catch(reportStorageFailure);
+  }
 
   chrome.storage.local.set(toSet).catch(reportStorageFailure);
   if (removeKeys.length) chrome.storage.local.remove(removeKeys).catch(reportStorageFailure);
@@ -1321,7 +1335,61 @@ function applyImport(mode) {
   renderCategoryEditor();
   renderGoalsEditor();
   renderBackupStatus();
+  renderSampleDataUI();
   toast(mode === "replace" ? "Backup restored" : "Backup merged in");
+}
+
+/* ---------- sample data (demo mode) ---------- */
+
+/** "Load" only makes sense before there's any real data — once anything
+ *  real exists, offering to overwrite it with fake days risks real
+ *  confusion for no real benefit. "Clear" only makes sense once sample data
+ *  is actually the thing currently loaded. */
+function renderSampleDataUI() {
+  $("load-sample-data").hidden = days.size > 0;
+  $("clear-sample-data").hidden = sampleDayKeys.length === 0;
+  $("sample-data-note").textContent =
+    sampleDayKeys.length > 0
+      ? "Loaded. Check History for the heatmap and trends, or clear it below whenever you're ready to log for real."
+      : "See how History, streaks, and goals look with three weeks of varied (fake) days, before you've logged anything of your own.";
+}
+
+function loadSampleData() {
+  if (days.size > 0) return; // the button is hidden in this case, but don't trust that alone
+  const sample = buildSampleDays(new Date());
+  const toSet = {};
+  for (const [key, day] of sample) {
+    days.set(key, day);
+    toSet[DAY_PREFIX + key] = day;
+  }
+  sampleDayKeys = [...sample.keys()];
+  toSet[SAMPLE_DAY_KEYS_KEY] = sampleDayKeys;
+  chrome.storage.local.set(toSet).catch(reportStorageFailure);
+
+  switchDay(state.viewDate);
+  renderStrip();
+  renderStreak();
+  renderAboutBests();
+  refreshCurrentView();
+  renderSampleDataUI();
+  toast("Loaded sample data — see History, or clear it below");
+}
+
+function clearSampleData() {
+  if (sampleDayKeys.length === 0) return;
+  for (const key of sampleDayKeys) days.delete(key);
+  chrome.storage.local
+    .remove([...sampleDayKeys.map((k) => DAY_PREFIX + k), SAMPLE_DAY_KEYS_KEY])
+    .catch(reportStorageFailure);
+  sampleDayKeys = [];
+
+  switchDay(state.viewDate);
+  renderStrip();
+  renderStreak();
+  renderAboutBests();
+  refreshCurrentView();
+  renderSampleDataUI();
+  toast("Sample data cleared");
 }
 
 /* ---------- google drive backup ---------- */
@@ -1679,6 +1747,10 @@ function wireEvents() {
     applyImport("replace");
   });
 
+  // ---- data: sample data ----
+  $("load-sample-data").addEventListener("click", loadSampleData);
+  $("clear-sample-data").addEventListener("click", clearSampleData);
+
   // ---- data: google drive ----
   $("drive-backup").addEventListener("click", driveBackupNow);
   $("drive-restore").addEventListener("click", driveRestore);
@@ -1737,6 +1809,7 @@ async function boot() {
   renderGoalsEditor();
   renderAboutBests();
   renderDriveStatus();
+  renderSampleDataUI();
   applyDialMode();
   renderAll();
   if (!onboardingSeen) showOnboarding();

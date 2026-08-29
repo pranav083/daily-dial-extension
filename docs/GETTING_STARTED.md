@@ -66,6 +66,15 @@ remember the category's exact name. Renaming a category never rewrites your
 history either way: days store *which slot* you painted, never the name you
 gave it.
 
+## Not ready to paint real data yet?
+
+Settings → **Data** → **Load sample data** fills in three realistic (fake)
+weeks — varied scores, a running streak, a couple of unlogged days — so
+History's heatmap, streaks, and goals all have something to show before
+you've logged anything of your own. Only offered while your history is
+genuinely empty; **Clear sample data** removes exactly those days, whenever
+you're ready to start logging for real.
+
 ## Back up your data
 
 Settings → **Data**. Two independent ways to keep a copy:

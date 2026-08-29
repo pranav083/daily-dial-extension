@@ -41,6 +41,7 @@ import {
   slotFromAngle,
   summarizeImport,
   angleAt,
+  buildSampleDays,
   buildShareSvgMarkup,
   DRIVE_BACKUP_FILENAME,
   driveCreateMultipartBody,
@@ -1004,4 +1005,41 @@ test("driveDownloadUrl requests the raw file content", () => {
 
 test("driveDeleteUrl targets the file itself, not just a query", () => {
   assert.equal(driveDeleteUrl("abc123"), "https://www.googleapis.com/drive/v3/files/abc123");
+});
+
+/* ---------- sample data ---------- */
+
+test("buildSampleDays is deterministic and keys every day off the given `now`", () => {
+  const now = new Date("2026-08-29T12:00:00");
+  const a = buildSampleDays(now);
+  const b = buildSampleDays(new Date("2026-08-29T18:45:00")); // same day, different time
+  assert.deepEqual([...a.keys()].sort(), [...b.keys()].sort());
+  assert.ok(a.has("2026-08-29"), "today is included");
+  assert.ok(a.has("2026-08-09"), "reaches back roughly three weeks");
+});
+
+test("buildSampleDays leaves some days genuinely unlogged, not just low-scoring", () => {
+  const days = buildSampleDays(new Date("2026-08-29T12:00:00"));
+  assert.ok(days.size < 21, "at least one of the 21 days in range is skipped entirely");
+  for (const day of days.values()) assert.ok(dayHasEntries(day), "every included day has at least one painted slot");
+});
+
+test("buildSampleDays produces a real, non-trivial current streak", () => {
+  const now = new Date("2026-08-29T12:00:00");
+  const days = buildSampleDays(now);
+  const streak = computeStreak(days, now);
+  assert.ok(streak.current >= 3, `expected a real streak, got ${streak.current}`);
+});
+
+test("buildSampleDays varies scores instead of every day looking the same", () => {
+  const now = new Date("2026-08-29T12:00:00");
+  const days = buildSampleDays(now);
+  const scores = [...days.values()].map((d) => computeStats(d.slots, DEFAULT_CATEGORIES).score);
+  assert.ok(Math.min(...scores) < 0, "at least one rough day");
+  assert.ok(Math.max(...scores) > 50, "at least one strong day");
+});
+
+test("buildSampleDays includes at least one reflection, for note search to have something to find", () => {
+  const days = buildSampleDays(new Date("2026-08-29T12:00:00"));
+  assert.ok([...days.values()].some((d) => d.reflection.length > 0));
 });
