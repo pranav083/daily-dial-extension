@@ -30,7 +30,6 @@ import {
 const ALARM_PREFIX = "reminder-";
 const WEEKLY_RECAP_ALARM = "weekly-recap";
 const BADGE_ALARM = "badge-refresh";
-const OPEN_TAB_KEY = "openTabId";
 
 // Toolbar-badge colours by score bucket — fixed hex, since the badge sits on
 // the browser chrome rather than the page and can't read the dial's CSS
@@ -153,26 +152,35 @@ async function notifyWeeklyRecap() {
 /**
  * Focus the existing dial tab rather than piling up duplicates.
  *
- * The tab id is remembered in session storage instead of searching by URL:
- * chrome.tabs.query({url}) needs the "tabs" permission, which Chrome presents
- * to the user as "read your browsing history" — far more than this needs.
+ * Asks the runtime what's actually open instead of remembering a tab id.
+ * Session storage is cleared on browser shutdown, so a restored tab — a
+ * pinned dial, "continue where you left off", or a Ctrl+Shift+T — came back
+ * with an id we had forgotten, and the next click opened a *second* dial.
+ * Two live copies is the one thing the page can't survive cleanly, since
+ * each holds a whole-day snapshot and writes it back wholesale.
+ *
+ * getContexts needs no "tabs" permission, so this keeps the constraint that
+ * ruled out chrome.tabs.query({url}) — that permission reads to the user as
+ * "read your browsing history", far more than this needs. It also removes
+ * the double-click race the old bookkeeping had.
  */
 async function openDial() {
-  const { [OPEN_TAB_KEY]: tabId } = await chrome.storage.session.get(OPEN_TAB_KEY);
+  const [existing] = await chrome.runtime.getContexts({
+    contextTypes: ["TAB"],
+    documentUrls: [chrome.runtime.getURL("dial.html")],
+  });
 
-  if (typeof tabId === "number") {
+  if (existing) {
     try {
-      const tab = await chrome.tabs.get(tabId);
-      await chrome.tabs.update(tab.id, { active: true });
-      await chrome.windows.update(tab.windowId, { focused: true });
+      await chrome.tabs.update(existing.tabId, { active: true });
+      await chrome.windows.update(existing.windowId, { focused: true });
       return;
     } catch {
-      // Closed since we recorded it — fall through and open a fresh one.
+      // Vanished between the query and the focus — fall through.
     }
   }
 
-  const tab = await chrome.tabs.create({ url: chrome.runtime.getURL("dial.html") });
-  await chrome.storage.session.set({ [OPEN_TAB_KEY]: tab.id });
+  await chrome.tabs.create({ url: chrome.runtime.getURL("dial.html") });
 }
 
 chrome.action.onClicked.addListener(openDial);
@@ -199,11 +207,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   }
   if (!alarm.name.startsWith(ALARM_PREFIX)) return;
   notify(Number(alarm.name.slice(ALARM_PREFIX.length)));
-});
-
-chrome.tabs.onRemoved.addListener(async (tabId) => {
-  const { [OPEN_TAB_KEY]: openId } = await chrome.storage.session.get(OPEN_TAB_KEY);
-  if (openId === tabId) await chrome.storage.session.remove(OPEN_TAB_KEY);
 });
 
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {

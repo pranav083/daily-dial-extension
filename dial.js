@@ -128,7 +128,51 @@ async function loadAll() {
 
 const getDay = (key) => days.get(key) ?? emptyDay();
 
+/* ---------- stale tab guard ----------
+   Everything is read into memory once at load and written back a whole day
+   (or a whole settings object) at a time. A second copy of the dial that
+   loaded earlier therefore holds a snapshot that predates anything done
+   here, and its next write — a stroke, a debounced reflection, even closing
+   with a pending note — replaces the newer data outright. Nothing errors:
+   the write succeeds, and the losing tab keeps showing work that no longer
+   exists anywhere. Two tabs is not exotic either; a restored pinned tab or
+   a Ctrl+Shift+T is enough. So once another copy writes, this one stops
+   writing entirely rather than trying to merge snapshots it can't
+   reconcile. */
+let tabIsStale = false;
+
+function markTabStale() {
+  if (tabIsStale) return;
+  tabIsStale = true;
+  $("stale-banner").hidden = false;
+  document.body.classList.add("is-stale");
+  closeSettings();
+}
+
+/** True when a change came from somewhere else, rather than echoing our own
+ *  write back at us. */
+function isForeignChange(changes) {
+  for (const [key, { newValue }] of Object.entries(changes)) {
+    let mine;
+    if (key.startsWith(DAY_PREFIX)) mine = days.get(key.slice(DAY_PREFIX.length));
+    else if (key === CATEGORIES_KEY) mine = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
+    else if (key === SETTINGS_KEY) mine = settings;
+    else if (key === SAMPLE_DAY_KEYS_KEY) mine = sampleDayKeys;
+    else continue; // bookkeeping we don't hold a copy of
+    if (JSON.stringify(newValue) !== JSON.stringify(mine)) return true;
+  }
+  return false;
+}
+
+function watchForOtherTabs() {
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== "local" || tabIsStale) return;
+    if (isForeignChange(changes)) markTabStale();
+  });
+}
+
 function persistDay() {
+  if (tabIsStale) return;
   const key = dateKey(state.viewDate);
   const data = { slots: state.slots, reflection: state.reflection };
   const wasEmpty = days.size === 0;
@@ -149,12 +193,14 @@ function persistDay() {
 }
 
 const persistCategories = () =>
-  chrome.storage.local
-    .set({ [CATEGORIES_KEY]: categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases })) })
-    .catch(reportStorageFailure);
+  tabIsStale
+    ? undefined
+    : chrome.storage.local
+        .set({ [CATEGORIES_KEY]: categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases })) })
+        .catch(reportStorageFailure);
 
 const persistSettings = () =>
-  chrome.storage.local.set({ [SETTINGS_KEY]: settings }).catch(reportStorageFailure);
+  tabIsStale ? undefined : chrome.storage.local.set({ [SETTINGS_KEY]: settings }).catch(reportStorageFailure);
 
 function reportStorageFailure(err) {
   console.error("Daily Dial: could not save", err);
@@ -1548,7 +1594,7 @@ function cancelImport() {
 }
 
 function applyImport(mode) {
-  if (!pendingImport) return;
+  if (!pendingImport || tabIsStale) return;
 
   // Demo mode is dropped before anything is merged. mergeDayMaps keeps the
   // existing day on a collision, and sample days occupy most of the last
@@ -1638,6 +1684,7 @@ function renderDemoBanner() {
 }
 
 function loadSampleData() {
+  if (tabIsStale) return;
   if (sampleDayKeys.length > 0) return; // already on; the button is hidden, but don't trust that alone
   const sample = buildSampleDays(new Date());
   const toSet = {};
@@ -1669,6 +1716,7 @@ function loadSampleData() {
 }
 
 function clearSampleData() {
+  if (tabIsStale) return;
   if (sampleDayKeys.length === 0) return;
   for (const key of sampleDayKeys) days.delete(key);
   chrome.storage.local
@@ -1706,6 +1754,8 @@ function renderDriveStatus() {
 }
 
 async function driveBackupNow() {
+  // A stale snapshot uploaded here would overwrite the cloud copy too.
+  if (tabIsStale) return;
   // Both file exports refuse to write an empty backup; this one used to run
   // the whole OAuth consent flow first and then report success for a file
   // containing nothing. Demo days don't count — they're excluded below.
@@ -1746,6 +1796,7 @@ async function driveBackupNow() {
  *  the exact same merge/replace confirmation flow a file import uses — Drive
  *  is just another place the same backup JSON can come from. */
 async function driveRestore() {
+  if (tabIsStale) return;
   toast("Checking Google Drive…");
   try {
     const token = await driveConnect();
@@ -1985,6 +2036,7 @@ function wireEvents() {
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) checkDayRollover();
   });
+  $("stale-banner-reload").addEventListener("click", () => window.location.reload());
 
   $("prev-day").addEventListener("click", () => {
     const d = new Date(state.viewDate);
@@ -2173,6 +2225,9 @@ async function boot() {
   wireEvents();
 
   await loadAll();
+  // Only after loadAll: the in-memory copy this compares against has to
+  // exist before a foreign write can be told apart from our own.
+  watchForOtherTabs();
   applyTheme();
 
   const day = getDay(dateKey(state.viewDate));

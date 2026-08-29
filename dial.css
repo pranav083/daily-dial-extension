@@ -850,6 +850,46 @@ select {
   .streak-banner { order: 3; }
 }
 
+/* ---- stale tab banner ---- */
+/* Critical tone rather than warning: unlike demo mode this is not a state
+   the user chose, and ignoring it costs them work. */
+.stale-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in oklab, var(--status-critical) 16%, var(--panel));
+  border: 1px solid color-mix(in oklab, var(--status-critical) 50%, transparent);
+  border-radius: 12px;
+  padding: 9px 14px;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+.stale-banner[hidden] { display: none; }
+.stale-banner-mark { font-size: 1rem; line-height: 1; flex: none; }
+.stale-banner-text { flex: 1; color: var(--ink-2); }
+.stale-banner-text b { color: var(--ink); }
+.stale-banner-reload {
+  flex: none;
+  border: 1px solid color-mix(in oklab, var(--status-critical) 60%, transparent);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.stale-banner-reload:hover { background: color-mix(in oklab, var(--status-critical) 22%, transparent); }
+.stale-banner-reload:focus-visible { outline: 2px solid var(--status-critical); outline-offset: 2px; }
+
+/* Everything that writes is inert once this tab is stale. */
+.is-stale .dial-wrap,
+.is-stale .pens,
+.is-stale .quick-entry,
+.is-stale #reflection { opacity: 0.5; pointer-events: none; }
+
 /* ---- demo mode banner ---- */
 /* Deliberately not the accent colour: this is a state warning, not a
    feature highlight, and it has to stay legible above every view. */

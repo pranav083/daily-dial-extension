@@ -49,6 +49,19 @@
               title="Removes exactly the sample days that were loaded. Anything you logged yourself is untouched.">Exit demo</button>
     </div>
 
+    <!-- This page holds everything in memory from the moment it loads and
+         writes whole days back at once, so a second copy of the dial that
+         was open before those changes would overwrite them wholesale. When
+         another copy writes, this one stops writing and says so. -->
+    <div class="stale-banner" id="stale-banner" hidden role="alert">
+      <span class="stale-banner-mark">⚠️</span>
+      <span class="stale-banner-text">
+        <b>Another tab changed your data.</b> Editing is paused here so this
+        tab can't overwrite it. Reload to pick up the newer version.
+      </span>
+      <button type="button" class="stale-banner-reload" id="stale-banner-reload">Reload</button>
+    </div>
+
     <div class="view active" id="view-day">
     <div class="nudge-bar" id="backup-nudge" hidden>
       <span>You haven't backed up in a while — your data lives only in this browser.</span>

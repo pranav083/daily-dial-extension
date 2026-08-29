@@ -7,7 +7,9 @@ Everything here also appears inside the extension the first time you open it
 
 ## Install
 
-Load it unpacked for now (Chrome Web Store link goes here once published):
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn)** — one click, and it updates itself. Pin it to the toolbar; the icon opens the dial.
+
+Prefer to run it from source? Clone the repo, then:
 
 1. `chrome://extensions` → turn on **Developer mode** (top right)
 2. **Load unpacked** → select the `daily-dial-extension` folder

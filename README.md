@@ -6,6 +6,7 @@
 
 **Paint your day on a 24-hour dial, and see whether the time went where you meant it to.**
 
+[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-install-4285F4.svg)](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn)
 [![CI](https://github.com/pranav083/daily-dial-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/pranav083/daily-dial-extension/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-4285F4.svg)](manifest.json)
@@ -38,7 +39,12 @@ the hours actually went toward the applications.
 
 ## Install
 
-No build step, no store account, no payment. The repository *is* the extension.
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn)** — one click, and it updates itself.
+
+<details>
+<summary>Or load it from source</summary>
+
+No build step and no dependencies — the repository *is* the extension.
 
 ```bash
 git clone https://github.com/pranav083/daily-dial-extension.git
@@ -54,9 +60,31 @@ Prefer a download? Grab the zip from
 it, and load that folder the same way.
 
 > [!IMPORTANT]
-> Chrome derives an unpacked extension's ID from its folder path, and your data
-> is keyed to that ID. **Moving the folder later orphans your logged days.**
+> This applies to unpacked installs only — not the Web Store one. Chrome
+> derives an unpacked extension's ID from its folder path, and your data is
+> keyed to that ID, so **moving the folder later orphans your logged days.**
 > Put it somewhere permanent, and export a CSV before relocating it.
+
+</details>
+
+### Verifying the published build
+
+The store build is the same unminified, dependency-free JavaScript that's in
+this repository, so you can check that for yourself rather than taking the
+privacy claims on trust. Chrome unpacks installed extensions into a folder
+named after the extension ID — `mgcjgngceajnmfhkifccaoeccbmfikhn` — inside your
+Chrome profile (`~/Library/Application Support/Google/Chrome/Default/Extensions/`
+on macOS, `%LOCALAPPDATA%\Google\Chrome\User Data\Default\Extensions\` on
+Windows). Compare it against the matching tag:
+
+```bash
+git checkout v1.10.0
+diff -r . "$CHROME_PROFILE/Extensions/mgcjgngceajnmfhkifccaoeccbmfikhn/<version>/"
+```
+
+Expect differences only in Chrome's own additions (`_metadata/`) and the files
+`npm run package` leaves out. Compare files rather than hashes — `zip` records
+modification times, so the archive itself isn't byte-reproducible.
 
 New to Daily Dial? [**Getting started**](docs/GETTING_STARTED.md) walks
 through painting your first day, categories and aliases, and backups — with
@@ -75,6 +103,7 @@ first time you open it.
 | **Copy yesterday** | Fills today from the previous day; confirms before overwriting |
 | **Undo / redo** | <kbd>⌘Z</kbd> / <kbd>⇧⌘Z</kbd> (<kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd>) — 30 deep |
 | **Past days** | Arrows beside the date, or click a bar in the week strip |
+| **History** | A month heatmap, month summary, week-over-week deltas, per-category trends, and search across your notes — the History tab beside Day |
 | **Dial layout** | One 24-hour ring, two 12-hour AM/PM rings side by side, or one 12-hour ring with a switch — pick one via the quick switcher above the dial, or Settings → Appearance |
 | **Toolbar badge** | Today's score on the extension icon itself, coloured to match — no click needed |
 | **Streaks** | 🔥 counts any day with at least one block; one missed day a week is forgiven |
@@ -166,7 +195,7 @@ Stated up front, because they're inherent rather than unfinished:
 
 ```bash
 npm install     # eslint only — the extension itself has no dependencies
-npm test        # 77 unit tests, node's built-in runner
+npm test        # 134 unit tests, node's built-in runner
 npm run lint
 npm run check   # lint + tests + version consistency
 npm run package # zip for distribution
@@ -180,7 +209,10 @@ npm run package # zip for distribution
 | `lib.js` | All calculation: geometry, stats, CSV, scheduling. No DOM, no `chrome.*` |
 | `background.js` | Service worker — reminders, opening the dial |
 | `drive.js` | Optional Google Drive backup — `chrome.identity` + `fetch`, no DOM |
+| `history.js` | History view controller — heatmap, summaries, trends, note search |
+| `historyLib.js` | History's calculations: month grids, week-over-week, trends. No DOM |
 | `test/lib.test.js` | Unit tests over `lib.js` |
+| `test/historyLib.test.js` | Unit tests over `historyLib.js` |
 | `fonts/` | Manrope + JetBrains Mono, bundled (MV3's CSP blocks remote fonts) |
 
 The `lib.js` / `dial.js` split is the one structural rule: anything expressible

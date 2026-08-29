@@ -8,6 +8,39 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.10.0] — 2026-08-29
+
+### Fixed
+
+- **Two copies of the dial open at once could silently destroy a day's
+  work.** The page reads everything into memory when it loads and writes
+  back a whole day — or the whole settings object — at a time, and nothing
+  told it when another copy had changed something. So a second tab holding
+  an older snapshot would overwrite the newer data on its very next write,
+  and merely *typing a note* was enough to trigger it. Nothing errored: the
+  write succeeded, and the losing tab carried on displaying work that no
+  longer existed anywhere. Two copies wasn't exotic either — a restored
+  pinned tab or a Ctrl+Shift+T was enough, because the "reuse the open tab"
+  logic remembered a tab id in session storage, which Chrome clears on
+  shutdown. Now: the dial notices when another copy writes, stops writing
+  itself, and says so with a Reload button rather than quietly clobbering.
+  And it finds an already-open dial by asking the runtime instead of
+  remembering an id, so a restored tab is reused rather than duplicated.
+  (Nothing here needs the `tabs` permission — that constraint still holds.)
+
+### Changed
+
+- **The README leads with the Chrome Web Store link.** It previously
+  described only the unpacked developer install, along with a warning about
+  moving the folder that doesn't apply to a store install at all.
+- **Added a section on verifying the published build.** All the JavaScript
+  is unminified and dependency-free, so anyone can diff the installed
+  extension against the matching git tag rather than taking the privacy
+  claims on faith — worth spelling out, since nobody thinks to try it.
+- Getting-started guide no longer says the extension isn't published yet.
+- README's test count, file table, and feature list were behind the code —
+  History had no entry at all despite being a headline feature.
+
 ## [1.9.9] — 2026-08-29
 
 ### Added
