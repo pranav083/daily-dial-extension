@@ -9,6 +9,7 @@ const extensionGlobals = {
   setInterval: "readonly",
   clearInterval: "readonly",
   URL: "readonly",
+  URLSearchParams: "readonly",
   Blob: "readonly",
   Intl: "readonly",
   fetch: "readonly",

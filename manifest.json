@@ -1,13 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Daily Dial",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Paint your day on a 24-hour dial, then see whether the time went where you meant it to.",
   "permissions": ["storage", "unlimitedStorage", "alarms", "notifications", "identity"],
-  "oauth2": {
-    "client_id": "752491211125-lan1o6gsp7vg7tlkmkdan7cn5n68n914.apps.googleusercontent.com",
-    "scopes": ["https://www.googleapis.com/auth/drive.appdata"]
-  },
   "background": {
     "service_worker": "background.js",
     "type": "module"

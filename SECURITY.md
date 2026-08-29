@@ -39,17 +39,19 @@ Daily Dial's security posture rests mostly on what it *doesn't* do:
 
 Optional and off by default. When you turn it on:
 
-- Sign-in goes through Chrome's own `identity` API (`chrome.identity`), which
-  wraps Google's standard OAuth consent screen — the extension never sees or
-  handles your Google password, only a short-lived access token that Chrome
-  manages.
+- Sign-in goes through Chrome's own `identity` API (`chrome.identity.launchWebAuthFlow`),
+  which opens Google's standard OAuth consent screen — the extension never
+  sees or handles your Google password, only a short-lived access token,
+  held in memory only (never written to disk) and cleared on every service
+  worker/page restart.
 - The OAuth scope requested is `drive.appdata` — scoped to a single
   per-app storage folder that this extension cannot list or browse beyond the
   one file it creates. This token cannot read, modify, or even see any other
   file in your Drive.
-- "Disconnect" revokes that token with Google and clears Chrome's cache of it.
-  "Delete Drive backup" separately removes the file itself — the two are
-  independent since revoking access doesn't delete `appDataFolder` content.
+- "Disconnect" revokes that token with Google and clears the extension's own
+  in-memory copy of it. "Delete Drive backup" separately removes the file
+  itself — the two are independent since revoking access doesn't delete
+  `appDataFolder` content.
 - All requests go to `www.googleapis.com` and `accounts.google.com` over
   HTTPS with a bearer token; no other destination is ever contacted.
 

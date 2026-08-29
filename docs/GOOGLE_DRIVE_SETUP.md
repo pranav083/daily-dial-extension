@@ -15,22 +15,30 @@ to use Drive backup — see the note at the end).
 
 ## Before you start: get your extension's ID
 
-The OAuth Client ID you're about to create is registered against one
-specific extension ID, so you need that ID first.
+Sign-in uses `chrome.identity.launchWebAuthFlow()`, which redirects to a URL
+of the form `https://<extension-id>.chromiumapp.org/` — you'll register that
+exact URL with Google in step 4, so you need the ID first.
 
-- **Testing unpacked, loaded from source:** Chrome derives the ID from a key
-  it generates the first time you load the folder, and normally that key
-  isn't checked into git — so the ID would be different on every machine
-  that loads it. Pin it instead: load the extension unpacked once
-  (`chrome://extensions` → Developer mode → Load unpacked), then Chrome
-  shows you its generated ID on the extensions page. Note it down; as long as
-  you keep loading from the same folder path on the same machine, it stays
-  stable.
-- **Publishing to the Chrome Web Store:** upload a first draft (even
-  unlisted, even before Drive backup works) to get a *permanent* ID from the
-  Web Store — visible on the item's page in the
-  [developer dashboard](https://chrome.google.com/webstore/devconsole). Use
-  this one for the OAuth client if you're publishing; it won't change again.
+- **Testing unpacked, loaded from source:** load the extension unpacked once
+  (`chrome://extensions` → Developer mode → Load unpacked), then Chrome shows
+  you its generated ID on the extensions page. As long as you keep loading
+  from the same folder path on the same machine, it stays stable.
+- **Publishing to the Chrome Web Store:** the Web Store assigns a
+  *permanent* ID the first time you upload a draft (even unlisted, even
+  before Drive backup works) — visible on the item's page in the
+  [developer dashboard](https://chrome.google.com/webstore/devconsole).
+
+You can register **both** the dev ID and the published ID's redirect URIs on
+the same OAuth client at once (step 4 lets you add more than one), so you
+don't need to redo this when you move from testing to publishing.
+
+(Earlier versions of this doc pointed at `chrome.identity.getAuthToken()`
+with a "Chrome Extension"-type OAuth client instead. That mechanism kept
+failing with a bare `400 invalid_request` / "Custom URI scheme is not
+supported" error unrelated to any actual misconfiguration — a rough edge of
+Google's current console — so this doc and the code now use
+`launchWebAuthFlow` instead, which talks to Google's plain OAuth endpoint
+directly and doesn't depend on that client type at all.)
 
 ## 1. Create a Google Cloud project
 
@@ -69,25 +77,36 @@ specific extension ID, so you need that ID first.
 
 ## 4. Create the OAuth Client ID
 
-1. **APIs & Services → Credentials → Create Credentials → OAuth client ID**.
-2. Application type: **Chrome Extension**.
+1. **APIs & Services → Credentials → Create Credentials → OAuth client ID**
+   (on the newer console, this is **Clients → Create client**).
+2. Application type: **Web application** — not "Chrome Extension." This
+   flow is a plain OAuth implicit flow; the extension-specific client type
+   isn't involved.
 3. Name: anything (e.g. "Daily Dial").
-4. **Item ID**: paste the extension ID from the step before section 1.
+4. **Authorized redirect URIs**: add one entry per extension ID you'll use,
+   in exactly this form:
+   ```
+   https://<extension-id>.chromiumapp.org/
+   ```
+   e.g. `https://nphnfnjkbnnnglgngghmepaininbmnoc.chromiumapp.org/` for a
+   local dev load, and `https://mgcjgngceajnmfhkifccaoeccbmfikhn.chromiumapp.org/`
+   for the published one — both can live on the same client.
 5. Create. Copy the **Client ID** shown — it ends in
-   `.apps.googleusercontent.com`. You won't need the client secret; Chrome
-   extensions don't use one for this flow.
+   `.apps.googleusercontent.com`. Ignore the client secret Google also
+   shows; this flow's `response_type=token` implicit grant doesn't use one.
 
 ## 5. Wire it into the extension
 
-Open `manifest.json` and replace the placeholder:
+Open `drive.js` and replace the placeholder near the top of the file:
 
 ```diff
-   "oauth2": {
--    "client_id": "REPLACE_WITH_YOUR_OAUTH_CLIENT_ID.apps.googleusercontent.com",
-+    "client_id": "123456789-abcxyz.apps.googleusercontent.com",
-     "scopes": ["https://www.googleapis.com/auth/drive.appdata"]
-   },
+-const CLIENT_ID = "REPLACE_WITH_YOUR_OAUTH_CLIENT_ID.apps.googleusercontent.com";
++const CLIENT_ID = "123456789-abcxyz.apps.googleusercontent.com";
 ```
+
+It isn't a secret — it ships inside every copy of the extension the same way
+any public OAuth client id does. What actually gates access is the redirect
+URI allowlist you set in step 4.
 
 Reload the extension (`chrome://extensions` → the reload icon on Daily
 Dial's card, or re-upload if you're testing from the Web Store draft).
@@ -104,9 +123,10 @@ connection.
 
 If it fails, open the page's DevTools console (right-click the extension
 page → Inspect) — `driveBackupNow`/`driveRestore` log the real error there
-before showing a generic toast. Common causes: the extension ID pinned in
-the OAuth client doesn't match the one Chrome is actually running with, or
-the client ID wasn't saved into `manifest.json` correctly.
+before showing a generic toast. The most common cause with this flow is the
+redirect URI: it must match `https://<extension-id>.chromiumapp.org/`
+*exactly*, including the trailing slash, for whichever extension ID Chrome
+is actually running with right now.
 
 ## Do you ever need to leave "Testing" and get verified?
 

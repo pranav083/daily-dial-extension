@@ -29,11 +29,12 @@ The zip contains only what the extension needs to run: `manifest.json`,
 > `npm run check:version` — it fails if they disagree.
 
 > **Before your first upload with Drive backup enabled:** replace the
-> placeholder `oauth2.client_id` in `manifest.json` with a real one. See
+> placeholder `CLIENT_ID` near the top of `drive.js` with a real one. See
 > `docs/GOOGLE_DRIVE_SETUP.md` — you need the Web Store's assigned extension
-> ID first, which means one initial upload (Drive backup will just fail
-> gracefully with the placeholder in place) before you can create the OAuth
-> client and do a second upload with the real id.
+> ID first, to register `https://<that-id>.chromiumapp.org/` as an
+> authorized redirect URI, which means one initial upload (Drive backup will
+> just fail gracefully with the placeholder in place) before you can create
+> the OAuth client and do a second upload with the real id.
 
 ---
 

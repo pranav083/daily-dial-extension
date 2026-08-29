@@ -8,6 +8,29 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.7.2] — 2026-08-29
+
+### Changed
+
+- **Switched Google Drive backup's sign-in from `chrome.identity.getAuthToken()`
+  to `chrome.identity.launchWebAuthFlow()`.** The former kept failing with a
+  bare `400 invalid_request` / "Custom URI scheme is not supported on Chrome
+  apps" error — confirmed not a configuration mistake (extension ID matched
+  the OAuth client's Application ID exactly, scope was registered, Drive API
+  was enabled) but a rough edge of that mechanism under Google Cloud
+  Console's current OAuth client setup. `launchWebAuthFlow` talks to
+  Google's plain OAuth endpoint directly through a standard "Web
+  application"-type client with `https://<extension-id>.chromiumapp.org/` as
+  an authorized redirect URI, sidestepping the extension-specific client
+  type entirely. `manifest.json` no longer has an `oauth2` key; the client
+  id now lives in `drive.js` instead, and token caching moved from Chrome's
+  internal cache to an in-memory one in `drive.js`, cleared on every
+  restart. Every exported function `dial.js` calls kept the same name and
+  signature, so nothing outside `drive.js` changed. Updated
+  `docs/GOOGLE_DRIVE_SETUP.md` to match. Verified with a mocked
+  `launchWebAuthFlow` + `fetch`: backup, cached-token reuse on a second
+  backup, restore, and disconnect all behave correctly.
+
 ## [1.7.1] — 2026-08-29
 
 ### Fixed
