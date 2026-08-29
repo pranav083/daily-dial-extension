@@ -17,6 +17,7 @@ import {
   computeStreak,
   dateKey,
   dayHasEntries,
+  dayHasContent,
   fillRange,
   fmtClock,
   fmtDuration,
@@ -100,7 +101,7 @@ test("normalizeDay repairs anything malformed", () => {
   assert.equal(normalizeDay({ reflection: 42 }).reflection, "", "non-string reflection is dropped");
 
   const good = { slots: paint(blank(), 9, 10, 0), reflection: "ok" };
-  assert.deepEqual(normalizeDay(good), good);
+  assert.deepEqual(normalizeDay(good), { ...good, notes: [], intents: [] });
 });
 
 test("normalizeCategories keeps ids and colours, takes user name and weight", () => {
@@ -431,8 +432,10 @@ test("parseCsv round-trips what buildCsv emits", () => {
   const result = parseCsv(csv, cats);
 
   assert.equal(result.ok, true);
-  assert.deepEqual(result.data.get("2026-08-26"), { slots: paint(blank(), 9, 11, 0), reflection: "earlier, with a comma" });
-  assert.deepEqual(result.data.get("2026-08-27"), { slots: paint(blank(), 14, 15, 1), reflection: "later day" });
+  assert.deepEqual(result.data.get("2026-08-26"),
+    { slots: paint(blank(), 9, 11, 0), reflection: "earlier, with a comma", notes: [], intents: [] });
+  assert.deepEqual(result.data.get("2026-08-27"),
+    { slots: paint(blank(), 14, 15, 1), reflection: "later day", notes: [], intents: [] });
 });
 
 test("parseCsv rounds times that aren't on the 15-minute grid instead of dropping them", () => {
@@ -527,7 +530,8 @@ test("parseBackup round-trips a backup built by buildBackup", () => {
 
   assert.equal(result.ok, true);
   assert.equal(result.data.settings.theme, "dark");
-  assert.deepEqual(result.data.days.get("2026-08-26"), { slots: paint(blank(), 9, 10, 0), reflection: "note" });
+  assert.deepEqual(result.data.days.get("2026-08-26"),
+    { slots: paint(blank(), 9, 10, 0), reflection: "note", notes: [], intents: [] });
 });
 
 test("parseBackup rejects invalid JSON", () => {
@@ -1132,4 +1136,71 @@ test("a user's own category beats an erase word of the same name", () => {
   const r = parseTimeEntry("9-11 empty", renamed);
   assert.equal(r.ok, true);
   assert.equal(r.categoryId, 3, "the real category wins over the reserved word");
+});
+
+/* ---------- day notes and intentions ---------- */
+
+test("normalizeDay keeps well-formed notes and drops broken ones", () => {
+  const day = normalizeDay({
+    slots: paint(blank(), 9, 11, 0),
+    notes: [
+      { from: 36, to: 44, text: "sent the mail" },
+      { from: 5, to: 2, text: "inverted range" },
+      { from: 0, to: 4, text: "   " },
+      { from: 0, to: 4 },
+      "not an object",
+    ],
+  });
+  assert.deepEqual(day.notes, [{ from: 36, to: 44, text: "sent the mail" }]);
+});
+
+test("normalizeDay clamps a note's range into the day and orders notes by start", () => {
+  const day = normalizeDay({
+    slots: blank(),
+    notes: [
+      { from: 80, to: 999, text: "late" },
+      { from: -5, to: 4, text: "early" },
+    ],
+  });
+  assert.equal(day.notes[0].text, "early", "sorted by start");
+  assert.equal(day.notes[0].from, 0, "clamped to the start of the day");
+  assert.equal(day.notes[1].to, SLOTS, "clamped to the end of the day");
+});
+
+test("normalizeDay keeps intentions with their done state, dropping blanks", () => {
+  const day = normalizeDay({
+    slots: blank(),
+    intents: [{ text: "Leetcode", done: true }, { text: "Mail the prof" }, { text: "  " }],
+  });
+  assert.deepEqual(day.intents, [
+    { text: "Leetcode", done: true },
+    { text: "Mail the prof", done: false },
+  ]);
+});
+
+test("dayHasContent counts a day that only has a note or an intention", () => {
+  const onlyNote = normalizeDay({ slots: blank(), notes: [{ from: 0, to: 4, text: "n" }] });
+  const onlyIntent = normalizeDay({ slots: blank(), intents: [{ text: "i" }] });
+  const empty = normalizeDay(null);
+
+  assert.equal(dayHasContent(onlyNote), true);
+  assert.equal(dayHasContent(onlyIntent), true);
+  assert.equal(dayHasContent(empty), false);
+  assert.equal(dayHasEntries(onlyNote), false, "streaks still need painted time");
+});
+
+test("a backup round-trips notes and intentions", () => {
+  const days = new Map([
+    ["2026-08-26", normalizeDay({
+      slots: paint(blank(), 9, 11, 0),
+      reflection: "good day",
+      notes: [{ from: 36, to: 44, text: "sent the mail" }],
+      intents: [{ text: "Leetcode", done: true }],
+    })],
+  ]);
+  const parsed = parseBackup(JSON.stringify(buildBackup(days, cats, DEFAULT_SETTINGS, "1.0.0")));
+  assert.equal(parsed.ok, true);
+  const back = parsed.data.days.get("2026-08-26");
+  assert.deepEqual(back.notes, [{ from: 36, to: 44, text: "sent the mail" }]);
+  assert.deepEqual(back.intents, [{ text: "Leetcode", done: true }]);
 });

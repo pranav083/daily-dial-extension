@@ -883,8 +883,72 @@ select {
   border: 0;
 }
 
+/* ---- journal: intentions and ranged notes ---- */
+.journal-block { display: flex; flex-direction: column; gap: 8px; }
+
+.intent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.intent-row { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; }
+.intent-row input[type="checkbox"] { margin: 3px 0 0; flex: none; accent-color: var(--accent); }
+.intent-row .text { flex: 1; color: var(--ink-2); overflow-wrap: anywhere; }
+/* Struck through rather than removed: the value of the list is seeing later
+   what you meant to do, including what you didn't. */
+.intent-row.done .text { text-decoration: line-through; color: var(--ink-muted); }
+
+.note-list { display: flex; flex-direction: column; gap: 6px; }
+.note-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.83rem;
+  padding: 6px 9px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: var(--panel-2);
+}
+.note-row .when {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+  padding-top: 1px;
+}
+.note-row .text { flex: 1; color: var(--ink-2); overflow-wrap: anywhere; }
+.note-row .drop, .intent-row .drop {
+  flex: none;
+  border: none;
+  background: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 5px;
+}
+.note-row .drop:hover, .intent-row .drop:hover { color: var(--status-critical-text); background: var(--panel); }
+.note-row .drop:focus-visible, .intent-row .drop:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+.journal-form { display: flex; gap: 6px; }
+.journal-form input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.83rem;
+}
+.journal-form input::placeholder { color: var(--ink-muted); }
+.journal-form input:disabled { opacity: 0.6; cursor: not-allowed; }
+.journal-form input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
 /* ---- keyboard cursor on the dial ---- */
 .caret-layer { pointer-events: none; }
+.note-layer { pointer-events: none; }
+/* A written stretch gets a tick outside the ring, so the day shows at a
+   glance where the notes are, not just where the time went. */
+.note-mark { fill: var(--ink-muted); }
 .caret-band {
   fill: none;
   stroke: var(--focus-ring);
@@ -1285,4 +1349,47 @@ select {
 @media (max-width: 900px) {
   .hist-month-split { flex-direction: column; }
   .hist-month-side { width: 100%; }
+}
+
+
+/* ---- history: the written log ---- */
+.log-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.log-head .section-label { margin: 0; }
+.log-range { display: flex; gap: 4px; }
+.log-range button {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.log-range button[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); background: var(--panel); }
+.log-range button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* Capped so the log scrolls inside its card rather than pushing every other
+   panel off the page once there are a few hundred days. */
+.log-entries { display: flex; flex-direction: column; gap: 18px; max-height: 620px; overflow-y: auto; }
+.log-day { display: flex; flex-direction: column; gap: 7px; }
+.log-day-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.log-date { font-weight: 800; font-size: 0.88rem; color: var(--ink); }
+.log-meta { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
+.log-score { font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+.log-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-muted); margin: 2px 0 0; }
+.log-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.log-list li { display: flex; gap: 8px; font-size: 0.83rem; color: var(--ink-2); }
+.log-list .tick { flex: none; font-family: var(--font-mono); color: var(--ink-muted); }
+.log-list li.done .body { color: var(--ink-muted); text-decoration: line-through; }
+.log-when { flex: none; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); min-width: 88px; }
+.log-body { flex: 1; overflow-wrap: anywhere; }
+.log-reflection {
+  margin: 2px 0 0;
+  font-size: 0.83rem;
+  color: var(--ink-2);
+  border-left: 2px solid var(--border);
+  padding-left: 10px;
+  overflow-wrap: anywhere;
 }

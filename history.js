@@ -8,7 +8,16 @@
  */
 /* global document */
 
-import { dayHasEntries, fmtDuration, sameDay, scoreBucket, toneVar } from "./lib.js";
+import {
+  computeStats,
+  dayHasContent,
+  dayHasEntries,
+  fmtDuration,
+  fmtHM,
+  sameDay,
+  scoreBucket,
+  toneVar,
+} from "./lib.js";
 import {
   buildMonthGrid,
   categoryTrendDirection,
@@ -334,6 +343,15 @@ function ensureWired() {
     state.cursor = new Date();
     renderHistory();
   });
+  $("log-range").addEventListener("click", (evt) => {
+    const btn = evt.target.closest("button[data-range]");
+    if (!btn) return;
+    logRange = btn.dataset.range;
+    for (const b of $("log-range").children) {
+      b.setAttribute("aria-pressed", String(b.dataset.range === logRange));
+    }
+    renderHistory();
+  });
   $("hist-search").addEventListener("input", (evt) => {
     renderSearch(getAppData().days, evt.target.value);
   });
@@ -341,6 +359,133 @@ function ensureWired() {
 
 /** Registered with dial.js's view switcher; called every time the History
  *  tab is shown, and again after any data change while it's the active view. */
+
+/* ---------- the written log ---------- */
+
+/** How far back the log reaches. Kept in module state so switching months
+ *  in the panels above doesn't reset it. */
+let logRange = "week";
+
+function logStartDate(now) {
+  const d = new Date(now);
+  d.setHours(0, 0, 0, 0);
+  if (logRange === "week") d.setDate(d.getDate() - 6);
+  else if (logRange === "month") d.setDate(d.getDate() - 29);
+  else return null; // everything
+  return d;
+}
+
+function logRow(when, body, extraClass = "") {
+  const li = document.createElement("li");
+  if (extraClass) li.className = extraClass;
+  const w = document.createElement("span");
+  w.className = "log-when";
+  w.textContent = when;
+  const b = document.createElement("span");
+  b.className = "log-body body";
+  b.textContent = body;
+  li.append(w, b);
+  return li;
+}
+
+function renderLogDay(key, day, categories) {
+  const wrap = document.createElement("div");
+  wrap.className = "log-day";
+
+  const head = document.createElement("div");
+  head.className = "log-day-head";
+
+  const date = document.createElement("button");
+  date.className = "log-date link-btn";
+  date.type = "button";
+  date.textContent = new Date(key + "T00:00:00").toLocaleDateString(undefined, {
+    weekday: "long", day: "numeric", month: "long",
+  });
+  date.title = "Open this day";
+  date.addEventListener("click", () => goToDay(key));
+  head.appendChild(date);
+
+  if (dayHasEntries(day)) {
+    const stats = computeStats(day.slots, categories);
+    const meta = document.createElement("span");
+    meta.className = "log-meta";
+    meta.textContent = fmtDuration(stats.trackedMin);
+    head.appendChild(meta);
+    if (stats.score !== null) {
+      const bucket = scoreBucket(stats.score);
+      const chip = document.createElement("span");
+      chip.className = "log-score";
+      chip.textContent = `${stats.score > 0 ? "+" : ""}${stats.score}`;
+      chip.style.color = `var(${toneVar(bucket.tone)})`;
+      chip.style.background = `color-mix(in oklab, var(${toneVar(bucket.tone)}) 16%, transparent)`;
+      chip.title = bucket.label;
+      head.appendChild(chip);
+    }
+  }
+  wrap.appendChild(head);
+
+  if ((day.intents ?? []).length) {
+    const label = document.createElement("p");
+    label.className = "log-section-label";
+    label.textContent = "Meant to";
+    const list = document.createElement("ul");
+    list.className = "log-list";
+    for (const intent of day.intents) {
+      const li = document.createElement("li");
+      li.className = intent.done ? "done" : "";
+      const tick = document.createElement("span");
+      tick.className = "tick";
+      tick.textContent = intent.done ? "✓" : "○";
+      const body = document.createElement("span");
+      body.className = "log-body body";
+      body.textContent = intent.text;
+      li.append(tick, body);
+      list.appendChild(li);
+    }
+    wrap.append(label, list);
+  }
+
+  if ((day.notes ?? []).length) {
+    const label = document.createElement("p");
+    label.className = "log-section-label";
+    label.textContent = "What happened";
+    const list = document.createElement("ul");
+    list.className = "log-list";
+    for (const note of day.notes) {
+      list.appendChild(logRow(`${fmtHM(note.from)}–${fmtHM(note.to)}`, note.text));
+    }
+    wrap.append(label, list);
+  }
+
+  if ((day.reflection ?? "").trim()) {
+    const p = document.createElement("p");
+    p.className = "log-reflection";
+    p.textContent = day.reflection;
+    wrap.appendChild(p);
+  }
+  return wrap;
+}
+
+function renderLog(days, categories) {
+  const host = $("log-entries");
+  host.replaceChildren();
+  const start = logStartDate(new Date());
+  const startKey = start ? dateKeyOf(start) : null;
+
+  const keys = [...days.keys()]
+    .filter((k) => (startKey === null || k >= startKey) && dayHasContent(days.get(k)))
+    .sort()
+    .reverse();
+
+  $("log-empty").hidden = keys.length > 0;
+  for (const key of keys) host.appendChild(renderLogDay(key, days.get(key), categories));
+}
+
+/** Local-date key, matching lib.js's dateKey without importing state. */
+function dateKeyOf(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 export function renderHistory() {
   ensureWired();
   const { days, categories, settings } = getAppData();
@@ -372,4 +517,5 @@ export function renderHistory() {
   renderTrends(year, month, days, categories, settings.weekStart);
   renderWeekOverWeek(days, categories, settings.weekStart);
   renderSearch(days, $("hist-search").value);
+  renderLog(days, categories);
 }

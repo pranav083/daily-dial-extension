@@ -194,6 +194,33 @@
           <div class="goal-rows" id="weekly-goal-rows"></div>
         </div>
 
+        <!-- The intentions you set for the day, ticked off as they land.
+             The point isn't the list, it's seeing a week later which ones
+             you actually did. -->
+        <div class="journal-block">
+          <p class="section-label" title="What you meant to do today. Tick them off as they land — the History log shows which ones you actually did.">Today's intentions</p>
+          <ul class="intent-list" id="intent-list"></ul>
+          <form class="journal-form" id="intent-form">
+            <label for="intent-input" class="sr-only">Add an intention</label>
+            <input type="text" id="intent-input" placeholder="Leetcode, mail the prof…" maxlength="500">
+            <button type="submit" class="ghost-btn">Add</button>
+          </form>
+        </div>
+
+        <!-- Notes pinned to a stretch of the day, rather than one note for
+             all 24 hours: "what happened between 9 and 11" is the thing
+             worth writing down, and it's what a log gets read for. -->
+        <div class="journal-block">
+          <p class="section-label" title="Notes pinned to a stretch of the day. Select a range on the dial — drag it, or focus the ring and use Shift+arrows — then write what happened.">Notes on a stretch</p>
+          <div class="note-list" id="note-list"></div>
+          <form class="journal-form" id="note-form">
+            <label for="note-input" class="sr-only">Note for the selected range</label>
+            <input type="text" id="note-input" placeholder="Select a range on the dial first" maxlength="500" disabled>
+            <button type="submit" class="ghost-btn" id="note-add" disabled>Add</button>
+          </form>
+          <p class="editor-note" id="note-range-hint">Drag on the dial, or focus it and hold Shift with the arrow keys, to choose the stretch this note covers.</p>
+        </div>
+
         <div>
           <p class="section-label" title="One line on what helped or hurt today. Included in your CSV export.">Why (a line is enough)</p>
           <label for="reflection" style="position:absolute;left:-9999px;">Reflection</label>
@@ -262,6 +289,24 @@
                  placeholder="Search your reflections…" aria-label="Search your reflections"
                  title="Matches the one-line notes you leave on the Day view.">
           <div class="hist-search-results" id="hist-search-results"></div>
+        </div>
+
+        <!-- The written record, newest first: what you meant to do, what you
+             wrote down as the day went, and the line you left at the end.
+             The charts above say how much; this says what. -->
+        <div class="hist-card">
+          <div class="log-head">
+            <p class="section-label">The log</p>
+            <div class="log-range" id="log-range" role="group" aria-label="How much of the log to show">
+              <button type="button" data-range="week" aria-pressed="true">This week</button>
+              <button type="button" data-range="month" aria-pressed="false">This month</button>
+              <button type="button" data-range="all" aria-pressed="false">Everything</button>
+            </div>
+          </div>
+          <div class="log-entries" id="log-entries"></div>
+          <p class="editor-note" id="log-empty" hidden>
+            Nothing written down in this range yet. Notes and intentions from the Day view show up here.
+          </p>
         </div>
       </div>
     </div>

@@ -37,6 +37,9 @@ import {
   dateKey,
   dayHasEntries,
   emptyDay,
+  MAX_NOTE_LEN,
+  MAX_NOTES_PER_DAY,
+  MAX_INTENTS_PER_DAY,
   fillRange,
   fmtClock,
   fmtDuration,
@@ -120,7 +123,7 @@ async function loadAll() {
   sampleDayKeys = Array.isArray(all[SAMPLE_DAY_KEYS_KEY]) ? all[SAMPLE_DAY_KEYS_KEY] : [];
 
   if (all[SCHEMA_VERSION_KEY] !== SCHEMA_VERSION) {
-    chrome.storage.local.set({ [SCHEMA_VERSION_KEY]: SCHEMA_VERSION }).catch(() => {
+    saveLocal({ [SCHEMA_VERSION_KEY]: SCHEMA_VERSION }).catch(() => {
       // Non-critical bookkeeping; a retry next boot is fine.
     });
   }
@@ -149,17 +152,57 @@ function markTabStale() {
   closeSettings();
 }
 
-/** True when a change came from somewhere else, rather than echoing our own
- *  write back at us. */
+/**
+ * Every value this tab writes, remembered until its own change event comes
+ * back. Comparing the event against *live* state instead was wrong: a day's
+ * `slots` array is shared by reference with `state.slots`, so painting again
+ * before the first event arrived made our own write look foreign and froze
+ * the tab mid-edit. Matching against what was actually written has no such
+ * race.
+ */
+const ownWrites = new Map();
+
+const REMOVED = "\u0000removed";
+const serializeValue = (v) => (v === undefined ? REMOVED : JSON.stringify(v));
+
+function recordOwnWrite(keys, removal = false) {
+  const entries = removal
+    ? (Array.isArray(keys) ? keys : [keys]).map((k) => [k, undefined])
+    : Object.entries(keys);
+  for (const [key, value] of entries) {
+    const list = ownWrites.get(key) ?? [];
+    list.push(serializeValue(value));
+    ownWrites.set(key, list);
+  }
+}
+
+/** Every write goes through these two so the change event can be recognised
+ *  as ours when it echoes back. */
+function saveLocal(obj) {
+  recordOwnWrite(obj);
+  return chrome.storage.local.set(obj);
+}
+
+function removeLocal(keys) {
+  recordOwnWrite(keys, true);
+  return chrome.storage.local.remove(keys);
+}
+
+/** True when a change came from somewhere else, rather than echoing one of
+ *  our own writes back at us. */
 function isForeignChange(changes) {
   for (const [key, { newValue }] of Object.entries(changes)) {
-    let mine;
-    if (key.startsWith(DAY_PREFIX)) mine = days.get(key.slice(DAY_PREFIX.length));
-    else if (key === CATEGORIES_KEY) mine = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
-    else if (key === SETTINGS_KEY) mine = settings;
-    else if (key === SAMPLE_DAY_KEYS_KEY) mine = sampleDayKeys;
-    else continue; // bookkeeping we don't hold a copy of
-    if (JSON.stringify(newValue) !== JSON.stringify(mine)) return true;
+    const list = ownWrites.get(key);
+    const serialized = serializeValue(newValue);
+    const i = list ? list.indexOf(serialized) : -1;
+    if (i !== -1) {
+      // Ours. Drop it and everything staler for this key — events arrive in
+      // write order, so anything before it will never be matched.
+      list.splice(0, i + 1);
+      if (list.length === 0) ownWrites.delete(key);
+      continue;
+    }
+    return true;
   }
   return false;
 }
@@ -174,16 +217,21 @@ function watchForOtherTabs() {
 function persistDay() {
   if (tabIsStale) return;
   const key = dateKey(state.viewDate);
-  const data = { slots: state.slots, reflection: state.reflection };
+  const data = {
+    slots: state.slots,
+    reflection: state.reflection,
+    notes: state.notes ?? [],
+    intents: state.intents ?? [],
+  };
   const wasEmpty = days.size === 0;
   days.set(key, data);
-  chrome.storage.local.set({ [DAY_PREFIX + key]: data }).catch(reportStorageFailure);
+  saveLocal({ [DAY_PREFIX + key]: data }).catch(reportStorageFailure);
   // Editing a demo day makes it yours. Without this it stays on the sample
   // list, and leaving demo mode would delete the day you just worked on.
   const sampleIdx = sampleDayKeys.indexOf(key);
   if (sampleIdx !== -1) {
     sampleDayKeys.splice(sampleIdx, 1);
-    chrome.storage.local.set({ [SAMPLE_DAY_KEYS_KEY]: sampleDayKeys }).catch(reportStorageFailure);
+    saveLocal({ [SAMPLE_DAY_KEYS_KEY]: sampleDayKeys }).catch(reportStorageFailure);
     renderSampleDataUI();
   }
   // The first block painted is when the hint stops being true. Only re-check
@@ -195,12 +243,11 @@ function persistDay() {
 const persistCategories = () =>
   tabIsStale
     ? undefined
-    : chrome.storage.local
-        .set({ [CATEGORIES_KEY]: categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases })) })
+    : saveLocal({ [CATEGORIES_KEY]: categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases })) })
         .catch(reportStorageFailure);
 
 const persistSettings = () =>
-  tabIsStale ? undefined : chrome.storage.local.set({ [SETTINGS_KEY]: settings }).catch(reportStorageFailure);
+  tabIsStale ? undefined : saveLocal({ [SETTINGS_KEY]: settings }).catch(reportStorageFailure);
 
 function reportStorageFailure(err) {
   console.error("Daily Dial: could not save", err);
@@ -383,10 +430,13 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   svgNode.appendChild(handleLayer);
   const caretLayer = svgEl("g", { class: "caret-layer" });
   svgNode.appendChild(caretLayer);
+  const noteLayer = svgEl("g", { class: "note-layer" });
+  svgNode.appendChild(noteLayer);
   const baseLabel = svgNode.getAttribute("aria-label");
 
   let isPaintingLocal = false;
   let lastLocal = null;
+  let strokeFrom = null;
 
   const localSlice = () => state.slots.slice(slotOffset, slotOffset + slotsInView);
   const writeSlice = (sub) => {
@@ -442,6 +492,22 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     const leftPart = at > from ? `${g(from)}–${g(at)} ${nameOf(left)}` : `${nameOf(left)} gone`;
     const rightPart = at < to ? `${g(at)}–${g(to)} ${nameOf(right)}` : `${nameOf(right)} gone`;
     return `${leftPart}   |   ${rightPart}`;
+  }
+
+  /** A tick outside the ring wherever a note is pinned. */
+  function renderNoteMarks() {
+    noteLayer.replaceChildren();
+    for (const note of state.notes ?? []) {
+      const from = note.from - slotOffset;
+      const to = note.to - slotOffset;
+      if (to <= 0 || from >= slotsInView) continue;
+      const per = 360 / slotsInView;
+      const a0 = Math.max(0, from) * per;
+      const a1 = Math.min(slotsInView, to) * per;
+      noteLayer.appendChild(
+        svgEl("path", { class: "note-mark", d: wedgePath(R_OUT + 5, R_OUT + 8, a0, a1) })
+      );
+    }
   }
 
   function renderEdgeHandle(index) {
@@ -509,6 +575,8 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     else if (caretAnchor === null) caretAnchor = caret;
     renderCaret();
     announceCaret();
+    const r = caretRange();
+    if (r) setSelection(slotOffset + r.from, slotOffset + r.to);
   }
 
   function commitCaret(cat) {
@@ -528,14 +596,21 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   }
 
   svgNode.addEventListener("focus", () => {
+    // Only for keyboard focus. Clicking the ring focuses it too, and showing
+    // the cursor then put a stray box on the dial during ordinary painting.
+    if (!svgNode.matches(":focus-visible")) return;
     if (caret === null) moveCaret(0, false);
     else renderCaret();
   });
+  // A click means the pointer is driving; retire the cursor until a key is
+  // pressed again.
+  svgNode.addEventListener("pointerdown", () => caretLayer.replaceChildren());
   svgNode.addEventListener("blur", () => {
     caretLayer.replaceChildren();
   });
 
   svgNode.addEventListener("keydown", (evt) => {
+    if (caretLayer.childElementCount === 0 && caret !== null) renderCaret();
     const step = evt.key === "ArrowRight" || evt.key === "ArrowDown" ? 1
       : evt.key === "ArrowLeft" || evt.key === "ArrowUp" ? -1
         : 0;
@@ -632,6 +707,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
 
   function render() {
     renderSegments();
+    renderNoteMarks();
     renderNeedle();
     renderCenter();
     svgNode.setAttribute("aria-label", dayLabelText(baseLabel, slotOffset, slotsInView));
@@ -665,6 +741,14 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     }
     if (!isPaintingLocal) return;
     isPaintingLocal = false;
+    // The stretch just painted becomes the selection, so "add a note about
+    // what I was doing then" is the natural next action after a stroke.
+    if (strokeFrom !== null && lastLocal !== null) {
+      const from = Math.min(strokeFrom, lastLocal);
+      const to = Math.max(strokeFrom, lastLocal) + 1;
+      setSelection(slotOffset + from, slotOffset + to);
+    }
+    strokeFrom = null;
     lastLocal = null;
     onStrokeEnd();
   }
@@ -704,6 +788,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
       // Synthetic or already-released pointers can't be captured; painting still works.
     }
     const idx = slotFromAngle(angle, slotsInView);
+    strokeFrom = idx;
     paintAtLocal(idx);
     render();
     showTooltip(evt, slotOffset + idx);
@@ -1282,8 +1367,17 @@ function switchDay(d) {
   const day = getDay(dateKey(d));
   state.slots = [...day.slots];
   state.reflection = day.reflection;
+  state.notes = (day.notes ?? []).map((n) => ({ ...n }));
+  state.intents = (day.intents ?? []).map((i) => ({ ...i }));
   $("reflection").value = state.reflection;
+  setSelection(null);
+  renderJournal();
   renderAll();
+}
+
+function renderJournal() {
+  renderIntents();
+  renderNotes();
 }
 
 /* ---------- copy yesterday ---------- */
@@ -1411,12 +1505,12 @@ function paintIntoStoredDay(key, from, to, categoryId) {
   for (let i = from; i < to; i++) slots[i] = categoryId;
   const data = { slots, reflection: existing?.reflection ?? "" };
   days.set(key, data);
-  chrome.storage.local.set({ [DAY_PREFIX + key]: data }).catch(reportStorageFailure);
+  saveLocal({ [DAY_PREFIX + key]: data }).catch(reportStorageFailure);
   // Same rule as persistDay: writing to a demo day makes it yours.
   const sampleIdx = sampleDayKeys.indexOf(key);
   if (sampleIdx !== -1) {
     sampleDayKeys.splice(sampleIdx, 1);
-    chrome.storage.local.set({ [SAMPLE_DAY_KEYS_KEY]: sampleDayKeys }).catch(reportStorageFailure);
+    saveLocal({ [SAMPLE_DAY_KEYS_KEY]: sampleDayKeys }).catch(reportStorageFailure);
     renderSampleDataUI();
   }
 }
@@ -1431,6 +1525,140 @@ function toast(message) {
   el.classList.add("show");
   if (toastTimer) clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+/* ---------- journal: intentions and ranged notes ---------- */
+
+/** The stretch of the day a new note will attach to, in global slot indices.
+ *  Set by finishing a drag on the ring or by moving the keyboard cursor, so
+ *  both input methods feed the same box. */
+let selection = null;
+
+function setSelection(from, to) {
+  selection = from === null ? null : { from, to };
+  renderSelectionUI();
+}
+
+function renderSelectionUI() {
+  const input = $("note-input");
+  const add = $("note-add");
+  const hint = $("note-range-hint");
+  if (!selection) {
+    input.disabled = true;
+    add.disabled = true;
+    input.placeholder = "Select a range on the dial first";
+    hint.textContent = "Drag on the dial, or focus it and hold Shift with the arrow keys, to choose the stretch this note covers.";
+    return;
+  }
+  const label = `${fmtSlotClock(selection.from)}–${fmtSlotClock(selection.to)}`;
+  input.disabled = false;
+  add.disabled = false;
+  input.placeholder = `What happened between ${label}?`;
+  hint.textContent = `This note will cover ${label} · ${fmtDuration((selection.to - selection.from) * SLOT_MIN)}.`;
+}
+
+function renderIntents() {
+  const list = $("intent-list");
+  list.replaceChildren();
+  for (const [i, intent] of (state.intents ?? []).entries()) {
+    const row = document.createElement("li");
+    row.className = `intent-row${intent.done ? " done" : ""}`;
+
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = intent.done;
+    box.id = `intent-${i}`;
+    box.addEventListener("change", () => {
+      state.intents[i].done = box.checked;
+      persistDay();
+      renderIntents();
+    });
+
+    const text = document.createElement("label");
+    text.className = "text";
+    text.htmlFor = box.id;
+    text.textContent = intent.text;
+
+    const drop = document.createElement("button");
+    drop.type = "button";
+    drop.className = "drop";
+    drop.textContent = "✕";
+    drop.setAttribute("aria-label", `Remove intention: ${intent.text}`);
+    drop.addEventListener("click", () => {
+      state.intents.splice(i, 1);
+      persistDay();
+      renderIntents();
+    });
+
+    row.append(box, text, drop);
+    list.appendChild(row);
+  }
+}
+
+function renderNotes() {
+  const list = $("note-list");
+  list.replaceChildren();
+  for (const [i, note] of (state.notes ?? []).entries()) {
+    const row = document.createElement("div");
+    row.className = "note-row";
+
+    const when = document.createElement("span");
+    when.className = "when";
+    when.textContent = `${fmtSlotClock(note.from)}–${fmtSlotClock(note.to)}`;
+
+    const text = document.createElement("span");
+    text.className = "text";
+    text.textContent = note.text;
+
+    const drop = document.createElement("button");
+    drop.type = "button";
+    drop.className = "drop";
+    drop.textContent = "✕";
+    drop.setAttribute("aria-label", `Remove note for ${when.textContent}`);
+    drop.addEventListener("click", () => {
+      state.notes.splice(i, 1);
+      persistDay();
+      renderNotes();
+      renderDial();
+    });
+
+    row.append(when, text, drop);
+    list.appendChild(row);
+  }
+}
+
+function addIntent(evt) {
+  evt.preventDefault();
+  const input = $("intent-input");
+  const text = input.value.trim();
+  if (!text) return;
+  if ((state.intents ?? []).length >= MAX_INTENTS_PER_DAY) {
+    toast(`That's the most intentions a day can hold (${MAX_INTENTS_PER_DAY}).`);
+    return;
+  }
+  state.intents = [...(state.intents ?? []), { text: text.slice(0, MAX_NOTE_LEN), done: false }];
+  input.value = "";
+  persistDay();
+  renderIntents();
+}
+
+function addNote(evt) {
+  evt.preventDefault();
+  if (!selection) return;
+  const input = $("note-input");
+  const text = input.value.trim();
+  if (!text) return;
+  if ((state.notes ?? []).length >= MAX_NOTES_PER_DAY) {
+    toast(`That's the most notes a day can hold (${MAX_NOTES_PER_DAY}).`);
+    return;
+  }
+  state.notes = [...(state.notes ?? []), { from: selection.from, to: selection.to, text: text.slice(0, MAX_NOTE_LEN) }]
+    .sort((a, b) => a.from - b.from);
+  input.value = "";
+  persistDay();
+  renderNotes();
+  renderDial();
+  announce(`Note saved for ${fmtSlotClock(selection.from)} to ${fmtSlotClock(selection.to)}`);
 }
 
 /* ---------- category editor ---------- */
@@ -1732,8 +1960,7 @@ function applyImport(mode) {
   // was neither imported nor kept.
   if (sampleDayKeys.length) {
     for (const key of sampleDayKeys) days.delete(key);
-    chrome.storage.local
-      .remove([...sampleDayKeys.map((k) => DAY_PREFIX + k), SAMPLE_DAY_KEYS_KEY])
+    removeLocal([...sampleDayKeys.map((k) => DAY_PREFIX + k), SAMPLE_DAY_KEYS_KEY])
       .catch(reportStorageFailure);
     sampleDayKeys = [];
   }
@@ -1755,8 +1982,8 @@ function applyImport(mode) {
     toSet[CATEGORIES_KEY] = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
   }
   if (mode === "replace" && pendingImport.settings) toSet[SETTINGS_KEY] = settings;
-  chrome.storage.local.set(toSet).catch(reportStorageFailure);
-  if (removeKeys.length) chrome.storage.local.remove(removeKeys).catch(reportStorageFailure);
+  saveLocal(toSet).catch(reportStorageFailure);
+  if (removeKeys.length) removeLocal(removeKeys).catch(reportStorageFailure);
   if (mode === "replace" && pendingImport.settings) {
     chrome.runtime.sendMessage({ type: "reschedule" }).catch(() => {});
   }
@@ -1827,7 +2054,7 @@ function loadSampleData() {
   }
   sampleDayKeys = claimed;
   toSet[SAMPLE_DAY_KEYS_KEY] = sampleDayKeys;
-  chrome.storage.local.set(toSet).catch(reportStorageFailure);
+  saveLocal(toSet).catch(reportStorageFailure);
 
   switchDay(state.viewDate);
   renderStrip();
@@ -1847,8 +2074,7 @@ function clearSampleData() {
   if (tabIsStale) return;
   if (sampleDayKeys.length === 0) return;
   for (const key of sampleDayKeys) days.delete(key);
-  chrome.storage.local
-    .remove([...sampleDayKeys.map((k) => DAY_PREFIX + k), SAMPLE_DAY_KEYS_KEY])
+  removeLocal([...sampleDayKeys.map((k) => DAY_PREFIX + k), SAMPLE_DAY_KEYS_KEY])
     .catch(reportStorageFailure);
   sampleDayKeys = [];
 
@@ -1909,8 +2135,7 @@ async function driveBackupNow() {
     );
     driveFileId = await driveUploadBackup(token, existing?.id ?? null, JSON.stringify(backup));
     driveLastSyncAt = Date.now();
-    await chrome.storage.local
-      .set({ [DRIVE_FILE_ID_KEY]: driveFileId, [DRIVE_LAST_SYNC_KEY]: driveLastSyncAt })
+    await saveLocal({ [DRIVE_FILE_ID_KEY]: driveFileId, [DRIVE_LAST_SYNC_KEY]: driveLastSyncAt })
       .catch(reportStorageFailure);
     renderDriveStatus();
     toast("Backed up to Google Drive");
@@ -1940,7 +2165,7 @@ async function driveRestore() {
       return;
     }
     driveFileId = existing.id;
-    chrome.storage.local.set({ [DRIVE_FILE_ID_KEY]: driveFileId }).catch(reportStorageFailure);
+    saveLocal({ [DRIVE_FILE_ID_KEY]: driveFileId }).catch(reportStorageFailure);
     // The account is linked from here on, so the status line and the
     // disconnect/delete controls have to reflect that immediately.
     renderDriveStatus();
@@ -1961,7 +2186,7 @@ async function driveDisconnectClick() {
   await driveDisconnect();
   driveFileId = null;
   driveLastSyncAt = null;
-  chrome.storage.local.remove([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY]).catch(reportStorageFailure);
+  removeLocal([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY]).catch(reportStorageFailure);
   renderDriveStatus();
   toast("Disconnected from Google Drive");
 }
@@ -1981,7 +2206,7 @@ async function driveDeleteBackupClick() {
     await driveDeleteBackup(token, existing.id);
     driveFileId = null;
     driveLastSyncAt = null;
-    chrome.storage.local.remove([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY]).catch(reportStorageFailure);
+    removeLocal([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY]).catch(reportStorageFailure);
     renderDriveStatus();
     toast("Deleted your Google Drive backup");
   } catch (err) {
@@ -2078,7 +2303,7 @@ function dismissOnboarding() {
   renderFirstRunHint();
   if (onboardingSeen) return;
   onboardingSeen = true;
-  chrome.storage.local.set({ [ONBOARDING_SEEN_KEY]: true }).catch(reportStorageFailure);
+  saveLocal({ [ONBOARDING_SEEN_KEY]: true }).catch(reportStorageFailure);
 }
 
 /** A toast alone was the wrong instrument here: "Let's start" hands a brand
@@ -2178,6 +2403,8 @@ function wireEvents() {
     if (!document.hidden) checkDayRollover();
   });
   $("stale-banner-reload").addEventListener("click", () => window.location.reload());
+  $("intent-form").addEventListener("submit", addIntent);
+  $("note-form").addEventListener("submit", addNote);
 
   $("prev-day").addEventListener("click", () => {
     const d = new Date(state.viewDate);

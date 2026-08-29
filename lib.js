@@ -112,17 +112,71 @@ export function fmtDuration(min) {
 
 /* ---------- stored shapes ---------- */
 
-export const emptyDay = () => ({ slots: new Array(SLOTS).fill(UNTRACKED), reflection: "" });
+export const emptyDay = () => ({ slots: new Array(SLOTS).fill(UNTRACKED), reflection: "", notes: [], intents: [] });
 
 /** Storage is user-editable and survives version changes, so never trust it. */
+export const MAX_NOTE_LEN = 500;
+export const MAX_NOTES_PER_DAY = 40;
+export const MAX_INTENTS_PER_DAY = 20;
+
+/** A note pinned to a stretch of the day: `9-11, "sent the mail"`. Ranges are
+ *  clamped into the day and ordered, so a malformed one can't render off the
+ *  ring or invert. */
+function normalizeNotes(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((n) => {
+      if (!n || typeof n !== "object") return null;
+      const from = Number.isInteger(n.from) ? Math.max(0, Math.min(SLOTS - 1, n.from)) : null;
+      const to = Number.isInteger(n.to) ? Math.max(1, Math.min(SLOTS, n.to)) : null;
+      const text = typeof n.text === "string" ? n.text.slice(0, MAX_NOTE_LEN) : "";
+      if (from === null || to === null || to <= from || !text.trim()) return null;
+      return { from, to, text };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.from - b.from)
+    .slice(0, MAX_NOTES_PER_DAY);
+}
+
+/** The day's intentions, each tickable — the "GOAL:" list at the top of a
+ *  journal entry, where the value is seeing later which ones you actually
+ *  did. */
+function normalizeIntents(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((i) => {
+      if (!i || typeof i !== "object") return null;
+      const text = typeof i.text === "string" ? i.text.slice(0, MAX_NOTE_LEN) : "";
+      if (!text.trim()) return null;
+      return { text, done: i.done === true };
+    })
+    .filter(Boolean)
+    .slice(0, MAX_INTENTS_PER_DAY);
+}
+
 export function normalizeDay(raw) {
   if (!raw || typeof raw !== "object") return emptyDay();
   const slots =
     Array.isArray(raw.slots) && raw.slots.length === SLOTS
       ? raw.slots.map((v) => (Number.isInteger(v) ? v : UNTRACKED))
       : new Array(SLOTS).fill(UNTRACKED);
-  return { slots, reflection: typeof raw.reflection === "string" ? raw.reflection : "" };
+  return {
+    slots,
+    reflection: typeof raw.reflection === "string" ? raw.reflection : "",
+    notes: normalizeNotes(raw.notes),
+    intents: normalizeIntents(raw.intents),
+  };
 }
+
+/** A day is worth keeping in the journal if anything at all was recorded —
+ *  painted time, a note, an intention, or a reflection. Deliberately wider
+ *  than `dayHasEntries`, which gates streaks on painted time alone. */
+export const dayHasContent = (day) =>
+  !!day &&
+  (dayHasEntries(day) ||
+    (day.reflection ?? "").trim() !== "" ||
+    (day.notes ?? []).length > 0 ||
+    (day.intents ?? []).length > 0);
 
 /** A day "counts" for streaks/nudges/bests once at least one slot is painted. */
 export const dayHasEntries = (day) => !!day && Array.isArray(day.slots) && day.slots.some((v) => v !== UNTRACKED);
@@ -881,7 +935,14 @@ export function excludeDays(days, keys) {
 /** Full-fidelity snapshot: every day, category, and setting. */
 export function buildBackup(days, categories, settings, appVersion, now = new Date()) {
   const daysObj = {};
-  for (const [key, day] of days) daysObj[key] = { slots: day.slots, reflection: day.reflection };
+  for (const [key, day] of days) {
+    daysObj[key] = {
+      slots: day.slots,
+      reflection: day.reflection,
+      notes: day.notes ?? [],
+      intents: day.intents ?? [],
+    };
+  }
   return {
     schemaVersion: SCHEMA_VERSION,
     exportedAt: now.toISOString(),

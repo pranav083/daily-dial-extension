@@ -8,6 +8,41 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.12.0] — 2026-08-29
+
+### Added
+
+- **A written log, not just a measured one.** The dial could tell you a day
+  was six hours at +100 and nothing about what those hours were. Three
+  additions close that:
+  - **Intentions** — the day's list of what you meant to do, ticked off as
+    they land. They're kept whether or not you do them, because a week later
+    the ones you didn't are the interesting half.
+  - **Notes pinned to a stretch of the day** — select a range on the ring
+    (drag it, or focus the ring and hold Shift with the arrows) and write
+    what happened between those hours. A day used to hold exactly one note
+    for all 24 hours; it now holds up to forty, each anchored to its own
+    stretch, and each marked on the ring so you can see where the writing is.
+  - **"The log" in History** — every day with anything written on it,
+    newest first, showing what you meant to do, what you ticked off, what
+    happened in each stretch, and the line you left at the end. Filter to
+    this week, this month, or everything.
+- Notes and intentions travel in JSON backups and Google Drive backups.
+
+### Fixed
+
+- **Editing froze the tab and claimed another tab had changed the data.**
+  The multi-tab guard added in 1.10.0 compared each change event against
+  live state — but a day's slot array is shared by reference with the
+  in-memory day, so painting again before the first event arrived made the
+  tab's own write look foreign. It now matches events against what was
+  actually written, which has no such race. A genuinely foreign write is
+  still caught.
+- **A stray box appeared on the ring when painting with the mouse.** The
+  keyboard cursor added in 1.11.0 showed on any focus, and clicking the ring
+  focuses it. It's now shown only for keyboard focus, and returns the moment
+  an arrow key is pressed.
+
 ## [1.11.0] — 2026-08-29
 
 Accessibility. Two of these locked people out of the app completely.
