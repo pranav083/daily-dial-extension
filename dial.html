@@ -439,6 +439,39 @@
     </div>
   </div>
 
+  <div class="settings-overlay" id="onboarding-overlay" hidden>
+    <div class="onboarding-panel" role="dialog" aria-modal="true" aria-labelledby="onboarding-title" tabindex="-1">
+      <div class="onboarding-header">
+        <div class="onboarding-mark">🕐</div>
+        <h2 id="onboarding-title">Welcome to Daily Dial</h2>
+        <p class="onboarding-sub">Three things to know before you paint your first day.</p>
+      </div>
+
+      <div class="onboarding-steps">
+        <div class="onboarding-step">
+          <div class="onboarding-icon">🖌️</div>
+          <h3>Paint your day</h3>
+          <p>Pick a category below the dial, then drag around the ring. Prefer typing? <code>9-11 deep work</code> works too.</p>
+        </div>
+        <div class="onboarding-step">
+          <div class="onboarding-icon">📊</div>
+          <h3>See how it adds up</h3>
+          <p>Your score, productive %, and longest focus streak update as you paint. The line underneath reads your day in plain language.</p>
+        </div>
+        <div class="onboarding-step">
+          <div class="onboarding-icon">⚙️</div>
+          <h3>Make it yours</h3>
+          <p>Rename categories, set reminders and goals, or back up to Google Drive — all behind <b>☰</b> at the top right. Everything but painting is optional.</p>
+        </div>
+      </div>
+
+      <div class="onboarding-footer">
+        <button type="button" class="ghost-btn" id="onboarding-skip">Skip</button>
+        <button type="button" class="primary-btn" id="onboarding-start">Let's start</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="module" src="dial.js"></script>
 </body>

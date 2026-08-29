@@ -839,6 +839,65 @@ select {
   .streak-banner { order: 3; }
 }
 
+/* ---- onboarding (first run) ---- */
+.onboarding-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 640px;
+  max-height: min(700px, 90vh);
+  overflow-y: auto;
+  padding: 26px 26px 18px;
+}
+.onboarding-header { text-align: center; margin-bottom: 20px; }
+.onboarding-mark { font-size: 2rem; line-height: 1; margin-bottom: 6px; }
+.onboarding-header h2 { margin: 0 0 4px; font-size: 1.2rem; font-weight: 800; }
+.onboarding-sub { margin: 0; color: var(--ink-muted); font-size: 0.85rem; }
+
+.onboarding-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+@media (max-width: 560px) {
+  .onboarding-steps { grid-template-columns: 1fr; }
+}
+.onboarding-step {
+  background: var(--panel-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 16px 14px;
+  text-align: center;
+}
+.onboarding-icon { font-size: 1.6rem; margin-bottom: 8px; }
+.onboarding-step h3 { margin: 0 0 6px; font-size: 0.85rem; font-weight: 800; }
+.onboarding-step p { margin: 0; font-size: 0.78rem; color: var(--ink-2); line-height: 1.5; }
+.onboarding-step code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.onboarding-footer { display: flex; justify-content: flex-end; gap: 10px; }
+.primary-btn {
+  border: none;
+  background: var(--accent-fill);
+  color: var(--accent-ink);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.primary-btn:hover { filter: brightness(1.08); }
+.primary-btn:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+
 /* ---- view switcher ---- */
 /* Three top-level views share the top bar; the date nav only applies to Day. */
 .view-nav { display: flex; gap: 4px; }

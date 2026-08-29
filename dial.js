@@ -13,6 +13,7 @@ import {
   DAY_PREFIX,
   DRIVE_FILE_ID_KEY,
   DRIVE_LAST_SYNC_KEY,
+  ONBOARDING_SEEN_KEY,
   R_IN,
   R_OUT,
   SCHEMA_VERSION,
@@ -81,6 +82,7 @@ let settings = normalizeSettings(null);
 /** Device-local Google Drive connection bookkeeping — see DRIVE_FILE_ID_KEY. */
 let driveFileId = null;
 let driveLastSyncAt = null;
+let onboardingSeen = false;
 
 const state = {
   viewDate: new Date(),
@@ -104,6 +106,7 @@ async function loadAll() {
   settings = normalizeSettings(all[SETTINGS_KEY]);
   driveFileId = typeof all[DRIVE_FILE_ID_KEY] === "string" ? all[DRIVE_FILE_ID_KEY] : null;
   driveLastSyncAt = Number.isFinite(all[DRIVE_LAST_SYNC_KEY]) ? all[DRIVE_LAST_SYNC_KEY] : null;
+  onboardingSeen = all[ONBOARDING_SEEN_KEY] === true;
 
   if (all[SCHEMA_VERSION_KEY] !== SCHEMA_VERSION) {
     chrome.storage.local.set({ [SCHEMA_VERSION_KEY]: SCHEMA_VERSION }).catch(() => {
@@ -1468,6 +1471,20 @@ function closeSettings() {
   if (settingsLastFocused instanceof HTMLElement) settingsLastFocused.focus();
 }
 
+/* ---------- onboarding (first run) ---------- */
+
+function showOnboarding() {
+  $("onboarding-overlay").hidden = false;
+  $("onboarding-overlay").querySelector(".onboarding-panel").focus();
+}
+
+function dismissOnboarding() {
+  $("onboarding-overlay").hidden = true;
+  if (onboardingSeen) return;
+  onboardingSeen = true;
+  chrome.storage.local.set({ [ONBOARDING_SEEN_KEY]: true }).catch(reportStorageFailure);
+}
+
 /* ---------- wiring ---------- */
 
 /* ---------- view switching ---------- */
@@ -1607,6 +1624,13 @@ function wireEvents() {
     if (btn) switchSettingsTab(btn.dataset.tab);
   });
 
+  // ---- onboarding (first run) ----
+  $("onboarding-start").addEventListener("click", dismissOnboarding);
+  $("onboarding-skip").addEventListener("click", dismissOnboarding);
+  $("onboarding-overlay").addEventListener("click", (evt) => {
+    if (evt.target === $("onboarding-overlay")) dismissOnboarding();
+  });
+
   // ---- reminders + weekly recap ----
   for (const id of ["reminders-on", "reminder-1", "reminder-2", "weekly-recap-on", "weekly-recap-day", "weekly-recap-time"]) {
     $(id).addEventListener("change", saveReminders);
@@ -1708,6 +1732,7 @@ async function boot() {
   renderDriveStatus();
   applyDialMode();
   renderAll();
+  if (!onboardingSeen) showOnboarding();
 
   setInterval(refreshLive, 30_000);
 }

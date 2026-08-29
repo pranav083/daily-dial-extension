@@ -22,6 +22,10 @@ export const DAY_PREFIX = "day:";
 export const CATEGORIES_KEY = "categories";
 export const SETTINGS_KEY = "settings";
 export const SCHEMA_VERSION_KEY = "schemaVersion";
+/** Whether the first-run welcome overlay has been dismissed. A dedicated flag
+ *  rather than inferring from `days.size === 0`, so someone who clears all
+ *  their history later doesn't see it again. */
+export const ONBOARDING_SEEN_KEY = "onboardingSeen";
 
 /** Device-local connection bookkeeping for Google Drive backup — deliberately
  *  NOT part of `settings`, since a file id belongs to one Google account's

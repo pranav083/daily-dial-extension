@@ -58,6 +58,11 @@ it, and load that folder the same way.
 > is keyed to that ID. **Moving the folder later orphans your logged days.**
 > Put it somewhere permanent, and export a CSV before relocating it.
 
+New to Daily Dial? [**Getting started**](docs/GETTING_STARTED.md) walks
+through painting your first day, categories and aliases, and backups — with
+screenshots. The extension also shows a short version of this itself the
+first time you open it.
+
 ## How it works
 
 | | |

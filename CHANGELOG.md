@@ -8,6 +8,18 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.8.0] — 2026-08-29
+
+### Added
+
+- **First-run welcome overlay**: shown once, the very first time the dial
+  opens with nothing dismissed yet — three short cards covering painting,
+  reading your score, and where settings live (Settings, reminders, goals,
+  Drive backup). Dismiss with "Let's start," "Skip," or by clicking outside
+  it; never shown again after that, tracked by its own flag rather than by
+  whether any days are logged, so clearing your history later doesn't bring
+  it back. See also `docs/GETTING_STARTED.md` for the written version.
+
 ## [1.7.4] — 2026-08-29
 
 ### Fixed
