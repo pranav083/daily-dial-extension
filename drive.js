@@ -38,7 +38,7 @@ import {
  *  Not a secret: it's embedded in every copy of the extension, the same way
  *  any public OAuth client id is; the redirect-URI allowlist on Google's side
  *  is what actually gates who can use it. */
-const CLIENT_ID = "752491211125-sh205mkhfofckied2cc4ptpjnmbjdhqb.apps.googleusercontent.com";
+const CLIENT_ID = "752491211125-e7flupmel0jlpds3cdvo78rjfldrdr9n.apps.googleusercontent.com";
 const SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 
 /** Held only in memory — cleared on every service worker/page restart, which

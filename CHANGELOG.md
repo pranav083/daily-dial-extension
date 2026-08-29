@@ -8,6 +8,18 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.7.3] — 2026-08-29
+
+### Fixed
+
+- Consolidated Drive backup onto a single OAuth client with both redirect
+  URIs registered — the local dev extension ID's and the published Web
+  Store ID's — instead of juggling separate clients per ID. Verified for
+  real this time, not just mocked: a live Google account connected, backed
+  up, and restored correctly (round-trip confirmed the restored day count
+  matched exactly what was logged). One client now covers both testing and
+  the eventual published build.
+
 ## [1.7.2] — 2026-08-29
 
 ### Changed
