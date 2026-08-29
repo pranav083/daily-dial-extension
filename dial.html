@@ -90,10 +90,17 @@
 
     <div class="grid">
       <div class="dial-card">
-        <div class="dial-layout-switch" id="dial-layout-switch" role="group" aria-label="Dial layout">
-          <button type="button" data-mode="24h" aria-pressed="true" title="One 24-hour ring">24h</button>
-          <button type="button" data-mode="ampm" aria-pressed="false" title="Two 12-hour rings, side by side">AM+PM</button>
-          <button type="button" data-mode="ampm-toggle" aria-pressed="false" title="One 12-hour ring, with an AM/PM switch">AM⇄PM</button>
+        <!-- Share sat at the bottom of the card under the pens, below the fold
+             on shorter windows. It's an action on the whole day, so it belongs
+             at the top with the other whole-dial control. -->
+        <div class="dial-card-head">
+          <button class="ghost-btn" id="share-image"
+                  title="Save (or share) a PNG of this day's dial and score — nothing leaves your device unless you choose to send it.">Share as image</button>
+          <div class="dial-layout-switch" id="dial-layout-switch" role="group" aria-label="Dial layout">
+            <button type="button" data-mode="24h" aria-pressed="true" title="One 24-hour ring">24h</button>
+            <button type="button" data-mode="ampm" aria-pressed="false" title="Two 12-hour rings, side by side">AM+PM</button>
+            <button type="button" data-mode="ampm-toggle" aria-pressed="false" title="One 12-hour ring, with an AM/PM switch">AM⇄PM</button>
+          </div>
         </div>
 
         <div class="dial-wrap" id="dial-wrap-single">
@@ -156,11 +163,16 @@
         <div class="quick-entry">
           <button class="ghost-btn" id="copy-yesterday"
                   title="Fill today with yesterday's blocks — useful when your days rhyme">Copy yesterday</button>
-          <button class="ghost-btn" id="share-image"
-                  title="Save (or share) a PNG of this day's dial and score — nothing leaves your device unless you choose to send it.">Share as image</button>
+          <!-- The category is a dropdown rather than part of the typed string:
+               it was the only half you could get wrong by misspelling, and a
+               list can't be mistyped. Typing a category in the box still
+               works and wins, so "9-11 leetcode" and aliases keep working. -->
           <form class="typed-entry" id="typed-entry-form">
-            <input type="text" id="typed-entry-input" placeholder="9-11 deep work" aria-label="Typed time entry"
-                   title="Type a time range and category, e.g. &quot;9-11 deep work&quot;, &quot;13:30-15 applications&quot;, or &quot;9pm-11pm study&quot;">
+            <label for="typed-entry-input" class="sr-only">Time range</label>
+            <input type="text" id="typed-entry-input" placeholder="9-11" aria-label="Time range"
+                   title="A time range: &quot;9-11&quot;, &quot;13:30-15&quot;, or &quot;9pm-11pm&quot;. You can still type the category here too.">
+            <label for="typed-entry-cat" class="sr-only">Category</label>
+            <select id="typed-entry-cat" title="Which category this block is"></select>
             <button type="submit" title="Add this block to the dial">Add</button>
           </form>
         </div>
@@ -170,6 +182,30 @@
           <kbd>⌘Z</kbd> undo ·
           <button type="button" class="link-btn" id="hint-shortcuts">all shortcuts</button>
         </p>
+
+        <!-- The whole 24 hours in order, gaps included. This replaces a note
+             box that only worked while something was selected on the dial:
+             every stretch now has a note field of its own, always live, so
+             filling the day in afterwards is typing rather than selecting
+             first. Gaps are rows too — an unlogged hour you'd otherwise not
+             notice is a row asking to be filled. -->
+        <div class="breakdown">
+          <div class="breakdown-head">
+            <p class="section-label" title="Every stretch of the day in order, including the parts you haven't logged. Type a note straight onto any row; pick a category on a gap row to fill it in.">The day, end to end</p>
+            <span class="breakdown-sum" id="breakdown-sum"></span>
+          </div>
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th scope="col">When</th>
+                <th scope="col">What</th>
+                <th scope="col">For</th>
+                <th scope="col" class="note-col">Note</th>
+              </tr>
+            </thead>
+            <tbody id="breakdown-rows"></tbody>
+          </table>
+        </div>
       </div>
 
       <div class="side-card">
@@ -236,19 +272,7 @@
           </form>
         </div>
 
-        <!-- Notes pinned to a stretch of the day, rather than one note for
-             all 24 hours: "what happened between 9 and 11" is the thing
-             worth writing down, and it's what a log gets read for. -->
-        <div class="journal-block">
-          <p class="section-label" title="Notes pinned to a stretch of the day. Select a range on the dial — drag it, or focus the ring and use Shift+arrows — then write what happened.">Notes on a stretch</p>
-          <div class="note-list" id="note-list"></div>
-          <form class="journal-form" id="note-form">
-            <label for="note-input" class="sr-only">Note for the selected range</label>
-            <input type="text" id="note-input" placeholder="Select a range on the dial first" maxlength="500" disabled>
-            <button type="submit" class="ghost-btn" id="note-add" disabled>Add</button>
-          </form>
-          <p class="editor-note" id="note-range-hint">Drag on the dial, or focus it and hold Shift with the arrow keys, to choose the stretch this note covers.</p>
-        </div>
+
 
         <div>
           <p class="section-label" title="One line on what helped or hurt today. Included in your CSV export.">Why (a line is enough)</p>

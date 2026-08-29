@@ -8,6 +8,41 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.15.0] — 2026-08-29
+
+### Added
+
+- **"The day, end to end" — the whole 24 hours as rows, gaps included.**
+  Replaces the old note box, which only worked while something was selected
+  on the dial: a note could be written at the moment of painting and never
+  afterwards, when you actually remember what you were doing. Every stretch
+  now has its own always-live note field — no clicking "+ note" first, just
+  tab down the day and type. Uncapped on purpose: the point is seeing all
+  24 hours, and a scroll box would hide exactly the gaps this exists to
+  surface.
+- **Unlogged gaps are rows too, with a category dropdown to fill them.**
+  An hour you forgot is now something you can see and act on in one place,
+  rather than something invisible you'd have to go back to the ring and
+  re-drag to fix. You can write the note on the same row while filling it,
+  which the paint-then-annotate flow never allowed.
+
+### Changed
+
+- **The typed-entry category is a dropdown.** It was the only half of
+  `9-11 deep work` you could get wrong by misspelling. Typing a category
+  still works and still wins, so aliases and `9-11 leetcode` are unaffected
+  — the dropdown fills in when the box holds a bare time range.
+- **"Share as image" moved to the top-left of the dial card**, opposite the
+  layout switch. It was below the pens, off-screen on shorter windows.
+
+### Fixed
+
+- **The journal never rendered on first load.** `boot()` loaded the day with
+  its own inline copy of the day-loading code, which set slots and the
+  reflection but not notes, intentions, or the avoid list — so they appeared
+  blank until you navigated to another day and back. It now loads through
+  the same path a date change uses.
+
 ## [1.14.1] — 2026-08-29
 
 ### Fixed

@@ -951,26 +951,7 @@ select {
    what you meant to do, including what you didn't. */
 .intent-row.done .text { text-decoration: line-through; color: var(--ink-muted); }
 
-.note-list { display: flex; flex-direction: column; gap: 6px; }
-.note-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 0.83rem;
-  padding: 6px 9px;
-  border: 1px solid var(--border-soft);
-  border-radius: 8px;
-  background: var(--panel-2);
-}
-.note-row .when {
-  flex: none;
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  color: var(--ink-muted);
-  padding-top: 1px;
-}
-.note-row .text { flex: 1; color: var(--ink-2); overflow-wrap: anywhere; }
-.note-row .drop, .intent-row .drop {
+.intent-row .drop {
   flex: none;
   border: none;
   background: none;
@@ -981,8 +962,8 @@ select {
   padding: 2px 4px;
   border-radius: 5px;
 }
-.note-row .drop:hover, .intent-row .drop:hover { color: var(--status-critical-text); background: var(--panel); }
-.note-row .drop:focus-visible, .intent-row .drop:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.intent-row .drop:hover { color: var(--status-critical-text); background: var(--panel); }
+.intent-row .drop:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
 .journal-form { display: flex; gap: 6px; }
 .journal-form input[type="text"] {
@@ -1450,3 +1431,119 @@ select {
   padding-left: 10px;
   overflow-wrap: anywhere;
 }
+
+
+/* ---- dial card header ---- */
+.dial-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* ---- the day, end to end ---- */
+/* Deliberately uncapped: the point is seeing the whole 24 hours at once,
+   including the parts you'd rather not look at. A scroll box would hide
+   exactly the gaps this is meant to surface. */
+.breakdown { margin-top: 22px; border-top: 1px solid var(--border); padding-top: 16px; }
+.breakdown-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.breakdown-head .section-label { margin-bottom: 10px; }
+.breakdown-sum { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
+
+/* Fixed layout: with auto layout the nowrap time and category cells set
+   their own widths and pushed the note column past the card's edge. */
+.breakdown-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.breakdown-table th {
+  text-align: left;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: 0 8px 7px 0;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.breakdown-table th:nth-child(1) { width: 104px; }
+.breakdown-table th:nth-child(2) { width: 132px; }
+.breakdown-table th:nth-child(3) { width: 62px; }
+.breakdown-table th.note-col { width: auto; }
+.breakdown-table td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
+.breakdown-table tr:last-child td { border-bottom: none; }
+
+.bd-when { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-2); white-space: nowrap; }
+.bd-what { display: flex; align-items: center; gap: 7px; font-size: 0.82rem; font-weight: 700; min-width: 0; }
+.bd-what > span:last-child, .bd-what { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bd-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.bd-dur { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted); white-space: nowrap; }
+
+/* The note field reads as text until touched — a row of visible input boxes
+   would turn a day's summary into a form. */
+.bd-note {
+  width: 100%;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--ink-2);
+  border-radius: 6px;
+  padding: 4px 7px;
+  font-family: var(--font-ui);
+  font-size: 0.81rem;
+}
+.bd-note::placeholder { color: color-mix(in oklab, var(--ink-muted) 55%, transparent); }
+.bd-note:hover { border-color: var(--border); background: var(--panel-2); }
+.bd-note:focus { outline: none; border-color: var(--accent); background: var(--panel-2); color: var(--ink); }
+
+/* A gap is a row like any other, just visibly hollow — present enough to
+   act on, quiet enough not to shout on a half-logged day. */
+.bd-row.gap td { background: color-mix(in oklab, var(--ink) 2%, transparent); }
+.bd-row.gap .bd-what { color: var(--ink-muted); font-weight: 600; }
+.bd-row.gap .bd-dot { background: none; border: 1px dashed var(--ink-muted); }
+
+.bd-fill {
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink-2);
+  border-radius: 7px;
+  padding: 2px 6px;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  max-width: 132px;
+}
+.bd-fill:hover { border-color: var(--accent); color: var(--ink); }
+.bd-fill:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+/* Extra notes whose range doesn't line up with a stretch any more, after the
+   blocks around them were repainted. Shown rather than silently dropped. */
+.bd-extra { display: flex; align-items: baseline; gap: 6px; padding: 2px 7px 4px; }
+.bd-extra .when { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-muted); flex: none; }
+.bd-extra .text { font-size: 0.78rem; color: var(--ink-muted); overflow-wrap: anywhere; }
+.bd-extra .drop {
+  border: none; background: none; color: var(--ink-muted);
+  cursor: pointer; font-size: 0.8rem; line-height: 1; padding: 1px 4px; border-radius: 5px;
+}
+.bd-extra .drop:hover { color: var(--status-critical-text); background: var(--panel-2); }
+
+@media (max-width: 560px) {
+  .breakdown-table th:nth-child(1) { width: 88px; }
+  .breakdown-table th:nth-child(2) { width: 104px; }
+  .breakdown-table th:nth-child(3) { width: 54px; }
+  .bd-when, .bd-dur { font-size: 0.7rem; }
+}
+
+/* The typed-entry category dropdown sits beside its time field. */
+.typed-entry select {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-family: var(--font-ui);
+  font-size: 0.83rem;
+  cursor: pointer;
+}
+.typed-entry select:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }

@@ -387,6 +387,47 @@ export const slotFromAngle = (angle, slotsInView = SLOTS) =>
 /** Collapse consecutive same-category slots into runs, one wedge per run.
  *  Operates on whatever array it's given — the full day, or a 48-slot half —
  *  so the caller decides what window it represents. */
+/**
+ * The whole day as one ordered sequence, gaps included — every slot from
+ * midnight to midnight belongs to exactly one entry.
+ *
+ * `computeRuns` deliberately skips untracked time, which is right for drawing
+ * wedges and wrong for reviewing a day: the hours you *didn't* log are the
+ * ones worth being shown. Each entry is `{cat, start, end}` with `cat` set to
+ * UNTRACKED for a gap.
+ *
+ * @param {number[]} slots
+ * @returns {{cat:number, start:number, end:number}[]}
+ */
+export function computeDaySpans(slots) {
+  const n = slots.length;
+  const spans = [];
+  let i = 0;
+  while (i < n) {
+    let j = i;
+    while (j < n && slots[j] === slots[i]) j++;
+    spans.push({ cat: slots[i], start: i, end: j });
+    i = j;
+  }
+  return spans;
+}
+
+/**
+ * Which note belongs to a stretch, matched by the note's midpoint rather than
+ * an exact range. Repainting shifts a block's boundaries; matching exactly
+ * would orphan the note the moment its stretch grew or shrank by a slot.
+ *
+ * @returns {number[]} indices into `notes`, in order
+ */
+export function noteIndicesForSpan(notes, start, end) {
+  const out = [];
+  (notes ?? []).forEach((note, i) => {
+    const mid = (note.from + note.to) / 2;
+    if (mid >= start && mid < end) out.push(i);
+  });
+  return out;
+}
+
 export function computeRuns(slots) {
   const n = slots.length;
   const runs = [];

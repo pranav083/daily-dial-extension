@@ -36,6 +36,8 @@ import {
   challengeProgress,
   buildShareSvgMarkup,
   computeRuns,
+  computeDaySpans,
+  noteIndicesForSpan,
   computeStats,
   computeStreak,
   dateKey,
@@ -512,7 +514,6 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
 
   let isPaintingLocal = false;
   let lastLocal = null;
-  let strokeFrom = null;
 
   const localSlice = () => state.slots.slice(slotOffset, slotOffset + slotsInView);
   const writeSlice = (sub) => {
@@ -673,8 +674,6 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     else if (caretAnchor === null) caretAnchor = caret;
     renderCaret();
     announceCaret();
-    const r = caretRange();
-    if (r) setSelection(slotOffset + r.from, slotOffset + r.from + r.len);
   }
 
   function commitCaret(cat) {
@@ -723,8 +722,6 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
       if (!evt.shiftKey) caretAnchor = caret;
       renderCaret();
       announceCaret();
-      const r = caretRange();
-      if (r) setSelection(slotOffset + r.from, slotOffset + r.from + r.len);
       return;
     }
     if (evt.key === "Enter" || evt.key === " ") {
@@ -841,14 +838,6 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     }
     if (!isPaintingLocal) return;
     isPaintingLocal = false;
-    // The stretch just painted becomes the selection, so "add a note about
-    // what I was doing then" is the natural next action after a stroke.
-    if (strokeFrom !== null && lastLocal !== null) {
-      const from = Math.min(strokeFrom, lastLocal);
-      const to = Math.max(strokeFrom, lastLocal) + 1;
-      setSelection(slotOffset + from, slotOffset + to);
-    }
-    strokeFrom = null;
     lastLocal = null;
     onStrokeEnd();
   }
@@ -888,7 +877,6 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
       // Synthetic or already-released pointers can't be captured; painting still works.
     }
     const idx = slotFromAngle(angle, slotsInView);
-    strokeFrom = idx;
     paintAtLocal(idx);
     render();
     showTooltip(evt, slotOffset + idx);
@@ -1122,6 +1110,7 @@ window.addEventListener("keydown", (evt) => {
 /* ---------- pens ---------- */
 
 function renderPens() {
+  syncTypedEntryCategories();
   const pensEl = $("pens");
   pensEl.replaceChildren();
 
@@ -1483,7 +1472,6 @@ function switchDay(d) {
   state.intents = (day.intents ?? []).map((i) => ({ ...i }));
   state.avoid = [...(day.avoid ?? [])];
   $("reflection").value = state.reflection;
-  setSelection(null);
   renderJournal();
   renderAll();
 }
@@ -1491,7 +1479,7 @@ function switchDay(d) {
 function renderJournal() {
   renderIntents();
   renderAvoid();
-  renderNotes();
+  renderBreakdown();
 }
 
 /* ---------- copy yesterday ---------- */
@@ -1578,11 +1566,35 @@ async function shareAsImage() {
 
 /* ---------- typed entry ---------- */
 
+/** Fills the typed-entry dropdown, and keeps it on the active pen so the
+ *  common case — paint what the pen is already set to — needs no picking. */
+function syncTypedEntryCategories() {
+  const select = $("typed-entry-cat");
+  const previous = select.value;
+  select.replaceChildren();
+  for (const c of categories.filter((c) => c.enabled)) {
+    const opt = document.createElement("option");
+    opt.value = String(c.id);
+    opt.textContent = c.name;
+    select.appendChild(opt);
+  }
+  const wanted = previous !== "" ? previous : String(state.activePen);
+  if ([...select.options].some((o) => o.value === wanted)) select.value = wanted;
+}
+
 function submitTypedEntry(evt) {
   evt.preventDefault();
   checkDayRollover();
   const input = $("typed-entry-input");
-  const result = parseTimeEntry(input.value, categories);
+  const raw = input.value.trim();
+  // The category was the only half of this you could get wrong by misspelling,
+  // so it's a dropdown now. Typing one still works and still wins — aliases
+  // and "9-11 leetcode" would be a real loss otherwise — and the dropdown
+  // fills in when the text is a bare time range.
+  const typed = parseTimeEntry(raw, categories);
+  const result = typed.ok
+    ? typed
+    : parseTimeEntry(`${raw} ${categories[Number($("typed-entry-cat").value)]?.name ?? ""}`, categories);
   if (!result.ok) {
     toast(result.error);
     return;
@@ -1643,33 +1655,6 @@ function toast(message) {
 
 /* ---------- journal: intentions and ranged notes ---------- */
 
-/** The stretch of the day a new note will attach to, in global slot indices.
- *  Set by finishing a drag on the ring or by moving the keyboard cursor, so
- *  both input methods feed the same box. */
-let selection = null;
-
-function setSelection(from, to) {
-  selection = from === null ? null : { from, to };
-  renderSelectionUI();
-}
-
-function renderSelectionUI() {
-  const input = $("note-input");
-  const add = $("note-add");
-  const hint = $("note-range-hint");
-  if (!selection) {
-    input.disabled = true;
-    add.disabled = true;
-    input.placeholder = "Select a range on the dial first";
-    hint.textContent = "Drag on the dial, or focus it and hold Shift with the arrow keys, to choose the stretch this note covers.";
-    return;
-  }
-  const label = `${fmtSlotClock(selection.from)}–${fmtSlotClock(selection.to)}`;
-  input.disabled = false;
-  add.disabled = false;
-  input.placeholder = `What happened between ${label}?`;
-  hint.textContent = `This note will cover ${label} · ${fmtDuration((selection.to - selection.from) * SLOT_MIN)}.`;
-}
 
 function renderIntents() {
   const list = $("intent-list");
@@ -1709,36 +1694,158 @@ function renderIntents() {
   }
 }
 
-function renderNotes() {
-  const list = $("note-list");
-  list.replaceChildren();
-  for (const [i, note] of (state.notes ?? []).entries()) {
-    const row = document.createElement("div");
-    row.className = "note-row";
+/**
+ * The whole day as rows, gaps included.
+ *
+ * This replaced a note box that only worked while something was selected on
+ * the dial — which meant a note could only be written at the moment of
+ * painting, never afterwards when you actually remember what you were doing.
+ * Every stretch now carries its own always-live field, and an unlogged gap is
+ * a row with a category dropdown, so filling the day in is typing and picking
+ * rather than selecting first.
+ */
+function renderBreakdown() {
+  const body = $("breakdown-rows");
+  body.replaceChildren();
+  const spans = computeDaySpans(state.slots);
+  const notes = state.notes ?? [];
+  const claimed = new Set();
 
-    const when = document.createElement("span");
-    when.className = "when";
-    when.textContent = `${fmtSlotClock(note.from)}–${fmtSlotClock(note.to)}`;
+  for (const span of spans) {
+    const isGap = span.cat === UNTRACKED;
+    const row = document.createElement("tr");
+    row.className = `bd-row${isGap ? " gap" : ""}`;
 
-    const text = document.createElement("span");
-    text.className = "text";
-    text.textContent = note.text;
+    const when = document.createElement("td");
+    when.className = "bd-when";
+    when.textContent = `${fmtSlotClock(span.start)}–${fmtSlotClock(span.end)}`;
 
-    const drop = document.createElement("button");
-    drop.type = "button";
-    drop.className = "drop";
-    drop.textContent = "✕";
-    drop.setAttribute("aria-label", `Remove note for ${when.textContent}`);
-    drop.addEventListener("click", () => {
-      state.notes.splice(i, 1);
-      persistDay();
-      renderNotes();
-      renderDial();
-    });
+    const what = document.createElement("td");
+    const label = document.createElement("span");
+    label.className = "bd-what";
+    const dot = document.createElement("span");
+    dot.className = "bd-dot";
+    if (!isGap) dot.style.background = `var(--${categories[span.cat].cls})`;
+    label.appendChild(dot);
 
-    row.append(when, text, drop);
-    list.appendChild(row);
+    if (isGap) {
+      // A dropdown right here, because the alternative is going back to the
+      // ring and dragging the exact range again — the friction that stops
+      // gaps ever getting filled.
+      const pick = document.createElement("select");
+      pick.className = "bd-fill";
+      pick.setAttribute("aria-label", `Fill ${when.textContent}`);
+      const blank = document.createElement("option");
+      blank.value = "";
+      blank.textContent = "Unlogged";
+      pick.appendChild(blank);
+      for (const c of categories.filter((c) => c.enabled)) {
+        const opt = document.createElement("option");
+        opt.value = String(c.id);
+        opt.textContent = c.name;
+        pick.appendChild(opt);
+      }
+      pick.addEventListener("change", () => {
+        if (pick.value === "") return;
+        fillSpan(span.start, span.end, Number(pick.value));
+      });
+      label.appendChild(pick);
+    } else {
+      label.append(categories[span.cat].name);
+    }
+    what.appendChild(label);
+
+    const dur = document.createElement("td");
+    dur.className = "bd-dur";
+    dur.textContent = fmtDuration((span.end - span.start) * SLOT_MIN);
+
+    const noteCell = document.createElement("td");
+    const idxs = noteIndicesForSpan(notes, span.start, span.end);
+    idxs.forEach((i) => claimed.add(i));
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "bd-note";
+    input.maxLength = MAX_NOTE_LEN;
+    input.value = idxs.length ? notes[idxs[0]].text : "";
+    input.placeholder = isGap ? "Nothing logged yet" : "—";
+    input.setAttribute("aria-label", `Note for ${when.textContent}`);
+    input.addEventListener("change", () => saveSpanNote(span, idxs[0], input.value));
+    noteCell.appendChild(input);
+
+    // Any further notes landing in this stretch — usually because the blocks
+    // around them were repainted — are shown rather than silently hidden.
+    for (const extra of idxs.slice(1)) {
+      noteCell.appendChild(extraNoteRow(extra, notes[extra]));
+    }
+
+    row.append(when, what, dur, noteCell);
+    body.appendChild(row);
   }
+
+  const tracked = state.slots.filter((v) => v !== UNTRACKED).length * SLOT_MIN;
+  $("breakdown-sum").textContent =
+    `${spans.filter((s) => s.cat !== UNTRACKED).length} stretches · ` +
+    `${fmtDuration(tracked)} logged · ${fmtDuration(SLOTS * SLOT_MIN - tracked)} not`;
+}
+
+function extraNoteRow(index, note) {
+  const wrap = document.createElement("div");
+  wrap.className = "bd-extra";
+  const when = document.createElement("span");
+  when.className = "when";
+  when.textContent = `${fmtSlotClock(note.from)}–${fmtSlotClock(note.to)}`;
+  const text = document.createElement("span");
+  text.className = "text";
+  text.textContent = note.text;
+  const drop = document.createElement("button");
+  drop.type = "button";
+  drop.className = "drop";
+  drop.textContent = "✕";
+  drop.setAttribute("aria-label", `Remove note for ${when.textContent}`);
+  drop.addEventListener("click", () => {
+    state.notes.splice(index, 1);
+    persistDay();
+    renderBreakdown();
+    renderDial();
+  });
+  wrap.append(when, text, drop);
+  return wrap;
+}
+
+/** Writes a row's note: edits the existing one, creates it, or removes it
+ *  when the field is cleared. */
+function saveSpanNote(span, existingIndex, raw) {
+  const text = raw.trim().slice(0, MAX_NOTE_LEN);
+  state.notes = state.notes ?? [];
+  if (existingIndex !== undefined && existingIndex !== null) {
+    if (text) state.notes[existingIndex].text = text;
+    else state.notes.splice(existingIndex, 1);
+  } else if (text) {
+    if (state.notes.length >= MAX_NOTES_PER_DAY) {
+      toast(`That's the most notes a day can hold (${MAX_NOTES_PER_DAY}).`);
+      renderBreakdown();
+      return;
+    }
+    state.notes = [...state.notes, { from: span.start, to: span.end, text }].sort((a, b) => a.from - b.from);
+  } else {
+    return; // nothing there, nothing typed
+  }
+  persistDay();
+  renderBreakdown();
+  renderDial();
+}
+
+/** Paints a stretch from the breakdown table, through the same undo and
+ *  persistence path a drag on the ring uses. */
+function fillSpan(from, to, categoryId) {
+  if (tabIsStale) return;
+  checkDayRollover();
+  pushUndo();
+  for (let i = from; i < to; i++) state.slots[i] = categoryId;
+  persistDay();
+  renderAll();
+  onStrokeEnd();
+  announce(`${categories[categoryId].name} set for ${fmtSlotClock(from)} to ${fmtSlotClock(to)}`);
 }
 
 function renderAvoid() {
@@ -1845,24 +1952,6 @@ function addIntent(evt) {
   renderIntents();
 }
 
-function addNote(evt) {
-  evt.preventDefault();
-  if (!selection) return;
-  const input = $("note-input");
-  const text = input.value.trim();
-  if (!text) return;
-  if ((state.notes ?? []).length >= MAX_NOTES_PER_DAY) {
-    toast(`That's the most notes a day can hold (${MAX_NOTES_PER_DAY}).`);
-    return;
-  }
-  state.notes = [...(state.notes ?? []), { from: selection.from, to: selection.to, text: text.slice(0, MAX_NOTE_LEN) }]
-    .sort((a, b) => a.from - b.from);
-  input.value = "";
-  persistDay();
-  renderNotes();
-  renderDial();
-  announce(`Note saved for ${fmtSlotClock(selection.from)} to ${fmtSlotClock(selection.to)}`);
-}
 
 /* ---------- category editor ---------- */
 
@@ -2624,6 +2713,9 @@ function renderAll() {
   renderStrip();
   renderStreak();
   renderBackupStatus();
+  // The breakdown is a view of the same slots the dial draws, so it has to
+  // move with them — painting a block changes which stretches exist.
+  renderBreakdown();
 }
 
 function wireEvents() {
@@ -2634,7 +2726,6 @@ function wireEvents() {
   });
   $("stale-banner-reload").addEventListener("click", () => window.location.reload());
   $("intent-form").addEventListener("submit", addIntent);
-  $("note-form").addEventListener("submit", addNote);
   $("avoid-form").addEventListener("submit", addAvoid);
   $("challenge-chip").addEventListener("click", () => openSettings("goals"));
   for (const id of ["challenge-name-input", "challenge-start-input", "challenge-target-input"]) {
@@ -2834,10 +2925,18 @@ async function boot() {
   watchForOtherTabs();
   applyTheme();
 
+  // Load the day through the same path a date change uses, rather than a
+  // second inline copy: the inline version never picked up notes, intents,
+  // or the avoid list, so the journal rendered empty until you navigated
+  // to another day and back.
   const day = getDay(dateKey(state.viewDate));
   state.slots = [...day.slots];
   state.reflection = day.reflection;
+  state.notes = (day.notes ?? []).map((n) => ({ ...n }));
+  state.intents = (day.intents ?? []).map((i) => ({ ...i }));
+  state.avoid = [...(day.avoid ?? [])];
   $("reflection").value = state.reflection;
+  renderJournal();
 
   syncReminderInputs();
   syncAppearanceInputs();
