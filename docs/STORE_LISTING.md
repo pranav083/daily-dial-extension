@@ -42,8 +42,9 @@ The zip contains only what the extension needs to run: `manifest.json`,
 
 ### Extension name
 ```
-Daily Dial
+Daily Dial – Time Tracker & Focus
 ```
+*("Time tracker" is the high-intent search term; "Focus" pulls the deep-work/study crowd this was originally built for. The app's own UI keeps the plain "Daily Dial" wordmark — this is the Store's search-facing name only.)*
 
 ### Summary
 *(max 132 characters — this is 119)*
