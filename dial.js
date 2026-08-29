@@ -408,6 +408,9 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     const { angle, dist } = angleAt(p.x, p.y);
     if (dist < R_IN - 14 || dist > R_OUT + 18) return;
 
+    // Checked here as well as on the 30s tick: a stroke started inside that
+    // window would otherwise still be written against yesterday's date.
+    checkDayRollover();
     pushUndo();
     isPaintingLocal = true;
     lastLocal = null;
@@ -483,10 +486,38 @@ function refreshCenters() {
 /** The clock-face upkeep a 30-second timer does: move the needle, refresh
  *  the centre time. No data changed, so segments are left alone. */
 function refreshLive() {
+  checkDayRollover();
   for (const engine of activeEngines()) {
     engine.renderNeedle();
     engine.renderCenter();
   }
+}
+
+/** The date the app currently believes "today" is. */
+let todayKey = dateKey(new Date());
+
+/**
+ * `state.viewDate` was captured once at boot and only ever moved by explicit
+ * navigation, so a tab left open across midnight kept writing to yesterday —
+ * paint 00:20 and it silently overwrote the previous day's early morning,
+ * while the header still read "Today" and the streak never saw the entry.
+ * Rolls the view forward only for someone actually sitting on today; anyone
+ * who navigated to a past day deliberately keeps their place.
+ */
+function checkDayRollover() {
+  const nowKey = dateKey(new Date());
+  if (nowKey === todayKey) return;
+  const wasOnToday = dateKey(state.viewDate) === todayKey;
+  todayKey = nowKey;
+  if (wasOnToday) {
+    switchDay(new Date());
+    toast("It's a new day — the dial has rolled over");
+  }
+  // Date-dependent chrome is stale either way.
+  renderDateLabel();
+  renderStrip();
+  renderStreak();
+  renderBackupStatus();
 }
 
 /** In "ampm-toggle" mode, shows only state.toggleHalf and hides the other —
@@ -1009,6 +1040,7 @@ async function shareAsImage() {
 
 function submitTypedEntry(evt) {
   evt.preventDefault();
+  checkDayRollover();
   const input = $("typed-entry-input");
   const result = parseTimeEntry(input.value, categories);
   if (!result.ok) {
@@ -1016,11 +1048,45 @@ function submitTypedEntry(evt) {
     return;
   }
   pushUndo();
-  for (let i = result.startSlot; i < result.endSlot; i++) state.slots[i % SLOTS] = result.categoryId;
+  // parseTimeEntry returns endSlot > SLOTS for a range that crosses midnight.
+  // Wrapping it with `% SLOTS` folded the post-midnight part back onto the
+  // *same* day: "11pm-1am" painted 23:00-24:00 and 00:00-01:00 of one day,
+  // wiped whatever was already in that early hour, and split what should be
+  // one two-hour block into two, so longest-focus read 60 minutes.
+  const endOfDay = Math.min(result.endSlot, SLOTS);
+  for (let i = result.startSlot; i < endOfDay; i++) state.slots[i] = result.categoryId;
   persistDay();
+
+  const overflow = result.endSlot - SLOTS;
+  if (overflow > 0) {
+    const next = new Date(state.viewDate);
+    next.setDate(next.getDate() + 1);
+    paintIntoStoredDay(dateKey(next), 0, overflow, result.categoryId);
+  }
+
   renderAll();
+  renderStrip();
+  renderStreak();
   input.value = "";
-  toast("Added");
+  toast(overflow > 0 ? "Added — the part past midnight went to the next day" : "Added");
+}
+
+/** Paints a range into a day that isn't the one on screen, going straight to
+ *  storage. Used for the post-midnight half of an overnight entry. */
+function paintIntoStoredDay(key, from, to, categoryId) {
+  const existing = days.get(key);
+  const slots = existing ? [...existing.slots] : emptyDay().slots;
+  for (let i = from; i < to; i++) slots[i] = categoryId;
+  const data = { slots, reflection: existing?.reflection ?? "" };
+  days.set(key, data);
+  chrome.storage.local.set({ [DAY_PREFIX + key]: data }).catch(reportStorageFailure);
+  // Same rule as persistDay: writing to a demo day makes it yours.
+  const sampleIdx = sampleDayKeys.indexOf(key);
+  if (sampleIdx !== -1) {
+    sampleDayKeys.splice(sampleIdx, 1);
+    chrome.storage.local.set({ [SAMPLE_DAY_KEYS_KEY]: sampleDayKeys }).catch(reportStorageFailure);
+    renderSampleDataUI();
+  }
 }
 
 /* ---------- toast ---------- */
@@ -1744,6 +1810,12 @@ function renderAll() {
 }
 
 function wireEvents() {
+  // A backgrounded tab gets throttled timers, so the 30s tick can't be
+  // relied on to notice midnight. Coming back to the tab re-checks at once.
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) checkDayRollover();
+  });
+
   $("prev-day").addEventListener("click", () => {
     const d = new Date(state.viewDate);
     d.setDate(d.getDate() - 1);

@@ -486,6 +486,12 @@ export function computeStreak(days, now = new Date(), { freezesPerWeek = 1 } = {
     // Today not yet logged: neither increments nor resets — just not counted yet.
     longest = Math.max(longest, streak);
     cursor.setDate(cursor.getDate() + 1);
+    // Re-anchor to local midnight. Where DST springs forward *at* midnight
+    // (Havana, Santiago) that hour doesn't exist, so the cursor normalizes to
+    // 01:00 and stays there — permanently one hour past `end`, which is a
+    // midnight. The final day then never gets processed, and every streak in
+    // those timezones reads one short forever after the transition.
+    cursor.setHours(0, 0, 0, 0);
     dayIndex++;
   }
 
@@ -779,9 +785,14 @@ function parseCsvRows(text) {
   return rows;
 }
 
+/** Rounds to the nearest slot, exactly as `parseTimeEntry` does. Without the
+ *  rounding a time off the 15-minute grid (09:07 — anything that has been
+ *  through a spreadsheet, or came from a 10-minute tracker) produced a
+ *  fractional array index: the row imported as nothing at all, while the
+ *  import still reported success and counted the day. */
 const hmToSlot = (hm) => {
   const [h, m] = hm.split(":").map(Number);
-  return (h * 60 + m) / SLOT_MIN;
+  return Math.round((h * 60 + m) / SLOT_MIN);
 };
 
 /**
@@ -816,7 +827,15 @@ export function parseCsv(text, categories) {
 
     const startSlot = hmToSlot(startStr);
     const endSlot = endStr === "00:00" ? SLOTS : hmToSlot(endStr);
-    if (endSlot <= startSlot) return { ok: false, error: `Row ${r + 1}: end is not after start.` };
+    if (endSlot <= startSlot) {
+      // Distinguish a genuinely inverted range from one that's simply too
+      // short to represent, so a rounded-away block says why.
+      const rawStart = hmToMinutes(startStr);
+      const rawEnd = endStr === "00:00" ? SLOTS * SLOT_MIN : hmToMinutes(endStr);
+      return rawEnd > rawStart
+        ? { ok: false, error: `Row ${r + 1}: block is shorter than ${SLOT_MIN} minutes.` }
+        : { ok: false, error: `Row ${r + 1}: end is not after start.` };
+    }
 
     if (!days.has(dateStr)) days.set(dateStr, emptyDay());
     const day = days.get(dateStr);

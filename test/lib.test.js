@@ -435,6 +435,31 @@ test("parseCsv round-trips what buildCsv emits", () => {
   assert.deepEqual(result.data.get("2026-08-27"), { slots: paint(blank(), 14, 15, 1), reflection: "later day" });
 });
 
+test("parseCsv rounds times that aren't on the 15-minute grid instead of dropping them", () => {
+  // A CSV that has been through a spreadsheet, or came from a 10-minute
+  // tracker. This used to produce a fractional array index: the row imported
+  // as nothing at all while still reporting success.
+  const csv =
+    "Date,Start,End,Duration (min),Category,Weight,Note\n" +
+    "2026-08-26,09:07,10:07,60,Deep Work,productive,imported\n";
+  const result = parseCsv(csv, cats);
+
+  assert.equal(result.ok, true);
+  const day = result.data.get("2026-08-26");
+  assert.deepEqual(day.slots, paint(blank(), 9, 10, 0), "09:07-10:07 rounds to 09:00-10:00");
+  assert.equal(dayHasEntries(day), true, "the imported day must not be silently empty");
+});
+
+test("parseCsv says why a sub-slot block can't be imported", () => {
+  const csv =
+    "Date,Start,End,Duration (min),Category,Weight,Note\n" +
+    "2026-08-26,09:02,09:06,4,Deep Work,productive,tiny\n";
+  const result = parseCsv(csv, cats);
+
+  assert.equal(result.ok, false);
+  assert.match(result.error, /shorter than 15 minutes/);
+});
+
 test("parseCsv rejects a file with the wrong header", () => {
   const result = parseCsv("A,B,C\n1,2,3", cats);
   assert.equal(result.ok, false);
@@ -1068,4 +1093,23 @@ test("buildSampleDays varies scores instead of every day looking the same", () =
 test("buildSampleDays includes at least one reflection, for note search to have something to find", () => {
   const days = buildSampleDays(new Date("2026-08-29T12:00:00"));
   assert.ok([...days.values()].some((d) => d.reflection.length > 0));
+});
+
+/* ---------- streak across a midnight DST transition ---------- */
+
+test("computeStreak counts today in a timezone where DST springs forward at midnight", () => {
+  // America/Havana moves 00:00 -> 01:00 on 2026-03-08. Advancing the cursor
+  // with setDate alone left it stuck at 01:00 for the rest of the walk, one
+  // hour past a midnight `end`, so the final day was never processed and
+  // every streak read one short from then on.
+  const logged = new Map();
+  const start = new Date(2026, 1, 1); // 2026-02-01 local
+  const now = new Date(2026, 2, 9, 12, 0); // 2026-03-09 midday
+  let expected = 0;
+  for (let d = new Date(start); d <= now; d.setDate(d.getDate() + 1)) {
+    logged.set(dateKey(d), { slots: paint(blank(), 9, 10, 0), reflection: "" });
+    expected++;
+  }
+  const streak = computeStreak(logged, now);
+  assert.equal(streak.current, expected, "every logged day up to and including today counts");
 });

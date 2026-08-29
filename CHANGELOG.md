@@ -8,6 +8,45 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.7] — 2026-08-29
+
+Date and time correctness, from a dedicated audit of that area. The first
+one affects anyone who works past midnight, which for a tool aimed at deep
+work and study is not a rare case.
+
+### Fixed
+
+- **A tab left open across midnight wrote everything to the previous day.**
+  The viewed date was captured once when the page opened and only ever
+  moved by explicitly navigating, while the 30-second timer refreshed just
+  the needle and the clock. So at 00:20 the header still said "Today", the
+  clock face still showed the live time — and painting silently overwrote
+  the *previous* day's early morning. The new day stayed empty, so it
+  broke the streak, and the toolbar badge never saw the entry. The dial now
+  notices the date changing (on the timer, on returning to the tab, and
+  before any edit), rolls the view forward if you were sitting on today,
+  and says so. Anyone who had deliberately navigated to a past day keeps
+  their place.
+- **An overnight typed entry folded the post-midnight half back onto the
+  same day.** `11pm-1am study` painted 23:00–24:00 *and* 00:00–01:00 of one
+  day — destroying whatever was already in that early hour, leaving the
+  next day empty, and splitting a two-hour session into two blocks so
+  "longest focus" read 60 minutes instead of 120. The part after midnight
+  now goes to the next day, where it happened.
+- **CSV import silently dropped every block that wasn't on a 15-minute
+  boundary.** A row like `09:07,10:07` produced a fractional array index:
+  the day imported completely empty while the import reported success and
+  counted it — and under "Replace everything" that empty day overwrote a
+  real one. Any CSV that had been through a spreadsheet, or came from a
+  10-minute-grid tracker, imported as nothing. Times now round to the
+  nearest slot, exactly as typed entry already did, and a block too short
+  to represent is rejected with a message saying so.
+- **Streaks were permanently one day short in timezones where the clocks
+  go forward at midnight** (Havana, Santiago). The day-by-day walk
+  normalized to 01:00 on the transition and never returned to midnight, so
+  the final day was never counted — every streak, personal best, and
+  weekly recap read one short from that day on, forever.
+
 ## [1.9.6] — 2026-08-29
 
 Found by auditing the demo/onboarding flow as a whole rather than fixing
