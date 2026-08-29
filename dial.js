@@ -1036,6 +1036,7 @@ function renderCategoryEditor() {
       refreshCenters();
       renderSide();
       renderGoalsEditor();
+      aliasInput.placeholder = `other words for "${c.name}"…`;
     });
 
     const seg = document.createElement("div");
@@ -1084,7 +1085,11 @@ function renderCategoryEditor() {
     aliasInput.type = "text";
     aliasInput.value = c.aliases.join(", ");
     aliasInput.disabled = !c.enabled;
-    aliasInput.placeholder = "also match: leetcode, resume, mock interview…";
+    // Tied to the category's current name, not a fixed example — a hardcoded
+    // sample ("leetcode, resume...") looked identical and nonsensical under
+    // every category including Break and Distraction, and would have stayed
+    // wrong forever for a renamed category besides.
+    aliasInput.placeholder = `other words for "${c.name}"…`;
     aliasInput.setAttribute("aria-label", `Aliases for ${c.name} — other words the typed entry box recognizes`);
     aliasInput.addEventListener("change", () => {
       c.aliases = normalizeAliases(aliasInput.value.split(","));
