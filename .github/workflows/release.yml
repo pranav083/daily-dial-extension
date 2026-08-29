@@ -43,9 +43,15 @@ jobs:
         # and drive.js, all three of which dial.js imports at runtime, so
         # every release zip built by this workflow would have failed to
         # load at all.)
+        #
+        # No rename needed: npm's package script names its output
+        # daily-dial-v<version>.zip, and the "Tag matches manifest version"
+        # step above already guarantees <version> equals GITHUB_REF_NAME
+        # (which is the "v1.2.3" tag itself) — so the two names are always
+        # identical already. A previous version of this step tried to `mv`
+        # one onto the other anyway and failed outright ("same file").
         run: |
           npm run package
-          mv "daily-dial-v$(node -p "require('./package.json').version").zip" "daily-dial-${GITHUB_REF_NAME}.zip"
           unzip -l "daily-dial-${GITHUB_REF_NAME}.zip"
 
       - name: Publish release
