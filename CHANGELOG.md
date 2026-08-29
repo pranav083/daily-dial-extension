@@ -8,6 +8,31 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.9] — 2026-08-29
+
+### Added
+
+- **Drag the seam between two blocks to move it.** Hovering where two
+  blocks meet shows a handle and a resize cursor; dragging it hands time
+  from one to the other. Previously the only way to change where a block
+  ended was to paint over it, and starting that stroke a slot early quietly
+  ate into the block you meant to keep. A seam drag can squeeze either side
+  down to nothing but never reaches past into a third block, and the
+  tooltip shows both sides of the trade while you drag —
+  `08:00–09:00 Deep Work | 09:00–12:00 Applications` — so you can see what
+  you're giving up as you give it up.
+- **Durations in the dial tooltip.** Hovering a block now reads
+  `08:00–10:00 · Deep Work · 2h` rather than making you work the length out
+  from the endpoints. It follows the cursor while painting, so a stroke
+  reports its running total instead of leaving you to guess.
+
+### Changed
+
+- **In AM/PM mode, the half that doesn't contain the current time no longer
+  shows a dead `--:--`.** It shows how much of that half is logged, and
+  ticks up as you paint into it — so both rings carry information instead
+  of one being a placeholder.
+
 ## [1.9.8] — 2026-08-29
 
 Rough edges from the same audit — none of these lose data, they just make

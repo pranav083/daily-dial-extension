@@ -215,15 +215,26 @@ const WEDGE_GAP_DEG = 0.55;
 
 /* ---------- tooltip ---------- */
 
-function showTooltip(evt, idx) {
+const fmtSlotClock = (i) => fmtClock(i, settings.timeFormat);
+
+/** "09:00–11:15 · Deep Work · 2h 15m" for whatever block covers `idx`. */
+function describeSlot(idx) {
   const run = runAt(state.slots, idx);
-  const fmt = (i) => fmtClock(i, settings.timeFormat);
-  tooltip.textContent = run
-    ? `${fmt(run.start)}–${fmt(run.end)}  ·  ${categories[run.cat].name}`
-    : `${fmt(idx)}–${fmt(idx + 1)}  ·  untracked`;
+  const [start, end, name] = run
+    ? [run.start, run.end, categories[run.cat].name]
+    : [idx, idx + 1, "untracked"];
+  return `${fmtSlotClock(start)}–${fmtSlotClock(end)}  ·  ${name}  ·  ${fmtDuration((end - start) * SLOT_MIN)}`;
+}
+
+function showTooltipText(evt, text) {
+  tooltip.textContent = text;
   tooltip.classList.add("show");
   tooltip.style.left = `${evt.clientX}px`;
   tooltip.style.top = `${evt.clientY}px`;
+}
+
+function showTooltip(evt, idx) {
+  showTooltipText(evt, describeSlot(idx));
 }
 
 const hideTooltip = () => tooltip.classList.remove("show");
@@ -303,6 +314,9 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   const centerTimeEl = $(centerTimeId);
   const centerSubEl = $(centerSubId);
   const minutesInView = slotsInView * SLOT_MIN;
+  // Added last so the seam handle draws above the wedges and the needle.
+  const handleLayer = svgEl("g", { class: "edge-layer" });
+  svgNode.appendChild(handleLayer);
 
   let isPaintingLocal = false;
   let lastLocal = null;
@@ -311,6 +325,72 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   const writeSlice = (sub) => {
     for (let i = 0; i < slotsInView; i++) state.slots[slotOffset + i] = sub[i];
   };
+
+  /* ---- edge dragging ----
+     Repainting was the only way to change where one block ended and the next
+     began, and starting that stroke a slot early silently ate into the block
+     you meant to keep. Grabbing the seam between two blocks moves just that
+     seam: one side gives up exactly what the other takes, and no third block
+     is touched. */
+
+  /** How close (in slots) the cursor must be to a seam to grab it. ~7 min. */
+  const EDGE_GRAB = 0.45;
+
+  /** Where the cursor sits in slot space, unrounded — seams live at integers. */
+  const fractionalSlot = (angle) => (angle / 360) * slotsInView;
+
+  let dragEdge = null;
+
+  /** The seam nearest the cursor, or null if none is within grabbing range. */
+  function edgeNear(angle) {
+    const f = fractionalSlot(angle);
+    const sub = localSlice();
+    let best = null;
+    for (let i = 1; i < slotsInView; i++) {
+      if (sub[i] === sub[i - 1]) continue;
+      const dist = Math.abs(f - i);
+      if (dist <= EDGE_GRAB && (best === null || dist < best.dist)) best = { index: i, dist };
+    }
+    return best;
+  }
+
+  /** The span the two blocks either side of a seam occupy, so a drag can
+   *  collapse one of them but never reach past into a third. */
+  function edgeSpan(sub, index) {
+    const left = sub[index - 1];
+    const right = sub[index];
+    let from = index - 1;
+    while (from > 0 && sub[from - 1] === left) from--;
+    let to = index;
+    while (to < slotsInView - 1 && sub[to + 1] === right) to++;
+    return { left, right, from, to: to + 1 };
+  }
+
+  const nameOf = (cat) => (cat === UNTRACKED ? "untracked" : categories[cat].name);
+
+  /** Both sides of the seam at once — the point is seeing the trade. */
+  function edgeTooltipText(at) {
+    const g = (i) => fmtSlotClock(slotOffset + i);
+    const { from, to, left, right } = dragEdge;
+    const leftPart = at > from ? `${g(from)}–${g(at)} ${nameOf(left)}` : `${nameOf(left)} gone`;
+    const rightPart = at < to ? `${g(at)}–${g(to)} ${nameOf(right)}` : `${nameOf(right)} gone`;
+    return `${leftPart}   |   ${rightPart}`;
+  }
+
+  function renderEdgeHandle(index) {
+    handleLayer.replaceChildren();
+    if (index === null) return;
+    const angle = index * (360 / slotsInView);
+    const p1 = polar(R_IN - 6, angle);
+    const p2 = polar(R_OUT + 6, angle);
+    handleLayer.appendChild(
+      svgEl("line", {
+        class: "edge-handle",
+        x1: p1.x.toFixed(2), y1: p1.y.toFixed(2),
+        x2: p2.x.toFixed(2), y2: p2.y.toFixed(2),
+      })
+    );
+  }
 
   function renderSegments() {
     segLayer.replaceChildren();
@@ -361,11 +441,20 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     const localMin = nowLocalMinutes();
     const now = new Date();
     // Only the half actually containing "now" gets a live clock reading —
-    // the other one isn't 10:30am just because this half's twin is.
-    centerTimeEl.textContent =
-      localMin === null
-        ? "--:--"
-        : fmtClock(Math.round((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN), settings.timeFormat);
+    // the other one isn't 10:30am just because this half's twin is. It used
+    // to show a dead "--:--"; its own logged total is far more useful there,
+    // and it ticks up live as you paint into that half.
+    if (localMin === null) {
+      const trackedMin = localSlice().reduce((n, v) => n + (v !== UNTRACKED ? 1 : 0), 0) * SLOT_MIN;
+      centerTimeEl.textContent = fmtDuration(trackedMin);
+      centerTimeEl.title = "Time logged in this half";
+    } else {
+      centerTimeEl.textContent = fmtClock(
+        Math.round((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN),
+        settings.timeFormat
+      );
+      centerTimeEl.title = "Current time";
+    }
     const pen = categories[state.activePen];
     centerSubEl.textContent = pen ? `pen: ${pen.name}` : "eraser";
   }
@@ -396,6 +485,12 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   }
 
   function endPaintLocal() {
+    if (dragEdge) {
+      dragEdge = null;
+      renderEdgeHandle(null);
+      onStrokeEnd();
+      return;
+    }
     if (!isPaintingLocal) return;
     isPaintingLocal = false;
     lastLocal = null;
@@ -411,6 +506,23 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     // Checked here as well as on the 30s tick: a stroke started inside that
     // window would otherwise still be written against yesterday's date.
     checkDayRollover();
+
+    // A seam under the cursor means "adjust this edge", not "paint over it".
+    const edge = edgeNear(angle);
+    if (edge) {
+      pushUndo();
+      const sub = localSlice();
+      dragEdge = { base: sub, at: edge.index, ...edgeSpan(sub, edge.index) };
+      try {
+        svgNode.setPointerCapture(evt.pointerId);
+      } catch {
+        // Synthetic pointers can't be captured; dragging still works.
+      }
+      renderEdgeHandle(edge.index);
+      showTooltipText(evt, edgeTooltipText(edge.index));
+      return;
+    }
+
     pushUndo();
     isPaintingLocal = true;
     lastLocal = null;
@@ -428,14 +540,38 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   svgNode.addEventListener("pointermove", (evt) => {
     const p = svgPointFromEvent(evt);
     const { angle, dist } = angleAt(p.x, p.y);
+
+    if (dragEdge) {
+      // Clamped to the two blocks involved: either can be squeezed to nothing,
+      // but neither can push past into whatever lies beyond.
+      const at = Math.max(dragEdge.from, Math.min(dragEdge.to, Math.round(fractionalSlot(angle))));
+      const sub = [...dragEdge.base];
+      for (let i = dragEdge.from; i < at; i++) sub[i] = dragEdge.left;
+      for (let i = at; i < dragEdge.to; i++) sub[i] = dragEdge.right;
+      writeSlice(sub);
+      dragEdge.at = at;
+      render();
+      renderEdgeHandle(at);
+      showTooltipText(evt, edgeTooltipText(at));
+      return;
+    }
+
     if (dist < R_IN - 30 || dist > R_OUT + 40) {
       hideTooltip();
+      svgNode.classList.remove("edge-grab");
+      renderEdgeHandle(null);
       return;
     }
     const idx = slotFromAngle(angle, slotsInView);
     if (isPaintingLocal) {
       paintAtLocal(idx);
       render();
+    } else {
+      // Surface the seam under the cursor so the affordance is discoverable
+      // rather than something you have to already know about.
+      const edge = edgeNear(angle);
+      svgNode.classList.toggle("edge-grab", Boolean(edge));
+      renderEdgeHandle(edge ? edge.index : null);
     }
     showTooltip(evt, slotOffset + idx);
   });
@@ -443,7 +579,13 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   svgNode.addEventListener("pointerup", endPaintLocal);
   svgNode.addEventListener("pointercancel", endPaintLocal);
   window.addEventListener("pointerup", endPaintLocal);
-  svgNode.addEventListener("pointerleave", hideTooltip);
+  svgNode.addEventListener("pointerleave", () => {
+    hideTooltip();
+    if (!dragEdge) {
+      svgNode.classList.remove("edge-grab");
+      renderEdgeHandle(null);
+    }
+  });
 
   return { render, renderSegments, renderNeedle, renderCenter };
 }

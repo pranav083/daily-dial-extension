@@ -320,6 +320,17 @@ body {
 .tick-line { stroke: var(--ink-muted); opacity: 0.5; }
 .tick-label { fill: var(--ink-muted); font-family: var(--font-mono); font-size: 11px; }
 .needle-line { stroke: var(--accent-fill); stroke-width: 2; }
+
+/* The seam between two blocks, shown only while it's grabbable, so the dial
+   stays clean until the cursor is actually somewhere the drag would work. */
+.edge-layer { pointer-events: none; }
+.edge-handle {
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+svg.edge-grab { cursor: ew-resize; }
 .needle-dot { fill: var(--accent-fill); }
 .center-time { fill: var(--ink); font-family: var(--font-mono); font-weight: 700; font-size: 30px; }
 .center-sub {
