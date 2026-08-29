@@ -8,6 +8,18 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.2] — 2026-08-29
+
+### Fixed
+
+- Clicking "Let's start" on the welcome overlay closed it into silence —
+  a dead end right when someone's most likely to need a next step. It now
+  shows a one-line nudge ("Pick a category below, then drag around the
+  ring to paint") — but only when the visible day is still genuinely
+  blank, so replaying the tour later doesn't lecture someone who's
+  clearly already painting. "Skip" and clicking outside stay silent, both
+  meaning "I don't need the help."
+
 ## [1.9.1] — 2026-08-29
 
 ### Changed

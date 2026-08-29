@@ -1561,6 +1561,18 @@ function dismissOnboarding() {
   chrome.storage.local.set({ [ONBOARDING_SEEN_KEY]: true }).catch(reportStorageFailure);
 }
 
+/** "Let's start" closing into silence read as a dead end — it should hand
+ *  off to something. Only nudges when the visible day is still genuinely
+ *  blank, so replaying the tour later (via About) doesn't lecture someone
+ *  who's clearly already painting. Skip and clicking outside stay silent —
+ *  both are "I don't need the help," and get to mean that. */
+function dismissOnboardingAndNudge() {
+  dismissOnboarding();
+  if (!state.slots.some((v) => v !== UNTRACKED)) {
+    toast("Pick a category below, then drag around the ring to paint");
+  }
+}
+
 /* ---------- wiring ---------- */
 
 /* ---------- view switching ---------- */
@@ -1701,7 +1713,7 @@ function wireEvents() {
   });
 
   // ---- onboarding (first run, and replayable from About) ----
-  $("onboarding-start").addEventListener("click", dismissOnboarding);
+  $("onboarding-start").addEventListener("click", dismissOnboardingAndNudge);
   $("onboarding-skip").addEventListener("click", dismissOnboarding);
   $("onboarding-overlay").addEventListener("click", (evt) => {
     if (evt.target === $("onboarding-overlay")) dismissOnboarding();
