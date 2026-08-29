@@ -41,6 +41,7 @@ import {
   slotFromAngle,
   summarizeImport,
   angleAt,
+  buildShareSvgMarkup,
   weekPerCatMinutes,
   weeklyRecap,
   weeklyRecapMessage,
@@ -922,4 +923,36 @@ test("fmtClock switches between 24h and 12h", () => {
   assert.equal(fmtClock(0, "12h"), "12:00am");
   assert.equal(fmtClock(48, "12h"), "12:00pm");
   assert.equal(fmtClock(84, "12h"), "9:00pm");
+});
+
+/* ---------- shareable snapshot ---------- */
+
+test("buildShareSvgMarkup renders one wedge per run and includes the date and score", () => {
+  const slots = paint(paint(blank(), 9, 11, 0), 11, 12, 5); // deep work then distraction
+  const svg = buildShareSvgMarkup(slots, cats, "Friday, August 28");
+  assert.match(svg, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
+  assert.equal((svg.match(/<path /g) ?? []).length, 2, "one wedge per run");
+  assert.match(svg, />Friday, August 28</);
+  assert.match(svg, />Deep Work led at 2h</);
+});
+
+test("buildShareSvgMarkup shows an em dash and no wedges for an untouched day", () => {
+  const svg = buildShareSvgMarkup(blank(), cats, "Today");
+  assert.equal((svg.match(/<path /g) ?? []).length, 0);
+  assert.match(svg, />—</, "no-data score renders as an em dash, not 0");
+  assert.match(svg, />Nothing logged yet</);
+});
+
+test("buildShareSvgMarkup escapes a category name that contains markup", () => {
+  const spicy = cats.map((c, i) => (i === 0 ? { ...c, name: "R&D <script>" } : c));
+  const svg = buildShareSvgMarkup(paint(blank(), 9, 10, 0), spicy, "Today");
+  assert.match(svg, /R&amp;D &lt;script&gt;/);
+  assert.doesNotMatch(svg, /<script>/);
+});
+
+test("buildShareSvgMarkup only includes the streak line when asked and streak is running", () => {
+  const slots = paint(blank(), 9, 10, 0);
+  assert.doesNotMatch(buildShareSvgMarkup(slots, cats, "Today"), /day streak/);
+  assert.doesNotMatch(buildShareSvgMarkup(slots, cats, "Today", { current: 0 }), /day streak/);
+  assert.match(buildShareSvgMarkup(slots, cats, "Today", { current: 5 }), />🔥 5 day streak</);
 });

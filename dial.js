@@ -24,6 +24,7 @@ import {
   buildBackup,
   buildCsv,
   buildInsight,
+  buildShareSvgMarkup,
   computeRuns,
   computeStats,
   computeStreak,
@@ -903,6 +904,65 @@ function copyYesterday() {
   toast("Copied yesterday — ⌘Z to undo");
 }
 
+/* ---------- share as image ---------- */
+
+/** Loads an SVG string through an <img> and draws it to an off-screen canvas.
+ *  A blob: URL is same-origin to this page, so the canvas never taints —
+ *  toBlob() works without a CORS workaround. `scale` renders at a higher
+ *  pixel density than the CSS size so the PNG stays sharp. */
+function rasterizeSvgToPng(svgMarkup, width, height, scale = 2) {
+  return new Promise((resolve, reject) => {
+    const svgUrl = URL.createObjectURL(new Blob([svgMarkup], { type: "image/svg+xml" }));
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(scale, scale);
+      ctx.drawImage(img, 0, 0, width, height);
+      URL.revokeObjectURL(svgUrl);
+      canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("canvas.toBlob returned null"))), "image/png");
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(svgUrl);
+      reject(new Error("could not load the SVG snapshot as an image"));
+    };
+    img.src = svgUrl;
+  });
+}
+
+async function shareAsImage() {
+  const key = dateKey(state.viewDate);
+  const dateLabel = new Intl.DateTimeFormat(undefined, {
+    weekday: "long", month: "long", day: "numeric",
+  }).format(state.viewDate);
+  const streak = isToday(state.viewDate) ? computeStreak(days, new Date()) : null;
+  const svgMarkup = buildShareSvgMarkup(state.slots, categories, dateLabel, streak);
+
+  let blob;
+  try {
+    blob = await rasterizeSvgToPng(svgMarkup, 1000, 560);
+  } catch (err) {
+    console.error("Daily Dial: could not render a share image", err);
+    toast("Couldn't create the image.");
+    return;
+  }
+
+  // Not routed through navigator.share(): on desktop Chrome it's frequently
+  // registered with zero real targets, and awaiting it consumes this click's
+  // transient user-activation — by the time that rejects, the fallback
+  // a.click() download below silently no-ops (no error, nothing saved). A
+  // plain download always works and is exactly what Export CSV/JSON already do.
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `daily-dial-${key}.png`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  toast("Saved image");
+}
+
 /* ---------- typed entry ---------- */
 
 function submitTypedEntry(evt) {
@@ -1379,6 +1439,7 @@ function wireEvents() {
   });
 
   $("copy-yesterday").addEventListener("click", copyYesterday);
+  $("share-image").addEventListener("click", shareAsImage);
   $("typed-entry-form").addEventListener("submit", submitTypedEntry);
 
   // Two-step confirm rather than a modal — destructive, but undoable.

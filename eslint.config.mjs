@@ -21,6 +21,8 @@ const browserGlobals = {
   HTMLTextAreaElement: "readonly",
   HTMLInputElement: "readonly",
   FileReader: "readonly",
+  Image: "readonly",
+  File: "readonly",
 };
 
 export default [

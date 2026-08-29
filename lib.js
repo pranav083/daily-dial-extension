@@ -942,3 +942,107 @@ export function mostRecentWeekStart(weekStart, now = new Date()) {
   d.setDate(d.getDate() - diff);
   return d;
 }
+
+/* ---------- shareable snapshot ---------- */
+
+/** Fixed hex values for the "Share as image" card. Deliberately not the
+ *  live CSS custom properties: the rendered SVG is rasterized outside the
+ *  page's cascade (via an <img> src), so var(--cat-0) etc. wouldn't resolve
+ *  there. Matches this project's dark theme, which is also what every store
+ *  screenshot uses, so a share always looks the same regardless of the
+ *  sharer's own theme setting. */
+const SHARE_CAT_HEX = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300"];
+const SHARE_TONE_HEX = { good: "#0ca30c", warning: "#fab219", critical: "#d03b3b", muted: "#7c8590" };
+
+const escapeXml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/**
+ * A self-contained 1000×560 SVG string — a full day's dial plus its score,
+ * for the "Share as image" button. Pure and DOM-free like the rest of this
+ * file, so the whole layout is unit-testable; dial.js only has to rasterize
+ * the string it gets back.
+ * @param {number[]} slots
+ * @param {Array} categories
+ * @param {string} dateLabel already-formatted, e.g. "Friday, August 28"
+ * @param {{current:number}|null} [streak] omit to leave the streak line out
+ *   entirely — e.g. when sharing a day other than today.
+ */
+export function buildShareSvgMarkup(slots, categories, dateLabel, streak = null) {
+  const W = 1000;
+  const H = 560;
+  const stats = computeStats(slots, categories);
+  const bucket = scoreBucket(stats.score);
+  const toneHex = SHARE_TONE_HEX[bucket.tone];
+  const scoreText = stats.score === null ? "—" : `${stats.score > 0 ? "+" : ""}${stats.score}`;
+
+  const wedges = computeRuns(slots)
+    .map((run) => {
+      const a0 = run.start * (360 / SLOTS);
+      const a1 = run.end * (360 / SLOTS);
+      const gap = Math.min(0.55, (a1 - a0) * 0.3);
+      const fill = SHARE_CAT_HEX[run.cat] ?? "#7c8590";
+      return `<path d="${wedgePath(R_IN, R_OUT, a0 + gap, a1 - gap)}" fill="${fill}"/>`;
+    })
+    .join("");
+
+  const ticks = [];
+  for (let h = 0; h < 24; h++) {
+    const angle = h * 15;
+    const major = h % 3 === 0;
+    const len = major ? 13 : 6;
+    const p1 = polar(R_OUT + 3, angle);
+    const p2 = polar(R_OUT + 3 + len, angle);
+    ticks.push(
+      `<line x1="${p1.x.toFixed(2)}" y1="${p1.y.toFixed(2)}" x2="${p2.x.toFixed(2)}" y2="${p2.y.toFixed(2)}" stroke="#7c8590" stroke-opacity="0.5"/>`
+    );
+    if (major) {
+      const lp = polar(R_OUT + 3 + len + 12, angle);
+      ticks.push(
+        `<text x="${lp.x.toFixed(2)}" y="${(lp.y + 4).toFixed(2)}" text-anchor="middle" font-family="monospace" font-size="11" fill="#7c8590">${pad2(h)}</text>`
+      );
+    }
+  }
+
+  const ranked = categories
+    .map((c, i) => ({ name: c.name, min: stats.perCat[i] * SLOT_MIN }))
+    .filter((r) => r.min > 0)
+    .sort((a, b) => b.min - a.min);
+
+  const rightX = 560;
+  let y = 90;
+  const text = (x, size, weight, fill, str, family = "ui-sans-serif,system-ui,sans-serif") =>
+    `<text x="${x}" y="${y}" font-family="${family}" font-weight="${weight}" font-size="${size}" fill="${fill}">${escapeXml(str)}</text>`;
+
+  const parts = [text(rightX, 30, 800, "#e7ebee", dateLabel)];
+  y += 64;
+  parts.push(text(rightX, 54, 700, toneHex, scoreText, "monospace"));
+  parts.push(
+    `<text x="${rightX + 120}" y="${y - 22}" font-family="ui-sans-serif,system-ui,sans-serif" font-size="14" fill="#aeb6bf">score</text>`
+  );
+  parts.push(
+    `<text x="${rightX + 120}" y="${y}" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" font-size="15" fill="${toneHex}">${escapeXml(bucket.label)}</text>`
+  );
+  y += 46;
+  if (stats.trackedMin === 0) {
+    parts.push(text(rightX, 16, 400, "#e7ebee", "Nothing logged yet"));
+  } else {
+    parts.push(text(rightX, 16, 400, "#e7ebee", `${fmtDuration(stats.trackedMin)} tracked · ${stats.productivePct}% productive`));
+    y += 30;
+    parts.push(text(rightX, 16, 400, "#e7ebee", `${ranked[0].name} led at ${fmtDuration(ranked[0].min)}`));
+  }
+  if (streak && streak.current > 0) {
+    y += 30;
+    parts.push(text(rightX, 16, 400, "#e7ebee", `🔥 ${streak.current} day streak`));
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <rect width="${W}" height="${H}" rx="20" fill="#171c24"/>
+    <g transform="translate(50,50)">
+      <circle cx="230" cy="230" r="154" fill="none" stroke="rgba(231,235,238,0.08)" stroke-width="72"/>
+      ${wedges}
+      ${ticks.join("")}
+    </g>
+    ${parts.join("\n    ")}
+    <text x="${rightX}" y="${H - 34}" font-family="monospace" font-size="12" fill="#7c8590">Daily Dial · github.com/pranav083/daily-dial-extension</text>
+  </svg>`;
+}

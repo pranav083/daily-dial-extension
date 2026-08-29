@@ -8,6 +8,19 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.6.0] — 2026-08-28
+
+### Added
+
+- **Share as image**: a "Share as image" button next to Copy yesterday
+  renders the current day — dial, score, top category, and streak — as a
+  1000×560 PNG and saves it. Nothing is uploaded anywhere; the image is
+  built and rasterized entirely on-device, the same way CSV/JSON export
+  already work, so you can attach it to a message, email, or post however
+  you like. Always renders the fixed dark-theme palette, regardless of your
+  own theme setting, so a shared image looks the same for everyone who
+  receives it.
+
 ## [1.5.0] — 2026-08-28
 
 ### Added
