@@ -31,7 +31,9 @@ import {
   driveDownloadUrl,
   driveListUrl,
   driveParseListResponse,
+  driveParseUserInfoResponse,
   driveUploadUrl,
+  driveUserInfoUrl,
 } from "./lib.js";
 
 /** From the "Web application"-type OAuth client — see docs/GOOGLE_DRIVE_SETUP.md.
@@ -39,7 +41,12 @@ import {
  *  any public OAuth client id is; the redirect-URI allowlist on Google's side
  *  is what actually gates who can use it. */
 const CLIENT_ID = "752491211125-e7flupmel0jlpds3cdvo78rjfldrdr9n.apps.googleusercontent.com";
-const SCOPE = "https://www.googleapis.com/auth/drive.appdata";
+// `userinfo.email` alongside the Drive scope: the narrowest scope Google
+// offers for "which account is this" — the address only, never name, photo,
+// or the rest of the profile. Existing users see one extra consent line
+// ("See your primary Google Account email address") the next time they
+// connect, since a token issued under the old scope alone won't cover it.
+const SCOPE = "https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/userinfo.email";
 
 /** Held only in memory — cleared on every service worker/page restart, which
  *  just means the next call re-authenticates. That's silent and instant as
@@ -162,4 +169,21 @@ export async function driveDownloadBackup(token, fileId) {
  *  UI at all. This is the only way a user can actually remove it. */
 export async function driveDeleteBackup(token, fileId) {
   await driveFetch(driveDeleteUrl(fileId), token, { method: "DELETE" });
+}
+
+/**
+ * The connected account's email, or null if it can't be determined — a
+ * token issued before this scope existed, or any request failure. Callers
+ * treat this as best-effort: not knowing the email never blocks backup,
+ * restore, disconnect, or delete, all of which worked before this existed
+ * and don't need it now.
+ */
+export async function driveFetchAccountEmail(token) {
+  try {
+    const res = await fetch(driveUserInfoUrl(), { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) return null;
+    return driveParseUserInfoResponse(await res.json());
+  } catch {
+    return null;
+  }
 }

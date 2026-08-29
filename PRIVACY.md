@@ -25,10 +25,11 @@ your Chrome profile on your own device:
 - The optional one-line note you may write for a day
 - Your category names, weights, and which ones are hidden
 - Your reminder preferences (on/off and two times of day)
-- If you've used Google Drive backup: the id of your backup file and when you
-  last synced, so the extension knows where to write next time. That's
-  bookkeeping about the connection, not your data itself — your data is
-  covered next.
+- If you've used Google Drive backup: the id of your backup file, its size,
+  when you last synced, and the email address of the connected Google
+  account — so the extension knows where to write next time, and so it can
+  show you which account that is. That's bookkeeping about the connection,
+  not your data itself — your data is covered next.
 
 That is the complete list of what's stored locally. Nothing else is recorded.
 
@@ -47,9 +48,15 @@ Off by default. If you turn it on, in Settings → Data:
 - "Restore from Google Drive" downloads that file and opens the same
   merge/replace confirmation as restoring from a local file — nothing is
   applied without you choosing which.
-- The permission requested (`https://www.googleapis.com/auth/drive.appdata`)
-  cannot see, list, or touch any other file in your Drive. It only knows
-  about the one file this extension itself created.
+- The permissions requested — `https://www.googleapis.com/auth/drive.appdata`
+  and `https://www.googleapis.com/auth/userinfo.email` — cannot see, list, or
+  touch any other file in your Drive, and cannot read your name, photo, or
+  anything else about the account. The second scope exists for exactly one
+  reason: showing you, in Settings → Data, which Google account is currently
+  connected — otherwise there'd be no way to tell "am I about to back up to
+  the account I think I am." It's read once per connection, shown on that
+  same screen, and never leaves your device — there's still no server of
+  ours for it to go to.
 
 This is the only feature in Daily Dial that sends data anywhere. It's
 initiated by you, goes to an account you control, and stops the moment you
@@ -62,7 +69,10 @@ copy**, the same as it would for any file you saved there yourself.
 
 Whether or not you use Drive backup:
 
-- No personal information — no name, email address, or account with us of any kind
+- No personal information beyond one exception: connecting Google Drive backup
+  reads and displays the connected account's email address, solely so you can
+  see which account it is (above). No name, photo, or other profile data is
+  ever requested. There is still no account with us of any kind.
 - No browsing history, page contents, URLs, or tabs
 - No analytics, telemetry, usage statistics, or crash reports
 - No advertising or tracking identifiers

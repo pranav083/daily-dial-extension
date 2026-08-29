@@ -37,6 +37,30 @@ export const SAMPLE_DAY_KEYS_KEY = "sampleDayKeys";
  *  JSON backup onto a different device or account. */
 export const DRIVE_FILE_ID_KEY = "driveBackupFileId";
 export const DRIVE_LAST_SYNC_KEY = "driveLastSyncAt";
+export const DRIVE_BACKUP_SIZE_KEY = "driveBackupSizeBytes";
+export const DRIVE_ACCOUNT_EMAIL_KEY = "driveAccountEmail";
+
+/** Google's userinfo endpoint, scoped down to just the one field this app
+ *  ever reads — asking for the whole profile back would defeat the point of
+ *  requesting the narrow `userinfo.email` scope in the first place. */
+export function driveUserInfoUrl() {
+  return "https://www.googleapis.com/oauth2/v2/userinfo?fields=email";
+}
+
+/** @returns {string|null} the account email, or null if the response didn't
+ *  have one — e.g. a token that predates this scope being requested. */
+export function driveParseUserInfoResponse(json) {
+  return typeof json?.email === "string" && json.email ? json.email : null;
+}
+
+/** "42 KB" / "1.3 MB" — matches how a file manager would show it, since this
+ *  is standing in for "how much of your Drive quota does this use". */
+export function fmtBytes(bytes) {
+  if (!Number.isFinite(bytes) || bytes < 0) return null;
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 /** Bumped when the shape of a backup file changes in a way older code can't
  *  read. Stored alongside the data and stamped into every export. */

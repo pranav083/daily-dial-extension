@@ -8,6 +8,31 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.14.0] — 2026-08-29
+
+### Added
+
+- **Settings → Data now shows which Google account is connected**, and how
+  much space the backup is using. Previously there was no way to tell
+  "am I about to back up to the account I think I am" once connected.
+  Showing the account required one new, narrow OAuth scope
+  (`userinfo.email` — the address only, nothing else about the profile);
+  read once per connection, shown locally, and — like everything else Drive
+  backup touches — never included in an export or a backup file itself.
+  PRIVACY.md and SECURITY.md describe exactly what this does and doesn't
+  do. Existing users will see one extra line in Google's consent screen the
+  next time they connect.
+- **The Store submission doc reflects the store-facing name decided earlier
+  this session** ("Daily Dial – Time Tracker & Focus"), which had been
+  decided but never actually written down.
+
+### Changed
+
+- **"Welcome tour" and "Demo mode" are one section in Settings → About**,
+  not two. Both answered the same underlying question — "show me what this
+  looks like" — and splitting them across two headings just meant reading
+  twice to find the one you wanted.
+
 ## [1.13.0] — 2026-08-29
 
 ### Added

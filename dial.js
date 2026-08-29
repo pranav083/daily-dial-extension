@@ -13,6 +13,9 @@ import {
   DAY_PREFIX,
   DRIVE_FILE_ID_KEY,
   DRIVE_LAST_SYNC_KEY,
+  DRIVE_BACKUP_SIZE_KEY,
+  DRIVE_ACCOUNT_EMAIL_KEY,
+  fmtBytes,
   ONBOARDING_SEEN_KEY,
   R_IN,
   R_OUT,
@@ -75,6 +78,7 @@ import {
   driveDeleteBackup,
   driveDisconnect,
   driveDownloadBackup,
+  driveFetchAccountEmail,
   driveFindBackupFile,
   driveUploadBackup,
 } from "./drive.js";
@@ -89,6 +93,8 @@ let settings = normalizeSettings(null);
 /** Device-local Google Drive connection bookkeeping — see DRIVE_FILE_ID_KEY. */
 let driveFileId = null;
 let driveLastSyncAt = null;
+let driveBackupSizeBytes = null;
+let driveAccountEmail = null;
 let onboardingSeen = false;
 /** Exact date keys the currently-loaded sample data (if any) wrote — see
  *  SAMPLE_DAY_KEYS_KEY. Empty when sample data has never been loaded, or has
@@ -117,6 +123,8 @@ async function loadAll() {
   settings = normalizeSettings(all[SETTINGS_KEY]);
   driveFileId = typeof all[DRIVE_FILE_ID_KEY] === "string" ? all[DRIVE_FILE_ID_KEY] : null;
   driveLastSyncAt = Number.isFinite(all[DRIVE_LAST_SYNC_KEY]) ? all[DRIVE_LAST_SYNC_KEY] : null;
+  driveBackupSizeBytes = Number.isFinite(all[DRIVE_BACKUP_SIZE_KEY]) ? all[DRIVE_BACKUP_SIZE_KEY] : null;
+  driveAccountEmail = typeof all[DRIVE_ACCOUNT_EMAIL_KEY] === "string" ? all[DRIVE_ACCOUNT_EMAIL_KEY] : null;
   // Anyone with logged history already predates this feature entirely —
   // never show a first-run "welcome" to someone mid-way through real use,
   // even though the flag itself was never explicitly set for them.
@@ -2285,9 +2293,23 @@ function clearSampleData() {
 
 /* ---------- google drive backup ---------- */
 
+/** Best-effort: never throws, never blocks the caller. A stale or missing
+ *  email is corrected the next time any Drive action successfully connects. */
+async function refreshDriveAccountEmail(token) {
+  const email = await driveFetchAccountEmail(token);
+  if (email && email !== driveAccountEmail) {
+    driveAccountEmail = email;
+    saveLocal({ [DRIVE_ACCOUNT_EMAIL_KEY]: email }).catch(reportStorageFailure);
+    renderDriveStatus();
+  }
+}
+
 function renderDriveStatus() {
+  const size = fmtBytes(driveBackupSizeBytes);
+  $("drive-account").textContent = driveAccountEmail ? `Connected as ${driveAccountEmail}` : "";
+  $("drive-account").hidden = !driveAccountEmail;
   $("drive-status").textContent = driveLastSyncAt
-    ? `Last synced to Google Drive: ${new Date(driveLastSyncAt).toLocaleString()}`
+    ? `Last synced to Google Drive: ${new Date(driveLastSyncAt).toLocaleString()}` + (size ? ` · ${size}` : "")
     : driveFileId
       ? "Connected to Google Drive. Restored from a backup; nothing uploaded from here yet."
       : "Not backed up to Google Drive yet.";
@@ -2319,6 +2341,7 @@ async function driveBackupNow() {
   toast("Connecting to Google Drive…");
   try {
     const token = await driveConnect();
+    refreshDriveAccountEmail(token); // fire-and-forget; the backup doesn't wait on it
     const existing = driveFileId ? { id: driveFileId } : await driveFindBackupFile(token);
     // Demo days are excluded here too: a Drive backup taken during demo mode
     // would otherwise restore fabricated history as if it were the user's.
@@ -2328,10 +2351,17 @@ async function driveBackupNow() {
       settings,
       chrome.runtime.getManifest().version
     );
-    driveFileId = await driveUploadBackup(token, existing?.id ?? null, JSON.stringify(backup));
+    const backupText = JSON.stringify(backup);
+    driveFileId = await driveUploadBackup(token, existing?.id ?? null, backupText);
     driveLastSyncAt = Date.now();
-    await saveLocal({ [DRIVE_FILE_ID_KEY]: driveFileId, [DRIVE_LAST_SYNC_KEY]: driveLastSyncAt })
-      .catch(reportStorageFailure);
+    // The exact byte count of what was just uploaded — no extra API round
+    // trip, no broader Drive scope, just measuring what this tab already sent.
+    driveBackupSizeBytes = new Blob([backupText]).size;
+    await saveLocal({
+      [DRIVE_FILE_ID_KEY]: driveFileId,
+      [DRIVE_LAST_SYNC_KEY]: driveLastSyncAt,
+      [DRIVE_BACKUP_SIZE_KEY]: driveBackupSizeBytes,
+    }).catch(reportStorageFailure);
     renderDriveStatus();
     toast("Backed up to Google Drive");
   } catch (err) {
@@ -2348,6 +2378,7 @@ async function driveRestore() {
   toast("Checking Google Drive…");
   try {
     const token = await driveConnect();
+    refreshDriveAccountEmail(token);
     const existing = await driveFindBackupFile(token);
     if (!existing) {
       toast("No Daily Dial backup found in this Google account.");
@@ -2381,7 +2412,9 @@ async function driveDisconnectClick() {
   await driveDisconnect();
   driveFileId = null;
   driveLastSyncAt = null;
-  removeLocal([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY]).catch(reportStorageFailure);
+  driveBackupSizeBytes = null;
+  driveAccountEmail = null;
+  removeLocal([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY, DRIVE_BACKUP_SIZE_KEY, DRIVE_ACCOUNT_EMAIL_KEY]).catch(reportStorageFailure);
   renderDriveStatus();
   toast("Disconnected from Google Drive");
 }
@@ -2401,7 +2434,9 @@ async function driveDeleteBackupClick() {
     await driveDeleteBackup(token, existing.id);
     driveFileId = null;
     driveLastSyncAt = null;
-    removeLocal([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY]).catch(reportStorageFailure);
+    driveBackupSizeBytes = null;
+    driveAccountEmail = null;
+    removeLocal([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY, DRIVE_BACKUP_SIZE_KEY, DRIVE_ACCOUNT_EMAIL_KEY]).catch(reportStorageFailure);
     renderDriveStatus();
     toast("Deleted your Google Drive backup");
   } catch (err) {

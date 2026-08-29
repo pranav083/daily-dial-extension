@@ -50,6 +50,9 @@ import {
   driveCreateMultipartBody,
   driveDeleteUrl,
   driveDownloadUrl,
+  driveUserInfoUrl,
+  driveParseUserInfoResponse,
+  fmtBytes,
   driveListUrl,
   driveParseListResponse,
   driveUploadUrl,
@@ -1280,4 +1283,28 @@ test("the weekly recap message ends by asking what to adjust", () => {
   const empty = weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24)));
   assert.match(empty, /Nothing logged/);
   assert.doesNotMatch(empty, /intentions/, "no intention count when there were none");
+});
+
+/* ---------- Drive account email ---------- */
+
+test("driveUserInfoUrl asks for only the email field", () => {
+  assert.match(driveUserInfoUrl(), /^https:\/\/www\.googleapis\.com\//);
+  assert.match(driveUserInfoUrl(), /[?&]fields=email\b/);
+});
+
+test("driveParseUserInfoResponse extracts the email, or null if absent", () => {
+  assert.equal(driveParseUserInfoResponse({ email: "a@example.com" }), "a@example.com");
+  assert.equal(driveParseUserInfoResponse({}), null, "a token issued before this scope existed");
+  assert.equal(driveParseUserInfoResponse({ email: "" }), null);
+  assert.equal(driveParseUserInfoResponse(null), null);
+});
+
+/* ---------- byte formatting ---------- */
+
+test("fmtBytes scales to the smallest sensible unit", () => {
+  assert.equal(fmtBytes(512), "512 B");
+  assert.equal(fmtBytes(2048), "2.0 KB");
+  assert.equal(fmtBytes(1_500_000), "1.4 MB");
+  assert.equal(fmtBytes(null), null);
+  assert.equal(fmtBytes(-1), null);
 });

@@ -478,6 +478,7 @@
             <button class="ghost-btn" id="drive-restore"
                     title="Downloads your most recent Google Drive backup and opens the same merge/replace confirmation as a file import.">Restore from Google Drive</button>
           </div>
+          <p class="editor-note" id="drive-account" hidden></p>
           <p class="editor-note" id="drive-status">Not backed up to Google Drive yet.</p>
           <div class="footer-actions">
             <button class="ghost-btn danger" id="drive-disconnect" hidden
@@ -548,18 +549,15 @@
             <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
           </p>
 
-          <p class="section-label" style="margin-top:16px;">Welcome tour</p>
-          <div class="footer-actions">
-            <button class="ghost-btn" id="replay-onboarding"
-                    title="Shows the same three-card welcome screen you saw (or would have seen) on first open">Replay welcome tour</button>
-          </div>
-          <p class="editor-note">
-            The three-card intro from first open. Reading it again changes nothing about your data.
-          </p>
-
-          <p class="section-label" style="margin-top:16px;">Demo mode</p>
+          <!-- One section, not two: the welcome tour and the sample data
+               were separate headings for the same underlying question —
+               "show me what this looks like" — and splitting them just
+               made someone read twice to find the one they wanted. -->
+          <p class="section-label" style="margin-top:16px;">Demo &amp; tour</p>
           <div id="sample-data-block" style="margin-top:8px;">
             <div class="footer-actions">
+              <button class="ghost-btn" id="replay-onboarding"
+                      title="Shows the same three-card welcome screen you saw (or would have seen) on first open">Replay welcome tour</button>
               <button class="ghost-btn" id="load-sample-data"
                       title="Fills three weeks of realistic (fake) days into dates you haven't logged, so History, streaks, and goals have something to show.">Load sample data</button>
               <button class="ghost-btn danger" id="clear-sample-data" hidden

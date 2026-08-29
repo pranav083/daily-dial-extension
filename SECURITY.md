@@ -44,14 +44,18 @@ Optional and off by default. When you turn it on:
   sees or handles your Google password, only a short-lived access token,
   held in memory only (never written to disk) and cleared on every service
   worker/page restart.
-- The OAuth scope requested is `drive.appdata` — scoped to a single
-  per-app storage folder that this extension cannot list or browse beyond the
-  one file it creates. This token cannot read, modify, or even see any other
-  file in your Drive.
+- The OAuth scopes requested are `drive.appdata` and `userinfo.email` —
+  nothing broader. `drive.appdata` is scoped to a single per-app storage
+  folder that this extension cannot list or browse beyond the one file it
+  creates; this token cannot read, modify, or even see any other file in
+  your Drive. `userinfo.email` grants exactly one thing back: the account's
+  email address, read once per connection and shown locally in
+  Settings → Data so you can see which account is connected. It cannot read
+  the account's name, photo, or anything else.
 - "Disconnect" revokes that token with Google and clears the extension's own
-  in-memory copy of it. "Delete Drive backup" separately removes the file
-  itself — the two are independent since revoking access doesn't delete
-  `appDataFolder` content.
+  in-memory copy of it, along with the cached email address. "Delete Drive
+  backup" separately removes the file itself — the two are independent
+  since revoking access doesn't delete `appDataFolder` content.
 - All requests go to `www.googleapis.com` and `accounts.google.com` over
   HTTPS with a bearer token; no other destination is ever contacted.
 
@@ -77,8 +81,12 @@ Worth reporting:
   (the insight line and the share-image builder are the only places the
   extension writes markup from stored data; every interpolated value should
   be a number, a formatted date, or an escaped category/reflection string)
-- A Drive API call that requests a broader scope than `drive.appdata`, or
-  that could plausibly touch a file this extension didn't create itself
+- A Drive API call that requests a scope broader than `drive.appdata` plus
+  `userinfo.email`, or that could plausibly touch a file this extension
+  didn't create itself, or that reads anything from the account beyond the
+  email address
+- The email address being sent anywhere other than local display in
+  Settings → Data, or being included in an export or a Drive backup
 - The extension requesting a permission not listed above
 
 ## Things that are not vulnerabilities
