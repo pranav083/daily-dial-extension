@@ -8,6 +8,21 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.7.1] — 2026-08-29
+
+### Fixed
+
+- Wired in a real Google OAuth Client ID for Drive backup, in its own
+  dedicated Google Cloud project (kept separate from other, unrelated
+  projects so the consent screen correctly identifies itself as "Daily
+  Dial" rather than borrowing another app's branding). The consent screen
+  is registered under Testing status, so — until a future OAuth
+  verification pass — Drive backup only works for Google accounts
+  explicitly added as test users, not the general public who may have
+  already installed the extension. Everyone else's "Back up to Google
+  Drive" click fails the same way it did with the placeholder client id, no
+  worse.
+
 ## [1.7.0] — 2026-08-29
 
 ### Added
