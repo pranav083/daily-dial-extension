@@ -1565,16 +1565,23 @@ function dismissOnboarding() {
   chrome.storage.local.set({ [ONBOARDING_SEEN_KEY]: true }).catch(reportStorageFailure);
 }
 
-/** "Let's start" closing into silence read as a dead end — it should hand
- *  off to something. Only nudges when the visible day is still genuinely
- *  blank, so replaying the tour later (via About) doesn't lecture someone
- *  who's clearly already painting. Skip and clicking outside stay silent —
- *  both are "I don't need the help," and get to mean that. */
+/** "Let's start" closing into total silence reads as a dead end, whether
+ *  or not there was a reason to skip the "go paint" nudge specifically —
+ *  a click should never produce zero visible feedback. So this always
+ *  toasts something; only the message adapts to whether *any* real data
+ *  exists yet (same criterion the sample-data link uses) — not just
+ *  whether today specifically is blank, which would wrongly greet someone
+ *  who's used this for weeks but just hasn't painted yet today as if
+ *  they'd never opened it before. Skip and clicking outside stay silent —
+ *  both already mean "I don't need the help," and get to mean that. */
 function dismissOnboardingAndNudge() {
   dismissOnboarding();
-  if (!state.slots.some((v) => v !== UNTRACKED)) {
-    toast("Pick a category below, then drag around the ring to paint");
-  }
+  const neverUsed = days.size === 0;
+  toast(
+    neverUsed
+      ? "Pick a category below, then drag around the ring to paint"
+      : "You're set — Settings (☰, top right) has categories, reminders, goals, and backup"
+  );
 }
 
 /* ---------- wiring ---------- */

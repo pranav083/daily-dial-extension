@@ -889,7 +889,21 @@ select {
   color: var(--ink-muted);
   margin: 0 0 14px;
 }
-.onboarding-footer { display: flex; justify-content: flex-end; gap: 10px; }
+/* Sticky, not static: .onboarding-panel scrolls internally on short
+   viewports, and a static footer could scroll out of view — leaving
+   "Let's start" unreachable and clicks landing on the backdrop instead,
+   which silently closes the dialog with no visible effect. */
+.onboarding-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  position: sticky;
+  bottom: -18px;
+  margin: 0 -26px -18px;
+  padding: 12px 26px 18px;
+  background: var(--panel);
+  border-top: 1px solid var(--border-soft);
+}
 .primary-btn {
   border: none;
   background: var(--accent-fill);

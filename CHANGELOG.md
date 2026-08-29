@@ -8,6 +8,26 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.4] — 2026-08-29
+
+### Fixed
+
+- **"Let's start" on the welcome overlay could silently do nothing.** Two
+  compounding bugs, found via a full click-through re-audit rather than
+  just re-testing the one reported button: (1) the overlay's footer sat in
+  the same scrolling block as its content, so on any browser window shorter
+  than ~780px tall, "Let's start" could render past the panel's clipped
+  visible area — a click there landed on the backdrop instead and just
+  closed the dialog, with no error and no toast. The footer is now sticky
+  to the bottom of the panel, so it's always in reach regardless of scroll
+  position or window height. (2) Even when the click did land correctly,
+  the confirmation toast used that day's slots (not any day's data) to
+  decide whether to speak up, and stayed silent whenever today happened to
+  be blank — which is common for a returning user replaying the tour from
+  Settings on a fresh day. It now always toasts, and checks the same
+  "has this person ever used the extension" signal the sample-data link
+  itself uses, so the message is consistent everywhere it's asked.
+
 ## [1.9.3] — 2026-08-29
 
 ### Added
