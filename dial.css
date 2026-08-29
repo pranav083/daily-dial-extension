@@ -1547,3 +1547,41 @@ select {
   cursor: pointer;
 }
 .typed-entry select:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+
+/* ---- weekly review: patterns worth noticing ---- */
+.review-card[hidden] { display: none; }
+.review-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.review-head .section-label { margin-bottom: 12px; }
+.review-note { font-size: 0.74rem; color: var(--ink-muted); }
+
+.review-list { display: flex; flex-direction: column; gap: 12px; }
+.review-item { border-left: 2px solid var(--accent); padding-left: 12px; }
+.review-headline { margin: 0; font-size: 0.9rem; font-weight: 700; color: var(--ink); }
+.review-detail { margin: 3px 0 0; font-size: 0.83rem; color: var(--ink-2); }
+.review-actions { display: flex; align-items: center; gap: 10px; margin-top: 7px; flex-wrap: wrap; }
+
+/* Collapsed by default and opened only on request — the whole point is that
+   the advice is asked for rather than delivered. */
+.review-suggest { margin-top: 9px; }
+.review-suggest[hidden] { display: none; }
+.review-lead { margin: 0 0 7px; font-size: 0.82rem; color: var(--ink-2); font-style: italic; }
+.review-approaches { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.review-approach { font-size: 0.82rem; color: var(--ink-2); }
+.review-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+.review-tool {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.76rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.review-tool:hover { border-color: var(--accent); }
+.review-tool:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.review-tool .platforms { color: var(--ink-muted); font-size: 0.7rem; }
+.review-disclaimer { margin: 9px 0 0; font-size: 0.72rem; color: var(--ink-muted); }

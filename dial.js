@@ -8,6 +8,7 @@
  * boot; reads hit that map, writes update it and persist in the background.
  */
 
+import { SILENCED_KEY } from "./suggestions.js";
 import {
   CATEGORIES_KEY,
   DAY_PREFIX,
@@ -97,6 +98,7 @@ let driveFileId = null;
 let driveLastSyncAt = null;
 let driveBackupSizeBytes = null;
 let driveAccountEmail = null;
+let silencedObservations = [];
 let onboardingSeen = false;
 /** Exact date keys the currently-loaded sample data (if any) wrote — see
  *  SAMPLE_DAY_KEYS_KEY. Empty when sample data has never been loaded, or has
@@ -127,6 +129,7 @@ async function loadAll() {
   driveLastSyncAt = Number.isFinite(all[DRIVE_LAST_SYNC_KEY]) ? all[DRIVE_LAST_SYNC_KEY] : null;
   driveBackupSizeBytes = Number.isFinite(all[DRIVE_BACKUP_SIZE_KEY]) ? all[DRIVE_BACKUP_SIZE_KEY] : null;
   driveAccountEmail = typeof all[DRIVE_ACCOUNT_EMAIL_KEY] === "string" ? all[DRIVE_ACCOUNT_EMAIL_KEY] : null;
+  silencedObservations = Array.isArray(all[SILENCED_KEY]) ? all[SILENCED_KEY].filter((v) => typeof v === "string") : [];
   // Anyone with logged history already predates this feature entirely —
   // never show a first-run "welcome" to someone mid-way through real use,
   // even though the flag itself was never explicitly set for them.
@@ -2665,7 +2668,16 @@ export function registerView(name, render) {
 
 /** Read-only snapshot for other views (History, Applications) to render
  *  from, instead of each re-reading chrome.storage itself. */
-export const getAppData = () => ({ days, categories, settings });
+export const getAppData = () => ({ days, categories, settings, silenced: silencedObservations });
+
+/** Silencing is permanent by design: "dismiss for now" would just mean the
+ *  same observation returning every week to someone who has already decided
+ *  their answer, which is the definition of nagging. */
+export function silenceObservation(id) {
+  if (silencedObservations.includes(id)) return;
+  silencedObservations = [...silencedObservations, id];
+  saveLocal({ [SILENCED_KEY]: silencedObservations }).catch(reportStorageFailure);
+}
 
 let currentView = "day";
 

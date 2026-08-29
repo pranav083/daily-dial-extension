@@ -98,10 +98,39 @@ plenty.
 
 ## Suggesting features
 
-The project has a deliberately narrow scope: log a day quickly, and see whether
-the time went where you meant it to. Things that make that faster or clearer are
-very welcome. Things that make it a general-purpose calendar, a project tracker,
-or a cloud service are probably a different project.
+**The job:** help you see where your time actually went — including the parts no
+software can see — in your own words, and decide what to change.
+
+**Not the job:** blocking, enforcing, capturing automatically, managing tasks,
+being a calendar, being a coach.
+
+That second list isn't modesty, it's arithmetic. Blocking is solved by
+SelfControl, Cold Turkey and Freedom. Automatic capture is solved by RescueTime
+and ActivityWatch — and is the thing this project deliberately rejects, since
+none of them can see a printed textbook or an hour of thinking. Habit chains,
+Pomodoro timers and task managers all have well-funded incumbents with nothing
+else to do. Rebuilding any of them means competing badly at someone else's
+problem instead of well at ours.
+
+What is genuinely unsolved, and therefore worth our time: **manual logging of
+all time including the offline parts**, a **visual whole-day artifact** you
+recognise at a glance, **local-first with no account**, and — rarest of the
+four — **narrative and measurement on the same object**. Journalling apps have
+the narrative without the numbers; time trackers have the numbers and can't see
+your afternoon away from the keyboard.
+
+The pattern-detection feature sits right on that line, so it has an explicit
+rule: **Daily Dial notices and names the pattern, then hands off to tools that
+already solve the doing.** It is a pointer, never the intervention. The drift is
+easy to picture — *"we already detect rising distraction, why not add a block
+button?"* — and the moment that lands, this project is maintaining a blocker.
+Suggestions live in `suggestions.js` as bundled, static data for the same
+reason: fetching them would end the "makes no network requests" guarantee,
+which is the strongest claim the project has.
+
+Things that make logging faster or the day clearer are very welcome. Things that
+make it a general-purpose calendar, a project tracker, or a cloud service are
+probably a different project.
 
 Two known constraints that shape what's feasible:
 

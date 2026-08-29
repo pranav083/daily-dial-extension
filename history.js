@@ -11,6 +11,7 @@
 import {
   computeStats,
   dayHasContent,
+  detectPatterns,
   dayHasEntries,
   fmtDuration,
   fmtHM,
@@ -27,7 +28,8 @@ import {
   searchNotes,
   weekOverWeek,
 } from "./historyLib.js";
-import { getAppData, goToDay } from "./dial.js";
+import { getAppData, goToDay, silenceObservation } from "./dial.js";
+import { suggestionFor } from "./suggestions.js";
 
 const $ = (id) => document.getElementById(id);
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -531,9 +533,131 @@ function dateKeyOf(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
+/* ---------- worth noticing ---------- */
+
+/**
+ * Patterns from the user's own data, stated as facts.
+ *
+ * The suggestion list stays collapsed until asked for. An observation is
+ * always defensible — it's arithmetic on data the user entered — whereas
+ * unprompted advice reads as a lecture, and the thing people do with an app
+ * that lectures them is stop opening it. Then the data stops too, which
+ * costs far more than the advice was ever worth.
+ */
+function renderReview(days, categories, settings, silenced) {
+  const card = $("review-card");
+  const list = $("review-list");
+  list.replaceChildren();
+
+  const observations = detectPatterns(days, categories, settings, new Date())
+    .filter((o) => !silenced.includes(o.id));
+  card.hidden = observations.length === 0;
+  if (observations.length === 0) return;
+
+  for (const observation of observations) {
+    list.appendChild(reviewItem(observation));
+  }
+}
+
+function reviewItem(observation) {
+  const item = document.createElement("div");
+  item.className = "review-item";
+
+  const headline = document.createElement("p");
+  headline.className = "review-headline";
+  headline.textContent = observation.headline;
+
+  const detail = document.createElement("p");
+  detail.className = "review-detail";
+  detail.textContent = observation.detail;
+
+  const actions = document.createElement("div");
+  actions.className = "review-actions";
+
+  const suggestion = suggestionFor(observation.suggestionKey);
+  const panel = document.createElement("div");
+  panel.className = "review-suggest";
+  panel.hidden = true;
+
+  if (suggestion) {
+    const show = document.createElement("button");
+    show.type = "button";
+    show.className = "link-btn";
+    show.textContent = "What people do about this";
+    show.setAttribute("aria-expanded", "false");
+    show.addEventListener("click", () => {
+      const opening = panel.hidden;
+      if (opening && !panel.childElementCount) panel.appendChild(suggestionBody(suggestion));
+      panel.hidden = !opening;
+      show.setAttribute("aria-expanded", String(opening));
+      show.textContent = opening ? "Hide" : "What people do about this";
+    });
+    actions.appendChild(show);
+  }
+
+  const hide = document.createElement("button");
+  hide.type = "button";
+  hide.className = "link-btn";
+  hide.textContent = "Don't show this again";
+  hide.title = "Permanently, not just for now.";
+  hide.addEventListener("click", () => {
+    silenceObservation(observation.id);
+    renderHistory();
+  });
+  actions.appendChild(hide);
+
+  item.append(headline, detail, actions, panel);
+  return item;
+}
+
+function suggestionBody(suggestion) {
+  const wrap = document.createDocumentFragment();
+
+  const lead = document.createElement("p");
+  lead.className = "review-lead";
+  lead.textContent = suggestion.lead;
+  wrap.appendChild(lead);
+
+  const list = document.createElement("ul");
+  list.className = "review-approaches";
+  for (const approach of suggestion.approaches) {
+    const li = document.createElement("li");
+    li.className = "review-approach";
+    li.append(approach.text);
+    if (approach.tools?.length) {
+      const tools = document.createElement("div");
+      tools.className = "review-tools";
+      for (const tool of approach.tools) {
+        const link = document.createElement("a");
+        link.className = "review-tool";
+        link.href = tool.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.append(tool.name);
+        const platforms = document.createElement("span");
+        platforms.className = "platforms";
+        platforms.textContent = tool.platforms;
+        link.appendChild(platforms);
+        tools.appendChild(link);
+      }
+      li.appendChild(tools);
+    }
+    list.appendChild(li);
+  }
+  wrap.appendChild(list);
+
+  const disclaimer = document.createElement("p");
+  disclaimer.className = "review-disclaimer";
+  disclaimer.textContent =
+    "These are examples of an approach, not recommendations — none are affiliated with Daily Dial.";
+  wrap.appendChild(disclaimer);
+
+  return wrap;
+}
+
 export function renderHistory() {
   ensureWired();
-  const { days, categories, settings } = getAppData();
+  const { days, categories, settings, silenced } = getAppData();
 
   // Gated on *anything recorded*, not just painted time: a day carrying only
   // intentions or a note still belongs in the log, and hiding the whole view
@@ -565,5 +689,6 @@ export function renderHistory() {
   renderTrends(year, month, days, categories, settings.weekStart);
   renderWeekOverWeek(days, categories, settings.weekStart);
   renderSearch(days, $("hist-search").value);
+  renderReview(days, categories, settings, silenced ?? []);
   renderLog(days, categories);
 }

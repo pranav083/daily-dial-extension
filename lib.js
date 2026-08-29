@@ -817,6 +817,314 @@ export function personalBests(days, categories, now = new Date()) {
   return { longestStreak: computeStreak(days, now).longest, bestScore, mostProductiveDay };
 }
 
+/* ---------- pattern detection ---------- */
+
+/**
+ * Daily Dial states patterns it notices in a user's own data as plain facts
+ * — never advice, never a judgment. "What to do about it" lives entirely in
+ * suggestions.js, addressed by `suggestionKey`; nothing here should ever
+ * read as "you should...".
+ *
+ * @typedef {{id:string, headline:string, detail:string, suggestionKey:string}} Observation
+ */
+
+/** Below this much history, a detector says nothing — a good or bad run of a
+ *  few days looks identical to a real pattern. Elapsed time matters as much
+ *  as day count: a week of data backfilled in one sitting isn't three weeks
+ *  of lived pattern, so both are required. Applied identically by every
+ *  detector below regardless of how far back its own window looks — one
+ *  that only ever examines the last 7 days still says nothing until three
+ *  weeks of history exist to judge it against. */
+export const MIN_HISTORY_DAYS = 21;
+export const MIN_LOGGED_DAYS = 8;
+
+function hasEnoughHistory(days, now) {
+  const loggedKeys = [...days.entries()].filter(([, day]) => dayHasEntries(day)).map(([key]) => key);
+  if (loggedKeys.length < MIN_LOGGED_DAYS) return false;
+  const earliest = new Date(loggedKeys.sort()[0] + "T00:00:00");
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  const elapsedDays = Math.round((today - earliest) / 86400000);
+  return elapsedDays >= MIN_HISTORY_DAYS;
+}
+
+/** The `count` calendar days ending `offset` days before today (offset 0 =
+ *  today itself), oldest-window-first callers get by increasing `offset` —
+ *  e.g. `recentDays(days, now, 7, 7)` is the 7 days *before* the most recent
+ *  7. Local time throughout, via `dateKey`; never touches `now` itself. */
+function recentDays(days, now, count, offset = 0) {
+  const out = [];
+  for (let i = offset; i < offset + count; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    out.push(days.get(dateKey(d)) ?? null);
+  }
+  return out;
+}
+
+/** Minutes actually painted in a day, independent of category — plain
+ *  "coverage" — restricted to the user's own waking-hours window so a
+ *  quieter night's sleep doesn't read as coverage dropping off, mirroring
+ *  how `buildInsight`'s unlogged-time nag is scoped to `dayWindow`. */
+function trackedMinutesInWindow(day, dayWindow) {
+  if (!day || !Array.isArray(day.slots)) return 0;
+  const startSlot = Math.max(0, Math.round(hmToMinutes(dayWindow.start) / SLOT_MIN));
+  const endSlot = Math.min(SLOTS, Math.round(hmToMinutes(dayWindow.end) / SLOT_MIN));
+  let n = 0;
+  for (let i = startSlot; i < endSlot; i++) if (day.slots[i] !== UNTRACKED) n++;
+  return n * SLOT_MIN;
+}
+
+const avg = (nums) => (nums.length ? nums.reduce((a, b) => a + b, 0) / nums.length : 0);
+
+export const OVERCOMMIT_WINDOW_DAYS = 21;
+export const OVERCOMMIT_MIN_INTENTIONS = 10;
+export const OVERCOMMIT_MAX_DONE_RATIO = 0.4;
+
+/**
+ * Over the last `OVERCOMMIT_WINDOW_DAYS` days: at least
+ * `OVERCOMMIT_MIN_INTENTIONS` intentions were set, and fewer than
+ * `OVERCOMMIT_MAX_DONE_RATIO` of them got ticked done. This is about setting
+ * too many, not about trying harder, so the headline never mentions effort.
+ * @returns {Observation|null}
+ */
+export function detectIntentionOvercommit(days, now) {
+  if (!hasEnoughHistory(days, now)) return null;
+
+  let set = 0;
+  let done = 0;
+  for (const day of recentDays(days, now, OVERCOMMIT_WINDOW_DAYS)) {
+    for (const intent of day?.intents ?? []) {
+      set++;
+      if (intent.done) done++;
+    }
+  }
+  if (set < OVERCOMMIT_MIN_INTENTIONS) return null;
+  if (done / set >= OVERCOMMIT_MAX_DONE_RATIO) return null;
+
+  return {
+    id: "intentionOvercommit",
+    headline: "You're setting more intentions than you finish",
+    detail: `${set} intentions set in the last ${OVERCOMMIT_WINDOW_DAYS} days, only ${done} finished.`,
+    suggestionKey: "intentionOvercommit",
+  };
+}
+
+export const NO_BREAKS_WINDOW_DAYS = 14;
+export const NO_BREAKS_MIN_TRACKED_HOURS = 20;
+
+/**
+ * Over the last `NO_BREAKS_WINDOW_DAYS` days: zero minutes logged in any
+ * category with `weight === 0`, while total tracked time is at least
+ * `NO_BREAKS_MIN_TRACKED_HOURS` hours. Says nothing if no category is even
+ * configured as neutral — there'd be nowhere for a break to be logged.
+ * @returns {Observation|null}
+ */
+export function detectNoBreaks(days, categories, now) {
+  if (!hasEnoughHistory(days, now)) return null;
+
+  const neutralIdx = categories.map((c, i) => (c.weight === 0 ? i : -1)).filter((i) => i >= 0);
+  if (neutralIdx.length === 0) return null;
+
+  let trackedMin = 0;
+  let neutralMin = 0;
+  for (const day of recentDays(days, now, NO_BREAKS_WINDOW_DAYS)) {
+    if (!day) continue;
+    const stats = computeStats(day.slots, categories);
+    trackedMin += stats.trackedMin;
+    for (const i of neutralIdx) neutralMin += stats.perCat[i] * SLOT_MIN;
+  }
+  if (trackedMin < NO_BREAKS_MIN_TRACKED_HOURS * 60) return null;
+  if (neutralMin > 0) return null;
+
+  return {
+    id: "noBreaks",
+    headline: `No rest or neutral time has been logged in ${NO_BREAKS_WINDOW_DAYS} days`,
+    detail: `${fmtDuration(trackedMin)} tracked over the last ${NO_BREAKS_WINDOW_DAYS} days, none of it in a neutral category.`,
+    suggestionKey: "noBreaks",
+  };
+}
+
+export const DISTRACTION_TREND_WINDOW_DAYS = 7;
+export const DISTRACTION_TREND_MIN_RATIO = 1.3;
+export const DISTRACTION_TREND_MIN_CURRENT_MIN = 300;
+
+/**
+ * Minutes in `weight === -1` categories over the last
+ * `DISTRACTION_TREND_WINDOW_DAYS` days vs. the same number of days before
+ * that: flags when the current window is at least `DISTRACTION_TREND_MIN_RATIO`
+ * times the previous one, and at least `DISTRACTION_TREND_MIN_CURRENT_MIN`
+ * minutes on its own (so two near-zero windows can't trip a "1.3x" trend).
+ * @returns {Observation|null}
+ */
+export function detectDistractionTrend(days, categories, now) {
+  if (!hasEnoughHistory(days, now)) return null;
+
+  const distractionMin = (day) => (day ? computeStats(day.slots, categories).distractionMin : 0);
+  const currentMin = recentDays(days, now, DISTRACTION_TREND_WINDOW_DAYS, 0).reduce(
+    (sum, day) => sum + distractionMin(day),
+    0
+  );
+  const previousMin = recentDays(days, now, DISTRACTION_TREND_WINDOW_DAYS, DISTRACTION_TREND_WINDOW_DAYS).reduce(
+    (sum, day) => sum + distractionMin(day),
+    0
+  );
+
+  if (currentMin < DISTRACTION_TREND_MIN_CURRENT_MIN) return null;
+  if (currentMin < previousMin * DISTRACTION_TREND_MIN_RATIO) return null;
+
+  return {
+    id: "distractionTrend",
+    headline: `Distraction has been rising over the last ${DISTRACTION_TREND_WINDOW_DAYS} days`,
+    detail: `${fmtDuration(currentMin)} logged as distraction in the last ${DISTRACTION_TREND_WINDOW_DAYS} days, up from ${fmtDuration(previousMin)} the ${DISTRACTION_TREND_WINDOW_DAYS} days before that.`,
+    suggestionKey: "distractionTrend",
+  };
+}
+
+export const COVERAGE_DECLINE_RECENT_DAYS = 7;
+export const COVERAGE_DECLINE_PRIOR_DAYS = 14;
+export const COVERAGE_DECLINE_MAX_RATIO = 0.6;
+export const COVERAGE_DECLINE_MIN_PRIOR_AVG_MIN = 120;
+
+/**
+ * Average tracked minutes/day, within the user's waking-hours window
+ * (`settings.dayWindow`), over the last `COVERAGE_DECLINE_RECENT_DAYS` days
+ * vs. the `COVERAGE_DECLINE_PRIOR_DAYS` days before that: flags when the
+ * recent average is under `COVERAGE_DECLINE_MAX_RATIO` of the older one, and
+ * the older average was itself at least `COVERAGE_DECLINE_MIN_PRIOR_AVG_MIN`
+ * minutes/day — so a habit that was never really established can't read as
+ * one that "declined".
+ * @returns {Observation|null}
+ */
+export function detectCoverageDecline(days, settings, now) {
+  if (!hasEnoughHistory(days, now)) return null;
+
+  const recentAvg = avg(
+    recentDays(days, now, COVERAGE_DECLINE_RECENT_DAYS, 0).map((d) => trackedMinutesInWindow(d, settings.dayWindow))
+  );
+  const priorAvg = avg(
+    recentDays(days, now, COVERAGE_DECLINE_PRIOR_DAYS, COVERAGE_DECLINE_RECENT_DAYS).map((d) =>
+      trackedMinutesInWindow(d, settings.dayWindow)
+    )
+  );
+
+  if (priorAvg < COVERAGE_DECLINE_MIN_PRIOR_AVG_MIN) return null;
+  if (recentAvg >= priorAvg * COVERAGE_DECLINE_MAX_RATIO) return null;
+
+  return {
+    id: "coverageDecline",
+    headline: `Logging has dropped off compared to the prior ${COVERAGE_DECLINE_PRIOR_DAYS} days`,
+    detail: `${fmtDuration(Math.round(recentAvg))}/day tracked over the last ${COVERAGE_DECLINE_RECENT_DAYS} days, down from ${fmtDuration(Math.round(priorAvg))}/day over the ${COVERAGE_DECLINE_PRIOR_DAYS} days before that.`,
+    suggestionKey: "coverageDecline",
+  };
+}
+
+export const PEAK_HOURS_WINDOW_DAYS = 28;
+/** An hour counts as "protected" on a given day once at least half its
+ *  15-minute slots are painted with a `weight === 1` category. */
+export const PEAK_HOURS_DAY_MAJORITY_SLOTS = 2;
+export const PEAK_HOURS_MAX_PROTECTED_RATIO = 0.4;
+
+/**
+ * Across the last `PEAK_HOURS_WINDOW_DAYS` days, buckets slots by hour of day
+ * (0–23) and finds the hour that accumulated the most `weight === 1` time in
+ * total. Flags when that hour was only "protected" (see
+ * `PEAK_HOURS_DAY_MAJORITY_SLOTS`) on fewer than `PEAK_HOURS_MAX_PROTECTED_RATIO`
+ * of the days that had any entries at all.
+ * @returns {Observation|null}
+ */
+export function detectPeakHoursUnprotected(days, categories, now) {
+  if (!hasEnoughHistory(days, now)) return null;
+
+  const window = recentDays(days, now, PEAK_HOURS_WINDOW_DAYS);
+  const loggedDays = window.filter((day) => dayHasEntries(day));
+  if (loggedDays.length === 0) return null;
+
+  const slotsPerHour = SLOTS / 24;
+  const productiveMinPerHour = new Array(24).fill(0);
+  for (const day of window) {
+    if (!day) continue;
+    for (let s = 0; s < SLOTS; s++) {
+      if (categories[day.slots[s]]?.weight === 1) productiveMinPerHour[Math.floor(s / slotsPerHour)] += SLOT_MIN;
+    }
+  }
+
+  const peakHour = productiveMinPerHour.reduce((best, min, h) => (min > productiveMinPerHour[best] ? h : best), 0);
+  if (productiveMinPerHour[peakHour] === 0) return null; // nothing productive logged at all
+
+  let protectedDays = 0;
+  for (const day of loggedDays) {
+    let weight1Slots = 0;
+    for (let s = peakHour * slotsPerHour; s < (peakHour + 1) * slotsPerHour; s++) {
+      if (categories[day.slots[s]]?.weight === 1) weight1Slots++;
+    }
+    if (weight1Slots >= PEAK_HOURS_DAY_MAJORITY_SLOTS) protectedDays++;
+  }
+
+  if (protectedDays / loggedDays.length >= PEAK_HOURS_MAX_PROTECTED_RATIO) return null;
+
+  const hourLabel = `${pad2(peakHour)}:00`;
+  return {
+    id: "peakHoursUnprotected",
+    headline: `${hourLabel} is your most productive hour, on ${protectedDays} of ${loggedDays.length} logged days`,
+    detail: `Over the last ${PEAK_HOURS_WINDOW_DAYS} days, ${hourLabel} accumulated more productive time than any other hour, but stayed productive on only ${protectedDays} of ${loggedDays.length} logged days.`,
+    suggestionKey: "peakHoursUnprotected",
+  };
+}
+
+export const UNTRACKED_LIFE_AREA_WINDOW_DAYS = 21;
+export const UNTRACKED_LIFE_AREA_MAX_DISTINCT_CATEGORIES = 3;
+
+/**
+ * Over the last `UNTRACKED_LIFE_AREA_WINDOW_DAYS` days: all logged time falls
+ * into at most `UNTRACKED_LIFE_AREA_MAX_DISTINCT_CATEGORIES` distinct
+ * categories, and at least one *enabled* category logged zero minutes.
+ * Categories are a hard-capped six slots, so the wording — and the detail,
+ * which names the unused one — points at repurposing it, never at adding a
+ * new one, which the app has no way to do.
+ * @returns {Observation|null}
+ */
+export function detectUntrackedLifeArea(days, categories, now) {
+  if (!hasEnoughHistory(days, now)) return null;
+
+  const perCatMin = categories.map(() => 0);
+  for (const day of recentDays(days, now, UNTRACKED_LIFE_AREA_WINDOW_DAYS)) {
+    if (!day) continue;
+    computeStats(day.slots, categories).perCat.forEach((n, i) => (perCatMin[i] += n * SLOT_MIN));
+  }
+
+  const usedCount = perCatMin.filter((m) => m > 0).length;
+  if (usedCount === 0 || usedCount > UNTRACKED_LIFE_AREA_MAX_DISTINCT_CATEGORIES) return null;
+
+  const unusedIdx = categories.findIndex((c, i) => c.enabled && perCatMin[i] === 0);
+  if (unusedIdx === -1) return null;
+  const unused = categories[unusedIdx];
+
+  return {
+    id: "untrackedLifeArea",
+    headline: `Everything logged in the last ${UNTRACKED_LIFE_AREA_WINDOW_DAYS} days sits in just ${usedCount} categories`,
+    detail: `"${unused.name}" is enabled but logged zero minutes in that window — one of your six category slots is sitting unused.`,
+    suggestionKey: "untrackedLifeArea",
+  };
+}
+
+/**
+ * Runs every detector and returns whichever fired, dropping the rest. Order
+ * is fixed (not sorted by severity or recency) so the list reads the same
+ * way from one run to the next.
+ * @returns {Observation[]}
+ */
+export function detectPatterns(days, categories, settings, now = new Date()) {
+  return [
+    detectIntentionOvercommit(days, now),
+    detectNoBreaks(days, categories, now),
+    detectPeakHoursUnprotected(days, categories, now),
+    detectDistractionTrend(days, categories, now),
+    detectCoverageDecline(days, settings, now),
+    detectUntrackedLifeArea(days, categories, now),
+  ].filter(Boolean);
+}
+
 /* ---------- typed entry ---------- */
 
 /** "9", "9:30", "9am", "9:30pm", "13:30" → minutes since midnight, or null. */

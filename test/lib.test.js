@@ -60,6 +60,32 @@ import {
   weeklyRecap,
   weeklyRecapMessage,
   weightLabel,
+  detectPatterns,
+  detectIntentionOvercommit,
+  detectNoBreaks,
+  detectDistractionTrend,
+  detectCoverageDecline,
+  detectPeakHoursUnprotected,
+  detectUntrackedLifeArea,
+  MIN_HISTORY_DAYS,
+  MIN_LOGGED_DAYS,
+  OVERCOMMIT_WINDOW_DAYS,
+  OVERCOMMIT_MIN_INTENTIONS,
+  OVERCOMMIT_MAX_DONE_RATIO,
+  NO_BREAKS_WINDOW_DAYS,
+  NO_BREAKS_MIN_TRACKED_HOURS,
+  DISTRACTION_TREND_WINDOW_DAYS,
+  DISTRACTION_TREND_MIN_RATIO,
+  DISTRACTION_TREND_MIN_CURRENT_MIN,
+  COVERAGE_DECLINE_RECENT_DAYS,
+  COVERAGE_DECLINE_PRIOR_DAYS,
+  COVERAGE_DECLINE_MAX_RATIO,
+  COVERAGE_DECLINE_MIN_PRIOR_AVG_MIN,
+  PEAK_HOURS_WINDOW_DAYS,
+  PEAK_HOURS_DAY_MAJORITY_SLOTS,
+  PEAK_HOURS_MAX_PROTECTED_RATIO,
+  UNTRACKED_LIFE_AREA_WINDOW_DAYS,
+  UNTRACKED_LIFE_AREA_MAX_DISTINCT_CATEGORIES,
 } from "../lib.js";
 
 const cats = DEFAULT_CATEGORIES;
@@ -1307,4 +1333,421 @@ test("fmtBytes scales to the smallest sensible unit", () => {
   assert.equal(fmtBytes(1_500_000), "1.4 MB");
   assert.equal(fmtBytes(null), null);
   assert.equal(fmtBytes(-1), null);
+});
+
+/* ---------- pattern detection ---------- */
+
+// Fixed instant every test below is measured against, so nothing here is
+// accidentally time-dependent.
+const PATTERN_NOW = new Date(2026, 7, 28, 12, 0);
+
+/** A full day object, painted plus whatever fields a test cares about. */
+function mkDay(slots, extra = {}) {
+  return { slots, reflection: "", notes: [], intents: [], avoid: [], ...extra };
+}
+
+/** Builds a days Map from {offset, day} entries — `offset` is calendar days
+ *  before `now` (0 = today), matching the detectors' own `recentDays`. */
+function daysMap(now, entries) {
+  const days = new Map();
+  for (const { offset, day } of entries) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - offset);
+    days.set(dateKey(d), day);
+  }
+  return days;
+}
+
+/** One painted slot, placed well clear of anything a test measures — purely
+ *  to push the earliest logged day past MIN_HISTORY_DAYS so the history gate
+ *  passes without disturbing the metric under test. */
+const historyFiller = (offset) => ({ offset, day: mkDay(paint(blank(), 3, 3.25, 0)) });
+
+test("detectPatterns returns an empty array when there's no history at all", () => {
+  assert.deepEqual(detectPatterns(new Map(), cats, DEFAULT_SETTINGS, PATTERN_NOW), []);
+});
+
+test("detectPatterns fires all six detectors, in the fixed order, when every condition is met", () => {
+  const entries = [];
+
+  // Offsets 0-6: this week's heavy distraction (current window for
+  // detectDistractionTrend) and low overall coverage (recent window for
+  // detectCoverageDecline). A handful of intentions live here too.
+  for (let o = 0; o <= 6; o++) {
+    const intents = o <= 4 ? [{ text: `a${o}`, done: o < 2 }, { text: `b${o}`, done: false }] : [];
+    entries.push({ offset: o, day: mkDay(paint(blank(), 13, 15, 5), { intents }) }); // 120 min distraction
+  }
+
+  // Offsets 7-13: last week's lighter distraction (the trend's baseline),
+  // plus a sliver of 09:00 productive time that never reaches "protected".
+  for (let o = 7; o <= 13; o++) {
+    let slots = paint(blank(), 13, 14.5, 5); // 90 min distraction
+    slots = paint(slots, 9, 9.25, 0); // 15 min at the eventual peak hour
+    entries.push({ offset: o, day: mkDay(slots) });
+  }
+
+  // Offsets 14-20: only detectCoverageDecline's older window reaches this
+  // far back, so its heavier logging pulls that average well above the
+  // recent one without touching any of the shorter windows above.
+  for (let o = 14; o <= 20; o++) {
+    entries.push({ offset: o, day: mkDay(paint(blank(), 13, 19, 5)) }); // 360 min
+  }
+
+  // Offsets 21-26: 09:00 painted in full — the peak hour, "protected" on
+  // exactly these six days out of the window's logged days.
+  for (let o = 21; o <= 26; o++) {
+    entries.push({ offset: o, day: mkDay(paint(blank(), 9, 10, 0)) });
+  }
+
+  const days = daysMap(PATTERN_NOW, entries);
+  const observations = detectPatterns(days, cats, DEFAULT_SETTINGS, PATTERN_NOW);
+
+  assert.deepEqual(
+    observations.map((o) => o.id),
+    ["intentionOvercommit", "noBreaks", "peakHoursUnprotected", "distractionTrend", "coverageDecline", "untrackedLifeArea"]
+  );
+  for (const o of observations) {
+    assert.equal(o.suggestionKey, o.id, "suggestionKey mirrors id for every detector");
+    assert.ok(o.headline && o.detail, "every observation has a headline and detail");
+  }
+});
+
+/* ----- intention overcommit ----- */
+
+test("detectIntentionOvercommit flags overcommitting on intentions within the last 21 days", () => {
+  const entries = [
+    {
+      offset: 0,
+      day: mkDay(paint(blank(), 9, 10, 0), {
+        intents: [{ text: "a", done: true }, { text: "b", done: false }, { text: "c", done: false }],
+      }),
+    },
+    {
+      offset: 3,
+      day: mkDay(paint(blank(), 9, 10, 0), {
+        intents: [{ text: "d", done: false }, { text: "e", done: false }, { text: "f", done: false }],
+      }),
+    },
+    {
+      offset: 6,
+      day: mkDay(paint(blank(), 9, 10, 0), { intents: [{ text: "g", done: true }, { text: "h", done: false }] }),
+    },
+    {
+      offset: 9,
+      day: mkDay(paint(blank(), 9, 10, 0), { intents: [{ text: "i", done: false }, { text: "j", done: false }] }),
+    },
+    { offset: 12, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: 15, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: 18, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: OVERCOMMIT_WINDOW_DAYS, day: mkDay(paint(blank(), 9, 10, 0)) },
+  ];
+  const days = daysMap(PATTERN_NOW, entries);
+  const obs = detectIntentionOvercommit(days, PATTERN_NOW);
+  assert.ok(obs, "expected an observation");
+  assert.equal(obs.id, "intentionOvercommit");
+  assert.equal(obs.suggestionKey, "intentionOvercommit");
+  assert.match(obs.detail, new RegExp(`^${OVERCOMMIT_MIN_INTENTIONS} intentions set in the last ${OVERCOMMIT_WINDOW_DAYS} days`));
+  assert.match(obs.detail, /2 finished/);
+});
+
+test("detectIntentionOvercommit does not flag when the done ratio sits exactly at the cutoff", () => {
+  const perDay = OVERCOMMIT_MIN_INTENTIONS / 2; // two days' worth reaches the minimum
+  const donePerDay = perDay * OVERCOMMIT_MAX_DONE_RATIO; // ratio lands exactly on the cutoff
+  const intentsFor = () => Array.from({ length: perDay }, (_, i) => ({ text: `x${i}`, done: i < donePerDay }));
+  const entries = [
+    { offset: 0, day: mkDay(paint(blank(), 9, 10, 0), { intents: intentsFor() }) },
+    { offset: 3, day: mkDay(paint(blank(), 9, 10, 0), { intents: intentsFor() }) },
+    { offset: 6, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: 9, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: 12, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: 15, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: 18, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: OVERCOMMIT_WINDOW_DAYS, day: mkDay(paint(blank(), 9, 10, 0)) },
+  ];
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(
+    detectIntentionOvercommit(days, PATTERN_NOW),
+    null,
+    "4 of 10 (40%) done is exactly the cutoff, not fewer than it"
+  );
+});
+
+test("detectIntentionOvercommit says nothing without three weeks of history", () => {
+  const entries = [
+    {
+      offset: 0,
+      day: mkDay(paint(blank(), 9, 10, 0), {
+        intents: [{ text: "a", done: true }, { text: "b", done: false }, { text: "c", done: false }],
+      }),
+    },
+    {
+      offset: 3,
+      day: mkDay(paint(blank(), 9, 10, 0), {
+        intents: [{ text: "d", done: false }, { text: "e", done: false }, { text: "f", done: false }],
+      }),
+    },
+    {
+      offset: 6,
+      day: mkDay(paint(blank(), 9, 10, 0), { intents: [{ text: "g", done: true }, { text: "h", done: false }] }),
+    },
+    {
+      offset: 9,
+      day: mkDay(paint(blank(), 9, 10, 0), { intents: [{ text: "i", done: false }, { text: "j", done: false }] }),
+    },
+    { offset: 12, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: 15, day: mkDay(paint(blank(), 9, 10, 0)) },
+    { offset: 18, day: mkDay(paint(blank(), 9, 10, 0)) },
+    // No entry 21+ days back — only 18 days have elapsed since the first one.
+  ];
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(detectIntentionOvercommit(days, PATTERN_NOW), null);
+});
+
+/* ----- no breaks ----- */
+
+test("detectNoBreaks flags two weeks with no neutral or rest time despite heavy tracked hours", () => {
+  const entries = [];
+  for (let o = 0; o < NO_BREAKS_WINDOW_DAYS; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 9, 11, 0)) }); // 120 min/day
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  const obs = detectNoBreaks(days, cats, PATTERN_NOW);
+  assert.ok(obs);
+  assert.equal(obs.id, "noBreaks");
+  assert.equal(obs.suggestionKey, "noBreaks");
+  assert.match(obs.detail, new RegExp(`over the last ${NO_BREAKS_WINDOW_DAYS} days`));
+});
+
+test("detectNoBreaks does not flag when total tracked time falls just short of the floor", () => {
+  const floorMin = NO_BREAKS_MIN_TRACKED_HOURS * 60;
+  const entries = [];
+  // 13 days at 90 min plus one day at 15 min lands 15 min under the floor.
+  for (let o = 0; o < NO_BREAKS_WINDOW_DAYS - 1; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 9, 10.5, 0)) });
+  entries.push({ offset: NO_BREAKS_WINDOW_DAYS - 1, day: mkDay(paint(blank(), 9, 9.25, 0)) });
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  const totalMin = (NO_BREAKS_WINDOW_DAYS - 1) * 90 + 15;
+  assert.ok(totalMin < floorMin, "test data must actually sit under the floor");
+  assert.equal(detectNoBreaks(days, cats, PATTERN_NOW), null);
+});
+
+test("detectNoBreaks says nothing without three weeks of history", () => {
+  const entries = [];
+  for (let o = 0; o < NO_BREAKS_WINDOW_DAYS; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 9, 11, 0)) });
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(detectNoBreaks(days, cats, PATTERN_NOW), null, "only 13 days have elapsed since the first entry");
+});
+
+test("detectNoBreaks says nothing when no category is even configured as neutral", () => {
+  const noNeutral = cats.map((c) => (c.weight === 0 ? { ...c, weight: 1 } : c));
+  const entries = [];
+  for (let o = 0; o < NO_BREAKS_WINDOW_DAYS; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 9, 11, 0)) });
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(detectNoBreaks(days, noNeutral, PATTERN_NOW), null);
+});
+
+/* ----- distraction trend ----- */
+
+test("detectDistractionTrend flags distraction rising sharply week over week", () => {
+  const w = DISTRACTION_TREND_WINDOW_DAYS;
+  const entries = [];
+  for (let o = 0; o < w; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 9, 15, 5)) }); // 360 min/day
+  for (let o = w; o < 2 * w; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 9, 13, 5)) }); // 240 min/day
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  const obs = detectDistractionTrend(days, cats, PATTERN_NOW);
+  assert.ok(obs);
+  assert.equal(obs.id, "distractionTrend");
+  assert.equal(obs.suggestionKey, "distractionTrend");
+  const currentMin = 360 * w;
+  const previousMin = 240 * w;
+  assert.ok(currentMin >= DISTRACTION_TREND_MIN_CURRENT_MIN, "test data must clear the floor");
+  assert.ok(currentMin >= previousMin * DISTRACTION_TREND_MIN_RATIO, "test data must clear the ratio");
+});
+
+test("detectDistractionTrend does not flag a rise that falls just short of the ratio", () => {
+  const w = DISTRACTION_TREND_WINDOW_DAYS;
+  const previousMinPerDay = 300;
+  // Just under the ratio: currentMin sits below previousMin * DISTRACTION_TREND_MIN_RATIO
+  // while still clearing DISTRACTION_TREND_MIN_CURRENT_MIN on its own.
+  const currentMinPerDay = Math.floor(((previousMinPerDay * DISTRACTION_TREND_MIN_RATIO - 15) / SLOT_MIN)) * SLOT_MIN;
+  const entries = [];
+  for (let o = 0; o < w; o++) {
+    entries.push({ offset: o, day: mkDay(paint(blank(), 9, 9 + currentMinPerDay / 60, 5)) });
+  }
+  for (let o = w; o < 2 * w; o++) {
+    entries.push({ offset: o, day: mkDay(paint(blank(), 9, 9 + previousMinPerDay / 60, 5)) });
+  }
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  const currentMin = currentMinPerDay * w;
+  const previousMin = previousMinPerDay * w;
+  assert.ok(currentMin >= DISTRACTION_TREND_MIN_CURRENT_MIN, "test data must still clear the floor on its own");
+  assert.ok(currentMin < previousMin * DISTRACTION_TREND_MIN_RATIO, "test data must fall just short of the ratio");
+  assert.equal(detectDistractionTrend(days, cats, PATTERN_NOW), null);
+});
+
+test("detectDistractionTrend says nothing without three weeks of history", () => {
+  const w = DISTRACTION_TREND_WINDOW_DAYS;
+  const entries = [];
+  for (let o = 0; o < w; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 9, 15, 5)) });
+  for (let o = w; o < 2 * w; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 9, 13, 5)) });
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(detectDistractionTrend(days, cats, PATTERN_NOW), null);
+});
+
+/* ----- coverage decline ----- */
+
+test("detectCoverageDecline flags logging dropping off compared to the prior two weeks", () => {
+  const recent = COVERAGE_DECLINE_RECENT_DAYS;
+  const prior = COVERAGE_DECLINE_PRIOR_DAYS;
+  const entries = [];
+  for (let o = 0; o < recent; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 7, 8, 0)) }); // 60 min/day
+  for (let o = recent; o < recent + prior; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 7, 15, 0)) }); // 480 min/day
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  const obs = detectCoverageDecline(days, DEFAULT_SETTINGS, PATTERN_NOW);
+  assert.ok(obs);
+  assert.equal(obs.id, "coverageDecline");
+  assert.equal(obs.suggestionKey, "coverageDecline");
+  assert.ok(480 >= COVERAGE_DECLINE_MIN_PRIOR_AVG_MIN, "test data's prior average must clear the floor");
+  assert.ok(60 < 480 * COVERAGE_DECLINE_MAX_RATIO, "test data's recent average must fall under the ratio");
+});
+
+test("detectCoverageDecline does not flag when the drop sits exactly at the cutoff", () => {
+  const recent = COVERAGE_DECLINE_RECENT_DAYS;
+  const prior = COVERAGE_DECLINE_PRIOR_DAYS;
+  const priorMinPerDay = 450;
+  const recentMinPerDay = Math.round(priorMinPerDay * COVERAGE_DECLINE_MAX_RATIO); // exactly the cutoff, not under it
+  const entries = [];
+  for (let o = 0; o < recent; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 7, 7 + recentMinPerDay / 60, 0)) });
+  for (let o = recent; o < recent + prior; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 7, 7 + priorMinPerDay / 60, 0)) });
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(
+    detectCoverageDecline(days, DEFAULT_SETTINGS, PATTERN_NOW),
+    null,
+    `${recentMinPerDay} is exactly ${COVERAGE_DECLINE_MAX_RATIO * 100}% of ${priorMinPerDay}, not below it`
+  );
+});
+
+test("detectCoverageDecline says nothing without three weeks of history", () => {
+  const recent = COVERAGE_DECLINE_RECENT_DAYS;
+  const prior = COVERAGE_DECLINE_PRIOR_DAYS;
+  const entries = [];
+  for (let o = 0; o < recent; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 7, 8, 0)) });
+  for (let o = recent; o < recent + prior; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 7, 15, 0)) });
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(detectCoverageDecline(days, DEFAULT_SETTINGS, PATTERN_NOW), null);
+});
+
+test("detectCoverageDecline says nothing when the prior average was never really established", () => {
+  // Same drop in proportion as the flagging case, but the older window
+  // itself never reached COVERAGE_DECLINE_MIN_PRIOR_AVG_MIN.
+  const recent = COVERAGE_DECLINE_RECENT_DAYS;
+  const prior = COVERAGE_DECLINE_PRIOR_DAYS;
+  const priorMinPerDay = COVERAGE_DECLINE_MIN_PRIOR_AVG_MIN - 15;
+  const recentMinPerDay = 15;
+  const entries = [];
+  for (let o = 0; o < recent; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 7, 7 + recentMinPerDay / 60, 0)) });
+  for (let o = recent; o < recent + prior; o++) entries.push({ offset: o, day: mkDay(paint(blank(), 7, 7 + priorMinPerDay / 60, 0)) });
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.ok(priorMinPerDay < COVERAGE_DECLINE_MIN_PRIOR_AVG_MIN, "test data's prior average must fall short of the floor");
+  assert.equal(detectCoverageDecline(days, DEFAULT_SETTINGS, PATTERN_NOW), null);
+});
+
+/* ----- peak hours unprotected ----- */
+
+// A "protected" day paints the whole peak hour (all 4 quarter-hour slots,
+// well past PEAK_HOURS_DAY_MAJORITY_SLOTS); an "unprotected" day paints
+// something else entirely, so it's logged without protecting the hour.
+const protectedPeakHourDay = () => {
+  assert.ok(4 >= PEAK_HOURS_DAY_MAJORITY_SLOTS, "a full hour must count as protected");
+  return mkDay(paint(blank(), 9, 10, 0));
+};
+const unprotectedLoggedDay = () => mkDay(paint(blank(), 14, 15, 3));
+
+test("detectPeakHoursUnprotected flags a peak hour that's rarely protected", () => {
+  const entries = [];
+  for (const o of [0, 2, 4]) entries.push({ offset: o, day: protectedPeakHourDay() });
+  for (const o of [6, 8, 10, 12, 14, 16, 18, 20, 22]) entries.push({ offset: o, day: unprotectedLoggedDay() });
+  assert.ok(22 < PEAK_HOURS_WINDOW_DAYS, "every offset above must fall inside the 28-day window");
+  const days = daysMap(PATTERN_NOW, entries);
+  const obs = detectPeakHoursUnprotected(days, cats, PATTERN_NOW);
+  assert.ok(obs);
+  assert.equal(obs.id, "peakHoursUnprotected");
+  assert.equal(obs.suggestionKey, "peakHoursUnprotected");
+  assert.equal(obs.headline, "09:00 is your most productive hour, on 3 of 12 logged days");
+  assert.ok(3 / 12 < PEAK_HOURS_MAX_PROTECTED_RATIO, "test data must fall under the protected-ratio cutoff");
+});
+
+test("detectPeakHoursUnprotected does not flag a peak hour protected exactly at the cutoff", () => {
+  assert.equal(PEAK_HOURS_MAX_PROTECTED_RATIO, 0.4, "this test is built around a 4-of-10 (40%) boundary");
+  const entries = [];
+  for (const o of [0, 2, 4, 6]) entries.push({ offset: o, day: protectedPeakHourDay() }); // protected, 4 days
+  for (const o of [8, 10, 12, 14, 16, 22]) entries.push({ offset: o, day: unprotectedLoggedDay() }); // 6 days
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(
+    detectPeakHoursUnprotected(days, cats, PATTERN_NOW),
+    null,
+    "4 of 10 (40%) is exactly the cutoff, not fewer"
+  );
+});
+
+test("detectPeakHoursUnprotected says nothing without three weeks of history", () => {
+  const entries = [];
+  for (const o of [0, 2, 4]) entries.push({ offset: o, day: protectedPeakHourDay() });
+  for (const o of [6, 8, 10, 12]) entries.push({ offset: o, day: unprotectedLoggedDay() });
+  assert.ok(entries.length < MIN_LOGGED_DAYS, "this test also falls short on the logged-day count alone");
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(detectPeakHoursUnprotected(days, cats, PATTERN_NOW), null);
+});
+
+/* ----- untracked life area ----- */
+
+test("detectUntrackedLifeArea flags time concentrated in a few categories with one enabled category unused", () => {
+  assert.equal(UNTRACKED_LIFE_AREA_MAX_DISTINCT_CATEGORIES, 3, "this test uses exactly the allowed maximum");
+  const rotation = [0, 1, 2]; // exactly UNTRACKED_LIFE_AREA_MAX_DISTINCT_CATEGORIES categories
+  const entries = [];
+  let i = 0;
+  for (let o = 0; o < UNTRACKED_LIFE_AREA_WINDOW_DAYS; o += 2) {
+    entries.push({ offset: o, day: mkDay(paint(blank(), 9, 11, rotation[i % rotation.length])) });
+    i++;
+  }
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  const obs = detectUntrackedLifeArea(days, cats, PATTERN_NOW);
+  assert.ok(obs);
+  assert.equal(obs.id, "untrackedLifeArea");
+  assert.equal(obs.suggestionKey, "untrackedLifeArea");
+  assert.match(obs.detail, /"Admin"/, "names the first unused enabled category");
+});
+
+test("detectUntrackedLifeArea does not flag once a fourth category is in the mix", () => {
+  const rotation = [0, 1, 2];
+  const entries = [];
+  let i = 0;
+  for (let o = 0; o < UNTRACKED_LIFE_AREA_WINDOW_DAYS - 2; o += 2) {
+    entries.push({ offset: o, day: mkDay(paint(blank(), 9, 11, rotation[i % rotation.length])) });
+    i++;
+  }
+  // A 4th category (Admin) used inside the same window — one more than
+  // UNTRACKED_LIFE_AREA_MAX_DISTINCT_CATEGORIES allows.
+  entries.push({ offset: UNTRACKED_LIFE_AREA_WINDOW_DAYS - 1, day: mkDay(paint(blank(), 9, 10, 3)) });
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(detectUntrackedLifeArea(days, cats, PATTERN_NOW), null, "four distinct categories is one too many");
+});
+
+test("detectUntrackedLifeArea says nothing without three weeks of history", () => {
+  const rotation = [0, 1, 2];
+  const entries = [];
+  let i = 0;
+  for (let o = 0; o < UNTRACKED_LIFE_AREA_WINDOW_DAYS; o += 2) {
+    entries.push({ offset: o, day: mkDay(paint(blank(), 9, 11, rotation[i % rotation.length])) });
+    i++;
+  }
+  const days = daysMap(PATTERN_NOW, entries);
+  assert.equal(detectUntrackedLifeArea(days, cats, PATTERN_NOW), null, "only 20 days have elapsed");
 });

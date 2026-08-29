@@ -8,6 +8,41 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.16.0] — 2026-08-29
+
+### Added
+
+- **"Worth noticing" — patterns from your own data, at the top of History.**
+  Six things it looks for: setting more intentions than you finish, two weeks
+  with no rest logged, the hour you're most productive in going unprotected,
+  distraction climbing week over week, logging thinning out, and everything
+  sitting in only a few categories.
+  - **Observations only. No advice unless you ask.** Each one states a fact
+    with the numbers behind it; "What people do about this" is a click, and
+    stays closed until then. An observation is arithmetic on data you entered
+    and can't really be wrong — unprompted advice reads as a lecture, and a
+    tracker that lectures is one people stop opening. Then the data stops too,
+    which costs far more than the advice was worth.
+  - **Nothing fires on a single bad day.** Every detector needs three weeks of
+    history and eight logged days, and looks for a sustained trend.
+  - **"Don't show this again" is permanent**, not "for now". If you've decided
+    your answer, the app has no business asking again.
+  - Suggestions are **bundled and static** (`suggestions.js`), never fetched —
+    downloading them would end the "makes no network requests" guarantee,
+    which is the strongest claim this extension has. Two of the six recommend
+    no software at all, and several recommend leaving the computer. Tools are
+    named as examples of an approach, platform-tagged, and explicitly not
+    endorsed or affiliated.
+
+### Changed
+
+- **`CONTRIBUTING.md` now states the project's boundary.** What the job is
+  (see where your time went, including what no software can see, and decide
+  what to change) and what it isn't (blocking, enforcing, capturing
+  automatically, task management, coaching) — with the reasoning, so the
+  obvious drift here (*"we detect distraction, why not add a block button?"*)
+  has an answer written down before someone asks it.
+
 ## [1.15.0] — 2026-08-29
 
 ### Added
