@@ -483,6 +483,22 @@ function refreshCenters() {
   for (const engine of activeEngines()) engine.renderCenter();
 }
 
+/**
+ * Points the active pen somewhere real. `activePen` defaults to category 0
+ * and was only ever reconciled when a category was hidden *during* the
+ * session — so hiding category 0 and reloading left the pen row with nothing
+ * marked active while the dial centre still read "pen: Deep Work", and the
+ * first stroke painted a category that isn't in the pen row and whose
+ * keyboard shortcut is refused. Falls back to the first enabled category, or
+ * the eraser if every category is hidden.
+ */
+function reconcileActivePen() {
+  if (state.activePen === UNTRACKED) return;
+  if (categories[state.activePen]?.enabled) return;
+  const firstEnabled = categories.find((c) => c.enabled);
+  state.activePen = firstEnabled ? firstEnabled.id : UNTRACKED;
+}
+
 /** The clock-face upkeep a 30-second timer does: move the needle, refresh
  *  the centre time. No data changed, so segments are left alone. */
 function refreshLive() {
@@ -1430,6 +1446,13 @@ function applyImport(mode) {
   }
 
   cancelImport();
+  // A replace can bring in a different dial layout. Without these two the
+  // imported `dialMode` was live in settings while the old rings stayed on
+  // screen — and clicking the correct layout button then did nothing at all,
+  // because setDialMode early-returns when the mode already matches.
+  reconcileActivePen();
+  applyDialMode();
+  syncLayoutSwitch();
   switchDay(state.viewDate);
   applyTheme();
   syncReminderInputs();
@@ -1438,6 +1461,11 @@ function applyImport(mode) {
   renderGoalsEditor();
   renderBackupStatus();
   renderSampleDataUI();
+  renderAboutBests();
+  renderDriveStatus();
+  // History/other views render lazily, so without this an import made while
+  // History was open left the heatmap and summaries showing pre-import data.
+  refreshCurrentView();
   toast(mode === "replace" ? "Backup restored" : "Backup merged in");
 }
 
@@ -2017,6 +2045,7 @@ async function boot() {
   renderAboutBests();
   renderDriveStatus();
   renderSampleDataUI();
+  reconcileActivePen();
   applyDialMode();
   renderAll();
   // Only after the overlay is dealt with: a returning user who never

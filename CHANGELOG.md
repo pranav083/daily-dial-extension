@@ -8,6 +8,47 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.9.8] — 2026-08-29
+
+Rough edges from the same audit — none of these lose data, they just make
+the app feel unreliable.
+
+### Fixed
+
+- **After restoring a backup made with a different dial layout, the wrong
+  rings stayed on screen — and clicking the right layout button did
+  nothing.** The imported setting was live while the old layout was still
+  rendered, so the switcher thought it was already on the mode you were
+  asking for and returned early. Restoring now applies the layout it
+  restored. An import made while History was open also left the heatmap and
+  summaries showing pre-import data until you switched tabs.
+- **Hiding a category and reloading left the first brush stroke painting
+  that hidden category.** The pen defaulted to the first category and was
+  only re-pointed when one was hidden mid-session — so after a reload no
+  pen showed as selected, the dial still read "pen: Deep Work", and
+  painting used a category missing from the pen row whose keyboard shortcut
+  was refused. It now falls back to the first visible category.
+- **History opened on the current month even when every logged day was
+  somewhere else** — after a gap, or restoring an older backup — showing
+  four panels of zeros with only a bare "‹" hinting the data existed. It
+  now opens on the most recent month that has something in it, and keeps
+  wherever you navigate afterwards.
+- **"Current streak" in the month summary read 0 for almost every month in
+  progress**, while the streak card on the Day view showed the real number.
+  It measured the run ending on the last day of the *calendar* month, so
+  days that hadn't happened yet counted as missed. It now measures the run
+  ending today, and an unlogged today doesn't break it — the same rule the
+  Day view uses.
+- **Week over week showed a green "▲ 5h" in your first week**, comparing
+  against a week that doesn't exist. It now shows a dash, with a tooltip
+  saying there's nothing to compare against — matching how the score and
+  percentage rows already behaved.
+
+### Changed
+
+- Two month-summary tests were silently dependent on the date the suite ran
+  on. They now pass an explicit date.
+
 ## [1.9.7] — 2026-08-29
 
 Date and time correctness, from a dedicated audit of that area. The first

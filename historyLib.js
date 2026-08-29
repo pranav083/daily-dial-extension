@@ -79,8 +79,15 @@ export function buildMonthGrid(year, month, days, categories, weekStart = 0) {
  *   avgProductivePct:number|null, bestDay:{key:string,score:number}|null,
  *   currentStreak:number, longestStreak:number}}
  */
-export function monthSummary(year, month, days, categories) {
+export function monthSummary(year, month, days, categories, now = new Date()) {
   const totalDays = daysInMonth(year, month);
+  // For the month in progress, the run that matters is the one ending today,
+  // not the one ending on the 31st — days that haven't happened yet are not
+  // missed days. Walking to the end of the calendar month made "current"
+  // read 0 for virtually every in-progress month, while the streak card on
+  // the Day view, two clicks away, showed the real number.
+  const isCurrentMonth = now.getFullYear() === year && now.getMonth() === month;
+  const lastDay = isCurrentMonth ? Math.min(totalDays, now.getDate()) : totalDays;
 
   let daysLogged = 0;
   let totalTrackedMin = 0;
@@ -92,7 +99,7 @@ export function monthSummary(year, month, days, categories) {
   let currentStreak = 0;
   let longestStreak = 0;
 
-  for (let d = 1; d <= totalDays; d++) {
+  for (let d = 1; d <= lastDay; d++) {
     const key = dateKey(new Date(year, month, d));
     const day = days.get(key);
     const logged = dayHasEntries(day);
@@ -108,7 +115,8 @@ export function monthSummary(year, month, days, categories) {
         scoredDays++;
         if (bestDay === null || stats.score > bestDay.score) bestDay = { key, score: stats.score };
       }
-    } else {
+    } else if (!(isCurrentMonth && d === now.getDate())) {
+      // Today not logged *yet* doesn't break the run, matching computeStreak.
       running = 0;
     }
     longestStreak = Math.max(longestStreak, running);
@@ -221,7 +229,11 @@ export function weekOverWeek(days, categories, weekStart, now = new Date()) {
     current,
     previous,
     deltas: {
-      trackedMin: current.trackedMin - previous.trackedMin,
+      // `null` when there is no previous week to compare against, matching
+      // how the score and percent rows already behave. Subtracting from an
+      // absent week produced a confident green "▲ 5h" in someone's first
+      // week — growth measured against nothing.
+      trackedMin: previous.daysLogged > 0 ? current.trackedMin - previous.trackedMin : null,
       avgScore:
         current.avgScore !== null && previous.avgScore !== null ? current.avgScore - previous.avgScore : null,
       avgProductivePct:

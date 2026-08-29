@@ -30,6 +30,17 @@ const ARROW = { up: "▲", down: "▼", flat: "·" };
 const state = { cursor: new Date() };
 
 let wired = false;
+/** Whether the cursor has been pointed at real data yet (once per session). */
+let seeded = false;
+
+/** The month of the most recent logged day, or null if nothing is logged. */
+function latestLoggedMonth(days) {
+  let latestKey = null;
+  for (const [key, day] of days) {
+    if (dayHasEntries(day) && (latestKey === null || key > latestKey)) latestKey = key;
+  }
+  return latestKey ? new Date(latestKey + "T00:00:00") : null;
+}
 
 function isSameMonth(a, b) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
@@ -235,8 +246,11 @@ function wowRow(label, curText, prevText, delta, fmtDelta) {
   const dir = deltaDirection(delta);
   const deltaEl = document.createElement("span");
   deltaEl.className = `hist-wow-delta ${dir}`;
-  deltaEl.title = `Last week: ${prevText}`;
-  deltaEl.textContent = delta === null ? "n/a" : `${ARROW[dir]} ${fmtDelta(Math.abs(delta))}`;
+  deltaEl.title =
+    delta === null ? "Nothing logged last week to compare against." : `Last week: ${prevText}`;
+  // "n/a" is jargon for "nothing to compare against yet"; the dash is what
+  // the rest of the app already uses for an absent number.
+  deltaEl.textContent = delta === null ? "—" : `${ARROW[dir]} ${fmtDelta(Math.abs(delta))}`;
 
   row.append(nameEl, curEl, deltaEl);
   return row;
@@ -335,6 +349,17 @@ export function renderHistory() {
   $("history-empty").hidden = anyData;
   $("history-content").hidden = !anyData;
   if (!anyData) return;
+
+  // The cursor starts on the month the page was opened in, which is empty
+  // for anyone returning after a gap or restoring an older backup: four
+  // panels of zeros, and only a bare "‹" hinting that the data is elsewhere.
+  // On the first render, land on the most recent month that actually has
+  // something in it. Later renders keep wherever the user navigated to.
+  if (!seeded) {
+    seeded = true;
+    const latest = latestLoggedMonth(days);
+    if (latest && !isSameMonth(state.cursor, latest)) state.cursor = latest;
+  }
 
   const year = state.cursor.getFullYear();
   const month = state.cursor.getMonth();

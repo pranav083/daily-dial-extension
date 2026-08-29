@@ -123,7 +123,10 @@ test("monthSummary computes current and longest streak within the month only", (
   days.set("2026-08-05", dayWith(9, 10, 0));
   days.set("2026-08-06", dayWith(9, 10, 0));
 
-  const summary = monthSummary(2026, 7, days, cats);
+  // `now` is explicit in these: without it the result depends on the date the
+  // suite happens to run, since a month in progress only walks as far as today.
+  const after = new Date(2026, 8, 15); // September — August is fully in the past
+  const summary = monthSummary(2026, 7, days, cats, after);
   assert.equal(summary.longestStreak, 3, "Aug 1-3 is the longest run");
   assert.equal(summary.currentStreak, 0, "the rest of the month (7-31) is unlogged, so the trailing run is 0");
 });
@@ -134,8 +137,30 @@ test("monthSummary current streak reaches to month-end when the tail is logged",
   days.set(dateKey(new Date(2026, 7, total - 1)), dayWith(9, 10, 0));
   days.set(dateKey(new Date(2026, 7, total)), dayWith(9, 10, 0));
 
-  const summary = monthSummary(2026, 7, days, cats);
+  const summary = monthSummary(2026, 7, days, cats, new Date(2026, 8, 15));
   assert.equal(summary.currentStreak, 2);
+});
+
+test("monthSummary current streak is the run ending today, not the one ending on the 31st", () => {
+  // The month in progress: days after today haven't been missed, they just
+  // haven't happened. Walking to the calendar month-end reported 0 here,
+  // while the Day view's streak card showed the real number.
+  const days = new Map();
+  for (const d of [24, 25, 26, 27, 28]) days.set(dateKey(new Date(2026, 7, d)), dayWith(9, 10, 0));
+  const today = new Date(2026, 7, 28, 12, 0);
+
+  const summary = monthSummary(2026, 7, days, cats, today);
+  assert.equal(summary.currentStreak, 5, "Aug 24-28 is a live run ending today");
+  assert.equal(summary.longestStreak, 5);
+});
+
+test("monthSummary keeps the run alive when today isn't logged yet", () => {
+  const days = new Map();
+  for (const d of [24, 25, 26, 27]) days.set(dateKey(new Date(2026, 7, d)), dayWith(9, 10, 0));
+  const today = new Date(2026, 7, 28, 9, 0); // nothing logged today yet
+
+  const summary = monthSummary(2026, 7, days, cats, today);
+  assert.equal(summary.currentStreak, 4, "an unlogged today doesn't break the run, same as computeStreak");
 });
 
 /* ---------- categoryTrendsByWeek / categoryTrendDirection ---------- */
