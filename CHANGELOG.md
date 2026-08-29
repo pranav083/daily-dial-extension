@@ -8,6 +8,23 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.16.1] — 2026-08-29
+
+### Fixed
+
+- **The v1.16.0 zip would not have loaded.** `npm run package` lists its files
+  by hand, and `suggestions.js` — added in 1.16.0 and imported by both
+  `dial.js` and `history.js` — was never added to that list. The extension
+  ran fine from source, so nothing caught it; a packaged build would have
+  died on a module-resolution error, and the release workflow builds from the
+  same script, so it would have gone straight to a GitHub release.
+- **Added `npm run check:package` so this can't happen again.** It walks the
+  real import graph from the two entry points Chrome loads (`dial.js` and
+  `background.js`) and fails if anything reachable is missing from the zip.
+  Deliberately not a second hand-written list, which would be the same
+  problem wearing a different hat. Now part of `npm run check`, so CI
+  enforces it.
+
 ## [1.16.0] — 2026-08-29
 
 ### Added
