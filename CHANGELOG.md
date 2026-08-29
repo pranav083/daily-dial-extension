@@ -8,6 +8,17 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.8.1] — 2026-08-29
+
+### Fixed
+
+- The new first-run welcome overlay would have shown to **existing**
+  installs too — anyone who already had logged history, on their very next
+  reload after updating — since the "seen" flag never existed before this
+  version. It now also treats any existing logged day as "already seen,"
+  so the welcome screen only ever greets a genuinely empty, brand-new
+  install. Verified with a pre-seeded day: overlay stays hidden.
+
 ## [1.8.0] — 2026-08-29
 
 ### Added

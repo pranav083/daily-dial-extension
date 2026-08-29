@@ -106,7 +106,10 @@ async function loadAll() {
   settings = normalizeSettings(all[SETTINGS_KEY]);
   driveFileId = typeof all[DRIVE_FILE_ID_KEY] === "string" ? all[DRIVE_FILE_ID_KEY] : null;
   driveLastSyncAt = Number.isFinite(all[DRIVE_LAST_SYNC_KEY]) ? all[DRIVE_LAST_SYNC_KEY] : null;
-  onboardingSeen = all[ONBOARDING_SEEN_KEY] === true;
+  // Anyone with logged history already predates this feature entirely —
+  // never show a first-run "welcome" to someone mid-way through real use,
+  // even though the flag itself was never explicitly set for them.
+  onboardingSeen = all[ONBOARDING_SEEN_KEY] === true || days.size > 0;
 
   if (all[SCHEMA_VERSION_KEY] !== SCHEMA_VERSION) {
     chrome.storage.local.set({ [SCHEMA_VERSION_KEY]: SCHEMA_VERSION }).catch(() => {
