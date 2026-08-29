@@ -8,6 +8,39 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.13.0] — 2026-08-29
+
+### Added
+
+- **A "to avoid" list per day.** The other half of setting out a day: what
+  you mean to steer clear of. Deliberately not a checklist — these are
+  things to notice yourself doing — and they sit beside what you actually
+  did in the History log.
+- **A named challenge with its own day counter.** For anyone running a
+  "#100days"-style stretch: give it a name and a start date and it shows as
+  `#100days · day 19 / 100` beside the streak. Unlike the streak it doesn't
+  break — it counts from the start date, which is what a personal challenge
+  actually is. Set it under Settings → Goals.
+- **The weekly recap now reports how your intentions went** — "you met 2 of
+  3 intentions" — and ends by asking what to adjust, rather than reporting
+  numbers and stopping. A review that doesn't prompt a decision is just a
+  statement.
+
+### Fixed
+
+- **Undo silently lost other days' history.** One shared stack was popped
+  until it found an entry for the day on screen, so painting Monday,
+  switching to Tuesday and painting, then returning to Monday and undoing
+  discarded the Tuesday entry along the way — the stroke stayed on screen
+  but could never be undone, with nothing said about it. Each day now keeps
+  its own history.
+- **The History tab was hidden entirely unless something had been painted**,
+  so a day carrying only intentions or a note — which the new log exists to
+  show — made the whole view disappear.
+- **The month heatmap was around forty consecutive tab stops.** It's now a
+  single stop with arrow keys moving between days, which is how a grid is
+  supposed to behave.
+
 ## [1.12.2] — 2026-08-29
 
 ### Fixed

@@ -72,6 +72,10 @@ export const DEFAULT_SETTINGS = {
   // untracked time in this window, so overnight sleep isn't mistaken for a
   // gap in logging.
   dayWindow: { start: "07:00", end: "23:00" },
+  // An optional named run with a day counter — "#100days, day 19". A streak
+  // measures consecutive days and breaks; this just counts from a start
+  // date, which is what a personal challenge actually is.
+  challenge: null, // { name: string, startKey: "YYYY-MM-DD", targetDays: number }
 };
 export const WEIGHT_GLYPH = { 1: "+", 0: "·", "-1": "–" };
 
@@ -112,7 +116,7 @@ export function fmtDuration(min) {
 
 /* ---------- stored shapes ---------- */
 
-export const emptyDay = () => ({ slots: new Array(SLOTS).fill(UNTRACKED), reflection: "", notes: [], intents: [] });
+export const emptyDay = () => ({ slots: new Array(SLOTS).fill(UNTRACKED), reflection: "", notes: [], intents: [], avoid: [] });
 
 /** Storage is user-editable and survives version changes, so never trust it. */
 export const MAX_NOTE_LEN = 500;
@@ -136,6 +140,17 @@ function normalizeNotes(raw) {
     .filter(Boolean)
     .sort((a, b) => a.from - b.from)
     .slice(0, MAX_NOTES_PER_DAY);
+}
+
+/** A plain list of short lines: what to steer clear of today. Kept apart
+ *  from intentions because it is read differently — these are the things you
+ *  want to notice yourself doing, not tick off. */
+function normalizeAvoid(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((a) => (typeof a === "string" ? a.slice(0, MAX_NOTE_LEN) : typeof a?.text === "string" ? a.text.slice(0, MAX_NOTE_LEN) : ""))
+    .filter((t) => t.trim())
+    .slice(0, MAX_INTENTS_PER_DAY);
 }
 
 /** The day's intentions, each tickable — the "GOAL:" list at the top of a
@@ -165,6 +180,7 @@ export function normalizeDay(raw) {
     reflection: typeof raw.reflection === "string" ? raw.reflection : "",
     notes: normalizeNotes(raw.notes),
     intents: normalizeIntents(raw.intents),
+    avoid: normalizeAvoid(raw.avoid),
   };
 }
 
@@ -176,7 +192,8 @@ export const dayHasContent = (day) =>
   (dayHasEntries(day) ||
     (day.reflection ?? "").trim() !== "" ||
     (day.notes ?? []).length > 0 ||
-    (day.intents ?? []).length > 0);
+    (day.intents ?? []).length > 0 ||
+    (day.avoid ?? []).length > 0);
 
 /** A day "counts" for streaks/nudges/bests once at least one slot is painted. */
 export const dayHasEntries = (day) => !!day && Array.isArray(day.slots) && day.slots.some((v) => v !== UNTRACKED);
@@ -231,6 +248,35 @@ function normalizeGoals(saved) {
   return out;
 }
 
+export const MAX_CHALLENGE_NAME = 40;
+
+/** Never trusts stored input: a bad date or a silly length is dropped rather
+ *  than allowed to produce a nonsense day number. */
+function normalizeChallenge(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  const name = typeof raw.name === "string" ? raw.name.trim().slice(0, MAX_CHALLENGE_NAME) : "";
+  const startKey = typeof raw.startKey === "string" && /^\d{4}-\d{2}-\d{2}$/.test(raw.startKey) ? raw.startKey : null;
+  if (!name || !startKey || Number.isNaN(new Date(startKey + "T00:00:00").getTime())) return null;
+  const targetDays =
+    Number.isInteger(raw.targetDays) && raw.targetDays > 0 && raw.targetDays <= 3650 ? raw.targetDays : null;
+  return { name, startKey, targetDays };
+}
+
+/**
+ * Which day of the challenge `now` falls on, counting the start date as
+ * day 1. Null before it starts.
+ * @returns {{day:number, targetDays:number|null, name:string}|null}
+ */
+export function challengeProgress(challenge, now = new Date()) {
+  if (!challenge) return null;
+  const start = new Date(challenge.startKey + "T00:00:00");
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  const day = Math.floor((today - start) / 86400000) + 1;
+  if (day < 1) return null;
+  return { day, targetDays: challenge.targetDays, name: challenge.name };
+}
+
 export function normalizeSettings(saved) {
   const times =
     Array.isArray(saved?.times) && saved.times.length === 2 && saved.times.every(isValidTime)
@@ -246,6 +292,7 @@ export function normalizeSettings(saved) {
       : DEFAULT_SETTINGS.weeklyRecapDay;
   const weeklyRecapTime = isValidTime(saved?.weeklyRecapTime) ? saved.weeklyRecapTime : DEFAULT_SETTINGS.weeklyRecapTime;
   const lastExportAt = Number.isFinite(saved?.lastExportAt) ? saved.lastExportAt : null;
+  const challenge = normalizeChallenge(saved?.challenge);
   const dayWindow = {
     start: isValidTime(saved?.dayWindow?.start) ? saved.dayWindow.start : DEFAULT_SETTINGS.dayWindow.start,
     end: isValidTime(saved?.dayWindow?.end) ? saved.dayWindow.end : DEFAULT_SETTINGS.dayWindow.end,
@@ -264,6 +311,7 @@ export function normalizeSettings(saved) {
     weeklyRecapDay,
     weeklyRecapTime,
     lastExportAt,
+    challenge,
     dayWindow,
   };
 }
@@ -574,17 +622,28 @@ export function weeklyRecap(days, categories, weekStartDate) {
   let productiveMin = 0;
   const perCatMin = categories.map(() => 0);
   let bestDay = null;
+  let intentsSet = 0;
+  let intentsDone = 0;
+  let daysLogged = 0;
 
   for (let i = 0; i < 7; i++) {
     const d = new Date(start);
     d.setDate(d.getDate() + i);
     const key = dateKey(d);
-    const slots = days.get(key)?.slots ?? new Array(SLOTS).fill(UNTRACKED);
+    const day = days.get(key);
+    const slots = day?.slots ?? new Array(SLOTS).fill(UNTRACKED);
     const stats = computeStats(slots, categories);
 
     trackedMin += stats.trackedMin;
     productiveMin += stats.productiveMin;
     stats.perCat.forEach((n, idx) => (perCatMin[idx] += n * SLOT_MIN));
+    if (dayHasEntries(day)) daysLogged++;
+    // How the week's stated intentions actually went — the half of a weekly
+    // review that a time total can't answer.
+    for (const intent of day?.intents ?? []) {
+      intentsSet++;
+      if (intent.done) intentsDone++;
+    }
     if (stats.score !== null && (bestDay === null || stats.score > bestDay.score)) {
       bestDay = { key, score: stats.score };
     }
@@ -598,18 +657,29 @@ export function weeklyRecap(days, categories, weekStartDate) {
 
   return {
     trackedMin,
+    daysLogged,
     productivePct: trackedMin > 0 ? Math.round((productiveMin / trackedMin) * 100) : 0,
     topCategory,
     bestDay,
+    intentsSet,
+    intentsDone,
     streak: computeStreak(days, weekEnd),
   };
 }
 
-/** Short line for the notification itself; the dial shows the rest. */
+/**
+ * Short line for the notification itself; the dial shows the rest.
+ *
+ * Ends on a question rather than a summary. A recap that only reports
+ * numbers is read and forgotten; the point of a weekly look back is to
+ * decide whether anything needs changing, so it asks.
+ */
 export function weeklyRecapMessage(recap) {
-  if (recap.trackedMin === 0) return "No time logged last week.";
+  if (recap.trackedMin === 0) return "Nothing logged last week. Worth a fresh start this week?";
   const parts = [`${fmtDuration(recap.trackedMin)} tracked, ${recap.productivePct}% productive.`];
   if (recap.topCategory) parts.push(`Most of it went to ${recap.topCategory.name}.`);
+  if (recap.intentsSet > 0) parts.push(`You met ${recap.intentsDone} of ${recap.intentsSet} intentions.`);
+  parts.push("Anything to adjust this week?");
   return parts.join(" ");
 }
 
@@ -941,6 +1011,7 @@ export function buildBackup(days, categories, settings, appVersion, now = new Da
       reflection: day.reflection,
       notes: day.notes ?? [],
       intents: day.intents ?? [],
+      avoid: day.avoid ?? [],
     };
   }
   return {

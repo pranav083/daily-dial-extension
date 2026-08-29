@@ -20,6 +20,14 @@
               title="Log at least one block today to keep the streak alive.">not logged yet today</span>
       </div>
 
+      <!-- An optional named run with its own day counter, for anyone
+           keeping a "#100days"-style challenge. -->
+      <button type="button" class="challenge-chip" id="challenge-chip" hidden
+              title="Your named challenge. Click to change it.">
+        <span id="challenge-name"></span>
+        <span class="challenge-day" id="challenge-day"></span>
+      </button>
+
       <nav class="view-nav" id="view-nav" aria-label="Views">
         <button type="button" class="view-tab active" data-view="day" aria-current="page">Day</button>
         <button type="button" class="view-tab" data-view="history" title="Your months at a glance, and how categories trend over time">History</button>
@@ -216,6 +224,18 @@
           </form>
         </div>
 
+        <!-- The other half of setting out a day: what to steer clear of.
+             Not a checklist — these are things to notice yourself doing. -->
+        <div class="journal-block">
+          <p class="section-label" title="What to steer clear of today. Kept in the History log beside what you actually did.">To avoid</p>
+          <ul class="avoid-list" id="avoid-list"></ul>
+          <form class="journal-form" id="avoid-form">
+            <label for="avoid-input" class="sr-only">Add something to avoid</label>
+            <input type="text" id="avoid-input" placeholder="Doom-scrolling, 10h of series…" maxlength="500">
+            <button type="submit" class="ghost-btn">Add</button>
+          </form>
+        </div>
+
         <!-- Notes pinned to a stretch of the day, rather than one note for
              all 24 hours: "what happened between 9 and 11" is the thing
              worth writing down, and it's what a log gets read for. -->
@@ -264,7 +284,7 @@
             <button type="button" class="ghost-btn" id="hist-this-month" hidden title="Jump back to the current month">This month</button>
           </div>
 
-          <div class="hist-heatmap" id="hist-heatmap" role="grid" aria-label="Month heatmap, one cell per day"></div>
+          <div class="hist-heatmap" id="hist-heatmap" aria-label="Month calendar. Arrow keys move between days, Enter opens one." role="grid" aria-label="Month heatmap, one cell per day"></div>
 
           <p class="hist-legend">
             <span class="hist-legend-item"><span class="hist-swatch hist-swatch-empty" aria-hidden="true"></span>Not logged</span>
@@ -403,6 +423,20 @@
           <p class="section-label" style="margin-top:16px;" title="For things that don't happen every day — a target for the week as a whole instead of each individual day.">Weekly targets, per category</p>
           <div id="weekly-goals-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
           <p class="editor-note">Independent of the daily targets above — set either, both, or neither per category.</p>
+
+          <p class="section-label" style="margin-top:16px;" title="A named run with its own day counter, like a 100-day challenge. Separate from the streak: it counts from a start date and doesn't break if you miss a day.">Challenge</p>
+          <div class="challenge-fields">
+            <label for="challenge-name-input">Name</label>
+            <input type="text" id="challenge-name-input" maxlength="40" placeholder="#100days">
+            <label for="challenge-start-input">Started</label>
+            <input type="date" id="challenge-start-input">
+            <label for="challenge-target-input">Length (days)</label>
+            <input type="number" id="challenge-target-input" min="1" max="3650" placeholder="100">
+          </div>
+          <div class="footer-actions">
+            <button class="ghost-btn danger" id="challenge-clear" hidden>Clear challenge</button>
+          </div>
+          <p class="editor-note">A day counter shown next to your streak. Unlike the streak it doesn't break — it just counts from the start date. Leave the name blank for none.</p>
         </section>
 
         <section class="settings-section" data-panel="data">

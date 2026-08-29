@@ -91,6 +91,7 @@ function renderHeatmap(year, month, days, categories, weekStart) {
 
   const weeks = buildMonthGrid(year, month, days, categories, weekStart);
   const today = new Date();
+  const cells = [];
 
   for (const week of weeks) {
     const row = document.createElement("div");
@@ -124,10 +125,34 @@ function renderHeatmap(year, month, days, categories, weekStart) {
 
       const cellDate = new Date(cell.date);
       btn.addEventListener("click", () => goToDay(cellDate));
+      // Roving tabindex: the grid is one tab stop, arrows move within it.
+      // Every cell being focusable meant ~40 presses to tab past the month.
+      btn.tabIndex = -1;
+      btn.dataset.cellIndex = String(cells.length);
+      cells.push(btn);
       row.appendChild(btn);
     }
     el.appendChild(row);
   }
+
+  // One cell holds the tab stop: today if it's on screen, else the first.
+  const initial = cells.find((b) => b.classList.contains("today")) ?? cells[0];
+  if (initial) initial.tabIndex = 0;
+
+  el.onkeydown = (evt) => {
+    const step = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 7, ArrowUp: -7 }[evt.key];
+    const here = cells.indexOf(document.activeElement);
+    if (here === -1) return;
+    let next = null;
+    if (step !== undefined) next = Math.max(0, Math.min(cells.length - 1, here + step));
+    else if (evt.key === "Home") next = 0;
+    else if (evt.key === "End") next = cells.length - 1;
+    if (next === null) return;
+    evt.preventDefault();
+    cells[here].tabIndex = -1;
+    cells[next].tabIndex = 0;
+    cells[next].focus();
+  };
 }
 
 /* ---------- month summary ---------- */
@@ -457,6 +482,26 @@ function renderLogDay(key, day, categories) {
     wrap.append(label, list);
   }
 
+  if ((day.avoid ?? []).length) {
+    const label = document.createElement("p");
+    label.className = "log-section-label";
+    label.textContent = "Meant to avoid";
+    const list = document.createElement("ul");
+    list.className = "log-list";
+    for (const text of day.avoid) {
+      const li = document.createElement("li");
+      const tick = document.createElement("span");
+      tick.className = "tick";
+      tick.textContent = "✕";
+      const body = document.createElement("span");
+      body.className = "log-body body";
+      body.textContent = text;
+      li.append(tick, body);
+      list.appendChild(li);
+    }
+    wrap.append(label, list);
+  }
+
   if ((day.reflection ?? "").trim()) {
     const p = document.createElement("p");
     p.className = "log-reflection";
@@ -490,7 +535,10 @@ export function renderHistory() {
   ensureWired();
   const { days, categories, settings } = getAppData();
 
-  const anyData = [...days.values()].some((d) => dayHasEntries(d));
+  // Gated on *anything recorded*, not just painted time: a day carrying only
+  // intentions or a note still belongs in the log, and hiding the whole view
+  // meant the journal vanished until something was painted.
+  const anyData = [...days.values()].some((d) => dayHasContent(d));
   $("history-empty").hidden = anyData;
   $("history-content").hidden = !anyData;
   if (!anyData) return;

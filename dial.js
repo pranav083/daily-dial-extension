@@ -30,6 +30,7 @@ import {
   buildCsv,
   buildInsight,
   buildSampleDays,
+  challengeProgress,
   buildShareSvgMarkup,
   computeRuns,
   computeStats,
@@ -287,6 +288,7 @@ function persistDay() {
     reflection: state.reflection,
     notes: state.notes ?? [],
     intents: state.intents ?? [],
+    avoid: state.avoid ?? [],
   };
   const wasEmpty = days.size === 0;
   days.set(key, data);
@@ -417,50 +419,51 @@ const hideTooltip = () => tooltip.classList.remove("show");
 
 /* ---------- undo / redo ---------- */
 
-/** One entry per completed gesture, tagged with its day so stepping back
- *  through history can't drop a stroke onto the wrong date. Redo mirrors undo
- *  exactly, and a new stroke clears whatever was available to redo. */
-const undoStack = [];
-const redoStack = [];
+/**
+ * One stack per day, rather than one shared stack filtered by date.
+ *
+ * The shared stack popped entries until it found one for the current day —
+ * so painting Monday, switching to Tuesday and painting, then coming back to
+ * Monday and pressing undo discarded the Tuesday entry on the way past. The
+ * stroke was still on screen but no longer undoable, with nothing said about
+ * it. Keyed stacks leave each day's history alone.
+ */
+const undoStacks = new Map();
+const redoStacks = new Map();
 const UNDO_LIMIT = 30;
 
+const stackFor = (map, key) => {
+  if (!map.has(key)) map.set(key, []);
+  return map.get(key);
+};
+
 function pushUndo() {
-  undoStack.push({ key: dateKey(state.viewDate), slots: [...state.slots] });
-  if (undoStack.length > UNDO_LIMIT) undoStack.shift();
-  redoStack.length = 0;
+  const key = dateKey(state.viewDate);
+  const stack = stackFor(undoStacks, key);
+  stack.push([...state.slots]);
+  if (stack.length > UNDO_LIMIT) stack.shift();
+  redoStacks.delete(key); // a new stroke ends this day's redo line
 }
 
-function undo() {
+function stepHistory(fromMap, toMap, doneWord, emptyWord) {
   const key = dateKey(state.viewDate);
-  while (undoStack.length && undoStack.at(-1).key !== key) undoStack.pop();
-  const entry = undoStack.pop();
-  if (!entry) {
-    toast("Nothing to undo");
+  const from = stackFor(fromMap, key);
+  const slots = from.pop();
+  if (!slots) {
+    toast(emptyWord);
     return;
   }
-  redoStack.push({ key, slots: [...state.slots] });
-  if (redoStack.length > UNDO_LIMIT) redoStack.shift();
-  state.slots = entry.slots;
+  const to = stackFor(toMap, key);
+  to.push([...state.slots]);
+  if (to.length > UNDO_LIMIT) to.shift();
+  state.slots = slots;
   persistDay();
   renderAll();
-  toast("Undone");
+  toast(doneWord);
 }
 
-function redo() {
-  const key = dateKey(state.viewDate);
-  while (redoStack.length && redoStack.at(-1).key !== key) redoStack.pop();
-  const entry = redoStack.pop();
-  if (!entry) {
-    toast("Nothing to redo");
-    return;
-  }
-  undoStack.push({ key, slots: [...state.slots] });
-  if (undoStack.length > UNDO_LIMIT) undoStack.shift();
-  state.slots = entry.slots;
-  persistDay();
-  renderAll();
-  toast("Redone");
-}
+const undo = () => stepHistory(undoStacks, redoStacks, "Undone", "Nothing to undo");
+const redo = () => stepHistory(redoStacks, undoStacks, "Redone", "Nothing to redo");
 
 /* ---------- painting ---------- */
 
@@ -1470,6 +1473,7 @@ function switchDay(d) {
   state.reflection = day.reflection;
   state.notes = (day.notes ?? []).map((n) => ({ ...n }));
   state.intents = (day.intents ?? []).map((i) => ({ ...i }));
+  state.avoid = [...(day.avoid ?? [])];
   $("reflection").value = state.reflection;
   setSelection(null);
   renderJournal();
@@ -1478,6 +1482,7 @@ function switchDay(d) {
 
 function renderJournal() {
   renderIntents();
+  renderAvoid();
   renderNotes();
 }
 
@@ -1726,6 +1731,95 @@ function renderNotes() {
     row.append(when, text, drop);
     list.appendChild(row);
   }
+}
+
+function renderAvoid() {
+  const list = $("avoid-list");
+  list.replaceChildren();
+  for (const [i, text] of (state.avoid ?? []).entries()) {
+    const row = document.createElement("li");
+    row.className = "avoid-row";
+
+    const bullet = document.createElement("span");
+    bullet.className = "bullet";
+    bullet.textContent = "✕";
+    bullet.setAttribute("aria-hidden", "true");
+
+    const body = document.createElement("span");
+    body.className = "text";
+    body.textContent = text;
+
+    const drop = document.createElement("button");
+    drop.type = "button";
+    drop.className = "drop";
+    drop.textContent = "✕";
+    drop.setAttribute("aria-label", `Remove: ${text}`);
+    drop.addEventListener("click", () => {
+      state.avoid.splice(i, 1);
+      persistDay();
+      renderAvoid();
+    });
+
+    row.append(bullet, body, drop);
+    list.appendChild(row);
+  }
+}
+
+function addAvoid(evt) {
+  evt.preventDefault();
+  const input = $("avoid-input");
+  const text = input.value.trim();
+  if (!text) return;
+  if ((state.avoid ?? []).length >= MAX_INTENTS_PER_DAY) {
+    toast(`That's the most a day can hold (${MAX_INTENTS_PER_DAY}).`);
+    return;
+  }
+  state.avoid = [...(state.avoid ?? []), text.slice(0, MAX_NOTE_LEN)];
+  input.value = "";
+  persistDay();
+  renderAvoid();
+}
+
+/* ---------- challenge ---------- */
+
+function renderChallenge() {
+  const progress = challengeProgress(settings.challenge, new Date());
+  const chip = $("challenge-chip");
+  chip.hidden = progress === null;
+  if (!progress) return;
+  $("challenge-name").textContent = progress.name;
+  $("challenge-day").textContent = progress.targetDays
+    ? `day ${progress.day} / ${progress.targetDays}`
+    : `day ${progress.day}`;
+}
+
+function syncChallengeInputs() {
+  const c = settings.challenge;
+  $("challenge-name-input").value = c?.name ?? "";
+  $("challenge-start-input").value = c?.startKey ?? "";
+  $("challenge-target-input").value = c?.targetDays ?? "";
+  $("challenge-clear").hidden = !c;
+}
+
+function saveChallenge() {
+  const name = $("challenge-name-input").value.trim();
+  const startKey = $("challenge-start-input").value;
+  const rawTarget = Number($("challenge-target-input").value);
+  // A challenge needs both a name and a start; anything less is no challenge.
+  const next = name && startKey
+    ? { name, startKey, targetDays: Number.isInteger(rawTarget) && rawTarget > 0 ? rawTarget : null }
+    : null;
+  settings = normalizeSettings({ ...settings, challenge: next });
+  persistSettings();
+  renderChallenge();
+  syncChallengeInputs();
+}
+
+function clearChallenge() {
+  settings = normalizeSettings({ ...settings, challenge: null });
+  persistSettings();
+  renderChallenge();
+  syncChallengeInputs();
 }
 
 function addIntent(evt) {
@@ -2506,6 +2600,12 @@ function wireEvents() {
   $("stale-banner-reload").addEventListener("click", () => window.location.reload());
   $("intent-form").addEventListener("submit", addIntent);
   $("note-form").addEventListener("submit", addNote);
+  $("avoid-form").addEventListener("submit", addAvoid);
+  $("challenge-chip").addEventListener("click", () => openSettings("goals"));
+  for (const id of ["challenge-name-input", "challenge-start-input", "challenge-target-input"]) {
+    $(id).addEventListener("change", saveChallenge);
+  }
+  $("challenge-clear").addEventListener("click", clearChallenge);
 
   $("prev-day").addEventListener("click", () => {
     const d = new Date(state.viewDate);
@@ -2711,6 +2811,8 @@ async function boot() {
   renderAboutBests();
   renderDriveStatus();
   renderSampleDataUI();
+  renderChallenge();
+  syncChallengeInputs();
   reconcileActivePen();
   applyDialMode();
   renderAll();

@@ -890,7 +890,57 @@ select {
   border: 0;
 }
 
+/* ---- challenge chip ---- */
+.challenge-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--ink-2);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.challenge-chip[hidden] { display: none; }
+.challenge-chip:hover { border-color: var(--accent); }
+.challenge-chip:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.challenge-day { font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-muted); font-weight: 400; }
+
+.challenge-fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 12px;
+  align-items: center;
+}
+.challenge-fields label { font-size: 0.83rem; color: var(--ink-2); }
+.challenge-fields input {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.83rem;
+  min-width: 0;
+}
+.challenge-fields input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
 /* ---- journal: intentions and ranged notes ---- */
+.avoid-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.avoid-row { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; }
+.avoid-row .bullet { flex: none; color: var(--status-critical-text); padding-top: 1px; }
+.avoid-row .text { flex: 1; color: var(--ink-2); overflow-wrap: anywhere; }
+.avoid-row .drop {
+  flex: none; border: none; background: none; color: var(--ink-muted);
+  cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 2px 4px; border-radius: 5px;
+}
+.avoid-row .drop:hover { color: var(--status-critical-text); background: var(--panel-2); }
+.avoid-row .drop:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
 .journal-block { display: flex; flex-direction: column; gap: 8px; }
 
 .intent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }

@@ -44,6 +44,7 @@ import {
   summarizeImport,
   angleAt,
   buildSampleDays,
+  challengeProgress,
   buildShareSvgMarkup,
   DRIVE_BACKUP_FILENAME,
   driveCreateMultipartBody,
@@ -101,7 +102,7 @@ test("normalizeDay repairs anything malformed", () => {
   assert.equal(normalizeDay({ reflection: 42 }).reflection, "", "non-string reflection is dropped");
 
   const good = { slots: paint(blank(), 9, 10, 0), reflection: "ok" };
-  assert.deepEqual(normalizeDay(good), { ...good, notes: [], intents: [] });
+  assert.deepEqual(normalizeDay(good), { ...good, notes: [], intents: [], avoid: [] });
 });
 
 test("normalizeCategories keeps ids and colours, takes user name and weight", () => {
@@ -433,9 +434,9 @@ test("parseCsv round-trips what buildCsv emits", () => {
 
   assert.equal(result.ok, true);
   assert.deepEqual(result.data.get("2026-08-26"),
-    { slots: paint(blank(), 9, 11, 0), reflection: "earlier, with a comma", notes: [], intents: [] });
+    { slots: paint(blank(), 9, 11, 0), reflection: "earlier, with a comma", notes: [], intents: [], avoid: [] });
   assert.deepEqual(result.data.get("2026-08-27"),
-    { slots: paint(blank(), 14, 15, 1), reflection: "later day", notes: [], intents: [] });
+    { slots: paint(blank(), 14, 15, 1), reflection: "later day", notes: [], intents: [], avoid: [] });
 });
 
 test("parseCsv rounds times that aren't on the 15-minute grid instead of dropping them", () => {
@@ -531,7 +532,7 @@ test("parseBackup round-trips a backup built by buildBackup", () => {
   assert.equal(result.ok, true);
   assert.equal(result.data.settings.theme, "dark");
   assert.deepEqual(result.data.days.get("2026-08-26"),
-    { slots: paint(blank(), 9, 10, 0), reflection: "note", notes: [], intents: [] });
+    { slots: paint(blank(), 9, 10, 0), reflection: "note", notes: [], intents: [], avoid: [] });
 });
 
 test("parseBackup rejects invalid JSON", () => {
@@ -783,7 +784,10 @@ test("weeklyRecapMessage summarizes tracked time and the top category", () => {
 });
 
 test("weeklyRecapMessage reports a blank week plainly", () => {
-  assert.equal(weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24))), "No time logged last week.");
+  assert.equal(
+    weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24))),
+    "Nothing logged last week. Worth a fresh start this week?"
+  );
 });
 
 /* ---------- goals ---------- */
@@ -1203,4 +1207,77 @@ test("a backup round-trips notes and intentions", () => {
   const back = parsed.data.days.get("2026-08-26");
   assert.deepEqual(back.notes, [{ from: 36, to: 44, text: "sent the mail" }]);
   assert.deepEqual(back.intents, [{ text: "Leetcode", done: true }]);
+});
+
+/* ---------- things to avoid ---------- */
+
+test("normalizeDay accepts an avoid list as plain strings or objects", () => {
+  const day = normalizeDay({
+    slots: blank(),
+    avoid: ["Doom-scrolling", { text: "10h of series" }, "   ", 42, null],
+  });
+  assert.deepEqual(day.avoid, ["Doom-scrolling", "10h of series"]);
+  assert.equal(dayHasContent(day), true, "an avoid list alone is worth keeping");
+  assert.equal(dayHasEntries(day), false, "but it isn't logged time");
+});
+
+/* ---------- named challenge ---------- */
+
+test("challengeProgress counts the start date as day 1", () => {
+  const c = normalizeSettings({ challenge: { name: "#100days", startKey: "2026-08-11", targetDays: 100 } }).challenge;
+  assert.deepEqual(c, { name: "#100days", startKey: "2026-08-11", targetDays: 100 });
+
+  assert.equal(challengeProgress(c, new Date(2026, 7, 11)).day, 1, "the start date is day 1");
+  assert.equal(challengeProgress(c, new Date(2026, 7, 29)).day, 19);
+  assert.equal(challengeProgress(c, new Date(2026, 7, 10)), null, "nothing before it starts");
+  assert.equal(challengeProgress(null, new Date()), null);
+});
+
+test("challengeProgress is unaffected by the time of day", () => {
+  const c = normalizeSettings({ challenge: { name: "run", startKey: "2026-08-11" } }).challenge;
+  assert.equal(c.targetDays, null, "a target is optional");
+  assert.equal(challengeProgress(c, new Date(2026, 7, 20, 0, 5)).day, 10);
+  assert.equal(challengeProgress(c, new Date(2026, 7, 20, 23, 55)).day, 10);
+});
+
+test("normalizeSettings drops a malformed challenge rather than counting nonsense", () => {
+  const bad = [
+    { name: "x" },
+    { startKey: "2026-08-11" },
+    { name: "x", startKey: "not-a-date" },
+    { name: "   ", startKey: "2026-08-11" },
+    "nope",
+  ];
+  for (const c of bad) assert.equal(normalizeSettings({ challenge: c }).challenge, null, JSON.stringify(c));
+  assert.equal(
+    normalizeSettings({ challenge: { name: "x", startKey: "2026-08-11", targetDays: -5 } }).challenge.targetDays,
+    null,
+    "a nonsensical target is dropped but the challenge survives"
+  );
+});
+
+/* ---------- weekly review ---------- */
+
+test("weeklyRecap counts how the week's stated intentions went", () => {
+  const slots = paint(blank(), 9, 11, 0);
+  const days = new Map([
+    ["2026-08-24", normalizeDay({ slots, intents: [{ text: "a", done: true }, { text: "b" }] })],
+    ["2026-08-25", normalizeDay({ slots, intents: [{ text: "c", done: true }] })],
+  ]);
+  const recap = weeklyRecap(days, cats, new Date(2026, 7, 24));
+  assert.equal(recap.intentsSet, 3);
+  assert.equal(recap.intentsDone, 2);
+  assert.equal(recap.daysLogged, 2);
+});
+
+test("the weekly recap message ends by asking what to adjust", () => {
+  const slots = paint(blank(), 9, 11, 0);
+  const days = new Map([["2026-08-24", normalizeDay({ slots, intents: [{ text: "a", done: true }] })]]);
+  const msg = weeklyRecapMessage(weeklyRecap(days, cats, new Date(2026, 7, 24)));
+  assert.match(msg, /1 of 1 intentions/);
+  assert.match(msg, /adjust/, "a review should prompt a decision, not just report");
+
+  const empty = weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24)));
+  assert.match(empty, /Nothing logged/);
+  assert.doesNotMatch(empty, /intentions/, "no intention count when there were none");
 });
