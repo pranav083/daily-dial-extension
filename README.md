@@ -212,6 +212,13 @@ Stated up front, because they're inherent rather than unfinished:
 - **Storage is per-browser-profile.** No cross-device sync, by design — sync
   would mean either a server or a tight quota.
 - **15-minute granularity.** The dial has 96 slots; shorter bursts round.
+- **The time fields in Settings follow your browser, not this app.** Chrome
+  draws `<input type="time">` itself, from the browser's own locale, and
+  ignores the page's language and the app's 12h/24h setting. So those fields
+  can read `01:00 PM` while the rest of the app is in another language or set
+  to 24-hour. Verified: the `lang` attribute changes nothing, on the input or
+  the document. Replacing them with our own controls would fix it and cost
+  the native picker; not worth the trade.
 - **Translation covers the app, not your writing.** Your notes, intentions,
   reflections and category names stay exactly as you typed them. Nothing you
   wrote is ever machine-translated, and renaming a category you have months of
