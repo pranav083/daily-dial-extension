@@ -1158,7 +1158,7 @@
     "message": "打造属于你的版本"
   },
   "onboardingStep3TextBefore": {
-    "message": "重命名类别、设置提醒和目标、备份到 Google Drive——全部都在"
+    "message": "重命名分类、选择语言、设置提醒和目标，或备份到 Google Drive——全都在右上角的"
   },
   "onboardingStep3TextAfter": {
     "message": "（右上角）中。除了绘制之外，其余一切都是可选的。"

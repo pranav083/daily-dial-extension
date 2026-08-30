@@ -29,6 +29,8 @@ The version here always matches `manifest.json`.
 
 - **"Fill multiple days" moved from Data to Categories.** It paints your time
   with a category; Data is for export, import and backup.
+- The welcome tour's third card now mentions choosing your language, since
+  that is where you would look for it.
 
 ## [1.27.0] — 2026-08-30
 

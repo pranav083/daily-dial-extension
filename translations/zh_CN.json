@@ -331,7 +331,7 @@
  "onboardingStep2Title": "看看数据如何累积",
  "onboardingStep2Text": "随着你的绘制，分数、高效占比和最长专注时间都会实时更新。下方的一行文字会用简单的语言总结你的一天。",
  "onboardingStep3Title": "打造属于你的版本",
- "onboardingStep3TextBefore": "重命名类别、设置提醒和目标、备份到 Google Drive——全部都在",
+ "onboardingStep3TextBefore": "重命名分类、选择语言、设置提醒和目标，或备份到 Google Drive——全都在右上角的",
  "onboardingStep3TextAfter": "（右上角）中。除了绘制之外，其余一切都是可选的。",
  "onboardingAltBefore": "想先用真实数据看看效果？",
  "loadSampleDataInsteadLabel": "改为加载示例数据",

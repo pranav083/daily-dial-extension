@@ -331,7 +331,7 @@
  "onboardingStep2Title": "積み上がる様子を見る",
  "onboardingStep2Text": "描くたびに、スコア・生産的な割合・最長集中時間が更新されます。その下の一文は、今日の様子を分かりやすい言葉で伝えます。",
  "onboardingStep3Title": "自分仕様にする",
- "onboardingStep3TextBefore": "カテゴリの名前変更、リマインダーや目標の設定、Google Driveへのバックアップは、すべて",
+ "onboardingStep3TextBefore": "カテゴリ名の変更、言語の選択、リマインダーや目標の設定、Google Drive へのバックアップ — すべて右上の",
  "onboardingStep3TextAfter": "の中にあります(右上)。描くこと以外はすべて任意です。",
  "onboardingAltBefore": "先に実際の数字で見てみたいですか。",
  "loadSampleDataInsteadLabel": "代わりにサンプルデータを読み込む",

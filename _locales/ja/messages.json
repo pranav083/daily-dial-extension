@@ -1158,7 +1158,7 @@
     "message": "自分仕様にする"
   },
   "onboardingStep3TextBefore": {
-    "message": "カテゴリの名前変更、リマインダーや目標の設定、Google Driveへのバックアップは、すべて"
+    "message": "カテゴリ名の変更、言語の選択、リマインダーや目標の設定、Google Drive へのバックアップ — すべて右上の"
   },
   "onboardingStep3TextAfter": {
     "message": "の中にあります(右上)。描くこと以外はすべて任意です。"

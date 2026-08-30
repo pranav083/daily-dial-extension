@@ -1614,7 +1614,7 @@
     "description": "Heading of the third welcome-tour step."
   },
   "onboardingStep3TextBefore": {
-    "message": "Rename categories, set reminders and goals, or back up to Google Drive — all behind",
+    "message": "Rename categories, choose your language, set reminders and goals, or back up to Google Drive — all behind",
     "description": "Body text of the third welcome-tour step, before the ☰ glyph."
   },
   "onboardingStep3TextAfter": {
