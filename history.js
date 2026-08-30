@@ -29,12 +29,14 @@ import {
   weekOverWeek,
 } from "./historyLib.js";
 import { getAppData, goToDay, silenceObservation } from "./dial.js";
-import { t, tm, tp } from "./i18n.js";
+import { dateFmt, fmtFullDate, shortWeekdayNames, t, tm, tp } from "./i18n.js";
 import { suggestionFor } from "./suggestions.js";
 
 const $ = (id) => document.getElementById(id);
 const SVG_NS = "http://www.w3.org/2000/svg";
-const DOW = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+/** Short weekday names in the UI language — see the same constant in
+ *  dial.js; the calendar header had the identical English leak. */
+const DOW = shortWeekdayNames();
 const ARROW = { up: "▲", down: "▼", flat: "·" };
 
 /** Which month the heatmap/summary/trends are showing. Day-of-month is
@@ -71,7 +73,7 @@ function isSameMonth(a, b) {
 }
 
 function monthLabel(year, month) {
-  return new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" }).format(new Date(year, month, 1));
+  return dateFmt({ month: "long", year: "numeric" }).format(new Date(year, month, 1));
 }
 
 const fmtScore = (n) => (n === null ? "—" : `${n > 0 ? "+" : ""}${n}`);
@@ -125,16 +127,16 @@ function renderHeatmap(year, month, days, categories, weekStart) {
       if (cell.logged) {
         btn.classList.add("logged");
         btn.style.background = heatColor(cell.score, cell.trackedMin);
-        label = t("heatmapLoggedLabel", [cell.date.toDateString(), fmtScore(cell.score), fmtDuration(cell.trackedMin)]);
+        label = t("heatmapLoggedLabel", [fmtFullDate(cell.date), fmtScore(cell.score), fmtDuration(cell.trackedMin)]);
       } else if (cell.written) {
         // Written up but no time painted. Marked rather than left blank: an
         // imported journal is entirely days like this, and showing them as
         // empty says "nothing happened" about days the user wrote about.
         btn.classList.add("written");
-        label = t("heatmapWrittenLabel", [cell.date.toDateString()]);
+        label = t("heatmapWrittenLabel", [fmtFullDate(cell.date)]);
       } else {
         btn.classList.add("empty");
-        label = t("heatmapEmptyLabel", [cell.date.toDateString()]);
+        label = t("heatmapEmptyLabel", [fmtFullDate(cell.date)]);
       }
       btn.setAttribute("aria-label", label);
       btn.title = label;
@@ -495,9 +497,9 @@ function renderLogDay(key, day, categories) {
   const date = document.createElement("button");
   date.className = "log-date link-btn";
   date.type = "button";
-  date.textContent = new Date(key + "T00:00:00").toLocaleDateString(undefined, {
-    weekday: "long", day: "numeric", month: "long",
-  });
+  date.textContent = dateFmt({ weekday: "long", day: "numeric", month: "long" }).format(
+    new Date(key + "T00:00:00")
+  );
   date.title = t("openDayTooltip");
   date.addEventListener("click", () => goToDay(key));
   head.appendChild(date);

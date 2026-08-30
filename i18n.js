@@ -96,6 +96,34 @@ export function tm(descriptor) {
  *  `weeklyRecapMessage` are meant to be read. */
 export const tmJoin = (descriptors, sep = " ") => descriptors.map(tm).join(sep);
 
+/**
+ * A date formatter in the language the app is *displayed* in.
+ *
+ * Every one of these used to pass `undefined`, which means the browser's own
+ * locale — usually but not always the same thing, and never the same thing
+ * once someone sets the extension's language deliberately. It showed:
+ * a fully Spanish page with "August 2026" over the week strip.
+ */
+export const dateFmt = (options) => new Intl.DateTimeFormat(uiLanguage(), options);
+
+/** A full, spoken-out date — for aria-labels, which were using
+ *  `toDateString()`. That is English by definition, so every screen reader
+ *  in every other language was being handed "Sat Aug 29 2026". */
+export const fmtFullDate = (d) =>
+  dateFmt({ weekday: "long", year: "numeric", month: "long", day: "numeric" }).format(d);
+
+/**
+ * Short weekday names indexed 0=Sunday, matching `Date.getDay()`.
+ *
+ * 2024-01-07 is a Sunday, so the seven days from it land on Sun..Sat — a
+ * fixed anchor rather than arithmetic off today, which would depend on when
+ * the module happened to load.
+ */
+export function shortWeekdayNames() {
+  const fmt = dateFmt({ weekday: "short" });
+  return Array.from({ length: 7 }, (_, i) => fmt.format(new Date(2024, 0, 7 + i)));
+}
+
 /** Languages Chrome may resolve to that are written right to left. Matched on
  *  the base subtag, so "ar", "ar-EG" and "ar-SA" all count. */
 const RTL_LANGUAGES = new Set(["ar", "he", "fa", "ur", "ps", "sd", "ug", "yi"]);

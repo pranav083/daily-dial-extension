@@ -8,7 +8,7 @@
  * boot; reads hit that map, writes update it and persist in the background.
  */
 
-import { applyDocumentDirection, initDurationUnits, t, tm, tp } from "./i18n.js";
+import { applyDocumentDirection, dateFmt, fmtFullDate, initDurationUnits, shortWeekdayNames, t, tm, tp } from "./i18n.js";
 export { t };
 
 import { SILENCED_KEY } from "./suggestions.js";
@@ -1645,7 +1645,7 @@ function loggedDayCount() {
 
 function renderBackupStatus() {
   $("backup-status").textContent = settings.lastExportAt
-    ? t("lastBackupStatus", [new Date(settings.lastExportAt).toLocaleDateString()])
+    ? t("lastBackupStatus", [dateFmt({ dateStyle: "medium" }).format(new Date(settings.lastExportAt))])
     : t("noBackupYetStatus");
 
   const due = !nudgeDismissed && shouldNudgeBackup(settings.lastExportAt, loggedDayCount(), new Date());
@@ -1666,7 +1666,9 @@ function markExported() {
 
 /* ---------- 7-day strip ---------- */
 
-const DOW = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+/** Short weekday names in the UI language — these were English initials,
+ *  which leaked into the week strip of every translated build. */
+const DOW = shortWeekdayNames();
 
 function renderStrip() {
   const stripEl = $("strip");
@@ -1677,7 +1679,7 @@ function renderStrip() {
   // which month, and at a boundary the strip spans two.
   const first = new Date(today);
   first.setDate(first.getDate() - 6);
-  const monthOf = (d) => new Intl.DateTimeFormat(undefined, { month: "long" }).format(d);
+  const monthOf = (d) => dateFmt({ month: "long" }).format(d);
   $("strip-month").textContent =
     first.getMonth() === today.getMonth()
       ? `${monthOf(today)} ${today.getFullYear()}`
@@ -1693,7 +1695,7 @@ function renderStrip() {
 
     const btn = document.createElement("button");
     btn.className = `strip-day${sameDay(d, state.viewDate) ? " active" : ""}`;
-    btn.setAttribute("aria-label", `${d.toDateString()} — ${t(bucket.labelKey)}`);
+    btn.setAttribute("aria-label", `${fmtFullDate(d)} — ${t(bucket.labelKey)}`);
 
     const dow = document.createElement("span");
     dow.className = "dow";
@@ -1737,7 +1739,7 @@ function renderDateLabel() {
   yesterday.setDate(yesterday.getDate() - 1);
   label.textContent = sameDay(state.viewDate, yesterday)
     ? t("dateYesterday")
-    : new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric" }).format(state.viewDate);
+    : dateFmt({ weekday: "short", month: "short", day: "numeric" }).format(state.viewDate);
   jump.hidden = false;
 }
 
@@ -1822,9 +1824,7 @@ function rasterizeSvgToPng(svgMarkup, width, height, scale = 2) {
 
 async function shareAsImage() {
   const key = dateKey(state.viewDate);
-  const dateLabel = new Intl.DateTimeFormat(undefined, {
-    weekday: "long", month: "long", day: "numeric",
-  }).format(state.viewDate);
+  const dateLabel = dateFmt({ weekday: "long", month: "long", day: "numeric" }).format(state.viewDate);
   const streak = isToday(state.viewDate) ? computeStreak(days, new Date()) : null;
   const shareStats = computeStats(state.slots, categories, dayWindowMinutes());
   const shareTop = categories
@@ -2968,7 +2968,7 @@ function renderDriveStatus() {
   $("drive-account").textContent = driveAccountEmail ? t("driveConnectedAsStatus", [driveAccountEmail]) : "";
   $("drive-account").hidden = !driveAccountEmail;
   $("drive-status").textContent = driveLastSyncAt
-    ? t("driveLastSyncStatus", [new Date(driveLastSyncAt).toLocaleString()]) + (size ? ` · ${size}` : "")
+    ? t("driveLastSyncStatus", [dateFmt({ dateStyle: "medium", timeStyle: "short" }).format(new Date(driveLastSyncAt))]) + (size ? ` · ${size}` : "")
     : driveFileId
       ? t("driveConnectedNoUploadStatus")
       : t("driveNotBackedUpStatus");

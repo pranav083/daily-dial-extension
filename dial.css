@@ -232,7 +232,20 @@ body {
 }
 .strip-day:hover { background: var(--panel); }
 .strip-day.active { border-color: var(--accent); background: var(--panel); }
-.strip-day .dow { font-size: 0.66rem; color: var(--ink-muted); letter-spacing: 0.04em; width: 2ch; }
+/* Wide enough for the longest short weekday name Intl produces across the
+   shipped languages ("Wed", "mié", "मंगल" — 21px at this size). Fixed rather
+   than auto so the bars stay aligned down the column; the ellipsis is a
+   guard for a language none of us checked. */
+.strip-day .dow {
+  font-size: 0.66rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  width: 28px;
+  flex: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .strip-day .bar-track {
   flex: 1;
   min-width: 0;
@@ -256,7 +269,7 @@ body {
 .dial-stack { flex: 1; min-width: 0; }
 /* Wide enough for the longest category name plus its swatch and weight
    glyph; the week strip inside it simply takes the same width. */
-.dial-rail { display: flex; flex-direction: column; gap: 14px; flex: 0 0 156px; min-width: 0; }
+.dial-rail { display: flex; flex-direction: column; gap: 14px; flex: 0 0 168px; min-width: 0; }
 .dial-rail .strip-wrap { flex: 0 0 auto; width: 100%; margin-top: auto; }
 /* A container query on the card, for the same reason the twin dials use one:
    once the card itself is narrow, the strip goes back above the ring rather
