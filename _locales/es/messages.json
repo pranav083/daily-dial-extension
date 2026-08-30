@@ -129,7 +129,7 @@
     "message": "tus plantillas"
   },
   "firstRunHint": {
-    "message": "👇 Elige una categoría y arrastra alrededor del anillo para pintar tu primer bloque."
+    "message": "👈 Elige una categoría y arrastra alrededor del anillo para pintar tu primer bloque."
   },
   "firstRunHintDismiss": {
     "message": "Entendido"
@@ -1217,7 +1217,7 @@
     "message": "Pinta tu día"
   },
   "onboardingStep1TextBefore": {
-    "message": "Elige una categoría debajo del dial y arrastra alrededor del anillo. ¿Prefieres escribir?"
+    "message": "Elige una categoría junto al dial, luego arrastra alrededor del anillo. ¿Prefieres escribir?"
   },
   "onboardingStep1TextAfter": {
     "message": "también funciona."
@@ -1250,7 +1250,7 @@
     "message": "Empecemos"
   },
   "onboardingNudgePaintToast": {
-    "message": "Elige una categoría abajo y arrastra alrededor del anillo para pintar"
+    "message": "Elige una categoría a la izquierda y arrastra alrededor del anillo para pintar"
   },
   "onboardingNudgeSettingsToast": {
     "message": "Ya está listo — Ajustes (☰, arriba a la derecha) tiene categorías, recordatorios, metas y copia de seguridad"

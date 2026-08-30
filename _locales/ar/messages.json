@@ -185,7 +185,7 @@
     "message": "قوالبك"
   },
   "firstRunHint": {
-    "message": "👇 اختر فئة، ثم اسحب حول الحلقة لتلوين أول فترة لك."
+    "message": "👉 اختر فئة، ثم اسحب حول الحلقة لتلوين أول فترة لك."
   },
   "firstRunHintDismiss": {
     "message": "فهمت"
@@ -1569,7 +1569,7 @@
     "message": "لوّن يومك"
   },
   "onboardingStep1TextBefore": {
-    "message": "اختر فئة أسفل القرص، ثم اسحب حول الحلقة. تفضّل الكتابة؟"
+    "message": "اختر فئة بجانب القرص، ثم اسحب حول الحلقة. تفضّل الكتابة؟"
   },
   "onboardingStep1TextAfter": {
     "message": "يعمل أيضًا."
@@ -1602,7 +1602,7 @@
     "message": "لنبدأ"
   },
   "onboardingNudgePaintToast": {
-    "message": "اختر فئة أدناه، ثم اسحب حول الحلقة للتلوين"
+    "message": "اختر فئة من اليمين، ثم اسحب حول الحلقة للتلوين"
   },
   "onboardingNudgeSettingsToast": {
     "message": "أنت جاهز — الإعدادات (☰) تضم الفئات والتذكيرات والأهداف والنسخ الاحتياطي"

@@ -32,9 +32,11 @@ showing someone else around or just want a refresher.
 
 ## Paint your first day
 
-Pick a category below the dial — **Deep Work**, **Applications**, **Study**,
-**Admin**, **Break**, **Distraction** by default — then click or drag around
-the ring to paint that stretch of time.
+Pick a category from the column beside the dial — **Deep Work**,
+**Applications**, **Study**, **Admin**, **Break**, **Distraction** by default —
+then click or drag around the ring to paint that stretch of time. The eraser
+sits just below them, on its own; it isn't a category, so it doesn't move when
+you rename or hide one.
 
 Don't want to drag? Type it instead, in the box under the dial:
 ```

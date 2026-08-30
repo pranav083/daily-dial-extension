@@ -37,6 +37,8 @@ of it.**
 | `dial.js` | The page — DOM, events, `chrome.storage`. |
 | `background.js` | Service worker — alarms, notifications, opening the dial. |
 | `drive.js` | Optional Google Drive backup — `chrome.identity` + `fetch`, no DOM. Its request/response shaping (URLs, the multipart body) still lives in `lib.js` and is unit tested; `drive.js` itself is the thin, untested, impure wrapper, same tier as `background.js`. |
+| `i18n.js` | The only module that turns a message key into words. `background.js` needs it too and cannot import `dial.js`, which touches the DOM. |
+| `suggestions.js` | Pure data: what people do about each observation. Bundled, never fetched. |
 
 If you find yourself wanting to test something, that is usually a sign it
 belongs in `lib.js`. Anything that can be expressed as a function from data to
@@ -58,6 +60,49 @@ These exist for reasons that aren't obvious from reading a single line:
   untrusted input.
 - **A score of `null` means "nothing logged"** and is not the same as `0`, which
   means "productive and wasted time balanced out".
+- **The pure modules never return a finished sentence.** `lib.js` cannot reach
+  `chrome.i18n`, so it returns `msg("insightTopCategory", cat, dur)` and the UI
+  resolves it. Calculation decides what is worth saying, not how it is worded.
+- **A translatable message owns a whole sentence, never a fragment.** Gluing
+  `"<b>X</b> led the"` to `" the day at <b>Y</b>"` works only because English
+  puts the verb in the middle. Hindi and Japanese put it last, and Chinese wants
+  the count in the middle of "5 day streak" — none of which a translator can
+  produce from pieces, at any price.
+- **A count needs a plural family, not a ternary.** `n === 1 ? a : b` fixes the
+  catalog at two forms; Russian needs four and Arabic six. Use
+  `tp("filledDays", n, [...])` or `plural(...)` from `lib.js`.
+
+## Adding or fixing a translation
+
+Translators edit one flat file and never touch the shipped catalogs:
+
+```bash
+$EDITOR translations/es.json               # {"key": "words"} — that is all
+node scripts/build-locale.mjs es translations/es.json
+npm run check
+```
+
+`build-locale.mjs` generates `_locales/es/messages.json`, copying the
+`placeholders` block from English. That block maps `$COUNT$` to `$1`, and those
+numbers are positional against arguments the *code* passes — not a translator's
+decision, and nine chances to renumber one by hand.
+
+Things worth knowing before starting:
+
+- **`_locales/` is generated.** Edit `translations/`, then rebuild.
+- **Placeholders move, but never change.** Put `$NAME$` wherever the sentence
+  needs it; never rename, translate or drop one.
+- **Supply the plural forms your language actually uses**, not English's two.
+  `npm run check` derives them from `Intl.PluralRules` and names any that is
+  missing; `npm test` then resolves every family at 0/1/2/3/5/11/21/100.
+- **Some strings live in controls that cannot grow** — a placeholder inside a
+  64px input, the ring toggle, the `h`/`m` suffixes. `check-locales.mjs` holds a
+  character budget for those. If it flags one, shorten the string; do not raise
+  the budget.
+- **Do not translate**: the name "Daily Dial", CSV export headers (a file
+  written on one locale has to import on another), OS and product names, or the
+  typed-entry examples like `"9-11 deep work"`, which the parser matches
+  literally.
 
 ## Before opening a pull request
 

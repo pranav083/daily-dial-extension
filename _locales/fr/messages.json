@@ -129,7 +129,7 @@
     "message": "tes modèles"
   },
   "firstRunHint": {
-    "message": "👇 Choisis une catégorie, puis fais glisser autour de l'anneau pour peindre ton premier bloc."
+    "message": "👈 Choisis une catégorie, puis fais glisser autour de l’anneau pour peindre ton premier bloc."
   },
   "firstRunHintDismiss": {
     "message": "Compris"
@@ -1217,7 +1217,7 @@
     "message": "Peins ta journée"
   },
   "onboardingStep1TextBefore": {
-    "message": "Choisis une catégorie sous le cadran, puis fais glisser autour de l'anneau. Tu préfères taper ?"
+    "message": "Choisis une catégorie à côté du cadran, puis fais glisser autour de l’anneau. Tu préfères taper ?"
   },
   "onboardingStep1TextAfter": {
     "message": "marche aussi."
@@ -1250,7 +1250,7 @@
     "message": "Commencer"
   },
   "onboardingNudgePaintToast": {
-    "message": "Choisis une catégorie ci-dessous, puis fais glisser autour de l'anneau pour peindre"
+    "message": "Choisis une catégorie à gauche, puis fais glisser autour de l’anneau pour peindre"
   },
   "onboardingNudgeSettingsToast": {
     "message": "C'est prêt — les Réglages (☰, en haut à droite) contiennent catégories, rappels, objectifs et sauvegarde"

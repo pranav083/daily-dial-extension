@@ -129,7 +129,7 @@
     "message": "你的模板"
   },
   "firstRunHint": {
-    "message": "👇 选择一个类别，然后沿着圆环拖动，画出第一个时间块。"
+    "message": "👈 选择一个分类，然后沿着圆环拖动，填出你的第一个时段。"
   },
   "firstRunHintDismiss": {
     "message": "知道了"
@@ -1143,7 +1143,7 @@
     "message": "绘制你的一天"
   },
   "onboardingStep1TextBefore": {
-    "message": "在表盘下方选择一个类别，然后沿圆环拖动。更喜欢打字输入？"
+    "message": "在表盘旁边选择一个分类，然后沿着圆环拖动。更想用输入的方式？"
   },
   "onboardingStep1TextAfter": {
     "message": "同样可以。"
@@ -1176,7 +1176,7 @@
     "message": "开始使用"
   },
   "onboardingNudgePaintToast": {
-    "message": "在下方选择一个类别，然后沿圆环拖动进行绘制"
+    "message": "在左侧选择一个分类，然后沿着圆环拖动来填色"
   },
   "onboardingNudgeSettingsToast": {
     "message": "一切就绪 — 设置（右上角 ☰）中包含类别、提醒、目标和备份"

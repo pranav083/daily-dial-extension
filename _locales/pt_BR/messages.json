@@ -129,7 +129,7 @@
     "message": "seus modelos"
   },
   "firstRunHint": {
-    "message": "👇 Escolha uma categoria e arraste ao redor do anel para pintar seu primeiro bloco."
+    "message": "👈 Escolha uma categoria e arraste ao redor do anel para pintar seu primeiro bloco."
   },
   "firstRunHintDismiss": {
     "message": "Entendi"
@@ -1217,7 +1217,7 @@
     "message": "Pinte seu dia"
   },
   "onboardingStep1TextBefore": {
-    "message": "Escolha uma categoria abaixo do mostrador e arraste ao redor do anel. Prefere digitar?"
+    "message": "Escolha uma categoria ao lado do mostrador e arraste ao redor do anel. Prefere digitar?"
   },
   "onboardingStep1TextAfter": {
     "message": "também funciona."
@@ -1250,7 +1250,7 @@
     "message": "Vamos começar"
   },
   "onboardingNudgePaintToast": {
-    "message": "Escolha uma categoria abaixo e arraste ao redor do anel para pintar"
+    "message": "Escolha uma categoria à esquerda e arraste ao redor do anel para pintar"
   },
   "onboardingNudgeSettingsToast": {
     "message": "Tudo pronto — as Configurações (☰, canto superior direito) têm categorias, lembretes, metas e backup"

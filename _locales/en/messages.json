@@ -193,7 +193,7 @@
     "description": "Names what changed elsewhere, substituted into 'Another tab changed ___', when it was the saved day templates."
   },
   "firstRunHint": {
-    "message": "👇 Pick a category, then drag around the ring to paint your first block.",
+    "message": "👈 Pick a category, then drag around the ring to paint your first block.",
     "description": "One-line hint shown above the pens until the first block is painted."
   },
   "firstRunHintDismiss": {
@@ -1578,7 +1578,7 @@
     "description": "Heading of the first welcome-tour step."
   },
   "onboardingStep1TextBefore": {
-    "message": "Pick a category below the dial, then drag around the ring. Prefer typing?",
+    "message": "Pick a category beside the dial, then drag around the ring. Prefer typing?",
     "description": "Body text of the first welcome-tour step, before the '9-11 deep work' code example."
   },
   "onboardingStep1TextAfter": {
@@ -1622,7 +1622,7 @@
     "description": "Button that dismisses the welcome tour and begins using the app."
   },
   "onboardingNudgePaintToast": {
-    "message": "Pick a category below, then drag around the ring to paint",
+    "message": "Pick a category on the left, then drag around the ring to paint",
     "description": "Toast shown after starting the tour for a user with nothing logged yet."
   },
   "onboardingNudgeSettingsToast": {

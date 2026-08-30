@@ -129,7 +129,7 @@
     "message": "テンプレート"
   },
   "firstRunHint": {
-    "message": "👇 カテゴリを選び、リングをドラッグして最初のブロックを描きましょう。"
+    "message": "👈 カテゴリを選び、リングをドラッグして最初のブロックを塗ってください。"
   },
   "firstRunHintDismiss": {
     "message": "わかりました"
@@ -1143,7 +1143,7 @@
     "message": "1日を描く"
   },
   "onboardingStep1TextBefore": {
-    "message": "ダイヤルの下でカテゴリを選び、リングをドラッグします。入力の方が良ければ、"
+    "message": "ダイヤルの横でカテゴリを選び、リングをドラッグします。入力の方がよいですか？"
   },
   "onboardingStep1TextAfter": {
     "message": "でも入力できます。"
@@ -1176,7 +1176,7 @@
     "message": "はじめる"
   },
   "onboardingNudgePaintToast": {
-    "message": "下でカテゴリを選び、リングをドラッグして描きましょう"
+    "message": "左でカテゴリを選び、リングをドラッグして塗ってください"
   },
   "onboardingNudgeSettingsToast": {
     "message": "準備はできています — 設定(右上の☰)にカテゴリ、リマインダー、目標、バックアップがあります"

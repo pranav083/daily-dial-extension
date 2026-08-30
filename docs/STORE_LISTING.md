@@ -62,6 +62,11 @@ Workflow & Planning
 English (United States)
 ```
 
+The listing language stays English; the extension itself ships ten locales
+(`ar`, `de`, `en`, `es`, `fr`, `hi`, `ja`, `pt-BR`, `ru`, `zh-CN`) and Chrome
+picks by browser language. Worth mentioning in the description, since store
+search does not surface it on its own.
+
 ### Detailed description
 
 ```
@@ -96,6 +101,12 @@ English (United States)
 6 category slots — rename, reweight, hide the ones you don't use.
 Defaults: Deep Work · Applications · Study · Admin · Break · Distraction
 🔒 Renaming is safe — days store the slot, never the name, so history never rewrites.
+
+🌍 IN YOUR LANGUAGE
+🗣️ English · العربية · 中文 · Français · Deutsch · हिन्दी · 日本語 · Português (BR) · Русский · Español
+🔤 Picks your browser's language automatically — nothing to set
+↔️ Arabic reads right to left, layout and all
+✍️ Only the app is translated — your own notes and category names stay exactly as you wrote them
 
 🔔 GENTLE REMINDERS
 ⏰ Two optional daily nudges, times you choose (default: midday + evening wrap-up)

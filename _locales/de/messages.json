@@ -129,7 +129,7 @@
     "message": "deine Vorlagen"
   },
   "firstRunHint": {
-    "message": "👇 Wähle eine Kategorie und zieh dann über den Ring, um deinen ersten Block zu malen."
+    "message": "👈 Wähle eine Kategorie und zieh über den Ring, um deinen ersten Block zu malen."
   },
   "firstRunHintDismiss": {
     "message": "Verstanden"
@@ -1217,7 +1217,7 @@
     "message": "Male deinen Tag"
   },
   "onboardingStep1TextBefore": {
-    "message": "Wähle unter der Scheibe eine Kategorie und zieh dann über den Ring. Lieber tippen?"
+    "message": "Wähle links neben dem Zifferblatt eine Kategorie und zieh dann über den Ring. Lieber tippen?"
   },
   "onboardingStep1TextAfter": {
     "message": "funktioniert auch."
@@ -1250,7 +1250,7 @@
     "message": "Los geht's"
   },
   "onboardingNudgePaintToast": {
-    "message": "Wähle unten eine Kategorie und zieh dann über den Ring, um zu malen"
+    "message": "Wähle links eine Kategorie und zieh dann über den Ring, um zu malen"
   },
   "onboardingNudgeSettingsToast": {
     "message": "Startklar — Einstellungen (☰, oben rechts) haben Kategorien, Erinnerungen, Ziele und Sicherung"

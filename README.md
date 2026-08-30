@@ -142,6 +142,26 @@ Study, Admin, Break, Distraction** — with Applications broken out deliberately
 so you can see at a glance whether you actually spent time on applications or
 only on studying.
 
+### Languages
+
+Available in **English, Arabic, Chinese (Simplified), French, German, Hindi,
+Japanese, Portuguese (Brazil), Russian and Spanish**. Chrome picks whichever
+matches your browser's language and falls back to English otherwise; there is
+no in-app language switch, because the browser already knows.
+
+What gets translated is the app's own words — labels, buttons, tooltips, the
+score, the sentence under the dial, the observations. **What you write is never
+touched.** Your notes, intentions, reflections and category names stay in
+whatever language you wrote them in.
+
+Arabic reads right to left, and the layout mirrors with it. The dial does not:
+a clock runs clockwise in every language.
+
+Two things stay in English on purpose. **CSV export headers**, because a file
+exported on a Hindi install has to import cleanly on an English one — that is
+a format, not prose. And the **name "Daily Dial"**, because it is what people
+search the store for.
+
 ## Your data
 
 Everything stays in `chrome.storage.local`, on your machine.
@@ -190,16 +210,34 @@ Stated up front, because they're inherent rather than unfinished:
 - **Storage is per-browser-profile.** No cross-device sync, by design — sync
   would mean either a server or a tight quota.
 - **15-minute granularity.** The dial has 96 slots; shorter bursts round.
+- **Translation covers the app, not your writing.** Your notes, intentions,
+  reflections and category names stay exactly as you typed them. Nothing you
+  wrote is ever machine-translated, and renaming a category you have months of
+  data against would be worse than leaving it in English.
 
 ## Development
 
 ```bash
 npm install     # eslint only — the extension itself has no dependencies
-npm test        # 134 unit tests, node's built-in runner
+npm test        # 215 unit tests, node's built-in runner
 npm run lint
-npm run check   # lint + tests + version consistency
+npm run check   # lint, tests, and the three consistency guards below
 npm run package # zip for distribution
 ```
+
+`npm run check` runs three guards that exist because each one caught a real
+bug that nothing else would have:
+
+- **version** — `manifest.json`, `package.json` and the changelog agree.
+- **package** — every module the extension actually imports is in the zip,
+  walked from the real import graph rather than a second hand-kept list.
+  A module missing from the zip fails at load with a bare resolution error.
+- **locales** — every translation has every key, placeholders defined and
+  numbered as English numbers them, and each plural family carries the forms
+  its language needs (derived from `Intl.PluralRules`, not assumed from
+  English's two). Translations fail quietly otherwise: Chrome falls back to
+  English, or prints a literal `$COUNT$` to someone who can't read the
+  English anyway.
 
 | Path | Responsibility |
 |---|---|
@@ -207,17 +245,30 @@ npm run package # zip for distribution
 | `dial.html` / `dial.css` | Page shell and styles |
 | `dial.js` | Page controller — DOM and `chrome.storage` |
 | `lib.js` | All calculation: geometry, stats, CSV, scheduling. No DOM, no `chrome.*` |
+| `i18n.js` | The only place message keys become words — lookup, plural selection, dates, writing direction |
+| `suggestions.js` | What people do about each observation. Bundled data, never fetched |
+| `_locales/` | Ten message catalogs, one per language. Generated — edit `translations/` |
+| `translations/` | Flat `{key: "words"}` source files translators actually edit |
+| `scripts/` | The `npm run check` guards, and `build-locale.mjs` |
 | `background.js` | Service worker — reminders, opening the dial |
 | `drive.js` | Optional Google Drive backup — `chrome.identity` + `fetch`, no DOM |
 | `history.js` | History view controller — heatmap, summaries, trends, note search |
 | `historyLib.js` | History's calculations: month grids, week-over-week, trends. No DOM |
 | `test/lib.test.js` | Unit tests over `lib.js` |
 | `test/historyLib.test.js` | Unit tests over `historyLib.js` |
+| `test/i18n.test.js` | Unit tests over `i18n.js`, against the real catalogs |
 | `fonts/` | Manrope + JetBrains Mono, bundled (MV3's CSP blocks remote fonts) |
 
 The `lib.js` / `dial.js` split is the one structural rule: anything expressible
 as a function from data to data lives in `lib.js`, where it costs nothing to
 test, leaving `dial.js` with only the wiring that needs a browser.
+
+That rule is why the pure modules never return a finished sentence. `lib.js`
+can't call `chrome.i18n` — it has no `chrome.*` at all, which is what lets 215
+tests run under plain node in a fraction of a second — so it returns
+`msg("insightTopCategory", cat, dur)` and the UI turns that into words.
+Calculation decides *what* is worth saying; `i18n.js` decides in which
+language.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, conventions that aren't
 obvious from the code, and what to check before opening a PR.
