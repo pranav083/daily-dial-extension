@@ -935,6 +935,11 @@ select {
 }
 .challenge-fields input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
+/* ---- day templates ---- */
+.template-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.template-row { display: flex; align-items: center; gap: 8px; }
+.template-row .template-name { flex: 1; font-size: 0.82rem; color: var(--ink); overflow-wrap: anywhere; }
+
 /* ---- journal: intentions and ranged notes ---- */
 .avoid-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .avoid-row { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; }

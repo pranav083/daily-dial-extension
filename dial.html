@@ -497,6 +497,19 @@
             <button class="ghost-btn danger" id="challenge-clear" hidden>Clear challenge</button>
           </div>
           <p class="editor-note">A day counter shown next to your streak. Unlike the streak it doesn't break — it just counts from the start date. Leave the name blank for none.</p>
+
+          <p class="section-label" style="margin-top:16px;" title="Most days rhyme — save one's painted shape and stamp it onto any other day.">Templates</p>
+          <form class="journal-form" id="template-form">
+            <label for="template-name-input" class="sr-only">Template name</label>
+            <input type="text" id="template-name-input" placeholder="Name it, e.g. &quot;Weekday&quot;" maxlength="40">
+            <button type="submit" class="ghost-btn" id="save-template">Save today as a template</button>
+          </form>
+          <div class="template-list" id="templates-list"></div>
+          <p class="editor-note">
+            Templates carry painted time only — never notes, intentions, things to avoid, or your
+            reflection. Applying one to a day that already has painted time asks for confirmation
+            first, and it's undoable (⌘Z) afterward.
+          </p>
         </section>
 
         <section class="settings-section" data-panel="data">
@@ -529,6 +542,36 @@
             of time, matched against your current categories by name. Merge adds missing days and
             leaves existing ones untouched; Replace wipes your history and restores exactly what's
             in the file.
+          </p>
+
+          <p class="section-label" style="margin-top:16px;" title="One action instead of clicking through each day — e.g. &quot;I was away Monday to Friday&quot;.">Fill multiple days</p>
+          <div class="challenge-fields">
+            <label for="multifill-start-input">From date</label>
+            <input type="date" id="multifill-start-input">
+            <label for="multifill-end-input">To date</label>
+            <input type="date" id="multifill-end-input">
+            <label for="multifill-cat-select">Category</label>
+            <select id="multifill-cat-select"></select>
+            <label for="multifill-from-time">From time</label>
+            <input type="time" id="multifill-from-time">
+            <label for="multifill-to-time">To time</label>
+            <input type="time" id="multifill-to-time">
+          </div>
+          <div class="footer-actions">
+            <button class="ghost-btn" id="multifill-apply">Apply</button>
+          </div>
+          <div class="import-confirm" id="multifill-confirm" hidden>
+            <p class="editor-note" id="multifill-summary"></p>
+            <div class="footer-actions">
+              <button class="ghost-btn danger" id="multifill-confirm-btn">Confirm fill</button>
+              <button class="ghost-btn" id="multifill-cancel">Cancel</button>
+            </div>
+          </div>
+          <p class="editor-note">
+            Fills the chosen category (or erases) across every day from the start date to the end
+            date, inclusive. Leave the time fields blank to fill the whole day. Capped at
+            <span id="multifill-max-days"></span> days per fill; each affected day is saved and
+            undoable on its own, one at a time, from that day's view.
           </p>
 
           <p class="section-label" style="margin-top:16px;">Google Drive backup</p>

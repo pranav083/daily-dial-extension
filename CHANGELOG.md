@@ -8,6 +8,25 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.22.0] — 2026-08-29
+
+### Added
+
+- **Day templates.** Most days rhyme, so save the shape of one and stamp it
+  onto another: Settings → Goals → Templates. A template carries painted time
+  only, never notes, intentions or a reflection — it's the shape of a day, not
+  its content, and copying someone's words onto a different day would be
+  wrong. Applying to a day that already has painted time asks first, and is
+  undoable with ⌘Z like any other stroke.
+- **Multi-day fill.** "I was away Monday to Friday" is now one action rather
+  than five days of clicking: Settings → Data, pick a date range and a
+  category, optionally narrow it to part of each day. Before anything is
+  written it tells you exactly how many days will change and how many of them
+  already have painted time in that window, then still needs a second click.
+  Capped at 92 days, and an inverted range is refused rather than silently
+  reversed. Notes and reflections on the affected days are left alone —
+  only painted time is replaced.
+
 ## [1.21.0] — 2026-08-29
 
 ### Changed

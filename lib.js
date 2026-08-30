@@ -227,6 +227,118 @@ export const dayHasContent = (day) =>
 /** A day "counts" for streaks/nudges/bests once at least one slot is painted. */
 export const dayHasEntries = (day) => !!day && Array.isArray(day.slots) && day.slots.some((v) => v !== UNTRACKED);
 
+/* ---------- day templates ---------- */
+
+export const TEMPLATES_KEY = "templates";
+export const MAX_TEMPLATES = 12;
+export const MAX_TEMPLATE_NAME = 40;
+
+/**
+ * A template is the shape of a day, not its content: painted slots only —
+ * never notes, intentions, avoid, or reflection, none of which would still
+ * make sense stamped onto a different date. Storage is user-editable and
+ * survives version changes, so an entry that doesn't already look right is
+ * dropped rather than repaired — a wrong-length slots array painted onto a
+ * real day would corrupt it outright.
+ */
+export function normalizeTemplates(raw) {
+  if (!Array.isArray(raw)) return [];
+  const out = [];
+  for (const t of raw) {
+    if (out.length >= MAX_TEMPLATES) break;
+    if (!t || typeof t !== "object") continue;
+    const name = typeof t.name === "string" ? t.name.trim().slice(0, MAX_TEMPLATE_NAME) : "";
+    if (!name) continue;
+    if (!Array.isArray(t.slots) || t.slots.length !== SLOTS || !t.slots.every((v) => Number.isInteger(v))) continue;
+    out.push({ name, slots: [...t.slots] });
+  }
+  return out;
+}
+
+/* ---------- multi-day fill ---------- */
+
+/** Well short of a year: a range this long is far more likely a mistyped
+ *  year than an intentional edit, and each day in it is a separate storage
+ *  write. */
+export const MULTI_DAY_FILL_MAX_DAYS = 92;
+
+/**
+ * Every calendar date from startKey to endKey inclusive, both "YYYY-MM-DD" —
+ * the day-by-day plan for "I was away Monday to Friday".
+ * @returns {{ok:true, keys:string[]} | {ok:false, error:string}}
+ */
+export function dateRangeKeys(startKey, endKey) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(startKey ?? "") || !/^\d{4}-\d{2}-\d{2}$/.test(endKey ?? "")) {
+    return { ok: false, error: "Pick a start and end date." };
+  }
+  const start = new Date(startKey + "T00:00:00");
+  const end = new Date(endKey + "T00:00:00");
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return { ok: false, error: "Pick a start and end date." };
+  }
+  if (end < start) return { ok: false, error: "End date is before the start date." };
+
+  const count = Math.round((end - start) / 86400000) + 1;
+  if (count > MULTI_DAY_FILL_MAX_DAYS) {
+    return { ok: false, error: `That's ${count} days — a single fill can cover at most ${MULTI_DAY_FILL_MAX_DAYS}.` };
+  }
+
+  const keys = [];
+  const cursor = new Date(start);
+  for (let i = 0; i < count; i++) {
+    keys.push(dateKey(cursor));
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return { ok: true, keys };
+}
+
+/**
+ * Optional "HH:MM" from/to inputs for a multi-day fill, defaulting to the
+ * whole day when left blank — "I was away Monday to Friday" is the common
+ * case, not a partial-day one. Rounds to the nearest slot, same as
+ * `parseTimeEntry`.
+ * @returns {{ok:true, fromSlot:number, toSlot:number} | {ok:false, error:string}}
+ */
+export function multiDayFillSlotRange(fromTime, toTime) {
+  if (fromTime && !isValidTime(fromTime)) return { ok: false, error: "Bad start time." };
+  if (toTime && !isValidTime(toTime)) return { ok: false, error: "Bad end time." };
+  const fromSlot = fromTime ? Math.round(hmToMinutes(fromTime) / SLOT_MIN) : 0;
+  const toSlot = toTime ? Math.round(hmToMinutes(toTime) / SLOT_MIN) : SLOTS;
+  if (toSlot <= fromSlot) return { ok: false, error: "End time is before the start time." };
+  return { ok: true, fromSlot, toSlot };
+}
+
+/** Returns a new slots array with [fromSlot, toSlot) set to `cat`. Unlike
+ *  `fillRange` this never wraps — a multi-day fill names an explicit slot
+ *  window, not a drag around the ring, so there's no "short way round" to
+ *  choose between. */
+export function fillSlotWindow(slots, fromSlot, toSlot, cat) {
+  const next = [...slots];
+  for (let i = fromSlot; i < toSlot; i++) next[i] = cat;
+  return next;
+}
+
+/**
+ * Counts for the multi-day fill confirm step: how many days are in the
+ * range, and how many of those already have something painted in the slot
+ * window about to be overwritten — never the whole day, since a narrow
+ * time-of-day fill shouldn't warn about blocks outside it.
+ */
+export function summarizeMultiDayFill(days, keys, fromSlot, toSlot) {
+  let paintedCount = 0;
+  for (const key of keys) {
+    const slots = days.get(key)?.slots;
+    if (!slots) continue;
+    for (let i = fromSlot; i < toSlot; i++) {
+      if (slots[i] !== UNTRACKED) {
+        paintedCount++;
+        break;
+      }
+    }
+  }
+  return { dayCount: keys.length, paintedCount };
+}
+
 const MAX_ALIASES = 8;
 
 /** Extra match words for a category, beyond its own name — lowercased,

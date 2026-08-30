@@ -89,6 +89,14 @@ import {
   PEAK_HOURS_MAX_PROTECTED_RATIO,
   UNTRACKED_LIFE_AREA_WINDOW_DAYS,
   UNTRACKED_LIFE_AREA_MAX_DISTINCT_CATEGORIES,
+  MAX_TEMPLATES,
+  MAX_TEMPLATE_NAME,
+  normalizeTemplates,
+  MULTI_DAY_FILL_MAX_DAYS,
+  dateRangeKeys,
+  multiDayFillSlotRange,
+  fillSlotWindow,
+  summarizeMultiDayFill,
 } from "../lib.js";
 
 const cats = DEFAULT_CATEGORIES;
@@ -1836,4 +1844,137 @@ test("scoreBucket without a tracked time behaves as it always did", () => {
   // every day reported as unscorable.
   assert.equal(scoreBucket(100).label, "Locked in");
   assert.equal(scoreBucket(null).label, "No data yet");
+});
+
+/* ---------- day templates ---------- */
+
+test("normalizeTemplates keeps a well-formed template", () => {
+  const t = { name: "Weekday", slots: paint(blank(), 9, 17, 0) };
+  assert.deepEqual(normalizeTemplates([t]), [t]);
+});
+
+test("normalizeTemplates rejects a wrong-length slots array", () => {
+  assert.deepEqual(normalizeTemplates([{ name: "Bad", slots: [0, 1, 2] }]), []);
+});
+
+test("normalizeTemplates rejects non-integer slots", () => {
+  const badSlots = blank();
+  badSlots[10] = 1.5;
+  assert.deepEqual(normalizeTemplates([{ name: "Bad", slots: badSlots }]), []);
+  const alsoBad = blank();
+  alsoBad[10] = "0";
+  assert.deepEqual(normalizeTemplates([{ name: "Bad", slots: alsoBad }]), []);
+});
+
+test("normalizeTemplates rejects a blank or whitespace-only name", () => {
+  assert.deepEqual(normalizeTemplates([{ name: "", slots: blank() }]), []);
+  assert.deepEqual(normalizeTemplates([{ name: "   ", slots: blank() }]), []);
+  assert.deepEqual(normalizeTemplates([{ slots: blank() }]), []);
+});
+
+test("normalizeTemplates trims and caps a name at MAX_TEMPLATE_NAME", () => {
+  const out = normalizeTemplates([{ name: `  ${"x".repeat(60)}  `, slots: blank() }]);
+  assert.equal(out[0].name.length, MAX_TEMPLATE_NAME);
+  assert.equal(out[0].name, "x".repeat(MAX_TEMPLATE_NAME));
+});
+
+test("normalizeTemplates caps the list at MAX_TEMPLATES, keeping the first ones", () => {
+  const many = Array.from({ length: MAX_TEMPLATES + 5 }, (_, i) => ({ name: `T${i}`, slots: blank() }));
+  const out = normalizeTemplates(many);
+  assert.equal(out.length, MAX_TEMPLATES);
+  assert.equal(out[0].name, "T0");
+  assert.equal(out[MAX_TEMPLATES - 1].name, `T${MAX_TEMPLATES - 1}`);
+});
+
+test("normalizeTemplates skips a malformed entry without dropping the rest", () => {
+  const good = { name: "Good", slots: blank() };
+  const out = normalizeTemplates([{ name: "Bad", slots: [1, 2] }, good, null, 42]);
+  assert.deepEqual(out, [good]);
+});
+
+test("normalizeTemplates tolerates non-array or garbage input", () => {
+  assert.deepEqual(normalizeTemplates(null), []);
+  assert.deepEqual(normalizeTemplates(undefined), []);
+  assert.deepEqual(normalizeTemplates("nope"), []);
+  assert.deepEqual(normalizeTemplates({}), []);
+});
+
+/* ---------- multi-day fill ---------- */
+
+test("dateRangeKeys walks every date in an inclusive range", () => {
+  const out = dateRangeKeys("2026-01-01", "2026-01-03");
+  assert.equal(out.ok, true);
+  assert.deepEqual(out.keys, ["2026-01-01", "2026-01-02", "2026-01-03"]);
+});
+
+test("dateRangeKeys accepts a single-day range", () => {
+  const out = dateRangeKeys("2026-03-05", "2026-03-05");
+  assert.equal(out.ok, true);
+  assert.deepEqual(out.keys, ["2026-03-05"]);
+});
+
+test("dateRangeKeys refuses an inverted range with a clear message", () => {
+  const out = dateRangeKeys("2026-01-10", "2026-01-05");
+  assert.equal(out.ok, false);
+  assert.match(out.error, /before/i);
+});
+
+test("dateRangeKeys caps the span at MULTI_DAY_FILL_MAX_DAYS", () => {
+  const ok = dateRangeKeys("2026-01-01", "2026-04-02"); // exactly 92 days
+  assert.equal(ok.ok, true);
+  assert.equal(ok.keys.length, MULTI_DAY_FILL_MAX_DAYS);
+
+  const tooLong = dateRangeKeys("2026-01-01", "2026-04-03"); // 93 days
+  assert.equal(tooLong.ok, false);
+  assert.match(tooLong.error, /92/);
+});
+
+test("dateRangeKeys rejects malformed or missing dates", () => {
+  assert.equal(dateRangeKeys("", "2026-01-05").ok, false);
+  assert.equal(dateRangeKeys("2026-01-05", "").ok, false);
+  assert.equal(dateRangeKeys("not-a-date", "2026-01-05").ok, false);
+  assert.equal(dateRangeKeys(undefined, undefined).ok, false);
+});
+
+test("multiDayFillSlotRange defaults to the whole day when both times are blank", () => {
+  const out = multiDayFillSlotRange("", "");
+  assert.deepEqual(out, { ok: true, fromSlot: 0, toSlot: SLOTS });
+});
+
+test("multiDayFillSlotRange rounds explicit times to the nearest slot", () => {
+  const out = multiDayFillSlotRange("09:00", "17:00");
+  assert.deepEqual(out, { ok: true, fromSlot: 36, toSlot: 68 });
+});
+
+test("multiDayFillSlotRange rejects an inverted or empty window", () => {
+  assert.equal(multiDayFillSlotRange("17:00", "09:00").ok, false);
+  assert.equal(multiDayFillSlotRange("09:00", "09:00").ok, false);
+});
+
+test("multiDayFillSlotRange rejects a malformed time", () => {
+  assert.equal(multiDayFillSlotRange("25:00", "17:00").ok, false);
+  assert.equal(multiDayFillSlotRange("09:00", "nope").ok, false);
+});
+
+test("fillSlotWindow sets exactly the given range and does not mutate its input", () => {
+  const slots = blank();
+  const next = fillSlotWindow(slots, 36, 40, 2);
+  assert.deepEqual(slots, blank(), "input untouched");
+  assert.equal(next[35], UNTRACKED);
+  assert.equal(next[36], 2);
+  assert.equal(next[39], 2);
+  assert.equal(next[40], UNTRACKED);
+});
+
+test("summarizeMultiDayFill counts days in range and how many already have painted time in the window", () => {
+  const days = new Map([
+    ["2026-01-01", { slots: paint(blank(), 9, 10, 0) }], // painted inside the window
+    ["2026-01-02", { slots: paint(blank(), 20, 21, 0) }], // painted, but outside the window
+    ["2026-01-03", { slots: blank() }], // untouched
+    // 2026-01-04 has no stored day at all
+  ]);
+  const keys = ["2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04"];
+  const summary = summarizeMultiDayFill(days, keys, 36, 68); // 09:00-17:00
+  assert.equal(summary.dayCount, 4);
+  assert.equal(summary.paintedCount, 1);
 });

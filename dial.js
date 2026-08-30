@@ -43,12 +43,17 @@ import {
   computeStats,
   computeStreak,
   dateKey,
+  dateRangeKeys,
   dayHasEntries,
   emptyDay,
   MAX_NOTE_LEN,
   MAX_NOTES_PER_DAY,
   MAX_INTENTS_PER_DAY,
+  MAX_TEMPLATES,
+  MAX_TEMPLATE_NAME,
+  MULTI_DAY_FILL_MAX_DAYS,
   fillRange,
+  fillSlotWindow,
   fmtClock,
   fmtDuration,
   goalProgress,
@@ -56,10 +61,12 @@ import {
   isValidTime,
   mergeDayMaps,
   mostRecentWeekStart,
+  multiDayFillSlotRange,
   normalizeAliases,
   normalizeCategories,
   normalizeDay,
   normalizeSettings,
+  normalizeTemplates,
   pad2,
   parseBackup,
   parseCsv,
@@ -72,6 +79,8 @@ import {
   shouldNudgeBackup,
   slotFromAngle,
   summarizeImport,
+  summarizeMultiDayFill,
+  TEMPLATES_KEY,
   toneVar,
   wedgePath,
   weekPerCatMinutes,
@@ -105,6 +114,9 @@ let onboardingSeen = false;
  *  SAMPLE_DAY_KEYS_KEY. Empty when sample data has never been loaded, or has
  *  already been cleared. */
 let sampleDayKeys = [];
+/** Saved day templates — painted time only, stamped onto whatever day is on
+ *  screen. See TEMPLATES_KEY. */
+let templates = [];
 
 /** Remembers whichever pen (a category id, or UNTRACKED for the eraser) was
  *  last active, so the dial opens on the pen actually in use rather than
@@ -142,6 +154,7 @@ async function loadAll() {
   // even though the flag itself was never explicitly set for them.
   onboardingSeen = all[ONBOARDING_SEEN_KEY] === true || days.size > 0;
   sampleDayKeys = Array.isArray(all[SAMPLE_DAY_KEYS_KEY]) ? all[SAMPLE_DAY_KEYS_KEY] : [];
+  templates = normalizeTemplates(all[TEMPLATES_KEY]);
   // reconcileActivePen() runs after boot loads this and falls back to the
   // first enabled category (or the eraser) if this one has since been
   // hidden, so no validation is needed here beyond "is it a number".
@@ -251,6 +264,7 @@ function alreadyMatchesMemory(key, newValue) {
   else if (key === CATEGORIES_KEY) mine = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
   else if (key === SETTINGS_KEY) mine = settings;
   else if (key === SAMPLE_DAY_KEYS_KEY) mine = sampleDayKeys;
+  else if (key === TEMPLATES_KEY) mine = templates;
   else return false;
   return serializeValue(newValue) === serializeValue(mine);
 }
@@ -260,10 +274,11 @@ function alreadyMatchesMemory(key, newValue) {
  * tab over changes that couldn't cost anything, and any write path that
  * slipped past the log froze a perfectly healthy tab mid-edit.
  *
- * Only two things can actually be lost here, because they're the only things
- * this tab writes wholesale: the day currently on screen, and the shared
- * settings/categories. A change to any *other* day is simply adopted — two
- * tabs sitting on different days now work rather than fighting.
+ * Only a few things can actually be lost here, because they're the only
+ * things this tab writes wholesale: the day currently on screen, and the
+ * shared settings/categories/templates. A change to any *other* day is
+ * simply adopted — two tabs sitting on different days now work rather than
+ * fighting.
  */
 function onStorageChanged(changes, area) {
   if (area !== "local" || tabIsStale) return;
@@ -288,6 +303,7 @@ function onStorageChanged(changes, area) {
     if (key === CATEGORIES_KEY) conflict = "your categories";
     else if (key === SETTINGS_KEY) conflict = "your settings";
     else if (key === SAMPLE_DAY_KEYS_KEY) conflict = "demo mode";
+    else if (key === TEMPLATES_KEY) conflict = "your templates";
     // Anything else is bookkeeping this tab can't clobber — ignore it.
   }
 
@@ -339,6 +355,9 @@ const persistCategories = () =>
 
 const persistSettings = () =>
   tabIsStale ? undefined : saveLocal({ [SETTINGS_KEY]: settings }).catch(reportStorageFailure);
+
+const persistTemplates = () =>
+  tabIsStale ? undefined : saveLocal({ [TEMPLATES_KEY]: templates }).catch(reportStorageFailure);
 
 /** Losing this write costs nothing worse than opening on the default pen
  *  next time, so it's fire-and-forget rather than routed through
@@ -1146,6 +1165,7 @@ window.addEventListener("keydown", (evt) => {
 
 function renderPens() {
   syncTypedEntryCategories();
+  syncMultiFillCategorySelect();
   const pensEl = $("pens");
   pensEl.replaceChildren();
 
@@ -1367,6 +1387,108 @@ function renderGoalsEditorFor(rowsElId, goalsKey, unitLabel, step) {
 function renderGoalsEditor() {
   renderGoalsEditorFor("goals-editor-rows", "goals", "min/day", 5);
   renderGoalsEditorFor("weekly-goals-editor-rows", "weeklyGoals", "min/wk", 15);
+}
+
+/* ---------- day templates ---------- */
+
+/** Stamps a template's slots onto the day currently on screen. Painted time
+ *  only — notes, intentions, avoid, and reflection are left exactly as they
+ *  are, since a template is the shape of a day, not its content. */
+function applyTemplate(template) {
+  pushUndo();
+  state.slots = [...template.slots];
+  persistDay();
+  renderAll();
+  toast(`Applied "${template.name}" — ⌘Z to undo`);
+}
+
+/** Saving under a name already in use replaces that template rather than
+ *  piling up near-duplicates — the common case is refining one you already
+ *  have, not starting a new one every time. */
+function saveTemplateFromToday() {
+  const input = $("template-name-input");
+  const name = input.value.trim().slice(0, MAX_TEMPLATE_NAME);
+  if (!name) {
+    toast("Name the template first.");
+    return;
+  }
+  const isUpdate = templates.some((t) => t.name === name);
+  if (!isUpdate && templates.length >= MAX_TEMPLATES) {
+    toast(`That's the most templates you can save (${MAX_TEMPLATES}).`);
+    return;
+  }
+  const next = templates.filter((t) => t.name !== name);
+  next.push({ name, slots: [...state.slots] });
+  templates = normalizeTemplates(next);
+  persistTemplates();
+  input.value = "";
+  renderTemplatesEditor();
+  toast(`Saved "${name}"`);
+}
+
+function deleteTemplate(name) {
+  templates = templates.filter((t) => t.name !== name);
+  persistTemplates();
+  renderTemplatesEditor();
+  toast(`Deleted "${name}"`);
+}
+
+function renderTemplatesEditor() {
+  const listEl = $("templates-list");
+  listEl.replaceChildren();
+
+  if (templates.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "editor-note";
+    empty.textContent = "No templates saved yet.";
+    listEl.appendChild(empty);
+    return;
+  }
+
+  for (const t of templates) {
+    const row = document.createElement("div");
+    row.className = "template-row";
+
+    const name = document.createElement("span");
+    name.className = "template-name";
+    name.textContent = t.name;
+
+    // Two-step confirm rather than a modal — same pattern as "Clear day":
+    // arm on the first click, revert if nothing follows within a few
+    // seconds. Only armed at all when applying would actually overwrite
+    // something; a day with nothing painted has nothing to lose.
+    const applyBtn = document.createElement("button");
+    applyBtn.type = "button";
+    applyBtn.className = "ghost-btn";
+    applyBtn.textContent = "Apply";
+    let armed = false;
+    let armTimer = null;
+    applyBtn.addEventListener("click", () => {
+      if (dayHasEntries({ slots: state.slots }) && !armed) {
+        armed = true;
+        applyBtn.textContent = "Confirm apply?";
+        armTimer = setTimeout(() => {
+          armed = false;
+          applyBtn.textContent = "Apply";
+        }, 3000);
+        return;
+      }
+      clearTimeout(armTimer);
+      armed = false;
+      applyBtn.textContent = "Apply";
+      applyTemplate(t);
+    });
+
+    const dropBtn = document.createElement("button");
+    dropBtn.type = "button";
+    dropBtn.className = "ghost-btn danger";
+    dropBtn.textContent = "Delete";
+    dropBtn.setAttribute("aria-label", `Delete template: ${t.name}`);
+    dropBtn.addEventListener("click", () => deleteTemplate(t.name));
+
+    row.append(name, applyBtn, dropBtn);
+    listEl.appendChild(row);
+  }
 }
 
 /* ---------- streak ---------- */
@@ -2502,6 +2624,140 @@ function clearSampleData() {
   toast("Demo mode off — your own days are untouched");
 }
 
+/* ---------- multi-day fill ---------- */
+
+/** Enabled categories only, plus an option to erase — the same pen set a
+ *  multi-day fill can actually paint with. */
+function syncMultiFillCategorySelect() {
+  const select = $("multifill-cat-select");
+  const previous = select.value;
+  select.replaceChildren();
+  for (const c of categories.filter((cat) => cat.enabled)) {
+    const opt = document.createElement("option");
+    opt.value = String(c.id);
+    opt.textContent = c.name;
+    select.appendChild(opt);
+  }
+  const erase = document.createElement("option");
+  erase.value = "erase";
+  erase.textContent = "Erase (mark as untracked)";
+  select.appendChild(erase);
+  if ([...select.options].some((o) => o.value === previous)) select.value = previous;
+}
+
+/** {keys, fromSlot, toSlot, categoryId} awaiting the second confirm click —
+ *  categoryId is UNTRACKED for "erase". Null when nothing is pending. */
+let pendingMultiFill = null;
+let multiFillConfirmArmed = false;
+let multiFillConfirmArmTimer = null;
+
+function resetMultiFillConfirmButton() {
+  multiFillConfirmArmed = false;
+  clearTimeout(multiFillConfirmArmTimer);
+  $("multifill-confirm-btn").textContent = "Confirm fill";
+}
+
+function cancelMultiFill() {
+  pendingMultiFill = null;
+  resetMultiFillConfirmButton();
+  $("multifill-confirm").hidden = true;
+}
+
+/**
+ * Validates the date range and time window and, if they check out, shows a
+ * confirm box naming how many days would change and how many of those
+ * already have painted time in the affected window — nothing is written
+ * until the arm-then-confirm click on "Confirm fill" below, same pattern as
+ * "Clear day" and "Replace everything".
+ */
+function showMultiFillConfirm() {
+  const rangeResult = dateRangeKeys($("multifill-start-input").value, $("multifill-end-input").value);
+  if (!rangeResult.ok) {
+    toast(rangeResult.error);
+    return;
+  }
+  const slotResult = multiDayFillSlotRange($("multifill-from-time").value, $("multifill-to-time").value);
+  if (!slotResult.ok) {
+    toast(slotResult.error);
+    return;
+  }
+
+  const catValue = $("multifill-cat-select").value;
+  const categoryId = catValue === "erase" ? UNTRACKED : Number(catValue);
+  const action =
+    catValue === "erase" ? "erased" : `set to ${categories.find((c) => c.id === categoryId)?.name ?? "that category"}`;
+
+  const { keys } = rangeResult;
+  const { fromSlot, toSlot } = slotResult;
+  const summary = summarizeMultiDayFill(days, keys, fromSlot, toSlot);
+  pendingMultiFill = { keys, fromSlot, toSlot, categoryId };
+
+  // "00:00 to 00:00" is what a whole-day window rounds to (fmtClock reads a
+  // slot-96 boundary as midnight, same as a run that ends at day's end
+  // everywhere else in the app) — technically correct but reads as zero
+  // duration, so the common case gets its own plain wording instead.
+  const windowLabel =
+    fromSlot === 0 && toSlot === SLOTS ? "for the whole day" : `from ${fmtSlotClock(fromSlot)} to ${fmtSlotClock(toSlot)}`;
+
+  $("multifill-confirm").hidden = false;
+  $("multifill-summary").textContent =
+    `${summary.dayCount} day${summary.dayCount === 1 ? "" : "s"} (${keys[0]} to ${keys[keys.length - 1]}) ` +
+    `will be ${action} ${windowLabel}. ` +
+    (summary.paintedCount > 0
+      ? `${summary.paintedCount} of them already ${summary.paintedCount === 1 ? "has" : "have"} something painted there and will be overwritten.`
+      : "None of those days have anything painted there yet.");
+  resetMultiFillConfirmButton();
+}
+
+/**
+ * Writes every affected day in one call, so the whole fill either lands
+ * together or (on a storage error) fails together rather than leaving the
+ * range half-applied. The day currently on screen is patched in memory too,
+ * so the dial doesn't keep showing stale slots for a day it just overwrote.
+ */
+function applyMultiFill() {
+  if (!pendingMultiFill || tabIsStale) return;
+  const { keys, fromSlot, toSlot, categoryId } = pendingMultiFill;
+  const viewedKey = dateKey(state.viewDate);
+
+  const toSet = {};
+  const claimedSampleKeys = [];
+  for (const key of keys) {
+    const existing = days.get(key);
+    const slots = fillSlotWindow(existing?.slots ?? emptyDay().slots, fromSlot, toSlot, categoryId);
+    const data = {
+      slots,
+      reflection: existing?.reflection ?? "",
+      notes: existing?.notes ?? [],
+      intents: existing?.intents ?? [],
+      avoid: existing?.avoid ?? [],
+    };
+    days.set(key, data);
+    toSet[DAY_PREFIX + key] = data;
+    if (key === viewedKey) state.slots = [...slots];
+    // Same rule as persistDay: writing into a demo day makes it yours.
+    if (sampleDayKeys.includes(key)) claimedSampleKeys.push(key);
+  }
+
+  if (claimedSampleKeys.length) {
+    sampleDayKeys = sampleDayKeys.filter((k) => !claimedSampleKeys.includes(k));
+    toSet[SAMPLE_DAY_KEYS_KEY] = sampleDayKeys;
+  }
+
+  saveLocal(toSet).catch(reportStorageFailure);
+  const dayCount = keys.length;
+  cancelMultiFill();
+
+  renderAll();
+  renderStrip();
+  renderStreak();
+  renderAboutBests();
+  if (claimedSampleKeys.length) renderSampleDataUI();
+  renderFirstRunHint();
+  refreshCurrentView();
+  toast(`Filled ${dayCount} day${dayCount === 1 ? "" : "s"}`);
+}
+
 /* ---------- google drive backup ---------- */
 
 /** Best-effort: never throws, never blocks the caller. A stale or missing
@@ -2863,6 +3119,10 @@ function wireEvents() {
     $(id).addEventListener("change", saveChallenge);
   }
   $("challenge-clear").addEventListener("click", clearChallenge);
+  $("template-form").addEventListener("submit", (evt) => {
+    evt.preventDefault();
+    saveTemplateFromToday();
+  });
   $("observations-on").addEventListener("change", saveObservations);
   $("just-painted-save").addEventListener("click", saveJustPainted);
   $("just-painted-dismiss").addEventListener("click", hideJustPainted);
@@ -3026,6 +3286,22 @@ function wireEvents() {
   $("load-sample-data").addEventListener("click", loadSampleData);
   $("clear-sample-data").addEventListener("click", clearSampleData);
 
+  // ---- data: multi-day fill ----
+  $("multifill-apply").addEventListener("click", showMultiFillConfirm);
+  $("multifill-cancel").addEventListener("click", cancelMultiFill);
+  // Two-step confirm rather than a modal — same pattern as "Clear day" and
+  // "Replace everything": the box above already named what will change, so
+  // this is the arm-then-confirm click that actually writes it.
+  $("multifill-confirm-btn").addEventListener("click", () => {
+    if (!multiFillConfirmArmed) {
+      multiFillConfirmArmed = true;
+      $("multifill-confirm-btn").textContent = "Click again to fill";
+      multiFillConfirmArmTimer = setTimeout(resetMultiFillConfirmButton, 4000);
+      return;
+    }
+    applyMultiFill();
+  });
+
   // ---- data: google drive ----
   $("drive-backup").addEventListener("click", driveBackupNow);
   $("drive-restore").addEventListener("click", driveRestore);
@@ -3062,6 +3338,7 @@ async function boot() {
   const version = chrome.runtime.getManifest().version;
   $("version").textContent = `v${version}`;
   $("about-version").textContent = `v${version}`;
+  $("multifill-max-days").textContent = String(MULTI_DAY_FILL_MAX_DAYS);
 
   renderTicksInto($("ticks"), 24, pad2);
   const clockFaceLabel = (h) => (h === 0 ? "12" : String(h));
@@ -3093,6 +3370,7 @@ async function boot() {
   syncAppearanceInputs();
   renderCategoryEditor();
   renderGoalsEditor();
+  renderTemplatesEditor();
   renderAboutBests();
   renderDriveStatus();
   renderSampleDataUI();
