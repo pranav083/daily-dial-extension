@@ -351,14 +351,27 @@ body {
 .dial-wrap-twin.toggle-mode { justify-content: center; }
 .dial-wrap-twin.toggle-mode .dial-half { max-width: 460px; }
 
+/* No auto-centring and no bottom margin any more: this sits in the header
+   row beside the layout switch, where showing and hiding it cannot move the
+   ring underneath. */
 .ampm-toggle-switch {
   display: flex;
   width: fit-content;
-  margin: 0 auto 14px;
   border: 1px solid var(--border);
   border-radius: 999px;
   overflow: hidden;
 }
+.dial-head-switches { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+/* The AM/PM pair keeps its space when it is not in use, rather than leaving
+   the flow. Moving it into the header stopped it pushing the dial down at
+   full width, but on a narrower card its appearance still wrapped the header
+   onto a second line — the same jump, one breakpoint later.
+   `visibility` holds the width while still taking the control out of the tab
+   order and the accessibility tree, which `opacity` would not. A class
+   rather than the `hidden` attribute, because the global rule above is
+   `!important` and deliberately so; overriding it here would undermine it
+   everywhere. */
+.ampm-toggle-switch.inactive { visibility: hidden; }
 .ampm-toggle-switch button {
   padding: 6px 22px;
   border: none;
@@ -786,6 +799,8 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
 .nudge-bar.inline { margin: 8px 0; }
 
 /* ---- quick entry (copy yesterday + typed entry) ---- */
+/* Inside .dial-stack, so this row is centred under the ring rather than
+   across the whole card — where half of it sat beneath the rail. */
 .quick-entry {
   display: flex;
   align-items: center;

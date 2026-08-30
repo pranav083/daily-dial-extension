@@ -8,6 +8,18 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.28.1] — 2026-08-30
+
+### Changed
+
+- **Switching between 24h and AM/PM no longer moves the clock.** The AM/PM
+  pair sat between the header and the ring, so leaving 24h inserted a control
+  above the dial and pushed the face down. It now lives in the header row
+  beside the layout switch, and keeps its place there when unused, so the
+  ring stays put at every window size.
+- **The typed-entry row sits under the clock**, rather than spanning the whole
+  card with half of it beneath the category column.
+
 ## [1.28.0] — 2026-08-30
 
 ### Added

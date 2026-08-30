@@ -104,10 +104,20 @@
                   data-i18n-title="shareImageTooltip"
                   title="Save (or share) a PNG of this day's dial and score — nothing leaves your device unless you choose to send it."
                   data-i18n="shareImageLabel">Share as image</button>
-          <div class="dial-layout-switch" id="dial-layout-switch" role="group" data-i18n-label="dialLayoutSwitchLabel" aria-label="Dial layout">
-            <button type="button" data-mode="24h" aria-pressed="true" data-i18n-title="dialModeSingleTooltip" title="One 24-hour ring" data-i18n="dialModeSingleLabel">24h</button>
-            <button type="button" data-mode="ampm" aria-pressed="false" data-i18n-title="dialModeAmpmTooltip" title="Two 12-hour rings, side by side" data-i18n="dialModeAmpmLabel">AM+PM</button>
-            <button type="button" data-mode="ampm-toggle" aria-pressed="false" data-i18n-title="dialModeToggleTooltip" title="One 12-hour ring, with an AM/PM switch" data-i18n="dialModeToggleLabel">AM⇄PM</button>
+          <!-- Both switches sit in the header row. The AM/PM pair used to
+               live between the header and the ring, so leaving 24h inserted
+               a control above the dial and pushed the clock down — the face
+               jumped every time the layout changed. -->
+          <div class="dial-head-switches">
+            <div class="ampm-toggle-switch inactive" id="dial-toggle-switch" role="group" data-i18n-label="toggleHalfSwitchLabel" aria-label="Show the AM or PM half">
+              <button type="button" id="toggle-am-btn" aria-pressed="true" data-i18n="dialHalfAm">AM</button>
+              <button type="button" id="toggle-pm-btn" aria-pressed="false" data-i18n="dialHalfPm">PM</button>
+            </div>
+            <div class="dial-layout-switch" id="dial-layout-switch" role="group" data-i18n-label="dialLayoutSwitchLabel" aria-label="Dial layout">
+              <button type="button" data-mode="24h" aria-pressed="true" data-i18n-title="dialModeSingleTooltip" title="One 24-hour ring" data-i18n="dialModeSingleLabel">24h</button>
+              <button type="button" data-mode="ampm" aria-pressed="false" data-i18n-title="dialModeAmpmTooltip" title="Two 12-hour rings, side by side" data-i18n="dialModeAmpmLabel">AM+PM</button>
+              <button type="button" data-mode="ampm-toggle" aria-pressed="false" data-i18n-title="dialModeToggleTooltip" title="One 12-hour ring, with an AM/PM switch" data-i18n="dialModeToggleLabel">AM⇄PM</button>
+            </div>
           </div>
         </div>
 
@@ -144,11 +154,6 @@
             </svg>
           </div>
 
-          <div class="ampm-toggle-switch" id="dial-toggle-switch" hidden role="group" data-i18n-label="toggleHalfSwitchLabel" aria-label="Show the AM or PM half">
-            <button type="button" id="toggle-am-btn" aria-pressed="true" data-i18n="dialHalfAm">AM</button>
-            <button type="button" id="toggle-pm-btn" aria-pressed="false" data-i18n="dialHalfPm">PM</button>
-          </div>
-
           <div class="dial-wrap-twin" id="dial-wrap-twin" hidden>
             <div class="dial-half" id="dial-half-am">
               <svg class="dial-svg" id="dial-am" viewBox="0 0 460 460" role="application" tabindex="0"
@@ -175,58 +180,59 @@
                 <text id="center-sub-pm" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
               </svg>
               <div class="dial-half-label"><span data-i18n="dialHalfPm">PM</span> <span class="muted" data-i18n="dialHalfPmRange">· 12p&ndash;12a</span></div>
+
             </div>
           </div>
+
+          <div class="just-painted" id="just-painted" hidden>
+            <span class="jp-what" id="just-painted-what"></span>
+            <input type="text" id="just-painted-note" maxlength="500" data-i18n-label="justPaintedNoteLabel" aria-label="Note for what you just painted">
+            <button type="button" class="ghost-btn" id="just-painted-save" data-i18n="justPaintedSaveLabel">Save</button>
+            <button type="button" class="icon-btn" id="just-painted-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss" data-i18n-title="dismissLabel" title="Dismiss">✕</button>
+          </div>
+
+          <p class="first-run-hint" id="first-run-hint" hidden>
+            <span data-i18n="firstRunHint">👇 Pick a category, then drag around the ring to paint your first block.</span>
+            <button type="button" class="link-btn" id="first-run-hint-dismiss" data-i18n="firstRunHintDismiss">Got it</button>
+          </p>
+
+          <div class="quick-entry">
+            <button class="ghost-btn" id="copy-yesterday"
+                    data-i18n-title="copyYesterdayTooltip"
+                    title="Fill today with yesterday's blocks — useful when your days rhyme"
+                    data-i18n="copyYesterdayLabel">Copy yesterday</button>
+            <!-- The category is a dropdown rather than part of the typed string:
+                 it was the only half you could get wrong by misspelling, and a
+                 list can't be mistyped. Typing a category in the box still
+                 works and wins, so "9-11 leetcode" and aliases keep working. -->
+            <form class="typed-entry" id="typed-entry-form">
+              <label for="typed-entry-input" class="sr-only" data-i18n="typedEntryTimeRangeLabel">Time range</label>
+              <input type="text" id="typed-entry-input" data-i18n-placeholder="typedEntryPlaceholder" placeholder="9-11" data-i18n-label="typedEntryTimeRangeLabel" aria-label="Time range"
+                     data-i18n-title="typedEntryTooltip"
+                     title="A time range: &quot;9-11&quot;, &quot;13:30-15&quot;, or &quot;9pm-11pm&quot;. You can still type the category here too.">
+              <label for="typed-entry-cat" class="sr-only" data-i18n="typedEntryCatTooltip">Category</label>
+              <select id="typed-entry-cat" data-i18n-title="typedEntryCatTooltip" title="Which category this block is"></select>
+              <button type="submit" data-i18n-title="typedEntryAddTooltip" title="Add this block to the dial" data-i18n="addButtonLabel">Add</button>
+            </form>
+          </div>
+
+          <p class="hint">
+            <span data-i18n="hintPaintInstruction">Click or drag around the ring to paint</span> ·
+            <kbd>⌘Z</kbd> <span data-i18n="hintUndo">undo</span> ·
+            <button type="button" class="link-btn" id="hint-shortcuts" data-i18n="hintAllShortcuts">all shortcuts</button>
+          </p>
           </div>
         </div>
 
         <div id="tooltip"></div>
 
-        <div class="just-painted" id="just-painted" hidden>
-          <span class="jp-what" id="just-painted-what"></span>
-          <input type="text" id="just-painted-note" maxlength="500" data-i18n-label="justPaintedNoteLabel" aria-label="Note for what you just painted">
-          <button type="button" class="ghost-btn" id="just-painted-save" data-i18n="justPaintedSaveLabel">Save</button>
-          <button type="button" class="icon-btn" id="just-painted-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss" data-i18n-title="dismissLabel" title="Dismiss">✕</button>
-        </div>
-
         <!-- "Let's start" used to close into an empty dial with only a
              2.6s toast, which read as nothing having happened. This points
              at the actual next action and stays until the first block
              is painted. -->
-        <p class="first-run-hint" id="first-run-hint" hidden>
-          <span data-i18n="firstRunHint">👇 Pick a category, then drag around the ring to paint your first block.</span>
-          <button type="button" class="link-btn" id="first-run-hint-dismiss" data-i18n="firstRunHintDismiss">Got it</button>
-        </p>
-
-        <div class="quick-entry">
-          <button class="ghost-btn" id="copy-yesterday"
-                  data-i18n-title="copyYesterdayTooltip"
-                  title="Fill today with yesterday's blocks — useful when your days rhyme"
-                  data-i18n="copyYesterdayLabel">Copy yesterday</button>
-          <!-- The category is a dropdown rather than part of the typed string:
-               it was the only half you could get wrong by misspelling, and a
-               list can't be mistyped. Typing a category in the box still
-               works and wins, so "9-11 leetcode" and aliases keep working. -->
-          <form class="typed-entry" id="typed-entry-form">
-            <label for="typed-entry-input" class="sr-only" data-i18n="typedEntryTimeRangeLabel">Time range</label>
-            <input type="text" id="typed-entry-input" data-i18n-placeholder="typedEntryPlaceholder" placeholder="9-11" data-i18n-label="typedEntryTimeRangeLabel" aria-label="Time range"
-                   data-i18n-title="typedEntryTooltip"
-                   title="A time range: &quot;9-11&quot;, &quot;13:30-15&quot;, or &quot;9pm-11pm&quot;. You can still type the category here too.">
-            <label for="typed-entry-cat" class="sr-only" data-i18n="typedEntryCatTooltip">Category</label>
-            <select id="typed-entry-cat" data-i18n-title="typedEntryCatTooltip" title="Which category this block is"></select>
-            <button type="submit" data-i18n-title="typedEntryAddTooltip" title="Add this block to the dial" data-i18n="addButtonLabel">Add</button>
-          </form>
-        </div>
-
         <!-- Appears where the eyes already are, right after a stroke. Writing
              the note about what you just painted otherwise means scrolling
              past the pens and the whole breakdown table to find the row. -->
-
-        <p class="hint">
-          <span data-i18n="hintPaintInstruction">Click or drag around the ring to paint</span> ·
-          <kbd>⌘Z</kbd> <span data-i18n="hintUndo">undo</span> ·
-          <button type="button" class="link-btn" id="hint-shortcuts" data-i18n="hintAllShortcuts">all shortcuts</button>
-        </p>
 
         <!-- The whole 24 hours in order, gaps included. This replaces a note
              box that only worked while something was selected on the dial:

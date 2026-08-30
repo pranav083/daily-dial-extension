@@ -1185,7 +1185,9 @@ function checkDayRollover() {
  *  both engines still render (cheap), just one half is visually hidden. */
 function applyToggleVisibility() {
   const isToggle = settings.dialMode === "ampm-toggle";
-  $("dial-toggle-switch").hidden = !isToggle;
+  // A class, not `hidden`: the switch must keep its space in the header so
+  // that showing it never reflows the row and shifts the dial downward.
+  $("dial-toggle-switch").classList.toggle("inactive", !isToggle);
   $("dial-wrap-twin").classList.toggle("toggle-mode", isToggle);
   $("dial-half-am").hidden = isToggle && state.toggleHalf !== "am";
   $("dial-half-pm").hidden = isToggle && state.toggleHalf !== "pm";
