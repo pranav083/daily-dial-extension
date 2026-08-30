@@ -317,7 +317,12 @@
 
         <div class="journal-block">
           <p class="section-label" data-i18n-title="reflectionTooltip" title="One line on what helped or hurt today. Included in your CSV export." data-i18n="reflectionLabel">Why (a line is enough)</p>
-          <label for="reflection" style="position:absolute;left:-9999px;" data-i18n="reflectionSrLabel">Reflection</label>
+          <!-- .sr-only, not left:-9999px. Off-screen-to-the-left is only
+               off-screen in a left-to-right document; under dir="rtl" the
+               overflow direction flips and that -9999px became real page
+               width -- 11264px of it, so the whole page scrolled sideways
+               in Arabic. The clip technique is direction-agnostic. -->
+          <label for="reflection" class="sr-only" data-i18n="reflectionSrLabel">Reflection</label>
           <textarea id="reflection" data-i18n-placeholder="reflectionPlaceholder" placeholder="What made today click — or drag?"></textarea>
         </div>
 
