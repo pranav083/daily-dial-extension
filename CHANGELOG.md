@@ -8,6 +8,44 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.27.0] — 2026-08-30
+
+### Added
+
+- **Nine more languages: Arabic, Chinese (Simplified), French, German,
+  Hindi, Japanese, Portuguese (Brazil), Russian and Spanish.** Chrome picks
+  whichever matches your browser's language; anything else still gets
+  English. This translates the app's own words — labels, buttons, tooltips,
+  the score, the sentence under the dial, the observations and their advice.
+  It never touches a single word you wrote: your notes, intentions,
+  reflections and category names are yours, in whatever language you wrote
+  them.
+- **Arabic reads right to left.** The layout mirrors — the pens and the week
+  move to the right, the panel to the left. The dial does not: a clock runs
+  clockwise in every language, and 15:00 is 15:00.
+- On a fresh install the six starting categories arrive in your language.
+  If you have already renamed them, or logged anything at all, nothing
+  changes — they are your data from the first edit onward.
+
+### Fixed
+
+- **Counts that stayed plural when they meant one.** "You met 1 of 1
+  intentions", "sits in just 1 categories", "Filled 1 days". Five of them,
+  wrong in English before they were ever wrong anywhere else.
+- Dates and weekday names follow the app's language rather than the
+  browser's — a fully translated page was still saying "August 2026".
+- The streak now reads correctly in languages that put the number in the
+  middle of the phrase rather than at the front.
+
+### Changed
+
+- **The pens moved into a column to the left of the dial**, with the eraser
+  below a divider rather than sitting among them — it isn't a category, and
+  it was moving every time the real ones did.
+- The week strip sits under the pens, and its labels size themselves to the
+  language, so long weekday names are not cut off.
+- Less empty space between the intentions, avoid and reflection fields.
+
 ## [1.26.0] — 2026-08-30
 
 ### Fixed
