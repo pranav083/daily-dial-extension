@@ -562,5 +562,11 @@
  "sugPlat_Freedom": "Windows · macOS · iOS · Android · kostenpflichtig",
  "sugPlat_onesec": "iOS · Android · kostenlose Version",
  "sugPlat_AssistiveAccess": "iOS 17+ · integriert — reduziert das Handy auf wenige große, einfache Apps",
- "sugPlat_ScreenTimeapplimits": "iOS · macOS · integriert"
+ "sugPlat_ScreenTimeapplimits": "iOS · macOS · integriert",
+ "defaultCategory0": "Fokusarbeit",
+ "defaultCategory1": "Bewerbungen",
+ "defaultCategory2": "Lernen",
+ "defaultCategory3": "Admin",
+ "defaultCategory4": "Pause",
+ "defaultCategory5": "Ablenkung"
 }

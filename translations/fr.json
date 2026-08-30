@@ -562,5 +562,11 @@
  "sugPlat_Freedom": "Windows · macOS · iOS · Android · payant",
  "sugPlat_onesec": "iOS · Android · offre gratuite",
  "sugPlat_AssistiveAccess": "iOS 17+ · intégré — réduit le téléphone à quelques grandes applis simples",
- "sugPlat_ScreenTimeapplimits": "iOS · macOS · intégré"
+ "sugPlat_ScreenTimeapplimits": "iOS · macOS · intégré",
+ "defaultCategory0": "Travail intense",
+ "defaultCategory1": "Candidatures",
+ "defaultCategory2": "Études",
+ "defaultCategory3": "Admin",
+ "defaultCategory4": "Pause",
+ "defaultCategory5": "Distraction"
 }

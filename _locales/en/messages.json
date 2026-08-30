@@ -1,7 +1,7 @@
 {
   "appName": {
     "message": "Daily Dial – Time Tracker & Focus",
-    "description": "The extension's name, shown in the Chrome Web Store, the extensions page, and the toolbar tooltip. Must stay exactly this in English."
+    "description": "The extension's name in the Chrome Web Store, the extensions page and the toolbar tooltip. Keep \"Daily Dial\" itself in Latin script and untranslated — it is the name people search for and it must match the published listing. The descriptive part after the dash should be translated."
   },
   "appDescription": {
     "message": "Paint your day on a 24-hour dial, then see whether the time went where you meant it to.",
@@ -17,7 +17,7 @@
   },
   "wordmarkTitle": {
     "message": "Daily Dial",
-    "description": "Brand wordmark in the top-left corner of the app, next to the version number."
+    "description": "The product name in the page header. A brand name: never translated or transliterated."
   },
   "wordmarkTagline": {
     "message": "Time & focus log",
@@ -1430,7 +1430,7 @@
   },
   "aboutDailyDialName": {
     "message": "Daily Dial",
-    "description": "App name shown next to the version number at the top of the About tab."
+    "description": "The product name in the About panel. A brand name: never translated or transliterated."
   },
   "githubLinkLabel": {
     "message": "GitHub",
@@ -2942,5 +2942,29 @@
   "sugPlat_ScreenTimeapplimits": {
     "message": "iOS · macOS · built in",
     "description": "Platforms and price for the tool \"Screen Time app limits\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "defaultCategory0": {
+    "message": "Deep Work",
+    "description": "Default name for category slot 0, written once when someone first opens the extension. From then on it is the user's own data and is never re-translated, so a change here only affects new installs. Shown in a narrow chip — keep it short."
+  },
+  "defaultCategory1": {
+    "message": "Applications",
+    "description": "Default name for category slot 1, written once when someone first opens the extension. From then on it is the user's own data and is never re-translated, so a change here only affects new installs. Shown in a narrow chip — keep it short."
+  },
+  "defaultCategory2": {
+    "message": "Study",
+    "description": "Default name for category slot 2, written once when someone first opens the extension. From then on it is the user's own data and is never re-translated, so a change here only affects new installs. Shown in a narrow chip — keep it short."
+  },
+  "defaultCategory3": {
+    "message": "Admin",
+    "description": "Default name for category slot 3, written once when someone first opens the extension. From then on it is the user's own data and is never re-translated, so a change here only affects new installs. Shown in a narrow chip — keep it short."
+  },
+  "defaultCategory4": {
+    "message": "Break",
+    "description": "Default name for category slot 4, written once when someone first opens the extension. From then on it is the user's own data and is never re-translated, so a change here only affects new installs. Shown in a narrow chip — keep it short."
+  },
+  "defaultCategory5": {
+    "message": "Distraction",
+    "description": "Default name for category slot 5, written once when someone first opens the extension. From then on it is the user's own data and is never re-translated, so a change here only affects new installs. Shown in a narrow chip — keep it short."
   }
 }

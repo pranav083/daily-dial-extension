@@ -2378,5 +2378,23 @@
   },
   "sugPlat_ScreenTimeapplimits": {
     "message": "iOS · macOS · integriert"
+  },
+  "defaultCategory0": {
+    "message": "Fokusarbeit"
+  },
+  "defaultCategory1": {
+    "message": "Bewerbungen"
+  },
+  "defaultCategory2": {
+    "message": "Lernen"
+  },
+  "defaultCategory3": {
+    "message": "Admin"
+  },
+  "defaultCategory4": {
+    "message": "Pause"
+  },
+  "defaultCategory5": {
+    "message": "Ablenkung"
   }
 }

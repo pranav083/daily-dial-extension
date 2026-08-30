@@ -130,7 +130,7 @@ applyStaticI18n();
 
 /** @type {Map<string, {slots:number[], reflection:string}>} */
 const days = new Map();
-let categories = normalizeCategories(null);
+let categories = normalizeCategories(null, t);
 let settings = normalizeSettings(null);
 /** Device-local Google Drive connection bookkeeping — see DRIVE_FILE_ID_KEY. */
 let driveFileId = null;
@@ -171,7 +171,7 @@ async function loadAll() {
   for (const [key, value] of Object.entries(all)) {
     if (key.startsWith(DAY_PREFIX)) days.set(key.slice(DAY_PREFIX.length), normalizeDay(value));
   }
-  categories = normalizeCategories(all[CATEGORIES_KEY]);
+  categories = normalizeCategories(all[CATEGORIES_KEY], t);
   settings = normalizeSettings(all[SETTINGS_KEY]);
   driveFileId = typeof all[DRIVE_FILE_ID_KEY] === "string" ? all[DRIVE_FILE_ID_KEY] : null;
   driveLastSyncAt = Number.isFinite(all[DRIVE_LAST_SYNC_KEY]) ? all[DRIVE_LAST_SYNC_KEY] : null;

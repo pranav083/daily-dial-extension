@@ -403,9 +403,19 @@ export function normalizeAliases(saved) {
 
 /** Categories are six fixed colour slots; only name/weight/enabled/aliases
  *  are editable. Days store the slot index, so renaming never rewrites
- *  history. */
-export function normalizeCategories(saved) {
-  const defaults = DEFAULT_CATEGORIES.map((c) => ({ ...c }));
+ *  history.
+ *  @param {Array} saved
+ *  @param {(key: string) => string} [translate] supplies localized default
+ *    names; omitted in tests and anywhere the English defaults are wanted. */
+export function normalizeCategories(saved, translate = null) {
+  // The default *names* are UI text on a fresh install — a new Spanish user
+  // should not be handed six English categories. But a saved name always
+  // wins, and one is saved the moment anything is edited, so this never
+  // renames a category someone already has data recorded against.
+  const defaults = DEFAULT_CATEGORIES.map((c) => ({
+    ...c,
+    name: (translate && translate(`defaultCategory${c.id}`)) || c.name,
+  }));
   if (!Array.isArray(saved)) return defaults;
   return defaults.map((base, i) => {
     const s = saved[i];

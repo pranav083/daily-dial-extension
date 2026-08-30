@@ -1,9 +1,9 @@
 {
- "appName": "डेली डायल – समय ट्रैकर और फ़ोकस",
+ "appName": "Daily Dial – समय ट्रैकर और फ़ोकस",
  "appDescription": "अपना दिन 24-घंटे के डायल पर रंगें, फिर देखें कि समय वहीं गया या नहीं जहाँ आप चाहते थे।",
  "actionDefaultTitle": "डेली डायल खोलें",
  "saveFailedToast": "सहेजा नहीं जा सका — आपका आख़िरी बदलाव शायद खो गया हो।",
- "wordmarkTitle": "डेली डायल",
+ "wordmarkTitle": "Daily Dial",
  "wordmarkTagline": "समय और फ़ोकस लॉग",
  "streakBannerTooltip": "लगातार वे दिन जिनमें कम से कम एक ब्लॉक दर्ज हुआ। हफ़्ते में एक दिन छूटना फ़्रीज़ के रूप में माफ़ है।",
  "streakDayLabel": "दिन की लय",
@@ -305,7 +305,7 @@
  "remindersOffToast": "अनुस्मारक बंद",
  "autoBackupOnToast": "अपने आप बैकअप चालू",
  "autoBackupOffToast": "अपने आप बैकअप बंद",
- "aboutDailyDialName": "डेली डायल",
+ "aboutDailyDialName": "Daily Dial",
  "githubLinkLabel": "GitHub",
  "gettingStartedLinkLabel": "शुरुआत कैसे करें",
  "demoAndTourLabel": "डेमो और परिचय",
@@ -562,5 +562,11 @@
  "sugPlat_Freedom": "Windows · macOS · iOS · Android · सशुल्क",
  "sugPlat_onesec": "iOS · Android · मुफ़्त स्तर उपलब्ध",
  "sugPlat_AssistiveAccess": "iOS 17+ · पहले से मौजूद — फ़ोन को कुछ बड़े, सरल ऐप्स तक सीमित कर देता है",
- "sugPlat_ScreenTimeapplimits": "iOS · macOS · पहले से मौजूद"
+ "sugPlat_ScreenTimeapplimits": "iOS · macOS · पहले से मौजूद",
+ "defaultCategory0": "गहन कार्य",
+ "defaultCategory1": "आवेदन",
+ "defaultCategory2": "अध्ययन",
+ "defaultCategory3": "प्रशासन",
+ "defaultCategory4": "विश्राम",
+ "defaultCategory5": "भटकाव"
 }

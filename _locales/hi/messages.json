@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "डेली डायल – समय ट्रैकर और फ़ोकस"
+    "message": "Daily Dial – समय ट्रैकर और फ़ोकस"
   },
   "appDescription": {
     "message": "अपना दिन 24-घंटे के डायल पर रंगें, फिर देखें कि समय वहीं गया या नहीं जहाँ आप चाहते थे।"
@@ -12,7 +12,7 @@
     "message": "सहेजा नहीं जा सका — आपका आख़िरी बदलाव शायद खो गया हो।"
   },
   "wordmarkTitle": {
-    "message": "डेली डायल"
+    "message": "Daily Dial"
   },
   "wordmarkTagline": {
     "message": "समय और फ़ोकस लॉग"
@@ -1123,7 +1123,7 @@
     "message": "अपने आप बैकअप बंद"
   },
   "aboutDailyDialName": {
-    "message": "डेली डायल"
+    "message": "Daily Dial"
   },
   "githubLinkLabel": {
     "message": "GitHub"
@@ -2378,5 +2378,23 @@
   },
   "sugPlat_ScreenTimeapplimits": {
     "message": "iOS · macOS · पहले से मौजूद"
+  },
+  "defaultCategory0": {
+    "message": "गहन कार्य"
+  },
+  "defaultCategory1": {
+    "message": "आवेदन"
+  },
+  "defaultCategory2": {
+    "message": "अध्ययन"
+  },
+  "defaultCategory3": {
+    "message": "प्रशासन"
+  },
+  "defaultCategory4": {
+    "message": "विश्राम"
+  },
+  "defaultCategory5": {
+    "message": "भटकाव"
   }
 }
