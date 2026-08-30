@@ -8,6 +8,34 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.26.0] — 2026-08-30
+
+### Fixed
+
+- **The other four ways to paint the future.** 1.25.0 stopped the three
+  painting paths — dragging the ring, the keyboard, and typed entry — but the
+  rule was written into each of them separately, so everything else that
+  writes slots still wrote whatever it liked. Filling a gap from "The day,
+  end to end" would happily claim the rest of tonight; "Copy yesterday" and
+  applying a template stamped a full 24 hours onto a day that had only had
+  ten of them; and a multi-day fill of "9–5 all week", run on Monday morning,
+  recorded the whole week as already worked. All four now stop at now, and
+  the rule lives in one place instead of four.
+- Multi-day fill reports the days it actually wrote. It counted the days in
+  the range, so a range reaching into next week claimed days it had skipped.
+
+### Changed
+
+- **The week moved to the left of the dial.** Below it, it was a long scroll
+  away from anything; above it, it pushed the pens and the note field off a
+  laptop screen. Beside the ring it costs nothing, because the days now run
+  top to bottom with each bar running left to right — seven of them fit in
+  something narrower than the dial is tall. On a narrow window it goes back
+  to a band above the ring.
+- Breakdown rows for hours later today read "Not yet" instead of offering a
+  category dropdown. The row stays, because the day does continue — it just
+  no longer offers a control whose every use would be refused.
+
 ## [1.25.0] — 2026-08-29
 
 ### Fixed

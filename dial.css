@@ -193,45 +193,79 @@ body {
   color: var(--accent);
 }
 
-/* ---- 7-day strip ---- */
-.strip-wrap { display: flex; flex-direction: column; gap: 6px; }
-.strip-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 2px; }
-.strip-month { font-size: 0.8rem; font-weight: 700; color: var(--ink-2); }
-.strip-hint { font-size: 0.72rem; color: var(--ink-muted); }
-.strip {
-  display: flex;
-  gap: 8px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 12px;
-}
-.strip-day {
-  flex: 1;
+/* ---- 7-day strip ----
+   A column beside the ring rather than a band above it. Days run top to
+   bottom and each bar runs left to right, which is what lets seven of them
+   fit in something narrower than it is tall — and that is what keeps the
+   ring, the note field and the pens together on one screen. */
+.strip-wrap {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 6px;
-  padding: 6px 2px;
-  border-radius: 8px;
+  flex: 0 0 138px;
+  min-width: 0;
+}
+.strip-header { display: flex; align-items: baseline; gap: 8px; padding: 0 2px; }
+.strip-month { font-size: 0.74rem; font-weight: 700; color: var(--ink-2); }
+.strip-hint { font-size: 0.68rem; color: var(--ink-muted); padding: 0 2px; }
+.strip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+}
+.strip-day {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 5px;
+  border-radius: 7px;
   border: 1px solid transparent;
   background: none;
   cursor: pointer;
   color: var(--ink-2);
   font-family: var(--font-mono);
+  text-align: left;
 }
-.strip-day:hover { background: var(--panel-2); }
-.strip-day.active { border-color: var(--accent); background: var(--panel-2); }
-.strip-day .dow { font-size: 0.68rem; color: var(--ink-muted); letter-spacing: 0.04em; }
+.strip-day:hover { background: var(--panel); }
+.strip-day.active { border-color: var(--accent); background: var(--panel); }
+.strip-day .dow { font-size: 0.66rem; color: var(--ink-muted); letter-spacing: 0.04em; width: 2ch; }
 .strip-day .bar-track {
-  width: 100%; height: 34px;
-  border-radius: 5px;
+  flex: 1;
+  min-width: 0;
+  height: 14px;
+  border-radius: 4px;
   background: var(--ring-track);
-  display: flex; align-items: flex-end;
+  display: flex;
   overflow: hidden;
 }
-.strip-day .bar-fill { width: 100%; border-radius: 5px 5px 0 0; }
-.strip-day .num { font-size: 0.66rem; color: var(--ink-muted); }
+.strip-day .bar-fill { height: 100%; width: var(--fill, 6%); border-radius: 4px; }
+.strip-day .num {
+  font-size: 0.64rem;
+  color: var(--ink-muted);
+  width: 2ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- dial + strip row ---- */
+.dial-row { display: flex; gap: 18px; align-items: flex-start; }
+.dial-stack { flex: 1; min-width: 0; }
+/* A container query on the card, for the same reason the twin dials use one:
+   once the card itself is narrow, the strip goes back above the ring rather
+   than squeezing both into a width neither can use. */
+@container (max-width: 520px) {
+  .dial-row { flex-direction: column; }
+  .strip-wrap { flex: 0 0 auto; width: 100%; }
+  .strip { flex-direction: row; gap: 6px; }
+  .strip-day { flex: 1; flex-direction: column; gap: 5px; padding: 6px 2px; text-align: center; }
+  .strip-day .dow, .strip-day .num { width: auto; text-align: center; }
+  .strip-day .bar-track { flex: none; width: 100%; height: 30px; align-items: flex-end; }
+  .strip-day .bar-fill { width: 100%; height: var(--fill, 6%); border-radius: 4px 4px 0 0; }
+}
 
 /* ---- main grid ---- */
 .grid {
@@ -1558,6 +1592,11 @@ select {
 .bd-row.gap td { background: color-mix(in oklab, var(--ink) 2%, transparent); }
 .bd-row.gap .bd-what { color: var(--ink-muted); font-weight: 600; }
 .bd-row.gap .bd-dot { background: none; border: 1px dashed var(--ink-muted); }
+
+/* Hours later today: the row stays, because the day does continue — it just
+   doesn't offer a control that painting rules would refuse. */
+.bd-row.future td { opacity: 0.55; }
+.bd-not-yet { font-size: 0.78rem; font-style: italic; color: var(--ink-muted); }
 
 .bd-fill {
   min-width: 0;

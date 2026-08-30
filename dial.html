@@ -107,50 +107,64 @@
           </div>
         </div>
 
-        <div class="dial-wrap" id="dial-wrap-single">
-          <svg class="dial-svg" id="dial" viewBox="0 0 460 460" role="application" tabindex="0"
-               data-i18n-label="dialAriaLabelSingle"
-               aria-label="24-hour activity dial. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
-            <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
-            <g id="segments"></g>
-            <g id="ticks"></g>
-            <g id="needle"></g>
-            <text id="center-time" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
-            <text id="center-sub" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
-          </svg>
-        </div>
-
-        <div class="ampm-toggle-switch" id="dial-toggle-switch" hidden role="group" data-i18n-label="toggleHalfSwitchLabel" aria-label="Show the AM or PM half">
-          <button type="button" id="toggle-am-btn" aria-pressed="true" data-i18n="dialHalfAm">AM</button>
-          <button type="button" id="toggle-pm-btn" aria-pressed="false" data-i18n="dialHalfPm">PM</button>
-        </div>
-
-        <div class="dial-wrap-twin" id="dial-wrap-twin" hidden>
-          <div class="dial-half" id="dial-half-am">
-            <svg class="dial-svg" id="dial-am" viewBox="0 0 460 460" role="application" tabindex="0"
-                 data-i18n-label="dialAriaLabelAm"
-                 aria-label="AM activity dial, midnight to noon. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
-              <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
-              <g id="segments-am"></g>
-              <g id="ticks-am"></g>
-              <g id="needle-am"></g>
-              <text id="center-time-am" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
-              <text id="center-sub-am" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
-            </svg>
-            <div class="dial-half-label"><span data-i18n="dialHalfAm">AM</span> <span class="muted" data-i18n="dialHalfAmRange">· 12a&ndash;12p</span></div>
+        <!-- The week sits beside the ring rather than above it: it is
+             reference, not something acted on each session, and at the top
+             it pushed the pens and the note field off a laptop screen. -->
+        <div class="dial-row">
+          <div class="strip-wrap">
+            <div class="strip-header">
+              <span class="strip-month" id="strip-month"></span>
+            </div>
+            <div class="strip" id="strip" data-i18n-title="stripTooltip" title="The last seven days. Bar length is that day's score; click one to view or edit it."></div>
+            <span class="strip-hint" data-i18n="stripHintLabel">Click a day to open it</span>
           </div>
-          <div class="dial-half" id="dial-half-pm">
-            <svg class="dial-svg" id="dial-pm" viewBox="0 0 460 460" role="application" tabindex="0"
-                 data-i18n-label="dialAriaLabelPm"
-                 aria-label="PM activity dial, noon to midnight. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
+          <div class="dial-stack">
+            <div class="dial-wrap" id="dial-wrap-single">
+            <svg class="dial-svg" id="dial" viewBox="0 0 460 460" role="application" tabindex="0"
+                 data-i18n-label="dialAriaLabelSingle"
+                 aria-label="24-hour activity dial. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
               <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
-              <g id="segments-pm"></g>
-              <g id="ticks-pm"></g>
-              <g id="needle-pm"></g>
-              <text id="center-time-pm" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
-              <text id="center-sub-pm" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
+              <g id="segments"></g>
+              <g id="ticks"></g>
+              <g id="needle"></g>
+              <text id="center-time" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
+              <text id="center-sub" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
             </svg>
-            <div class="dial-half-label"><span data-i18n="dialHalfPm">PM</span> <span class="muted" data-i18n="dialHalfPmRange">· 12p&ndash;12a</span></div>
+          </div>
+
+          <div class="ampm-toggle-switch" id="dial-toggle-switch" hidden role="group" data-i18n-label="toggleHalfSwitchLabel" aria-label="Show the AM or PM half">
+            <button type="button" id="toggle-am-btn" aria-pressed="true" data-i18n="dialHalfAm">AM</button>
+            <button type="button" id="toggle-pm-btn" aria-pressed="false" data-i18n="dialHalfPm">PM</button>
+          </div>
+
+          <div class="dial-wrap-twin" id="dial-wrap-twin" hidden>
+            <div class="dial-half" id="dial-half-am">
+              <svg class="dial-svg" id="dial-am" viewBox="0 0 460 460" role="application" tabindex="0"
+                   data-i18n-label="dialAriaLabelAm"
+                   aria-label="AM activity dial, midnight to noon. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
+                <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
+                <g id="segments-am"></g>
+                <g id="ticks-am"></g>
+                <g id="needle-am"></g>
+                <text id="center-time-am" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
+                <text id="center-sub-am" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
+              </svg>
+              <div class="dial-half-label"><span data-i18n="dialHalfAm">AM</span> <span class="muted" data-i18n="dialHalfAmRange">· 12a&ndash;12p</span></div>
+            </div>
+            <div class="dial-half" id="dial-half-pm">
+              <svg class="dial-svg" id="dial-pm" viewBox="0 0 460 460" role="application" tabindex="0"
+                   data-i18n-label="dialAriaLabelPm"
+                   aria-label="PM activity dial, noon to midnight. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
+                <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
+                <g id="segments-pm"></g>
+                <g id="ticks-pm"></g>
+                <g id="needle-pm"></g>
+                <text id="center-time-pm" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
+                <text id="center-sub-pm" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
+              </svg>
+              <div class="dial-half-label"><span data-i18n="dialHalfPm">PM</span> <span class="muted" data-i18n="dialHalfPmRange">· 12p&ndash;12a</span></div>
+            </div>
+          </div>
           </div>
         </div>
 
@@ -308,14 +322,6 @@
         </div>
       </div>
     </div>
-    </div>
-
-    <div class="strip-wrap">
-      <div class="strip-header">
-        <span class="strip-month" id="strip-month"></span>
-        <span class="strip-hint" data-i18n="stripHintLabel">Last 7 days · click one to open it</span>
-      </div>
-      <div class="strip" id="strip" data-i18n-title="stripTooltip" title="The last seven days. Bar height is that day's score; click one to view or edit it."></div>
     </div>
 
     <!-- Filled in by the History feature. -->

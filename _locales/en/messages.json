@@ -890,11 +890,11 @@
     "description": "Section heading over the daily reminder time fields in Settings → Reminders."
   },
   "stripHintLabel": {
-    "message": "Last 7 days · click one to open it",
+    "message": "Click a day to open it",
     "description": "Small hint text next to the 7-day strip's month label."
   },
   "stripTooltip": {
-    "message": "The last seven days. Bar height is that day's score; click one to view or edit it.",
+    "message": "The last seven days. Bar length is that day's score; click one to view or edit it.",
     "description": "Tooltip on the 7-day strip."
   },
   "importSectionLabel": {
@@ -2248,5 +2248,31 @@
   "futureNotLogged": {
     "message": "That hasn't happened yet — you can only log time up to now.",
     "description": "Toast shown when the user tries to paint a part of today that is still in the future."
+  },
+  "copyYesterdayUpToNowToast": {
+    "message": "Copied yesterday up to now — the rest of the day hasn't happened yet",
+    "description": "Toast after copying yesterday onto today, when the copy had to stop at the current time."
+  },
+  "templateAppliedUpToNowToast": {
+    "message": "Applied \"$NAME$\" up to now — the rest of the day hasn't happened yet",
+    "description": "Toast after applying a template to today, when the template had to stop at the current time.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow": {
+    "message": "Filled $COUNT$ days, stopping at now",
+    "description": "Toast after a multi-day fill that was trimmed because part of the range is still in the future.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownNotYet": {
+    "message": "Not yet",
+    "description": "Shown in place of the fill dropdown on breakdown rows covering time later today."
   }
 }

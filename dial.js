@@ -1097,22 +1097,53 @@ function reconcileActivePen() {
 }
 
 /**
- * The first slot that hasn't happened yet.
+ * How much of today has actually happened, as a slot count.
  *
- * Painting ahead on today records time that hasn't occurred — it inflates
- * the day's tracked total, its score, and the streak, all from something
- * imagined. Forward day navigation was stopped for the same reason; this is
- * the same rule applied within today. Past days are wide open, since there
- * every slot has happened.
+ * Painting ahead records time that hasn't occurred — it inflates the day's
+ * tracked total, its score, and the streak, all from something imagined.
+ * Forward day navigation was stopped for the same reason; this is the same
+ * rule applied within a day.
  */
-function firstUnpaintableSlot() {
-  if (!isToday(state.viewDate)) return SLOTS;
+function nowSlotLimit() {
   const now = new Date();
   return Math.min(SLOTS, Math.floor((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN) + 1);
 }
 
+/** The first slot that can't be painted on the day currently on screen.
+ *  Past days are wide open — there, every slot has happened. */
+function firstUnpaintableSlot() {
+  return isToday(state.viewDate) ? nowSlotLimit() : SLOTS;
+}
+
+/**
+ * The same rule for a day named by key rather than the one on screen — the
+ * multi-day fill and the templates write to days they aren't showing, and
+ * without this each one would need to re-derive "has this happened yet".
+ * Date keys are `YYYY-MM-DD`, so they compare correctly as strings.
+ */
+function writeLimitForKey(key) {
+  const today = dateKey(new Date());
+  if (key < today) return SLOTS;
+  if (key > today) return 0; // the whole day is still ahead
+  return nowSlotLimit();
+}
+
 /** True when a slot is in the future on the day being viewed. */
 const isFutureSlot = (globalSlot) => globalSlot >= firstUnpaintableSlot();
+
+/**
+ * Stamps a whole day's worth of slots onto the day on screen, keeping only
+ * the part that has already happened. Shared by "copy yesterday" and the
+ * templates: both describe a full 24 hours, but on today only the elapsed
+ * part of that description can be true. Anything beyond now is left as it
+ * was rather than overwritten, so the stamp adds without erasing forward.
+ * @returns {number} slots dropped, for the caller to mention
+ */
+function stampSlots(next) {
+  const limit = firstUnpaintableSlot();
+  for (let i = 0; i < limit; i++) state.slots[i] = next[i];
+  return SLOTS - limit;
+}
 
 /** The clock-face upkeep a 30-second timer does: move the needle, refresh
  *  the centre time. No data changed, so segments are left alone. */
@@ -1475,10 +1506,10 @@ function renderGoalsEditor() {
  *  are, since a template is the shape of a day, not its content. */
 function applyTemplate(template) {
   pushUndo();
-  state.slots = [...template.slots];
+  const dropped = stampSlots(template.slots);
   persistDay();
   renderAll();
-  toast(t("templateAppliedToast", [template.name]));
+  toast(dropped ? t("templateAppliedUpToNowToast", [template.name]) : t("templateAppliedToast", [template.name]));
 }
 
 /** Saving under a name already in use replaces that template rather than
@@ -1667,7 +1698,10 @@ function renderStrip() {
     track.className = "bar-track";
     const fill = document.createElement("span");
     fill.className = "bar-fill";
-    fill.style.height = `${stats.score === null ? 6 : Math.max(6, (stats.score + 100) / 2)}%`;
+    // A custom property rather than a dimension: the bar runs left-to-right
+    // beside the ring and bottom-to-top when the card is narrow enough to put
+    // the strip back on top, and only CSS knows which layout is in force.
+    fill.style.setProperty("--fill", `${stats.score === null ? 6 : Math.max(6, (stats.score + 100) / 2)}%`);
     fill.style.background = `var(${toneVar(bucket.tone)})`;
     track.appendChild(fill);
 
@@ -1747,10 +1781,10 @@ function copyYesterday() {
   }
 
   pushUndo();
-  state.slots = [...yDay.slots];
+  const dropped = stampSlots(yDay.slots);
   persistDay();
   renderAll();
-  toast(t("copyYesterdaySuccessToast"));
+  toast(dropped ? t("copyYesterdayUpToNowToast") : t("copyYesterdaySuccessToast"));
 }
 
 /* ---------- share as image ---------- */
@@ -2018,7 +2052,19 @@ function renderBreakdown() {
     if (!isGap) dot.style.background = `var(--${categories[span.cat].cls})`;
     label.appendChild(dot);
 
-    if (isGap) {
+    // The table runs the day end to end, so on today it reaches hours that
+    // haven't arrived. Those rows stay — the day genuinely does continue —
+    // but they say so, instead of offering a control whose every use would
+    // be refused.
+    const notYet = isGap && span.start >= firstUnpaintableSlot();
+
+    if (notYet) {
+      const soon = document.createElement("span");
+      soon.className = "bd-not-yet";
+      soon.textContent = t("breakdownNotYet");
+      label.appendChild(soon);
+      row.classList.add("future");
+    } else if (isGap) {
       // A dropdown right here, because the alternative is going back to the
       // ring and dragging the exact range again — the friction that stops
       // gaps ever getting filled.
@@ -2149,15 +2195,26 @@ function saveSpanNote(span, existingIndex, raw) {
 function fillSpan(from, to, categoryId) {
   if (tabIsStale) return;
   checkDayRollover();
+
+  // The table lists the day end to end, so on today it offers rows for hours
+  // that haven't arrived. Erasing stays unrestricted — it can only ever
+  // remove something that shouldn't be there.
+  const end = categoryId === UNTRACKED ? to : Math.min(to, firstUnpaintableSlot());
+  if (end <= from) {
+    toast(t("futureNotLogged"));
+    renderBreakdown(); // put the dropdown back to "Unlogged"
+    return;
+  }
+
   pushUndo();
-  for (let i = from; i < to; i++) state.slots[i] = categoryId;
+  for (let i = from; i < end; i++) state.slots[i] = categoryId;
   persistDay();
   renderAll();
   onStrokeEnd();
   announce(
     categoryId === UNTRACKED
       ? t("clearedAnnounce", [fmtSlotClock(from), fmtSlotClock(to)])
-      : t("caretCommitAnnounce", [categories[categoryId].name, fmtSlotClock(from), fmtSlotClock(to)])
+      : t("caretCommitAnnounce", [categories[categoryId].name, fmtSlotClock(from), fmtSlotClock(end)])
   );
 }
 
@@ -2831,9 +2888,23 @@ function applyMultiFill() {
 
   const toSet = {};
   const claimedSampleKeys = [];
+  let clampedDays = 0;
+  let written = 0;
   for (const key of keys) {
+    // Each day gets its own limit: past days take the whole window, today
+    // takes the part that has elapsed, and a day still ahead takes none.
+    // Without this, "every weekday, 9–5" applied on a Monday morning would
+    // write this afternoon and the rest of the week as already worked.
+    const limit = categoryId === UNTRACKED ? SLOTS : writeLimitForKey(key);
+    const end = Math.min(toSlot, limit);
+    if (end <= fromSlot) {
+      clampedDays++;
+      continue;
+    }
+    if (end < toSlot) clampedDays++;
+
     const existing = days.get(key);
-    const slots = fillSlotWindow(existing?.slots ?? emptyDay().slots, fromSlot, toSlot, categoryId);
+    const slots = fillSlotWindow(existing?.slots ?? emptyDay().slots, fromSlot, end, categoryId);
     const data = {
       slots,
       reflection: existing?.reflection ?? "",
@@ -2843,6 +2914,7 @@ function applyMultiFill() {
     };
     days.set(key, data);
     toSet[DAY_PREFIX + key] = data;
+    written++;
     if (key === viewedKey) state.slots = [...slots];
     // Same rule as persistDay: writing into a demo day makes it yours.
     if (sampleDayKeys.includes(key)) claimedSampleKeys.push(key);
@@ -2854,7 +2926,6 @@ function applyMultiFill() {
   }
 
   saveLocal(toSet).catch(reportStorageFailure);
-  const dayCount = keys.length;
   cancelMultiFill();
 
   renderAll();
@@ -2864,7 +2935,12 @@ function applyMultiFill() {
   if (claimedSampleKeys.length) renderSampleDataUI();
   renderFirstRunHint();
   refreshCurrentView();
-  toast(dayCount === 1 ? t("filledDaysSingular", [String(dayCount)]) : t("filledDaysPlural", [String(dayCount)]));
+  // `written` rather than `keys.length`: days wholly in the future were
+  // skipped, and reporting the range's size would claim work that no day
+  // actually received.
+  if (written === 0) toast(t("futureNotLogged"));
+  else if (clampedDays) toast(t("filledDaysUpToNow", [String(written)]));
+  else toast(written === 1 ? t("filledDaysSingular", ["1"]) : t("filledDaysPlural", [String(written)]));
 }
 
 /* ---------- google drive backup ---------- */
