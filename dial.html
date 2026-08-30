@@ -452,7 +452,19 @@
         </section>
 
         <section class="settings-section" data-panel="goals">
-          <p class="section-label">Daily targets, per category</p>
+          <p class="section-label" title="Patterns Daily Dial notices in your own data, shown at the top of History. Turning this off hides the whole section.">Worth noticing</p>
+          <div class="reminder-row">
+            <label for="observations-on" title="Shows the "Worth noticing" section at the top of History.">Point out patterns in my data</label>
+            <input type="checkbox" id="observations-on">
+          </div>
+          <p class="editor-note">
+            Six things, checked over the last few weeks — intentions you set but don't finish,
+            stretches with no rest logged, your most productive hour going unprotected, and so on.
+            Each states a fact; suggestions only appear if you ask for them. Off means the
+            section never appears at all.
+          </p>
+
+          <p class="section-label" style="margin-top:16px;">Daily targets, per category</p>
           <div id="goals-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
           <p class="editor-note">Leave blank for no goal. Progress shows in the side panel once a target is set.</p>
 

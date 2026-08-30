@@ -1911,6 +1911,16 @@ function renderChallenge() {
     : `day ${progress.day}`;
 }
 
+function syncObservationInputs() {
+  $("observations-on").checked = settings.observationsOn !== false;
+}
+
+function saveObservations() {
+  settings = normalizeSettings({ ...settings, observationsOn: $("observations-on").checked });
+  persistSettings();
+  refreshCurrentView();
+}
+
 function syncChallengeInputs() {
   const c = settings.challenge;
   $("challenge-name-input").value = c?.name ?? "";
@@ -2744,6 +2754,12 @@ function wireEvents() {
     $(id).addEventListener("change", saveChallenge);
   }
   $("challenge-clear").addEventListener("click", clearChallenge);
+  $("observations-on").addEventListener("change", saveObservations);
+  // The recap notification focuses an existing dial rather than reloading it
+  // (a reload would discard unsaved edits), so the switch arrives as a message.
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (msg?.type === "showHistory") showView("history");
+  });
 
   $("prev-day").addEventListener("click", () => {
     const d = new Date(state.viewDate);
@@ -2959,9 +2975,14 @@ async function boot() {
   renderSampleDataUI();
   renderChallenge();
   syncChallengeInputs();
+  syncObservationInputs();
   reconcileActivePen();
   applyDialMode();
   renderAll();
+  // A weekly recap notification opens the dial at #history, since the numbers
+  // it just quoted all live on that page.
+  if (window.location.hash === "#history") showView("history");
+
   // Only after the overlay is dealt with: a returning user who never
   // painted anything still gets the hint, but not stacked under a modal.
   if (onboardingSeen) renderFirstRunHint();

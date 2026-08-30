@@ -45,12 +45,24 @@ let wired = false;
 let seeded = false;
 
 /** The month of the most recent logged day, or null if nothing is logged. */
+/**
+ * The month to open on: the most recent one with painted time, or failing
+ * that the most recent with anything written at all.
+ *
+ * The fallback matters for imported history. A journal brought in from
+ * elsewhere carries notes and intentions but no painted slots, so keying this
+ * on `dayHasEntries` alone left the cursor on the current month and the whole
+ * import looked like it had failed.
+ */
 function latestLoggedMonth(days) {
-  let latestKey = null;
+  let painted = null;
+  let anyContent = null;
   for (const [key, day] of days) {
-    if (dayHasEntries(day) && (latestKey === null || key > latestKey)) latestKey = key;
+    if (dayHasEntries(day) && (painted === null || key > painted)) painted = key;
+    if (dayHasContent(day) && (anyContent === null || key > anyContent)) anyContent = key;
   }
-  return latestKey ? new Date(latestKey + "T00:00:00") : null;
+  const key = painted ?? anyContent;
+  return key ? new Date(key + "T00:00:00") : null;
 }
 
 function isSameMonth(a, b) {
@@ -172,6 +184,17 @@ function statTile(value, label) {
   return stat;
 }
 
+/** Days in this month carrying notes, intentions or a reflection but no
+ *  painted time — the shape an imported journal takes. */
+function writtenDaysInMonth(year, month, days) {
+  let n = 0;
+  for (const [key, day] of days) {
+    const d = new Date(key + "T00:00:00");
+    if (d.getFullYear() === year && d.getMonth() === month && dayHasContent(day) && !dayHasEntries(day)) n++;
+  }
+  return n;
+}
+
 function renderSummary(year, month, days, categories) {
   const summary = monthSummary(year, month, days, categories);
 
@@ -198,6 +221,21 @@ function renderSummary(year, month, days, categories) {
   streak.title = "Consecutive logged days, counted only within this month — it doesn't borrow from the month before or after.";
   streak.textContent = `Streak this month: ${summary.currentStreak} current · ${summary.longestStreak} longest`;
   extra.appendChild(streak);
+
+  // Every number above counts painted time, so a month of imported journal
+  // entries reads as a row of zeros next to a log that is visibly full —
+  // which looks exactly like a failed import. Say what's actually there.
+  if (summary.daysLogged === 0) {
+    const written = writtenDaysInMonth(year, month, days);
+    if (written > 0) {
+      const note = document.createElement("p");
+      note.className = "hist-extra-line";
+      note.textContent =
+        `${written} ${written === 1 ? "day is" : "days are"} written up this month but have no time painted on the dial, ` +
+        `so they don't count toward anything above. They're all in the log below.`;
+      extra.appendChild(note);
+    }
+  }
 }
 
 /* ---------- category trends ---------- */
@@ -391,7 +429,34 @@ function ensureWired() {
 
 /** How far back the log reaches. Kept in module state so switching months
  *  in the panels above doesn't reset it. */
+/** Widened once on first render if the default window is empty — see
+ *  `seedLogRange`. */
 let logRange = "week";
+let logRangeSeeded = false;
+
+/**
+ * Opens on the narrowest range that actually contains something.
+ *
+ * "This week" is the right default for someone logging daily, and exactly the
+ * wrong one the day you import months of history: the log renders empty and
+ * reads as a failed import. Only ever widens, and only once, so it never
+ * fights a range the user picked.
+ */
+function seedLogRange(days) {
+  if (logRangeSeeded) return;
+  logRangeSeeded = true;
+  const withContent = [...days.entries()].filter(([, d]) => dayHasContent(d)).map(([k]) => k);
+  if (withContent.length === 0) return;
+  for (const range of ["week", "month", "all"]) {
+    logRange = range;
+    const start = logStartDate(new Date());
+    const startKey = start ? dateKeyOf(start) : null;
+    if (withContent.some((k) => startKey === null || k >= startKey)) break;
+  }
+  for (const b of $("log-range").children) {
+    b.setAttribute("aria-pressed", String(b.dataset.range === logRange));
+  }
+}
 
 function logStartDate(now) {
   const d = new Date(now);
@@ -514,6 +579,7 @@ function renderLogDay(key, day, categories) {
 }
 
 function renderLog(days, categories) {
+  seedLogRange(days);
   const host = $("log-entries");
   host.replaceChildren();
   const start = logStartDate(new Date());
@@ -549,8 +615,9 @@ function renderReview(days, categories, settings, silenced) {
   const list = $("review-list");
   list.replaceChildren();
 
-  const observations = detectPatterns(days, categories, settings, new Date())
-    .filter((o) => !silenced.includes(o.id));
+  const observations = settings.observationsOn === false
+    ? []
+    : detectPatterns(days, categories, settings, new Date()).filter((o) => !silenced.includes(o.id));
   card.hidden = observations.length === 0;
   if (observations.length === 0) return;
 

@@ -100,6 +100,11 @@ export const DEFAULT_SETTINGS = {
   // measures consecutive days and breaks; this just counts from a start
   // date, which is what a personal challenge actually is.
   challenge: null, // { name: string, startKey: "YYYY-MM-DD", targetDays: number }
+  // "Worth noticing" in History. On by default because an observation is
+  // arithmetic on the user's own data rather than an opinion — but it is
+  // still someone watching your habits and saying so, which not everyone
+  // wants, so it gets a single switch rather than only per-item silencing.
+  observationsOn: true,
 };
 export const WEIGHT_GLYPH = { 1: "+", 0: "·", "-1": "–" };
 
@@ -336,6 +341,7 @@ export function normalizeSettings(saved) {
     weeklyRecapTime,
     lastExportAt,
     challenge,
+    observationsOn: saved?.observationsOn !== false,
     dayWindow,
   };
 }

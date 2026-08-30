@@ -8,6 +8,35 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.17.0] — 2026-08-29
+
+### Added
+
+- **A single switch for "Worth noticing"**, in Settings → Goals. Per-item
+  silencing already existed, but the feature was meant to be optional and had
+  no way to turn the whole thing off. On by default — an observation is
+  arithmetic on your own data rather than an opinion — but it is still
+  something watching your habits and saying so, which not everyone wants.
+- **The weekly recap notification opens History**, where the numbers it just
+  quoted actually live, instead of dropping you on today's dial. An already
+  open dial is focused and told to switch view rather than reloaded, since a
+  reload would throw away unsaved edits.
+
+### Fixed
+
+- **Imported history was invisible.** Bringing in a journal — days carrying
+  notes and intentions but no painted time — left History looking empty and
+  the import looking failed. Two independent causes: the month cursor sought
+  the latest month with *painted* days and so never moved, and the log
+  defaults to "This week" while the import was months old. The cursor now
+  falls back to the latest month with anything written at all, and the log
+  opens on the narrowest range that actually contains something.
+- **The month summary read as a row of zeros next to a full log.** Every
+  figure up there counts painted time, so a month of written-up days showed
+  "0 days logged · 0m tracked" directly above the entries themselves — which
+  looks exactly like a failed import. It now says how many days are written
+  up without painted time, and where to find them.
+
 ## [1.16.2] — 2026-08-29
 
 ### Fixed

@@ -166,7 +166,7 @@ async function notifyWeeklyRecap() {
  * "read your browsing history", far more than this needs. It also removes
  * the double-click race the old bookkeeping had.
  */
-async function openDial() {
+async function openDial(hash) {
   const [existing] = await chrome.runtime.getContexts({
     contextTypes: ["TAB"],
     documentUrls: [chrome.runtime.getURL("dial.html")],
@@ -174,15 +174,21 @@ async function openDial() {
 
   if (existing) {
     try {
+      // Re-navigating an already-open tab would throw away unsaved edits, so
+      // an existing dial is only ever focused — never reloaded — and the
+      // page itself is told to switch view instead.
       await chrome.tabs.update(existing.tabId, { active: true });
       await chrome.windows.update(existing.windowId, { focused: true });
+      if (hash === "#history") {
+        await chrome.runtime.sendMessage({ type: "showHistory" }).catch(() => {});
+      }
       return;
     } catch {
       // Vanished between the query and the focus — fall through.
     }
   }
 
-  await chrome.tabs.create({ url: chrome.runtime.getURL("dial.html") });
+  await chrome.tabs.create({ url: chrome.runtime.getURL("dial.html") + (hash ?? "") });
 }
 
 chrome.action.onClicked.addListener(openDial);
@@ -190,7 +196,9 @@ chrome.action.onClicked.addListener(openDial);
 chrome.notifications.onClicked.addListener((id) => {
   if (!id.startsWith("dial-")) return;
   chrome.notifications.clear(id);
-  openDial();
+  // A weekly recap is about the week just gone, so it opens History rather
+  // than today's dial — the numbers it just quoted are all on that page.
+  openDial(id.startsWith("dial-recap-") ? "#history" : undefined);
 });
 
 chrome.storage.onChanged.addListener((changes, areaName) => {
