@@ -8,6 +8,22 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.29.0] — 2026-08-30
+
+### Changed
+
+- **Painting no longer writes over time you have already logged.** A stroke
+  that runs into an existing block now stops at its edge and says what is
+  there, instead of quietly replacing it. Overshooting a drag by a few
+  minutes used to eat the neighbouring block with nothing to show for it but
+  a changed colour.
+- **To replace a block on purpose, press it twice.** That swaps the whole
+  stretch for whichever pen is selected, and ⌘Z still undoes it. Hovering a
+  block that a different pen would replace says so before you click.
+- Empty time is unchanged — one click or one drag, as before. The eraser is
+  unchanged too: removing something is visible and reversible, which is the
+  whole point of it.
+
 ## [1.28.1] — 2026-08-30
 
 ### Changed

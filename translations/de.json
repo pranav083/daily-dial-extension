@@ -578,5 +578,8 @@
  "languageLabel": "Sprache",
  "languageTooltip": "Automatisch folgt der Sprache deines Browsers. Eine Änderung lädt die Seite neu und rührt nichts an, was du geschrieben hast.",
  "languageNote": "Nur die Wörter der App ändern sich — deine Notizen, Vorhaben und Kategorienamen bleiben genau so, wie du sie geschrieben hast.",
- "languageAutomatic": "Automatisch"
+ "languageAutomatic": "Automatisch",
+ "alreadyLoggedHint": "Bereits $CATEGORY$ — doppelklicken zum Ersetzen",
+ "replacedBlockToast": "$FROM$ durch $TO$ ersetzt, $START$–$END$ — ⌘Z zum Rückgängigmachen",
+ "tooltipReplaceHint": "Doppelklick zum Ersetzen"
 }

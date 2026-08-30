@@ -2322,5 +2322,33 @@
   },
   "languageAutomatic": {
     "message": "自动"
+  },
+  "alreadyLoggedHint": {
+    "message": "已经是$CATEGORY$——双击可替换",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "$START$–$END$ 的$FROM$已替换为$TO$——按 ⌘Z 撤销",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "双击可替换"
   }
 }

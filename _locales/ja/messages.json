@@ -2322,5 +2322,33 @@
   },
   "languageAutomatic": {
     "message": "自動"
+  },
+  "alreadyLoggedHint": {
+    "message": "すでに$CATEGORY$です — 置き換えるにはダブルクリック",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "$START$–$END$ の $FROM$ を $TO$ に置き換えました — 元に戻すには ⌘Z",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "ダブルクリックで置き換え"
   }
 }

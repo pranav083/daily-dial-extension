@@ -2487,5 +2487,33 @@
   },
   "languageAutomatic": {
     "message": "स्वचालित"
+  },
+  "alreadyLoggedHint": {
+    "message": "यह पहले से $CATEGORY$ है — बदलने के लिए डबल-क्लिक करें",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "$FROM$ की जगह $TO$ रखा गया, $START$–$END$ — वापस लाने के लिए ⌘Z",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "बदलने के लिए डबल-क्लिक करें"
   }
 }

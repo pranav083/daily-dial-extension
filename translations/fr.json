@@ -578,5 +578,8 @@
  "languageLabel": "Langue",
  "languageTooltip": "Automatique suit la langue de ton navigateur. Changer recharge la page et ne touche jamais à ce que tu as écrit.",
  "languageNote": "Seuls les mots de l’app changent — tes notes, intentions et noms de catégories restent tels que tu les as écrits.",
- "languageAutomatic": "Automatique"
+ "languageAutomatic": "Automatique",
+ "alreadyLoggedHint": "Déjà $CATEGORY$ — double-clique pour le remplacer",
+ "replacedBlockToast": "$FROM$ remplacé par $TO$, $START$–$END$ — ⌘Z pour annuler",
+ "tooltipReplaceHint": "double-clic pour remplacer"
 }

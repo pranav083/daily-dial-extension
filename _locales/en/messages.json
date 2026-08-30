@@ -2284,6 +2284,37 @@
     "message": "That hasn't happened yet — you can only log time up to now.",
     "description": "Toast shown when the user tries to paint a part of today that is still in the future."
   },
+  "alreadyLoggedHint": {
+    "message": "Already $CATEGORY$ — double-click to replace it",
+    "description": "Shown when a stroke would have painted over time that already holds a different category. Names what is there and how to override.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "$FROM$ replaced with $TO$, $START$–$END$ — ⌘Z to undo",
+    "description": "Toast after a double-click replaced a whole block with the active category.",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "double-click to replace",
+    "description": "Appended to the dial tooltip when hovering a block that a different pen would replace."
+  },
   "copyYesterdayUpToNowToast": {
     "message": "Copied yesterday up to now — the rest of the day hasn't happened yet",
     "description": "Toast after copying yesterday onto today, when the copy had to stop at the current time."

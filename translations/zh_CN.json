@@ -563,5 +563,8 @@
  "languageLabel": "语言",
  "languageTooltip": "「自动」跟随浏览器的语言。更改后会重新加载页面，不会改动你写下的任何内容。",
  "languageNote": "只有应用自身的文字会变——你的备注、计划和分类名称都保持你写的样子。",
- "languageAutomatic": "自动"
+ "languageAutomatic": "自动",
+ "alreadyLoggedHint": "已经是$CATEGORY$——双击可替换",
+ "replacedBlockToast": "$START$–$END$ 的$FROM$已替换为$TO$——按 ⌘Z 撤销",
+ "tooltipReplaceHint": "双击可替换"
 }

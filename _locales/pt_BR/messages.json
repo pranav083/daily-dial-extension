@@ -2487,5 +2487,33 @@
   },
   "languageAutomatic": {
     "message": "Automático"
+  },
+  "alreadyLoggedHint": {
+    "message": "Já é $CATEGORY$ — clique duas vezes para substituir",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "$FROM$ substituído por $TO$, $START$–$END$ — ⌘Z para desfazer",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "clique duas vezes para substituir"
   }
 }

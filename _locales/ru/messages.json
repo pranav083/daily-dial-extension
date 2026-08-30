@@ -2817,5 +2817,33 @@
   },
   "languageAutomatic": {
     "message": "Автоматически"
+  },
+  "alreadyLoggedHint": {
+    "message": "Уже $CATEGORY$ — дважды щёлкни, чтобы заменить",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "$FROM$ заменено на $TO$, $START$–$END$ — ⌘Z чтобы отменить",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "двойной щелчок заменит"
   }
 }

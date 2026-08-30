@@ -638,5 +638,8 @@
  "languageLabel": "اللغة",
  "languageTooltip": "«تلقائي» يتبع لغة متصفحك. التغيير يعيد تحميل الصفحة، ولا يمسّ أي شيء كتبته.",
  "languageNote": "تتغيّر كلمات التطبيق نفسه فقط — ملاحظاتك ونواياك وأسماء فئاتك تبقى كما كتبتها تمامًا.",
- "languageAutomatic": "تلقائي"
+ "languageAutomatic": "تلقائي",
+ "alreadyLoggedHint": "مسجَّل بالفعل كـ$CATEGORY$ — انقر مرتين للاستبدال",
+ "replacedBlockToast": "تم استبدال $FROM$ بـ$TO$، $START$–$END$ — ⌘Z للتراجع",
+ "tooltipReplaceHint": "انقر مرتين للاستبدال"
 }

@@ -563,5 +563,8 @@
  "languageLabel": "言語",
  "languageTooltip": "「自動」はブラウザの言語に従います。変更するとページが再読み込みされますが、書いた内容には一切触れません。",
  "languageNote": "変わるのはアプリ自身の言葉だけです。メモ・予定・カテゴリ名は書いたままの形で残ります。",
- "languageAutomatic": "自動"
+ "languageAutomatic": "自動",
+ "alreadyLoggedHint": "すでに$CATEGORY$です — 置き換えるにはダブルクリック",
+ "replacedBlockToast": "$START$–$END$ の $FROM$ を $TO$ に置き換えました — 元に戻すには ⌘Z",
+ "tooltipReplaceHint": "ダブルクリックで置き換え"
 }

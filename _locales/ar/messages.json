@@ -3147,5 +3147,33 @@
   },
   "languageAutomatic": {
     "message": "تلقائي"
+  },
+  "alreadyLoggedHint": {
+    "message": "مسجَّل بالفعل كـ$CATEGORY$ — انقر مرتين للاستبدال",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "تم استبدال $FROM$ بـ$TO$، $START$–$END$ — ⌘Z للتراجع",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "انقر مرتين للاستبدال"
   }
 }

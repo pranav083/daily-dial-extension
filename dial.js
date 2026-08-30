@@ -475,7 +475,13 @@ function describeSlot(idx) {
   const [start, end, name] = run
     ? [run.start, run.end, categories[run.cat].name]
     : [idx, idx + 1, t("untrackedLower")];
-  return `${fmtSlotClock(start)}–${fmtSlotClock(end)}  ·  ${name}  ·  ${fmtDuration((end - start) * SLOT_MIN)}`;
+  const base = `${fmtSlotClock(start)}–${fmtSlotClock(end)}  ·  ${name}  ·  ${fmtDuration((end - start) * SLOT_MIN)}`;
+  // Say it before the click, not after. A stroke here would be refused, and a
+  // tooltip that only reports the block leaves that to be discovered by
+  // trying.
+  const pen = state.activePen === null ? UNTRACKED : state.activePen;
+  const occupied = run && run.cat !== UNTRACKED && run.cat !== pen && pen !== UNTRACKED;
+  return occupied ? `${base}  ·  ${t("tooltipReplaceHint")}` : base;
 }
 
 function showTooltipText(evt, text) {
@@ -909,28 +915,117 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     return pt.matrixTransform(svgNode.getScreenCTM().inverse());
   }
 
+  /** The contiguous run of one category around `local`. */
+  function runAtLocal(sub, local) {
+    const cat = sub[local];
+    let from = local;
+    while (from > 0 && sub[from - 1] === cat) from--;
+    let to = local;
+    while (to < slotsInView - 1 && sub[to + 1] === cat) to++;
+    return { cat, from, to: to + 1 };
+  }
+
+  /**
+   * Whether painting may write over what is already in `local`.
+   *
+   * Empty time is free. Time already holding a *different* category is
+   * protected, because overwriting it is nearly always a slip — a stroke
+   * overshooting its neighbour — and the cost of that slip is silent data
+   * loss, while the cost of the protection is one extra gesture. Replacing
+   * on purpose is a second press, which no accidental drag performs.
+   *
+   * The eraser is exempt: removing is visible, reversible, and the point.
+   */
+  function occupiedByAnother(local, cat) {
+    if (cat === UNTRACKED) return false;
+    const existing = state.slots[slotOffset + local];
+    return existing !== UNTRACKED && existing !== cat;
+  }
+
+  /** Says why nothing happened, at most once per stroke, naming what is
+   *  already there so the message is about their day, not about a rule. */
+  let hintedThisStroke = false;
+  function hintProtected(local) {
+    if (hintedThisStroke) return;
+    hintedThisStroke = true;
+    toast(t("alreadyLoggedHint", [nameOf(state.slots[slotOffset + local])]));
+  }
+
   function paintAtLocal(localIdx) {
     const cat = state.activePen === null ? UNTRACKED : state.activePen;
     // Erasing the future is always fine — it can only remove something that
     // shouldn't be there. Painting it is what gets refused.
-    const paintable = (local) => cat === UNTRACKED || !isFutureSlot(slotOffset + local);
+    const paintable = (local) =>
+      (cat === UNTRACKED || !isFutureSlot(slotOffset + local)) && !occupiedByAnother(local, cat);
 
     if (lastLocal === null) {
-      if (!paintable(localIdx)) return;
+      if (cat !== UNTRACKED && isFutureSlot(slotOffset + localIdx)) return;
+      if (occupiedByAnother(localIdx, cat)) {
+        hintProtected(localIdx);
+        return;
+      }
       const sub = localSlice();
       sub[localIdx] = cat;
       writeSlice(sub);
     } else {
       const filled = fillRange(localSlice(), lastLocal, localIdx, cat);
       const sub = localSlice();
+      let blocked = -1;
       // Keep only the part of the stroke that has already happened, rather
       // than rejecting the whole drag — dragging across "now" should paint
-      // up to it, not do nothing.
-      for (let i = 0; i < slotsInView; i++) if (paintable(i)) sub[i] = filled[i];
+      // up to it, not do nothing. Occupied slots are skipped the same way,
+      // so a stroke overshooting into the next block leaves it intact.
+      for (let i = 0; i < slotsInView; i++) {
+        if (paintable(i)) sub[i] = filled[i];
+        else if (filled[i] !== sub[i] && occupiedByAnother(i, cat)) blocked = i;
+      }
       writeSlice(sub);
+      if (blocked >= 0) hintProtected(blocked);
     }
     lastLocal = localIdx;
   }
+
+  /**
+   * Replaces the whole block under the cursor with the active pen.
+   *
+   * The counterpart to the protection above: a stroke can no longer silently
+   * eat a neighbour, so there has to be a deliberate way to say "yes, change
+   * this one". It takes the entire run rather than the single slot, because
+   * a run is what the ring draws and what you think you are pointing at.
+   */
+  function replaceRunAt(local) {
+    const cat = state.activePen === null ? UNTRACKED : state.activePen;
+    const sub = localSlice();
+    const run = runAtLocal(sub, local);
+    if (run.cat === UNTRACKED || run.cat === cat) return false;
+    const limit = cat === UNTRACKED ? run.to : Math.min(run.to, firstUnpaintableSlot() - slotOffset);
+    if (limit <= run.from) {
+      toast(t("futureNotLogged"));
+      return true;
+    }
+    pushUndo();
+    for (let i = run.from; i < limit; i++) sub[i] = cat;
+    writeSlice(sub);
+    persistDay();
+    renderAll();
+    onStrokeEnd();
+    const g = (i) => fmtSlotClock(slotOffset + i);
+    toast(t("replacedBlockToast", [nameOf(run.cat), nameOf(cat), g(run.from), g(limit)]));
+    announce(t("caretCommitAnnounce", [nameOf(cat), g(run.from), g(limit)]));
+    return true;
+  }
+
+  /**
+   * Double-press detection, done here rather than with a `dblclick` listener.
+   *
+   * The ring is driven by pointer events and captures the pointer on press,
+   * and a captured pointer never produces a `dblclick` — measured: zero
+   * fired. Tracking presses ourselves also makes a double *tap* work on
+   * touch, which `dblclick` does not reliably provide.
+   */
+  const DOUBLE_PRESS_MS = 450;
+  let lastPressAt = 0;
+  let lastPressSlot = null;
 
   function endPaintLocal() {
     if (dragEdge) {
@@ -976,15 +1071,32 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
       return;
     }
 
+    const idx = slotFromAngle(angle, slotsInView);
+
+    // A second press on the same block, quickly, means "replace this" — the
+    // deliberate override for the protection in paintAtLocal. Checked before
+    // anything is painted or pushed onto the undo stack.
+    const pressedAt = Date.now();
+    const sameBlock =
+      lastPressSlot !== null &&
+      runAtLocal(localSlice(), lastPressSlot).from === runAtLocal(localSlice(), idx).from;
+    const isDoublePress = pressedAt - lastPressAt < DOUBLE_PRESS_MS && sameBlock;
+    lastPressAt = pressedAt;
+    lastPressSlot = idx;
+    if (isDoublePress && replaceRunAt(idx)) {
+      lastPressAt = 0; // a third press starts a fresh pair, not another replace
+      return;
+    }
+
     pushUndo();
     isPaintingLocal = true;
+    hintedThisStroke = false;
     lastLocal = null;
     try {
       svgNode.setPointerCapture(evt.pointerId);
     } catch {
       // Synthetic or already-released pointers can't be captured; painting still works.
     }
-    const idx = slotFromAngle(angle, slotsInView);
     strokeFrom = idx;
     paintAtLocal(idx);
     render();
