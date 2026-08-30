@@ -99,6 +99,48 @@ import {
 const $ = (id) => document.getElementById(id);
 const isToday = (d) => sameDay(d, new Date());
 
+/* ---------- i18n ----------
+   Chrome substitutes __MSG_KEY__ in manifest.json and CSS automatically, but
+   never in HTML — dial.html keeps its data-i18n attributes and its English
+   text side by side, and applyStaticI18n() below is what actually fills them
+   in from _locales/en/messages.json. It has to run before anything else reads
+   text out of the DOM, in particular before the dial engines further down
+   capture their base aria-label at module-eval time — hence the call right
+   here, rather than inside boot(). */
+
+/** Turns a message key into a readable fallback (e.g. "exportCsvLabel" ->
+ *  "Export csv label"), used only if a key is ever missing from
+ *  messages.json, so a gap degrades to something legible instead of a blank
+ *  string or a raw key. Real translations missing for a non-English locale
+ *  are handled by Chrome itself, which falls back to default_locale. */
+function humanizeKey(key) {
+  return key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/^./, (c) => c.toUpperCase());
+}
+
+/** Thin wrapper over chrome.i18n.getMessage. `substitutions` is a string or
+ *  array of strings, positional against the message's own placeholders. */
+export function t(key, substitutions) {
+  try {
+    const msg = chrome.i18n?.getMessage(key, substitutions);
+    if (msg) return msg;
+  } catch {
+    // chrome.i18n unavailable — shouldn't happen in a real extension, but
+    // falls through to the readable fallback below rather than throwing.
+  }
+  return humanizeKey(key);
+}
+
+/** Fills every data-i18n(-title|-label|-placeholder) element from the static
+ *  markup. Values are looked up once at load; nothing here changes at
+ *  runtime, since the app has no in-page language switcher. */
+function applyStaticI18n() {
+  for (const el of document.querySelectorAll("[data-i18n]")) el.textContent = t(el.dataset.i18n);
+  for (const el of document.querySelectorAll("[data-i18n-title]")) el.title = t(el.dataset.i18nTitle);
+  for (const el of document.querySelectorAll("[data-i18n-label]")) el.setAttribute("aria-label", t(el.dataset.i18nLabel));
+  for (const el of document.querySelectorAll("[data-i18n-placeholder]")) el.placeholder = t(el.dataset.i18nPlaceholder);
+}
+applyStaticI18n();
+
 /** @type {Map<string, {slots:number[], reflection:string}>} */
 const days = new Map();
 let categories = normalizeCategories(null);
@@ -186,7 +228,7 @@ function markTabStale(what) {
   if (tabIsStale) return;
   tabIsStale = true;
   console.warn("Daily Dial: another tab changed", what, "— editing paused here.");
-  $("stale-banner-what").textContent = what;
+  $("stale-banner-headline").textContent = t("staleBannerHeadline", [what]);
   $("stale-banner").hidden = false;
   document.body.classList.add("is-stale");
   closeSettings();
@@ -291,7 +333,7 @@ function onStorageChanged(changes, area) {
 
     if (key.startsWith(DAY_PREFIX)) {
       if (key === viewedKey) {
-        conflict = `the day you're looking at`;
+        conflict = t("staleWhatViewedDay");
         continue;
       }
       const dayKey = key.slice(DAY_PREFIX.length);
@@ -300,10 +342,10 @@ function onStorageChanged(changes, area) {
       adopted = true;
       continue;
     }
-    if (key === CATEGORIES_KEY) conflict = "your categories";
-    else if (key === SETTINGS_KEY) conflict = "your settings";
-    else if (key === SAMPLE_DAY_KEYS_KEY) conflict = "demo mode";
-    else if (key === TEMPLATES_KEY) conflict = "your templates";
+    if (key === CATEGORIES_KEY) conflict = t("staleWhatCategories");
+    else if (key === SETTINGS_KEY) conflict = t("staleWhatSettings");
+    else if (key === SAMPLE_DAY_KEYS_KEY) conflict = t("staleWhatDemoMode");
+    else if (key === TEMPLATES_KEY) conflict = t("staleWhatTemplates");
     // Anything else is bookkeeping this tab can't clobber — ignore it.
   }
 
@@ -369,7 +411,7 @@ const persistActivePen = () =>
 
 function reportStorageFailure(err) {
   console.error("Daily Dial: could not save", err);
-  toast("Couldn't save — your last change may be lost.");
+  toast(t("saveFailedToast"));
 }
 
 /* ---------- theme ---------- */
@@ -433,7 +475,7 @@ function describeSlot(idx) {
   const run = runAt(state.slots, idx);
   const [start, end, name] = run
     ? [run.start, run.end, categories[run.cat].name]
-    : [idx, idx + 1, "untracked"];
+    : [idx, idx + 1, t("untrackedLower")];
   return `${fmtSlotClock(start)}–${fmtSlotClock(end)}  ·  ${name}  ·  ${fmtDuration((end - start) * SLOT_MIN)}`;
 }
 
@@ -459,9 +501,9 @@ function announce(message) {
  *  the timeline is enumerable rather than an unlabelled shape. */
 function dayLabelText(base, from, count) {
   const runs = computeRuns(state.slots).filter((r) => r.end > from && r.start < from + count);
-  if (runs.length === 0) return `${base} Nothing logged yet.`;
+  if (runs.length === 0) return `${base} ${t("dialAriaNothingLoggedSuffix")}`;
   const parts = runs.map(
-    (r) => `${fmtSlotClock(r.start)} to ${fmtSlotClock(r.end)} ${categories[r.cat].name}`
+    (r) => t("dialAriaRangePart", [fmtSlotClock(r.start), fmtSlotClock(r.end), categories[r.cat].name])
   );
   return `${base} ${parts.join(", ")}.`;
 }
@@ -513,8 +555,8 @@ function stepHistory(fromMap, toMap, doneWord, emptyWord) {
   toast(doneWord);
 }
 
-const undo = () => stepHistory(undoStacks, redoStacks, "Undone", "Nothing to undo");
-const redo = () => stepHistory(redoStacks, undoStacks, "Redone", "Nothing to redo");
+const undo = () => stepHistory(undoStacks, redoStacks, t("undoDone"), t("undoEmpty"));
+const redo = () => stepHistory(redoStacks, undoStacks, t("redoDone"), t("redoEmpty"));
 
 /* ---------- painting ---------- */
 
@@ -606,14 +648,14 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     return { left, right, from, to: to + 1 };
   }
 
-  const nameOf = (cat) => (cat === UNTRACKED ? "untracked" : categories[cat].name);
+  const nameOf = (cat) => (cat === UNTRACKED ? t("untrackedLower") : categories[cat].name);
 
   /** Both sides of the seam at once — the point is seeing the trade. */
   function edgeTooltipText(at) {
     const g = (i) => fmtSlotClock(slotOffset + i);
     const { from, to, left, right } = dragEdge;
-    const leftPart = at > from ? `${g(from)}–${g(at)} ${nameOf(left)}` : `${nameOf(left)} gone`;
-    const rightPart = at < to ? `${g(at)}–${g(to)} ${nameOf(right)}` : `${nameOf(right)} gone`;
+    const leftPart = at > from ? t("edgeRangeLabel", [g(from), g(at), nameOf(left)]) : t("edgeGoneLabel", [nameOf(left)]);
+    const rightPart = at < to ? t("edgeRangeLabel", [g(at), g(to), nameOf(right)]) : t("edgeGoneLabel", [nameOf(right)]);
     return `${leftPart}   |   ${rightPart}`;
   }
 
@@ -708,8 +750,8 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     const sub = localSlice();
     const slots = rangeSlots(range);
     const cat = sub[slots[0]];
-    const what = slots.every((i) => sub[i] === cat) ? nameOf(cat) : "mixed";
-    announce(`${g(range.from)} to ${g(range.from + range.len)}, ${what}`);
+    const what = slots.every((i) => sub[i] === cat) ? nameOf(cat) : t("caretMixedLabel");
+    announce(t("caretAnnounce", [g(range.from), g(range.from + range.len), what]));
   }
 
   function moveCaret(delta, extend) {
@@ -735,7 +777,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     renderCaret();
     onStrokeEnd();
     const g = (i) => fmtSlotClock(slotOffset + (i % slotsInView));
-    announce(`${nameOf(cat)} set for ${g(range.from)} to ${g(range.from + range.len)}`);
+    announce(t("caretCommitAnnounce", [nameOf(cat), g(range.from), g(range.from + range.len)]));
   }
 
   svgNode.addEventListener("focus", () => {
@@ -836,16 +878,16 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     if (localMin === null) {
       const trackedMin = localSlice().reduce((n, v) => n + (v !== UNTRACKED ? 1 : 0), 0) * SLOT_MIN;
       centerTimeEl.textContent = fmtDuration(trackedMin);
-      centerTimeEl.title = "Time logged in this half";
+      centerTimeEl.title = t("dialTimeLoggedTooltip");
     } else {
       centerTimeEl.textContent = fmtClock(
         Math.round((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN),
         settings.timeFormat
       );
-      centerTimeEl.title = "Current time";
+      centerTimeEl.title = t("dialCurrentTimeTooltip");
     }
     const pen = categories[state.activePen];
-    centerSubEl.textContent = pen ? `pen: ${pen.name}` : "eraser";
+    centerSubEl.textContent = pen ? t("dialPenLabel", [pen.name]) : t("dialEraserLabel");
   }
 
   function render() {
@@ -1066,7 +1108,7 @@ function checkDayRollover() {
   todayKey = nowKey;
   if (wasOnToday) {
     switchDay(new Date());
-    toast("It's a new day — the dial has rolled over");
+    toast(t("dayRolledOverToast"));
   }
   // Date-dependent chrome is stale either way.
   renderDateLabel();
@@ -1197,7 +1239,7 @@ function renderPens() {
   eraser.setAttribute("aria-pressed", String(state.activePen === UNTRACKED));
   const eraserSwatch = document.createElement("span");
   eraserSwatch.className = "swatch";
-  eraser.append(eraserSwatch, document.createTextNode("Eraser"));
+  eraser.append(eraserSwatch, document.createTextNode(t("penEraserLabel")));
   eraser.addEventListener("click", () => {
     state.activePen = UNTRACKED;
     persistActivePen();
@@ -1273,7 +1315,7 @@ function renderSide() {
   barsEl.replaceChildren();
   const maxSlots = Math.max(...stats.perCat, stats.untrackedSlots, 1);
   categories.forEach((c, i) => barsEl.appendChild(catBarRow(c.name, c.cls, stats.perCat[i], maxSlots, false)));
-  barsEl.appendChild(catBarRow("Untracked", null, stats.untrackedSlots, maxSlots, true));
+  barsEl.appendChild(catBarRow(t("untrackedCapitalized"), null, stats.untrackedSlots, maxSlots, true));
 
   renderGoalRows(stats);
   renderWeeklyGoalRows();
@@ -1360,10 +1402,13 @@ function renderGoalsEditorFor(rowsElId, goalsKey, unitLabel, step) {
     input.type = "number";
     input.min = "0";
     input.step = String(step);
-    input.placeholder = "off";
+    input.placeholder = t("goalOffPlaceholder");
     input.value = settings[goalsKey][c.id] ?? "";
     input.disabled = !c.enabled;
-    input.setAttribute("aria-label", `${unitLabel === "min/day" ? "Daily" : "Weekly"} goal for ${c.name}, in minutes`);
+    input.setAttribute(
+      "aria-label",
+      unitLabel === "min/day" ? t("goalAriaLabelDaily", [c.name]) : t("goalAriaLabelWeekly", [c.name])
+    );
     input.addEventListener("change", () => {
       const v = Number(input.value);
       const next = { ...settings[goalsKey] };
@@ -1399,7 +1444,7 @@ function applyTemplate(template) {
   state.slots = [...template.slots];
   persistDay();
   renderAll();
-  toast(`Applied "${template.name}" — ⌘Z to undo`);
+  toast(t("templateAppliedToast", [template.name]));
 }
 
 /** Saving under a name already in use replaces that template rather than
@@ -1409,28 +1454,28 @@ function saveTemplateFromToday() {
   const input = $("template-name-input");
   const name = input.value.trim().slice(0, MAX_TEMPLATE_NAME);
   if (!name) {
-    toast("Name the template first.");
+    toast(t("templateNameRequiredToast"));
     return;
   }
-  const isUpdate = templates.some((t) => t.name === name);
+  const isUpdate = templates.some((tpl) => tpl.name === name);
   if (!isUpdate && templates.length >= MAX_TEMPLATES) {
-    toast(`That's the most templates you can save (${MAX_TEMPLATES}).`);
+    toast(t("templateMaxToast", [String(MAX_TEMPLATES)]));
     return;
   }
-  const next = templates.filter((t) => t.name !== name);
+  const next = templates.filter((tpl) => tpl.name !== name);
   next.push({ name, slots: [...state.slots] });
   templates = normalizeTemplates(next);
   persistTemplates();
   input.value = "";
   renderTemplatesEditor();
-  toast(`Saved "${name}"`);
+  toast(t("templateSavedToast", [name]));
 }
 
 function deleteTemplate(name) {
-  templates = templates.filter((t) => t.name !== name);
+  templates = templates.filter((tpl) => tpl.name !== name);
   persistTemplates();
   renderTemplatesEditor();
-  toast(`Deleted "${name}"`);
+  toast(t("templateDeletedToast", [name]));
 }
 
 function renderTemplatesEditor() {
@@ -1440,18 +1485,18 @@ function renderTemplatesEditor() {
   if (templates.length === 0) {
     const empty = document.createElement("p");
     empty.className = "editor-note";
-    empty.textContent = "No templates saved yet.";
+    empty.textContent = t("templatesEmptyNote");
     listEl.appendChild(empty);
     return;
   }
 
-  for (const t of templates) {
+  for (const tpl of templates) {
     const row = document.createElement("div");
     row.className = "template-row";
 
     const name = document.createElement("span");
     name.className = "template-name";
-    name.textContent = t.name;
+    name.textContent = tpl.name;
 
     // Two-step confirm rather than a modal — same pattern as "Clear day":
     // arm on the first click, revert if nothing follows within a few
@@ -1460,31 +1505,31 @@ function renderTemplatesEditor() {
     const applyBtn = document.createElement("button");
     applyBtn.type = "button";
     applyBtn.className = "ghost-btn";
-    applyBtn.textContent = "Apply";
+    applyBtn.textContent = t("applyLabel");
     let armed = false;
     let armTimer = null;
     applyBtn.addEventListener("click", () => {
       if (dayHasEntries({ slots: state.slots }) && !armed) {
         armed = true;
-        applyBtn.textContent = "Confirm apply?";
+        applyBtn.textContent = t("applyConfirmLabel");
         armTimer = setTimeout(() => {
           armed = false;
-          applyBtn.textContent = "Apply";
+          applyBtn.textContent = t("applyLabel");
         }, 3000);
         return;
       }
       clearTimeout(armTimer);
       armed = false;
-      applyBtn.textContent = "Apply";
-      applyTemplate(t);
+      applyBtn.textContent = t("applyLabel");
+      applyTemplate(tpl);
     });
 
     const dropBtn = document.createElement("button");
     dropBtn.type = "button";
     dropBtn.className = "ghost-btn danger";
-    dropBtn.textContent = "Delete";
-    dropBtn.setAttribute("aria-label", `Delete template: ${t.name}`);
-    dropBtn.addEventListener("click", () => deleteTemplate(t.name));
+    dropBtn.textContent = t("deleteLabel");
+    dropBtn.setAttribute("aria-label", t("deleteTemplateAriaLabel", [tpl.name]));
+    dropBtn.addEventListener("click", () => deleteTemplate(tpl.name));
 
     row.append(name, applyBtn, dropBtn);
     listEl.appendChild(row);
@@ -1506,7 +1551,10 @@ function renderStreak() {
 
 function renderAboutBests() {
   const bests = personalBests(days, categories, new Date());
-  $("bests-streak").textContent = `${bests.longestStreak} day${bests.longestStreak === 1 ? "" : "s"}`;
+  $("bests-streak").textContent =
+    bests.longestStreak === 1
+      ? t("bestsStreakDaysSingular", [String(bests.longestStreak)])
+      : t("bestsStreakDaysPlural", [String(bests.longestStreak)]);
   $("bests-score").textContent = bests.bestScore
     ? `${bests.bestScore.score > 0 ? "+" : ""}${bests.bestScore.score} · ${bests.bestScore.key}`
     : "—";
@@ -1527,8 +1575,8 @@ function loggedDayCount() {
 
 function renderBackupStatus() {
   $("backup-status").textContent = settings.lastExportAt
-    ? `Last backup: ${new Date(settings.lastExportAt).toLocaleDateString()}`
-    : "You haven't exported a backup yet.";
+    ? t("lastBackupStatus", [new Date(settings.lastExportAt).toLocaleDateString()])
+    : t("noBackupYetStatus");
 
   const due = !nudgeDismissed && shouldNudgeBackup(settings.lastExportAt, loggedDayCount(), new Date());
   $("backup-nudge").hidden = !due;
@@ -1608,14 +1656,14 @@ function renderDateLabel() {
   $("next-day").disabled = isToday(state.viewDate);
 
   if (isToday(state.viewDate)) {
-    label.textContent = "Today";
+    label.textContent = t("dateToday");
     jump.hidden = true;
     return;
   }
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   label.textContent = sameDay(state.viewDate, yesterday)
-    ? "Yesterday"
+    ? t("dateYesterday")
     : new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric" }).format(state.viewDate);
   jump.hidden = false;
 }
@@ -1656,11 +1704,11 @@ function copyYesterday() {
   const yDay = getDay(dateKey(y));
 
   if (!dayHasEntries(yDay)) {
-    toast("Yesterday has nothing to copy.");
+    toast(t("copyYesterdayEmptyToast"));
     return;
   }
   const todayHasData = state.slots.some((v) => v !== UNTRACKED);
-  if (todayHasData && !window.confirm("Today already has entries — overwrite them with yesterday's?")) {
+  if (todayHasData && !window.confirm(t("copyYesterdayConfirm"))) {
     return;
   }
 
@@ -1668,7 +1716,7 @@ function copyYesterday() {
   state.slots = [...yDay.slots];
   persistDay();
   renderAll();
-  toast("Copied yesterday — ⌘Z to undo");
+  toast(t("copyYesterdaySuccessToast"));
 }
 
 /* ---------- share as image ---------- */
@@ -1712,7 +1760,7 @@ async function shareAsImage() {
     blob = await rasterizeSvgToPng(svgMarkup, 1000, 560);
   } catch (err) {
     console.error("Daily Dial: could not render a share image", err);
-    toast("Couldn't create the image.");
+    toast(t("shareImageErrorToast"));
     return;
   }
 
@@ -1727,7 +1775,7 @@ async function shareAsImage() {
   a.download = `daily-dial-${key}.png`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
-  toast("Saved image");
+  toast(t("shareImageSavedToast"));
 }
 
 /* ---------- typed entry ---------- */
@@ -1787,7 +1835,7 @@ function submitTypedEntry(evt) {
   renderStreak();
   input.value = "";
   showJustPainted(result.startSlot, endOfDay);
-  toast(overflow > 0 ? "Added — the part past midnight went to the next day" : "Added");
+  toast(overflow > 0 ? t("typedEntryOverflowToast") : t("typedEntryAddedToast"));
 }
 
 /** Paints a range into a day that isn't the one on screen, going straight to
@@ -1849,7 +1897,7 @@ function saveJustPainted() {
     return;
   }
   saveSpanNote({ start: justPainted.from, end: justPainted.to }, undefined, text);
-  announce(`Note saved for ${fmtSlotClock(justPainted.from)} to ${fmtSlotClock(justPainted.to)}`);
+  announce(t("noteSavedAnnounce", [fmtSlotClock(justPainted.from), fmtSlotClock(justPainted.to)]));
   hideJustPainted();
 }
 
@@ -1882,7 +1930,7 @@ function renderIntents() {
     drop.type = "button";
     drop.className = "drop";
     drop.textContent = "✕";
-    drop.setAttribute("aria-label", `Remove intention: ${intent.text}`);
+    drop.setAttribute("aria-label", t("removeIntentionAriaLabel", [intent.text]));
     drop.addEventListener("click", () => {
       state.intents.splice(i, 1);
       persistDay();
@@ -1934,10 +1982,10 @@ function renderBreakdown() {
       // gaps ever getting filled.
       const pick = document.createElement("select");
       pick.className = "bd-fill";
-      pick.setAttribute("aria-label", `Fill ${when.textContent}`);
+      pick.setAttribute("aria-label", t("fillSpanAriaLabel", [when.textContent]));
       const blank = document.createElement("option");
       blank.value = "";
-      blank.textContent = "Unlogged";
+      blank.textContent = t("unloggedOptionLabel");
       pick.appendChild(blank);
       for (const c of categories.filter((c) => c.enabled)) {
         const opt = document.createElement("option");
@@ -1967,8 +2015,8 @@ function renderBreakdown() {
     input.className = "bd-note";
     input.maxLength = MAX_NOTE_LEN;
     input.value = idxs.length ? notes[idxs[0]].text : "";
-    input.placeholder = isGap ? "Nothing logged yet" : "—";
-    input.setAttribute("aria-label", `Note for ${when.textContent}`);
+    input.placeholder = isGap ? t("breakdownGapPlaceholder") : "—";
+    input.setAttribute("aria-label", t("noteForAriaLabel", [when.textContent]));
     input.addEventListener("change", () => saveSpanNote(span, idxs[0], input.value));
     noteCell.appendChild(input);
 
@@ -1987,8 +2035,8 @@ function renderBreakdown() {
       clear.type = "button";
       clear.className = "bd-clear";
       clear.textContent = "✕";
-      clear.title = `Clear ${when.textContent} — the time goes back to unlogged`;
-      clear.setAttribute("aria-label", `Clear ${categories[span.cat].name}, ${when.textContent}`);
+      clear.title = t("clearSpanTooltip", [when.textContent]);
+      clear.setAttribute("aria-label", t("clearSpanAriaLabel", [categories[span.cat].name, when.textContent]));
       clear.addEventListener("click", () => fillSpan(span.start, span.end, UNTRACKED));
       clearCell.appendChild(clear);
     }
@@ -1999,9 +2047,12 @@ function renderBreakdown() {
 
   const tracked = state.slots.filter((v) => v !== UNTRACKED).length * SLOT_MIN;
   const stretches = spans.filter((s) => s.cat !== UNTRACKED).length;
+  const loggedText = fmtDuration(tracked);
+  const unloggedText = fmtDuration(SLOTS * SLOT_MIN - tracked);
   $("breakdown-sum").textContent =
-    `${stretches} ${stretches === 1 ? "stretch" : "stretches"} · ` +
-    `${fmtDuration(tracked)} logged, ${fmtDuration(SLOTS * SLOT_MIN - tracked)} unlogged`;
+    stretches === 1
+      ? t("breakdownSummarySingular", [String(stretches), loggedText, unloggedText])
+      : t("breakdownSummaryPlural", [String(stretches), loggedText, unloggedText]);
 }
 
 function extraNoteRow(index, note) {
@@ -2017,7 +2068,7 @@ function extraNoteRow(index, note) {
   drop.type = "button";
   drop.className = "drop";
   drop.textContent = "✕";
-  drop.setAttribute("aria-label", `Remove note for ${when.textContent}`);
+  drop.setAttribute("aria-label", t("removeNoteAriaLabel", [when.textContent]));
   drop.addEventListener("click", () => {
     state.notes.splice(index, 1);
     persistDay();
@@ -2038,7 +2089,7 @@ function saveSpanNote(span, existingIndex, raw) {
     else state.notes.splice(existingIndex, 1);
   } else if (text) {
     if (state.notes.length >= MAX_NOTES_PER_DAY) {
-      toast(`That's the most notes a day can hold (${MAX_NOTES_PER_DAY}).`);
+      toast(t("maxNotesToast", [String(MAX_NOTES_PER_DAY)]));
       renderBreakdown();
       return;
     }
@@ -2063,8 +2114,8 @@ function fillSpan(from, to, categoryId) {
   onStrokeEnd();
   announce(
     categoryId === UNTRACKED
-      ? `Cleared ${fmtSlotClock(from)} to ${fmtSlotClock(to)}`
-      : `${categories[categoryId].name} set for ${fmtSlotClock(from)} to ${fmtSlotClock(to)}`
+      ? t("clearedAnnounce", [fmtSlotClock(from), fmtSlotClock(to)])
+      : t("caretCommitAnnounce", [categories[categoryId].name, fmtSlotClock(from), fmtSlotClock(to)])
   );
 }
 
@@ -2088,7 +2139,7 @@ function renderAvoid() {
     drop.type = "button";
     drop.className = "drop";
     drop.textContent = "✕";
-    drop.setAttribute("aria-label", `Remove: ${text}`);
+    drop.setAttribute("aria-label", t("removeAvoidAriaLabel", [text]));
     drop.addEventListener("click", () => {
       state.avoid.splice(i, 1);
       persistDay();
@@ -2106,7 +2157,7 @@ function addAvoid(evt) {
   const text = input.value.trim();
   if (!text) return;
   if ((state.avoid ?? []).length >= MAX_INTENTS_PER_DAY) {
-    toast(`That's the most a day can hold (${MAX_INTENTS_PER_DAY}).`);
+    toast(t("maxAvoidToast", [String(MAX_INTENTS_PER_DAY)]));
     return;
   }
   state.avoid = [...(state.avoid ?? []), text.slice(0, MAX_NOTE_LEN)];
@@ -2124,8 +2175,8 @@ function renderChallenge() {
   if (!progress) return;
   $("challenge-name").textContent = progress.name;
   $("challenge-day").textContent = progress.targetDays
-    ? `day ${progress.day} / ${progress.targetDays}`
-    : `day ${progress.day}`;
+    ? t("challengeDayProgress", [String(progress.day), String(progress.targetDays)])
+    : t("challengeDaySimple", [String(progress.day)]);
 }
 
 function syncAutoBackupInputs() {
@@ -2138,7 +2189,7 @@ function saveAutoBackup() {
   // The service worker owns the alarm; "reschedule" is the existing channel
   // it already listens on for settings changes.
   chrome.runtime.sendMessage({ type: "reschedule" }).catch(() => {});
-  toast($("auto-backup-on").checked ? "Automatic backup on" : "Automatic backup off");
+  toast($("auto-backup-on").checked ? t("autoBackupOnToast") : t("autoBackupOffToast"));
 }
 
 function syncObservationInputs() {
@@ -2186,7 +2237,7 @@ function addIntent(evt) {
   const text = input.value.trim();
   if (!text) return;
   if ((state.intents ?? []).length >= MAX_INTENTS_PER_DAY) {
-    toast(`That's the most intentions a day can hold (${MAX_INTENTS_PER_DAY}).`);
+    toast(t("maxIntentsToast", [String(MAX_INTENTS_PER_DAY)]));
     return;
   }
   state.intents = [...(state.intents ?? []), { text: text.slice(0, MAX_NOTE_LEN), done: false }];
@@ -2216,7 +2267,7 @@ function renderCategoryEditor() {
     input.value = c.name;
     input.maxLength = 24;
     input.disabled = !c.enabled;
-    input.setAttribute("aria-label", "Category name");
+    input.setAttribute("aria-label", t("categoryNameAriaLabel"));
     input.addEventListener("input", () => {
       c.name = input.value.trim() || c.name;
       persistCategories();
@@ -2224,7 +2275,7 @@ function renderCategoryEditor() {
       refreshCenters();
       renderSide();
       renderGoalsEditor();
-      aliasInput.placeholder = `other words for "${c.name}"…`;
+      aliasInput.placeholder = t("aliasPlaceholder", [c.name]);
     });
 
     const seg = document.createElement("div");
@@ -2235,7 +2286,7 @@ function renderCategoryEditor() {
       b.setAttribute("aria-pressed", String(c.weight === w));
       b.setAttribute(
         "aria-label",
-        w === 1 ? "Counts toward score" : w === 0 ? "Neutral" : "Counts against score"
+        w === 1 ? t("weightPositiveLabel") : w === 0 ? t("weightNeutralLabel") : t("weightNegativeLabel")
       );
       b.disabled = !c.enabled;
       b.addEventListener("click", () => {
@@ -2253,7 +2304,7 @@ function renderCategoryEditor() {
     toggle.className = "toggle";
     toggle.textContent = c.enabled ? "●" : "○";
     toggle.setAttribute("aria-pressed", String(c.enabled));
-    toggle.setAttribute("aria-label", `${c.enabled ? "Hide" : "Show"} ${c.name}`);
+    toggle.setAttribute("aria-label", c.enabled ? t("hideCategoryAriaLabel", [c.name]) : t("showCategoryAriaLabel", [c.name]));
     toggle.addEventListener("click", () => {
       c.enabled = !c.enabled;
       if (!c.enabled && state.activePen === c.id) state.activePen = UNTRACKED;
@@ -2277,8 +2328,8 @@ function renderCategoryEditor() {
     // sample ("leetcode, resume...") looked identical and nonsensical under
     // every category including Break and Distraction, and would have stayed
     // wrong forever for a renamed category besides.
-    aliasInput.placeholder = `other words for "${c.name}"…`;
-    aliasInput.setAttribute("aria-label", `Aliases for ${c.name} — other words the typed entry box recognizes`);
+    aliasInput.placeholder = t("aliasPlaceholder", [c.name]);
+    aliasInput.setAttribute("aria-label", t("aliasAriaLabel", [c.name]));
     aliasInput.addEventListener("change", () => {
       c.aliases = normalizeAliases(aliasInput.value.split(","));
       aliasInput.value = c.aliases.join(", "); // reflect trimming/dedup/caps back
@@ -2299,7 +2350,7 @@ function renderCategoryEditor() {
     if (defaultCat && c.weight !== defaultCat.weight) {
       const note = document.createElement("p");
       note.className = "editor-note";
-      note.textContent = "Its colour still reflects the original weight, not this one.";
+      note.textContent = t("categoryColorNote");
       item.appendChild(note);
     }
 
@@ -2343,8 +2394,8 @@ function saveReminders() {
   });
   toast(
     settings.remindersOn
-      ? `Reminders set for ${settings.times[0]} and ${settings.times[1]}`
-      : "Reminders off"
+      ? t("remindersSetToast", [settings.times[0], settings.times[1]])
+      : t("remindersOffToast")
   );
 }
 
@@ -2378,7 +2429,7 @@ function saveAppearance() {
   applyDialMode();
   renderStrip();
   renderSide();
-  toast("Appearance updated");
+  toast(t("appearanceUpdatedToast"));
 }
 
 /* ---------- export ---------- */
@@ -2389,11 +2440,7 @@ function exportCsv() {
   const mine = excludeDays(days, sampleDayKeys);
   const csv = buildCsv(mine, categories);
   if (!csv) {
-    toast(
-      days.size === 0
-        ? "Nothing logged yet to export."
-        : "Only demo data is loaded — there's nothing of your own to export yet."
-    );
+    toast(days.size === 0 ? t("nothingToExportToast") : t("onlyDemoExportToast"));
     return;
   }
   // Leading BOM so Excel reads it as UTF-8.
@@ -2405,17 +2452,13 @@ function exportCsv() {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
   markExported();
-  toast("Exported CSV");
+  toast(t("exportedCsvToast"));
 }
 
 function exportJson() {
   const mine = excludeDays(days, sampleDayKeys);
   if (mine.size === 0) {
-    toast(
-      days.size === 0
-        ? "Nothing logged yet to export."
-        : "Only demo data is loaded — there's nothing of your own to export yet."
-    );
+    toast(days.size === 0 ? t("nothingToExportToast") : t("onlyDemoExportToast"));
     return;
   }
   const backup = buildBackup(mine, categories, settings, chrome.runtime.getManifest().version);
@@ -2427,7 +2470,7 @@ function exportJson() {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
   markExported();
-  toast("Exported JSON backup");
+  toast(t("exportedJsonToast"));
 }
 
 /* ---------- import ---------- */
@@ -2451,7 +2494,7 @@ async function handleImportFile(file) {
   try {
     text = await readFileAsText(file);
   } catch {
-    toast("Couldn't read that file.");
+    toast(t("fileReadErrorToast"));
     return;
   }
 
@@ -2479,15 +2522,23 @@ function showImportConfirm() {
   // import that isn't the one about to happen.
   const summary = summarizeImport(excludeDays(days, sampleDayKeys), pendingImport.days);
   $("import-confirm").hidden = false;
+  const sentence1 =
+    summary.incomingCount === 1
+      ? t("importSummarySentence1Singular", [String(summary.incomingCount), String(summary.overlapping), String(summary.existingCount)])
+      : t("importSummarySentence1Plural", [String(summary.incomingCount), String(summary.overlapping), String(summary.existingCount)]);
+  const sentence2 =
+    summary.newCount === 1
+      ? t("importSummarySentence2Singular", [String(summary.newCount)])
+      : t("importSummarySentence2Plural", [String(summary.newCount)]);
+  const sentence3 =
+    summary.existingCount === 1
+      ? t("importSummarySentence3Singular", [String(summary.existingCount)])
+      : t("importSummarySentence3Plural", [String(summary.existingCount)]);
   $("import-summary").textContent =
-    `${summary.incomingCount} day${summary.incomingCount === 1 ? "" : "s"} in the file, ` +
-    `${summary.overlapping} overlapping your ${summary.existingCount} existing. ` +
-    `Merge adds ${summary.newCount} new day${summary.newCount === 1 ? "" : "s"}. ` +
-    `Replace erases all ${summary.existingCount} existing day${summary.existingCount === 1 ? "" : "s"} and restores exactly what's in the file.` +
-    (sampleDayKeys.length ? " Demo data will be cleared first." : "");
+    `${sentence1} ${sentence2} ${sentence3}` + (sampleDayKeys.length ? ` ${t("importSummaryDemoClearSentence")}` : "");
   replaceArmed = false;
   clearTimeout(replaceArmTimer);
-  $("import-replace").textContent = "Replace everything";
+  $("import-replace").textContent = t("replaceEverythingLabel");
 }
 
 function cancelImport() {
@@ -2558,7 +2609,7 @@ function applyImport(mode) {
   // History/other views render lazily, so without this an import made while
   // History was open left the heatmap and summaries showing pre-import data.
   refreshCurrentView();
-  toast(mode === "replace" ? "Backup restored" : "Backup merged in");
+  toast(mode === "replace" ? t("backupRestoredToast") : t("backupMergedToast"));
 }
 
 /* ---------- sample data (demo mode) ---------- */
@@ -2575,9 +2626,7 @@ function renderSampleDataUI() {
   $("sample-data-block").hidden = false;
   $("load-sample-data").hidden = active;
   $("clear-sample-data").hidden = !active;
-  $("sample-data-note").textContent = active
-    ? "Demo mode is on. Sample days fill only dates you hadn't logged — leaving it removes exactly those, and nothing of yours."
-    : "See how History, streaks, and goals look with three weeks of varied (fake) days. Your own days are left as they are.";
+  $("sample-data-note").textContent = active ? t("demoModeOnNote") : t("demoModeOffNote");
   renderDemoBanner();
 }
 
@@ -2612,11 +2661,7 @@ function loadSampleData() {
   refreshCurrentView();
   renderSampleDataUI();
   renderFirstRunHint();
-  toast(
-    claimed.length
-      ? "Demo mode on — sample days added around your own"
-      : "Every day in the sample range is already yours — nothing to add"
-  );
+  toast(claimed.length ? t("demoModeOnToast") : t("demoModeNothingToAddToast"));
 }
 
 function clearSampleData() {
@@ -2634,7 +2679,7 @@ function clearSampleData() {
   refreshCurrentView();
   renderSampleDataUI();
   renderFirstRunHint();
-  toast("Demo mode off — your own days are untouched");
+  toast(t("demoModeOffToast"));
 }
 
 /* ---------- multi-day fill ---------- */
@@ -2653,7 +2698,7 @@ function syncMultiFillCategorySelect() {
   }
   const erase = document.createElement("option");
   erase.value = "erase";
-  erase.textContent = "Erase (mark as untracked)";
+  erase.textContent = t("eraseOptionLabel");
   select.appendChild(erase);
   if ([...select.options].some((o) => o.value === previous)) select.value = previous;
 }
@@ -2667,7 +2712,7 @@ let multiFillConfirmArmTimer = null;
 function resetMultiFillConfirmButton() {
   multiFillConfirmArmed = false;
   clearTimeout(multiFillConfirmArmTimer);
-  $("multifill-confirm-btn").textContent = "Confirm fill";
+  $("multifill-confirm-btn").textContent = t("confirmFillLabel");
 }
 
 function cancelMultiFill() {
@@ -2698,7 +2743,9 @@ function showMultiFillConfirm() {
   const catValue = $("multifill-cat-select").value;
   const categoryId = catValue === "erase" ? UNTRACKED : Number(catValue);
   const action =
-    catValue === "erase" ? "erased" : `set to ${categories.find((c) => c.id === categoryId)?.name ?? "that category"}`;
+    catValue === "erase"
+      ? t("multifillActionErase")
+      : t("multifillActionSetTo", [categories.find((c) => c.id === categoryId)?.name ?? t("multifillUnknownCategory")]);
 
   const { keys } = rangeResult;
   const { fromSlot, toSlot } = slotResult;
@@ -2710,15 +2757,22 @@ function showMultiFillConfirm() {
   // everywhere else in the app) — technically correct but reads as zero
   // duration, so the common case gets its own plain wording instead.
   const windowLabel =
-    fromSlot === 0 && toSlot === SLOTS ? "for the whole day" : `from ${fmtSlotClock(fromSlot)} to ${fmtSlotClock(toSlot)}`;
+    fromSlot === 0 && toSlot === SLOTS
+      ? t("multifillWindowWholeDay")
+      : t("multifillWindowRange", [fmtSlotClock(fromSlot), fmtSlotClock(toSlot)]);
 
   $("multifill-confirm").hidden = false;
-  $("multifill-summary").textContent =
-    `${summary.dayCount} day${summary.dayCount === 1 ? "" : "s"} (${keys[0]} to ${keys[keys.length - 1]}) ` +
-    `will be ${action} ${windowLabel}. ` +
-    (summary.paintedCount > 0
-      ? `${summary.paintedCount} of them already ${summary.paintedCount === 1 ? "has" : "have"} something painted there and will be overwritten.`
-      : "None of those days have anything painted there yet.");
+  const summarySentence =
+    summary.dayCount === 1
+      ? t("multifillSummarySingular", [String(summary.dayCount), keys[0], keys[keys.length - 1], action, windowLabel])
+      : t("multifillSummaryPlural", [String(summary.dayCount), keys[0], keys[keys.length - 1], action, windowLabel]);
+  const paintedSentence =
+    summary.paintedCount > 0
+      ? summary.paintedCount === 1
+        ? t("multifillPaintedSingular", [String(summary.paintedCount)])
+        : t("multifillPaintedPlural", [String(summary.paintedCount)])
+      : t("multifillNonePainted");
+  $("multifill-summary").textContent = `${summarySentence} ${paintedSentence}`;
   resetMultiFillConfirmButton();
 }
 
@@ -2768,7 +2822,7 @@ function applyMultiFill() {
   if (claimedSampleKeys.length) renderSampleDataUI();
   renderFirstRunHint();
   refreshCurrentView();
-  toast(`Filled ${dayCount} day${dayCount === 1 ? "" : "s"}`);
+  toast(dayCount === 1 ? t("filledDaysSingular", [String(dayCount)]) : t("filledDaysPlural", [String(dayCount)]));
 }
 
 /* ---------- google drive backup ---------- */
@@ -2786,13 +2840,13 @@ async function refreshDriveAccountEmail(token) {
 
 function renderDriveStatus() {
   const size = fmtBytes(driveBackupSizeBytes);
-  $("drive-account").textContent = driveAccountEmail ? `Connected as ${driveAccountEmail}` : "";
+  $("drive-account").textContent = driveAccountEmail ? t("driveConnectedAsStatus", [driveAccountEmail]) : "";
   $("drive-account").hidden = !driveAccountEmail;
   $("drive-status").textContent = driveLastSyncAt
-    ? `Last synced to Google Drive: ${new Date(driveLastSyncAt).toLocaleString()}` + (size ? ` · ${size}` : "")
+    ? t("driveLastSyncStatus", [new Date(driveLastSyncAt).toLocaleString()]) + (size ? ` · ${size}` : "")
     : driveFileId
-      ? "Connected to Google Drive. Restored from a backup; nothing uploaded from here yet."
-      : "Not backed up to Google Drive yet.";
+      ? t("driveConnectedNoUploadStatus")
+      : t("driveNotBackedUpStatus");
   // Gated on "is this account linked at all", not "have you uploaded". A
   // restore links the account and leaves a file id behind without ever
   // setting a sync time, so keying these off `driveLastSyncAt` meant someone
@@ -2811,14 +2865,10 @@ async function driveBackupNow() {
   // the whole OAuth consent flow first and then report success for a file
   // containing nothing. Demo days don't count — they're excluded below.
   if (excludeDays(days, sampleDayKeys).size === 0) {
-    toast(
-      days.size === 0
-        ? "Nothing logged yet to back up."
-        : "Only demo data is loaded — there's nothing of your own to back up yet."
-    );
+    toast(days.size === 0 ? t("nothingToBackupToast") : t("onlyDemoBackupToast"));
     return;
   }
-  toast("Connecting to Google Drive…");
+  toast(t("driveConnectingToast"));
   try {
     const token = await driveConnect();
     refreshDriveAccountEmail(token); // fire-and-forget; the backup doesn't wait on it
@@ -2843,10 +2893,10 @@ async function driveBackupNow() {
       [DRIVE_BACKUP_SIZE_KEY]: driveBackupSizeBytes,
     }).catch(reportStorageFailure);
     renderDriveStatus();
-    toast("Backed up to Google Drive");
+    toast(t("driveBackedUpToast"));
   } catch (err) {
     console.error("Daily Dial: Google Drive backup failed", err);
-    toast("Couldn't back up to Google Drive.");
+    toast(t("driveBackupErrorToast"));
   }
 }
 
@@ -2855,13 +2905,13 @@ async function driveBackupNow() {
  *  is just another place the same backup JSON can come from. */
 async function driveRestore() {
   if (tabIsStale) return;
-  toast("Checking Google Drive…");
+  toast(t("driveCheckingToast"));
   try {
     const token = await driveConnect();
     refreshDriveAccountEmail(token);
     const existing = await driveFindBackupFile(token);
     if (!existing) {
-      toast("No Daily Dial backup found in this Google account.");
+      toast(t("driveNoBackupFoundToast"));
       return;
     }
     const text = await driveDownloadBackup(token, existing.id);
@@ -2884,7 +2934,7 @@ async function driveRestore() {
     showImportConfirm();
   } catch (err) {
     console.error("Daily Dial: Google Drive restore failed", err);
-    toast("Couldn't reach Google Drive.");
+    toast(t("driveUnreachableToast"));
   }
 }
 
@@ -2896,19 +2946,19 @@ async function driveDisconnectClick() {
   driveAccountEmail = null;
   removeLocal([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY, DRIVE_BACKUP_SIZE_KEY, DRIVE_ACCOUNT_EMAIL_KEY]).catch(reportStorageFailure);
   renderDriveStatus();
-  toast("Disconnected from Google Drive");
+  toast(t("driveDisconnectedToast"));
 }
 
 /** Disconnecting only revokes this app's access to the account — the backup
  *  file itself keeps sitting in appDataFolder, invisible in the user's
  *  regular Drive, until something explicitly deletes it. This is that. */
 async function driveDeleteBackupClick() {
-  toast("Deleting from Google Drive…");
+  toast(t("driveDeletingToast"));
   try {
     const token = await driveConnect();
     const existing = driveFileId ? { id: driveFileId } : await driveFindBackupFile(token);
     if (!existing) {
-      toast("No Daily Dial backup found in this Google account.");
+      toast(t("driveNoBackupFoundToast"));
       return;
     }
     await driveDeleteBackup(token, existing.id);
@@ -2918,10 +2968,10 @@ async function driveDeleteBackupClick() {
     driveAccountEmail = null;
     removeLocal([DRIVE_FILE_ID_KEY, DRIVE_LAST_SYNC_KEY, DRIVE_BACKUP_SIZE_KEY, DRIVE_ACCOUNT_EMAIL_KEY]).catch(reportStorageFailure);
     renderDriveStatus();
-    toast("Deleted your Google Drive backup");
+    toast(t("driveDeletedToast"));
   } catch (err) {
     console.error("Daily Dial: Google Drive delete failed", err);
-    toast("Couldn't delete from Google Drive.");
+    toast(t("driveDeleteErrorToast"));
   }
 }
 
@@ -3024,11 +3074,7 @@ function dismissOnboarding() {
 function dismissOnboardingAndNudge() {
   dismissOnboarding();
   renderFirstRunHint();
-  toast(
-    days.size === 0
-      ? "Pick a category below, then drag around the ring to paint"
-      : "You're set — Settings (☰, top right) has categories, reminders, goals, and backup"
-  );
+  toast(days.size === 0 ? t("onboardingNudgePaintToast") : t("onboardingNudgeSettingsToast"));
 }
 
 /** Only for someone who has genuinely nothing painted. `days.size` is the
@@ -3163,7 +3209,7 @@ function wireEvents() {
     // hadn't occurred, which then carried a score and sat in History looking
     // like something you'd done.
     if (dateKey(d) > dateKey(new Date())) {
-      toast("That's tomorrow — there's nothing to log yet");
+      toast(t("futureDayToast"));
       return;
     }
     switchDay(d);
@@ -3190,21 +3236,21 @@ function wireEvents() {
   clearBtn.addEventListener("click", () => {
     if (!armed) {
       armed = true;
-      clearBtn.textContent = "Confirm clear?";
+      clearBtn.textContent = t("clearDayConfirmLabel");
       armTimer = setTimeout(() => {
         armed = false;
-        clearBtn.textContent = "Clear day";
+        clearBtn.textContent = t("clearDayLabel");
       }, 3000);
       return;
     }
     clearTimeout(armTimer);
     armed = false;
-    clearBtn.textContent = "Clear day";
+    clearBtn.textContent = t("clearDayLabel");
     pushUndo();
     state.slots = new Array(SLOTS).fill(UNTRACKED);
     persistDay();
     renderAll();
-    toast("Day cleared — ⌘Z to undo");
+    toast(t("dayClearedToast"));
   });
 
   // ---- quick dial layout switcher ----
@@ -3285,10 +3331,10 @@ function wireEvents() {
   $("import-replace").addEventListener("click", () => {
     if (!replaceArmed) {
       replaceArmed = true;
-      $("import-replace").textContent = "Click again to erase existing days";
+      $("import-replace").textContent = t("replaceArmedLabel");
       replaceArmTimer = setTimeout(() => {
         replaceArmed = false;
-        $("import-replace").textContent = "Replace everything";
+        $("import-replace").textContent = t("replaceEverythingLabel");
       }, 4000);
       return;
     }
@@ -3309,7 +3355,7 @@ function wireEvents() {
   $("multifill-confirm-btn").addEventListener("click", () => {
     if (!multiFillConfirmArmed) {
       multiFillConfirmArmed = true;
-      $("multifill-confirm-btn").textContent = "Click again to fill";
+      $("multifill-confirm-btn").textContent = t("multifillArmedLabel");
       multiFillConfirmArmTimer = setTimeout(resetMultiFillConfirmButton, 4000);
       return;
     }
@@ -3329,16 +3375,16 @@ function wireEvents() {
   deleteBtn.addEventListener("click", () => {
     if (!deleteArmed) {
       deleteArmed = true;
-      deleteBtn.textContent = "Click again to delete permanently";
+      deleteBtn.textContent = t("driveDeleteArmedLabel");
       deleteArmTimer = setTimeout(() => {
         deleteArmed = false;
-        deleteBtn.textContent = "Delete Drive backup";
+        deleteBtn.textContent = t("driveDeleteLabel");
       }, 4000);
       return;
     }
     clearTimeout(deleteArmTimer);
     deleteArmed = false;
-    deleteBtn.textContent = "Delete Drive backup";
+    deleteBtn.textContent = t("driveDeleteLabel");
     driveDeleteBackupClick();
   });
 

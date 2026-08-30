@@ -8,6 +8,44 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.24.0] — 2026-08-29
+
+### Added
+
+- **The interface can now be translated.** All 454 of the app's own strings —
+  settings labels, buttons, tabs, tooltips, placeholders, toasts, status
+  lines, and the accessible names screen readers read — moved into
+  `_locales/en/messages.json`, with the manifest, extension name and Store
+  description alongside them. Adding a language is now a data file and no
+  code: copy that file to `_locales/hi/`, translate the values, keep the
+  keys. Chrome picks the language from the browser, and any key a translation
+  is missing falls back to English, so a half-finished translation still
+  works.
+
+  Uses Chrome's own `chrome.i18n` rather than a library — it's what the Web
+  Store reads for localised listings, and it keeps the extension at zero
+  runtime dependencies with no build step, which is what makes the published
+  build checkable against this source.
+
+  **Your own words are never translated.** Notes, reflections, intentions,
+  to-avoid lines, template names, challenge names and renamed categories only
+  ever pass through as values, never as anything looked up. Verified by
+  seeding distinctive text and confirming it renders byte-identical through a
+  full storage round-trip.
+
+  Strings carrying values use whole-sentence messages with named placeholders
+  rather than concatenated fragments, so a translator can move a number or a
+  category name to wherever their language puts it. Singular and plural are
+  separate messages, since Chrome's format has no plural support.
+
+### Note
+
+- The insight sentence, the score labels and the six "Worth noticing"
+  observations still come from `lib.js`, which is deliberately pure — no
+  `chrome.*`, so its 200 tests run under plain Node. Translating those means
+  having it return keys rather than finished sentences; worth doing when a
+  second language actually exists, and harmless until then.
+
 ## [1.23.0] — 2026-08-29
 
 ### Added

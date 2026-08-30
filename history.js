@@ -28,7 +28,7 @@ import {
   searchNotes,
   weekOverWeek,
 } from "./historyLib.js";
-import { getAppData, goToDay, silenceObservation } from "./dial.js";
+import { getAppData, goToDay, silenceObservation, t } from "./dial.js";
 import { suggestionFor } from "./suggestions.js";
 
 const $ = (id) => document.getElementById(id);
@@ -124,16 +124,16 @@ function renderHeatmap(year, month, days, categories, weekStart) {
       if (cell.logged) {
         btn.classList.add("logged");
         btn.style.background = heatColor(cell.score, cell.trackedMin);
-        label = `${cell.date.toDateString()} — score ${fmtScore(cell.score)}, ${fmtDuration(cell.trackedMin)} tracked`;
+        label = t("heatmapLoggedLabel", [cell.date.toDateString(), fmtScore(cell.score), fmtDuration(cell.trackedMin)]);
       } else if (cell.written) {
         // Written up but no time painted. Marked rather than left blank: an
         // imported journal is entirely days like this, and showing them as
         // empty says "nothing happened" about days the user wrote about.
         btn.classList.add("written");
-        label = `${cell.date.toDateString()} — written up, no time painted`;
+        label = t("heatmapWrittenLabel", [cell.date.toDateString()]);
       } else {
         btn.classList.add("empty");
-        label = `${cell.date.toDateString()} — not logged`;
+        label = t("heatmapEmptyLabel", [cell.date.toDateString()]);
       }
       btn.setAttribute("aria-label", label);
       btn.title = label;
@@ -206,10 +206,10 @@ function renderSummary(year, month, days, categories) {
 
   const statsEl = $("hist-summary-stats");
   statsEl.replaceChildren(
-    statTile(String(summary.daysLogged), "Days logged"),
-    statTile(fmtDuration(summary.totalTrackedMin), "Tracked"),
-    statTile(fmtScore(summary.avgScore), "Avg score"),
-    statTile(fmtPct(summary.avgProductivePct), "Avg productive")
+    statTile(String(summary.daysLogged), t("statDaysLoggedLabel")),
+    statTile(fmtDuration(summary.totalTrackedMin), t("statTrackedLabel")),
+    statTile(fmtScore(summary.avgScore), t("statAvgScoreLabel")),
+    statTile(fmtPct(summary.avgProductivePct), t("statAvgProductiveLabel"))
   );
 
   const extra = $("hist-summary-extra");
@@ -218,14 +218,14 @@ function renderSummary(year, month, days, categories) {
   const best = document.createElement("p");
   best.className = "hist-extra-line";
   best.textContent = summary.bestDay
-    ? `Best day: ${summary.bestDay.key} (${fmtScore(summary.bestDay.score)})`
-    : "Best day: — nothing scored yet this month.";
+    ? t("bestDayLabel", [summary.bestDay.key, fmtScore(summary.bestDay.score)])
+    : t("bestDayEmptyLabel");
   extra.appendChild(best);
 
   const streak = document.createElement("p");
   streak.className = "hist-extra-line";
-  streak.title = "Consecutive logged days, counted only within this month — it doesn't borrow from the month before or after.";
-  streak.textContent = `Streak this month: ${summary.currentStreak} current · ${summary.longestStreak} longest`;
+  streak.title = t("monthStreakTooltip");
+  streak.textContent = t("monthStreakLabel", [String(summary.currentStreak), String(summary.longestStreak)]);
   extra.appendChild(streak);
 
   // Every number above counts painted time, so a month of imported journal
@@ -237,8 +237,9 @@ function renderSummary(year, month, days, categories) {
       const note = document.createElement("p");
       note.className = "hist-extra-line";
       note.textContent =
-        `${written} ${written === 1 ? "day is" : "days are"} written up this month but have no time painted on the dial, ` +
-        `so they don't count toward anything above. They're all in the log below.`;
+        written === 1
+          ? t("writtenDaysNoteSingular", [String(written)])
+          : t("writtenDaysNotePlural", [String(written)]);
       extra.appendChild(note);
     }
   }
@@ -265,7 +266,7 @@ function trendSvg(weeks, catIndex, cls) {
     rect.setAttribute("rx", "2");
     rect.setAttribute("class", cls);
     const title = document.createElementNS(SVG_NS, "title");
-    title.textContent = `Week of ${wk.weekStartKey}: ${fmtDuration(min)}`;
+    title.textContent = t("trendWeekTooltip", [wk.weekStartKey, fmtDuration(min)]);
     rect.appendChild(title);
     svg.appendChild(rect);
   });
@@ -280,7 +281,7 @@ function renderTrends(year, month, days, categories, weekStart) {
   if (weeks.every((wk) => wk.perCatMin.every((m) => m === 0))) {
     const p = document.createElement("p");
     p.className = "editor-note";
-    p.textContent = "Nothing logged this month yet — trends fill in as you paint days on the dial.";
+    p.textContent = t("trendsEmptyNote");
     el.appendChild(p);
     return;
   }
@@ -300,7 +301,7 @@ function renderTrends(year, month, days, categories, weekStart) {
     const dir = categoryTrendDirection(weeks, i);
     const dirEl = document.createElement("span");
     dirEl.className = `hist-trend-dir ${dir}`;
-    dirEl.title = "First week vs. last week shown, so a single dip in the middle doesn't flip the read.";
+    dirEl.title = t("trendDirectionTooltip");
     dirEl.textContent = ARROW[dir];
     head.append(sw, name, dirEl);
 
@@ -327,7 +328,7 @@ function wowRow(label, curText, prevText, delta, fmtDelta) {
   const deltaEl = document.createElement("span");
   deltaEl.className = `hist-wow-delta ${dir}`;
   deltaEl.title =
-    delta === null ? "Nothing logged last week to compare against." : `Last week: ${prevText}`;
+    delta === null ? t("wowNoPreviousTooltip") : t("wowPreviousTooltip", [prevText]);
   // "n/a" is jargon for "nothing to compare against yet"; the dash is what
   // the rest of the app already uses for an absent number.
   deltaEl.textContent = delta === null ? "—" : `${ARROW[dir]} ${fmtDelta(Math.abs(delta))}`;
@@ -340,15 +341,15 @@ function renderWeekOverWeek(days, categories, weekStart) {
   const wow = weekOverWeek(days, categories, weekStart, new Date());
   const el = $("hist-wow");
   el.replaceChildren(
-    wowRow("Tracked", fmtDuration(wow.current.trackedMin), fmtDuration(wow.previous.trackedMin), wow.deltas.trackedMin, fmtDuration),
+    wowRow(t("wowTrackedLabel"), fmtDuration(wow.current.trackedMin), fmtDuration(wow.previous.trackedMin), wow.deltas.trackedMin, fmtDuration),
     wowRow(
-      "Productive",
+      t("wowProductiveLabel"),
       fmtPct(wow.current.avgProductivePct),
       fmtPct(wow.previous.avgProductivePct),
       wow.deltas.avgProductivePct,
-      (n) => `${n}pt`
+      (n) => t("wowDeltaPoints", [String(n)])
     ),
-    wowRow("Avg score", fmtScore(wow.current.avgScore), fmtScore(wow.previous.avgScore), wow.deltas.avgScore, (n) => `${n}`)
+    wowRow(t("wowAvgScoreLabel"), fmtScore(wow.current.avgScore), fmtScore(wow.previous.avgScore), wow.deltas.avgScore, (n) => `${n}`)
   );
 }
 
@@ -362,7 +363,7 @@ function renderSearch(days, query) {
   if (!q) {
     const p = document.createElement("p");
     p.className = "editor-note";
-    p.textContent = "Type to search your reflections.";
+    p.textContent = t("searchPromptNote");
     el.appendChild(p);
     return;
   }
@@ -371,7 +372,7 @@ function renderSearch(days, query) {
   if (matches.length === 0) {
     const p = document.createElement("p");
     p.className = "editor-note";
-    p.textContent = `No notes match "${q}".`;
+    p.textContent = t("searchNoMatchNote", [q]);
     el.appendChild(p);
     return;
   }
@@ -380,7 +381,7 @@ function renderSearch(days, query) {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "hist-search-result";
-    btn.title = "Jump to this day";
+    btn.title = t("searchResultTooltip");
 
     const date = document.createElement("span");
     date.className = "hist-search-date";
@@ -499,7 +500,7 @@ function renderLogDay(key, day, categories) {
   date.textContent = new Date(key + "T00:00:00").toLocaleDateString(undefined, {
     weekday: "long", day: "numeric", month: "long",
   });
-  date.title = "Open this day";
+  date.title = t("openDayTooltip");
   date.addEventListener("click", () => goToDay(key));
   head.appendChild(date);
 
@@ -525,7 +526,7 @@ function renderLogDay(key, day, categories) {
   if ((day.intents ?? []).length) {
     const label = document.createElement("p");
     label.className = "log-section-label";
-    label.textContent = "Meant to";
+    label.textContent = t("logMeantToLabel");
     const list = document.createElement("ul");
     list.className = "log-list";
     for (const intent of day.intents) {
@@ -546,7 +547,7 @@ function renderLogDay(key, day, categories) {
   if ((day.notes ?? []).length) {
     const label = document.createElement("p");
     label.className = "log-section-label";
-    label.textContent = "What happened";
+    label.textContent = t("logWhatHappenedLabel");
     const list = document.createElement("ul");
     list.className = "log-list";
     for (const note of day.notes) {
@@ -558,7 +559,7 @@ function renderLogDay(key, day, categories) {
   if ((day.avoid ?? []).length) {
     const label = document.createElement("p");
     label.className = "log-section-label";
-    label.textContent = "Meant to avoid";
+    label.textContent = t("logMeantToAvoidLabel");
     const list = document.createElement("ul");
     list.className = "log-list";
     for (const text of day.avoid) {
@@ -656,14 +657,14 @@ function reviewItem(observation) {
     const show = document.createElement("button");
     show.type = "button";
     show.className = "link-btn";
-    show.textContent = "What people do about this";
+    show.textContent = t("suggestionShowLabel");
     show.setAttribute("aria-expanded", "false");
     show.addEventListener("click", () => {
       const opening = panel.hidden;
       if (opening && !panel.childElementCount) panel.appendChild(suggestionBody(suggestion));
       panel.hidden = !opening;
       show.setAttribute("aria-expanded", String(opening));
-      show.textContent = opening ? "Hide" : "What people do about this";
+      show.textContent = opening ? t("suggestionHideLabel") : t("suggestionShowLabel");
     });
     actions.appendChild(show);
   }
@@ -671,8 +672,8 @@ function reviewItem(observation) {
   const hide = document.createElement("button");
   hide.type = "button";
   hide.className = "link-btn";
-  hide.textContent = "Don't show this again";
-  hide.title = "Permanently, not just for now.";
+  hide.textContent = t("silenceObservationLabel");
+  hide.title = t("silenceObservationTooltip");
   hide.addEventListener("click", () => {
     silenceObservation(observation.id);
     renderHistory();
@@ -721,8 +722,7 @@ function suggestionBody(suggestion) {
 
   const disclaimer = document.createElement("p");
   disclaimer.className = "review-disclaimer";
-  disclaimer.textContent =
-    "These are examples of an approach, not recommendations — none are affiliated with Daily Dial.";
+  disclaimer.textContent = t("suggestionDisclaimer");
   wrap.appendChild(disclaimer);
 
   return wrap;

@@ -8,40 +8,46 @@
 <body>
   <div class="app">
     <div class="topbar">
-      <div class="wordmark">Daily Dial<span id="version">Time &amp; focus log</span></div>
+      <div class="wordmark"><span data-i18n="wordmarkTitle">Daily Dial</span><span id="version" data-i18n="wordmarkTagline">Time &amp; focus log</span></div>
 
       <div class="streak-banner" id="streak-banner"
+           data-i18n-title="streakBannerTooltip"
            title="Days in a row with at least one block logged. One missed day a week is forgiven as a freeze.">
         <span class="streak-icon" id="streak-icon">🔥</span>
-        <span class="streak-text"><b id="streak-current">0</b> day streak <span class="muted">· best: <span id="streak-best">0</span></span></span>
+        <span class="streak-text"><b id="streak-current">0</b> <span data-i18n="streakDayLabel">day streak</span> <span class="muted">· <span data-i18n="streakBestLabel">best:</span> <span id="streak-best">0</span></span></span>
         <span class="streak-freeze" id="streak-freeze" hidden
-              title="You missed a day this week, but your streak survived — one miss per rolling 7 days is forgiven.">❄ freeze used</span>
+              data-i18n-title="streakFreezeTooltip"
+              title="You missed a day this week, but your streak survived — one miss per rolling 7 days is forgiven."
+              data-i18n="streakFreezeLabel">❄ freeze used</span>
         <span class="streak-risk" id="streak-risk" hidden
-              title="Log at least one block today to keep the streak alive.">not logged yet today</span>
+              data-i18n-title="streakRiskTooltip"
+              title="Log at least one block today to keep the streak alive."
+              data-i18n="streakRiskLabel">not logged yet today</span>
       </div>
 
       <!-- An optional named run with its own day counter, for anyone
            keeping a "#100days"-style challenge. -->
       <button type="button" class="challenge-chip" id="challenge-chip" hidden
+              data-i18n-title="challengeChipTooltip"
               title="Your named challenge. Click to change it.">
         <span id="challenge-name"></span>
         <span class="challenge-day" id="challenge-day"></span>
       </button>
 
-      <nav class="view-nav" id="view-nav" aria-label="Views">
-        <button type="button" class="view-tab active" data-view="day" aria-current="page">Day</button>
-        <button type="button" class="view-tab" data-view="history" title="Your months at a glance, and how categories trend over time">History</button>
+      <nav class="view-nav" id="view-nav" data-i18n-label="viewNavLabel" aria-label="Views">
+        <button type="button" class="view-tab active" data-view="day" aria-current="page" data-i18n="viewTabDay">Day</button>
+        <button type="button" class="view-tab" data-view="history" data-i18n-title="viewTabHistoryTooltip" title="Your months at a glance, and how categories trend over time" data-i18n="viewTabHistory">History</button>
       </nav>
 
       <div class="topbar-right">
         <div class="datenav" id="datenav-wrap">
-          <button id="prev-day" aria-label="Previous day" title="Previous day">‹</button>
-          <span class="label" id="date-label">Today</span>
-          <button id="next-day" aria-label="Next day" title="Next day">›</button>
-          <button class="today-jump" id="today-jump" hidden title="Jump back to today">Today</button>
+          <button id="prev-day" data-i18n-label="prevDayLabel" aria-label="Previous day" data-i18n-title="prevDayLabel" title="Previous day">‹</button>
+          <span class="label" id="date-label" data-i18n="dateToday">Today</span>
+          <button id="next-day" data-i18n-label="nextDayLabel" aria-label="Next day" data-i18n-title="nextDayLabel" title="Next day">›</button>
+          <button class="today-jump" id="today-jump" hidden data-i18n-title="todayJumpTooltip" title="Jump back to today" data-i18n="dateToday">Today</button>
         </div>
         <button class="icon-btn settings-btn" id="open-settings" aria-haspopup="dialog"
-                aria-label="Settings" title="Categories, reminders, goals, backup, and appearance">☰</button>
+                data-i18n-label="settingsButtonLabel" aria-label="Settings" data-i18n-title="settingsButtonTooltip" title="Categories, reminders, goals, backup, and appearance">☰</button>
       </div>
     </div>
 
@@ -51,10 +57,13 @@
     <div class="demo-banner" id="demo-banner" hidden>
       <span class="demo-banner-mark">🎬</span>
       <span class="demo-banner-text">
-        <b>Demo mode</b> — the days below include sample data, not just yours.
+        <b data-i18n="demoBannerTitle">Demo mode</b>
+        <span data-i18n="demoBannerBody">— the days below include sample data, not just yours.</span>
       </span>
       <button type="button" class="demo-banner-exit" id="demo-banner-exit"
-              title="Removes exactly the sample days that were loaded. Anything you logged yourself is untouched.">Exit demo</button>
+              data-i18n-title="demoBannerExitTooltip"
+              title="Removes exactly the sample days that were loaded. Anything you logged yourself is untouched."
+              data-i18n="demoBannerExitLabel">Exit demo</button>
     </div>
 
     <!-- This page holds everything in memory from the moment it loads and
@@ -64,18 +73,18 @@
     <div class="stale-banner" id="stale-banner" hidden role="alert">
       <span class="stale-banner-mark">⚠️</span>
       <span class="stale-banner-text">
-        <b>Another tab changed <span id="stale-banner-what">your data</span>.</b>
-        Editing is paused here so this tab can't overwrite it. Reload to pick
-        up the newer version.
+        <b id="stale-banner-headline">Another tab changed your data.</b>
+        <span data-i18n="staleBannerBody">Editing is paused here so this tab can't overwrite it. Reload to pick
+        up the newer version.</span>
       </span>
-      <button type="button" class="stale-banner-reload" id="stale-banner-reload">Reload</button>
+      <button type="button" class="stale-banner-reload" id="stale-banner-reload" data-i18n="staleBannerReload">Reload</button>
     </div>
 
     <div class="view active" id="view-day">
     <div class="nudge-bar" id="backup-nudge" hidden>
-      <span>You haven't backed up in a while — your data lives only in this browser.</span>
-      <button class="ghost-btn" id="backup-nudge-export" title="Save a JSON backup you can restore from later">Export now</button>
-      <button class="icon-btn" id="backup-nudge-dismiss" aria-label="Dismiss" title="Hide until next time">✕</button>
+      <span data-i18n="backupNudgeText">You haven't backed up in a while — your data lives only in this browser.</span>
+      <button class="ghost-btn" id="backup-nudge-export" data-i18n-title="backupNudgeExportTooltip" title="Save a JSON backup you can restore from later" data-i18n="backupNudgeExportLabel">Export now</button>
+      <button class="icon-btn" id="backup-nudge-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss" data-i18n-title="backupNudgeDismissTooltip" title="Hide until next time">✕</button>
     </div>
 
     <!-- The strip showed bare day numbers with nothing to say which month
@@ -83,9 +92,9 @@
     <div class="strip-wrap">
       <div class="strip-header">
         <span class="strip-month" id="strip-month"></span>
-        <span class="strip-hint">Last 7 days · click one to open it</span>
+        <span class="strip-hint" data-i18n="stripHintLabel">Last 7 days · click one to open it</span>
       </div>
-      <div class="strip" id="strip" title="The last seven days. Bar height is that day's score; click one to view or edit it."></div>
+      <div class="strip" id="strip" data-i18n-title="stripTooltip" title="The last seven days. Bar height is that day's score; click one to view or edit it."></div>
     </div>
 
     <div class="grid">
@@ -95,55 +104,60 @@
              at the top with the other whole-dial control. -->
         <div class="dial-card-head">
           <button class="ghost-btn" id="share-image"
-                  title="Save (or share) a PNG of this day's dial and score — nothing leaves your device unless you choose to send it.">Share as image</button>
-          <div class="dial-layout-switch" id="dial-layout-switch" role="group" aria-label="Dial layout">
-            <button type="button" data-mode="24h" aria-pressed="true" title="One 24-hour ring">24h</button>
-            <button type="button" data-mode="ampm" aria-pressed="false" title="Two 12-hour rings, side by side">AM+PM</button>
-            <button type="button" data-mode="ampm-toggle" aria-pressed="false" title="One 12-hour ring, with an AM/PM switch">AM⇄PM</button>
+                  data-i18n-title="shareImageTooltip"
+                  title="Save (or share) a PNG of this day's dial and score — nothing leaves your device unless you choose to send it."
+                  data-i18n="shareImageLabel">Share as image</button>
+          <div class="dial-layout-switch" id="dial-layout-switch" role="group" data-i18n-label="dialLayoutSwitchLabel" aria-label="Dial layout">
+            <button type="button" data-mode="24h" aria-pressed="true" data-i18n-title="dialModeSingleTooltip" title="One 24-hour ring" data-i18n="dialModeSingleLabel">24h</button>
+            <button type="button" data-mode="ampm" aria-pressed="false" data-i18n-title="dialModeAmpmTooltip" title="Two 12-hour rings, side by side" data-i18n="dialModeAmpmLabel">AM+PM</button>
+            <button type="button" data-mode="ampm-toggle" aria-pressed="false" data-i18n-title="dialModeToggleTooltip" title="One 12-hour ring, with an AM/PM switch" data-i18n="dialModeToggleLabel">AM⇄PM</button>
           </div>
         </div>
 
         <div class="dial-wrap" id="dial-wrap-single">
           <svg class="dial-svg" id="dial" viewBox="0 0 460 460" role="application" tabindex="0"
+               data-i18n-label="dialAriaLabelSingle"
                aria-label="24-hour activity dial. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
             <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
             <g id="segments"></g>
             <g id="ticks"></g>
             <g id="needle"></g>
             <text id="center-time" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
-            <text id="center-sub" class="center-sub" x="230" y="244" text-anchor="middle">pick a category</text>
+            <text id="center-sub" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
           </svg>
         </div>
 
-        <div class="ampm-toggle-switch" id="dial-toggle-switch" hidden role="group" aria-label="Show the AM or PM half">
-          <button type="button" id="toggle-am-btn" aria-pressed="true">AM</button>
-          <button type="button" id="toggle-pm-btn" aria-pressed="false">PM</button>
+        <div class="ampm-toggle-switch" id="dial-toggle-switch" hidden role="group" data-i18n-label="toggleHalfSwitchLabel" aria-label="Show the AM or PM half">
+          <button type="button" id="toggle-am-btn" aria-pressed="true" data-i18n="dialHalfAm">AM</button>
+          <button type="button" id="toggle-pm-btn" aria-pressed="false" data-i18n="dialHalfPm">PM</button>
         </div>
 
         <div class="dial-wrap-twin" id="dial-wrap-twin" hidden>
           <div class="dial-half" id="dial-half-am">
             <svg class="dial-svg" id="dial-am" viewBox="0 0 460 460" role="application" tabindex="0"
+                 data-i18n-label="dialAriaLabelAm"
                  aria-label="AM activity dial, midnight to noon. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
               <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
               <g id="segments-am"></g>
               <g id="ticks-am"></g>
               <g id="needle-am"></g>
               <text id="center-time-am" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
-              <text id="center-sub-am" class="center-sub" x="230" y="244" text-anchor="middle">pick a category</text>
+              <text id="center-sub-am" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
             </svg>
-            <div class="dial-half-label">AM <span class="muted">· 12a&ndash;12p</span></div>
+            <div class="dial-half-label"><span data-i18n="dialHalfAm">AM</span> <span class="muted" data-i18n="dialHalfAmRange">· 12a&ndash;12p</span></div>
           </div>
           <div class="dial-half" id="dial-half-pm">
             <svg class="dial-svg" id="dial-pm" viewBox="0 0 460 460" role="application" tabindex="0"
+                 data-i18n-label="dialAriaLabelPm"
                  aria-label="PM activity dial, noon to midnight. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
               <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
               <g id="segments-pm"></g>
               <g id="ticks-pm"></g>
               <g id="needle-pm"></g>
               <text id="center-time-pm" class="center-time" x="230" y="223" text-anchor="middle">--:--</text>
-              <text id="center-sub-pm" class="center-sub" x="230" y="244" text-anchor="middle">pick a category</text>
+              <text id="center-sub-pm" class="center-sub" x="230" y="244" text-anchor="middle" data-i18n="dialCenterPickCategory">pick a category</text>
             </svg>
-            <div class="dial-half-label">PM <span class="muted">· 12p&ndash;12a</span></div>
+            <div class="dial-half-label"><span data-i18n="dialHalfPm">PM</span> <span class="muted" data-i18n="dialHalfPmRange">· 12p&ndash;12a</span></div>
           </div>
         </div>
 
@@ -154,26 +168,29 @@
              at the actual next action and stays until the first block
              is painted. -->
         <p class="first-run-hint" id="first-run-hint" hidden>
-          👇 Pick a category, then drag around the ring to paint your first block.
-          <button type="button" class="link-btn" id="first-run-hint-dismiss">Got it</button>
+          <span data-i18n="firstRunHint">👇 Pick a category, then drag around the ring to paint your first block.</span>
+          <button type="button" class="link-btn" id="first-run-hint-dismiss" data-i18n="firstRunHintDismiss">Got it</button>
         </p>
 
         <div class="pens" id="pens"></div>
 
         <div class="quick-entry">
           <button class="ghost-btn" id="copy-yesterday"
-                  title="Fill today with yesterday's blocks — useful when your days rhyme">Copy yesterday</button>
+                  data-i18n-title="copyYesterdayTooltip"
+                  title="Fill today with yesterday's blocks — useful when your days rhyme"
+                  data-i18n="copyYesterdayLabel">Copy yesterday</button>
           <!-- The category is a dropdown rather than part of the typed string:
                it was the only half you could get wrong by misspelling, and a
                list can't be mistyped. Typing a category in the box still
                works and wins, so "9-11 leetcode" and aliases keep working. -->
           <form class="typed-entry" id="typed-entry-form">
-            <label for="typed-entry-input" class="sr-only">Time range</label>
-            <input type="text" id="typed-entry-input" placeholder="9-11" aria-label="Time range"
+            <label for="typed-entry-input" class="sr-only" data-i18n="typedEntryTimeRangeLabel">Time range</label>
+            <input type="text" id="typed-entry-input" data-i18n-placeholder="typedEntryPlaceholder" placeholder="9-11" data-i18n-label="typedEntryTimeRangeLabel" aria-label="Time range"
+                   data-i18n-title="typedEntryTooltip"
                    title="A time range: &quot;9-11&quot;, &quot;13:30-15&quot;, or &quot;9pm-11pm&quot;. You can still type the category here too.">
-            <label for="typed-entry-cat" class="sr-only">Category</label>
-            <select id="typed-entry-cat" title="Which category this block is"></select>
-            <button type="submit" title="Add this block to the dial">Add</button>
+            <label for="typed-entry-cat" class="sr-only" data-i18n="typedEntryCatTooltip">Category</label>
+            <select id="typed-entry-cat" data-i18n-title="typedEntryCatTooltip" title="Which category this block is"></select>
+            <button type="submit" data-i18n-title="typedEntryAddTooltip" title="Add this block to the dial" data-i18n="addButtonLabel">Add</button>
           </form>
         </div>
 
@@ -182,15 +199,15 @@
              past the pens and the whole breakdown table to find the row. -->
         <div class="just-painted" id="just-painted" hidden>
           <span class="jp-what" id="just-painted-what"></span>
-          <input type="text" id="just-painted-note" maxlength="500" aria-label="Note for what you just painted">
-          <button type="button" class="ghost-btn" id="just-painted-save">Save</button>
-          <button type="button" class="icon-btn" id="just-painted-dismiss" aria-label="Dismiss" title="Dismiss">✕</button>
+          <input type="text" id="just-painted-note" maxlength="500" data-i18n-label="justPaintedNoteLabel" aria-label="Note for what you just painted">
+          <button type="button" class="ghost-btn" id="just-painted-save" data-i18n="justPaintedSaveLabel">Save</button>
+          <button type="button" class="icon-btn" id="just-painted-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss" data-i18n-title="dismissLabel" title="Dismiss">✕</button>
         </div>
 
         <p class="hint">
-          Click or drag around the ring to paint ·
-          <kbd>⌘Z</kbd> undo ·
-          <button type="button" class="link-btn" id="hint-shortcuts">all shortcuts</button>
+          <span data-i18n="hintPaintInstruction">Click or drag around the ring to paint</span> ·
+          <kbd>⌘Z</kbd> <span data-i18n="hintUndo">undo</span> ·
+          <button type="button" class="link-btn" id="hint-shortcuts" data-i18n="hintAllShortcuts">all shortcuts</button>
         </p>
 
         <!-- The whole 24 hours in order, gaps included. This replaces a note
@@ -201,17 +218,17 @@
              notice is a row asking to be filled. -->
         <div class="breakdown">
           <div class="breakdown-head">
-            <p class="section-label" title="Every stretch of the day in order, including the parts you haven't logged. Type a note straight onto any row; pick a category on a gap row to fill it in.">The day, end to end</p>
+            <p class="section-label" data-i18n-title="breakdownSectionTooltip" title="Every stretch of the day in order, including the parts you haven't logged. Type a note straight onto any row; pick a category on a gap row to fill it in." data-i18n="breakdownSectionLabel">The day, end to end</p>
             <span class="breakdown-sum" id="breakdown-sum"></span>
           </div>
           <table class="breakdown-table">
             <thead>
               <tr>
-                <th scope="col">When</th>
-                <th scope="col">What</th>
-                <th scope="col">For</th>
-                <th scope="col" class="note-col">Note</th>
-                <th scope="col"><span class="sr-only">Clear</span></th>
+                <th scope="col" data-i18n="breakdownColWhen">When</th>
+                <th scope="col" data-i18n="breakdownColWhat">What</th>
+                <th scope="col" data-i18n="breakdownColFor">For</th>
+                <th scope="col" class="note-col" data-i18n="breakdownColNote">Note</th>
+                <th scope="col"><span class="sr-only" data-i18n="breakdownColClear">Clear</span></th>
               </tr>
             </thead>
             <tbody id="breakdown-rows"></tbody>
@@ -221,40 +238,41 @@
 
       <div class="side-card">
         <div>
-          <p class="section-label">Today's read</p>
+          <p class="section-label" data-i18n="todaysReadLabel">Today's read</p>
           <div class="stat-row">
-            <div class="stat" title="Total time you've painted on the dial today. The rest of the day counts as untracked.">
-              <div class="v" id="stat-tracked">0h 0m</div><div class="l">Tracked</div></div>
-            <div class="stat" title="Share of your tracked time spent on categories weighted +. Untracked time is excluded.">
-              <div class="v" id="stat-productive">—</div><div class="l">Productive</div></div>
-            <div class="stat" title="Your longest unbroken run of productive time. It continues across different + categories, and breaks on neutral or distraction time.">
-              <div class="v" id="stat-focus">0m</div><div class="l">Longest focus</div></div>
+            <div class="stat" data-i18n-title="statTrackedTooltip" title="Total time you've painted on the dial today. The rest of the day counts as untracked.">
+              <div class="v" id="stat-tracked">0h 0m</div><div class="l" data-i18n="statTrackedLabel">Tracked</div></div>
+            <div class="stat" data-i18n-title="statProductiveTooltip" title="Share of your tracked time spent on categories weighted +. Untracked time is excluded.">
+              <div class="v" id="stat-productive">—</div><div class="l" data-i18n="statProductiveLabel">Productive</div></div>
+            <div class="stat" data-i18n-title="statFocusTooltip" title="Your longest unbroken run of productive time. It continues across different + categories, and breaks on neutral or distraction time.">
+              <div class="v" id="stat-focus">0m</div><div class="l" data-i18n="statFocusLabel">Longest focus</div></div>
           </div>
         </div>
 
         <div>
           <div class="score-top">
             <span class="score-val" id="score-val"
+                  data-i18n-title="scoreValTooltip"
                   title="(productive − distraction) ÷ tracked, as a percentage. Measures the shape of your day rather than its length, so a focused 4 hours beats a scattered 10.">—</span>
             <span class="score-badge muted" id="score-badge"><span class="dot"></span><span id="score-badge-text">No data yet</span></span>
           </div>
-          <div class="meter" title="Your score on a scale from −100 to +100."><div class="meter-fill" id="meter-fill" style="width:50%"></div></div>
+          <div class="meter" data-i18n-title="meterTooltip" title="Your score on a scale from −100 to +100."><div class="meter-fill" id="meter-fill" style="width:50%"></div></div>
         </div>
 
         <p class="insight" id="insight">Nothing logged yet. Pick a category and drag around the ring to paint your first block.</p>
 
         <div>
-          <p class="section-label" title="How today's tracked time splits across categories, with untracked time shown so gaps stay visible.">Where the time went</p>
+          <p class="section-label" data-i18n-title="whereTimeWentTooltip" title="How today's tracked time splits across categories, with untracked time shown so gaps stay visible." data-i18n="whereTimeWentLabel">Where the time went</p>
           <div class="cat-bars" id="cat-bars"></div>
         </div>
 
         <div id="goals-panel" hidden>
-          <p class="section-label" title="Daily targets you set in Settings → Goals. A ✓ marks one you've met.">Today's goals</p>
+          <p class="section-label" data-i18n-title="todaysGoalsTooltip" title="Daily targets you set in Settings → Goals. A ✓ marks one you've met." data-i18n="todaysGoalsLabel">Today's goals</p>
           <div class="goal-rows" id="goal-rows"></div>
         </div>
 
         <div id="weekly-goals-panel" hidden>
-          <p class="section-label" title="Weekly targets you set in Settings → Goals, summed across the week starting on your configured week-start day. A ✓ marks one you've met.">This week's goals</p>
+          <p class="section-label" data-i18n-title="weeklyGoalsTooltip" title="Weekly targets you set in Settings → Goals, summed across the week starting on your configured week-start day. A ✓ marks one you've met." data-i18n="weeklyGoalsLabel">This week's goals</p>
           <div class="goal-rows" id="weekly-goal-rows"></div>
         </div>
 
@@ -262,37 +280,37 @@
              The point isn't the list, it's seeing a week later which ones
              you actually did. -->
         <div class="journal-block">
-          <p class="section-label" title="What you meant to do today. Tick them off as they land — the History log shows which ones you actually did.">Today's intentions</p>
+          <p class="section-label" data-i18n-title="intentionsTooltip" title="What you meant to do today. Tick them off as they land — the History log shows which ones you actually did." data-i18n="intentionsLabel">Today's intentions</p>
           <ul class="intent-list" id="intent-list"></ul>
           <form class="journal-form" id="intent-form">
-            <label for="intent-input" class="sr-only">Add an intention</label>
-            <input type="text" id="intent-input" placeholder="Leetcode, mail the prof…" maxlength="500">
-            <button type="submit" class="ghost-btn">Add</button>
+            <label for="intent-input" class="sr-only" data-i18n="addIntentionLabel">Add an intention</label>
+            <input type="text" id="intent-input" data-i18n-placeholder="addIntentionPlaceholder" placeholder="Leetcode, mail the prof…" maxlength="500">
+            <button type="submit" class="ghost-btn" data-i18n="addButtonLabel">Add</button>
           </form>
         </div>
 
         <!-- The other half of setting out a day: what to steer clear of.
              Not a checklist — these are things to notice yourself doing. -->
         <div class="journal-block">
-          <p class="section-label" title="What to steer clear of today. Kept in the History log beside what you actually did.">To avoid</p>
+          <p class="section-label" data-i18n-title="avoidTooltip" title="What to steer clear of today. Kept in the History log beside what you actually did." data-i18n="avoidLabel">To avoid</p>
           <ul class="avoid-list" id="avoid-list"></ul>
           <form class="journal-form" id="avoid-form">
-            <label for="avoid-input" class="sr-only">Add something to avoid</label>
-            <input type="text" id="avoid-input" placeholder="Doom-scrolling, 10h of series…" maxlength="500">
-            <button type="submit" class="ghost-btn">Add</button>
+            <label for="avoid-input" class="sr-only" data-i18n="addAvoidLabel">Add something to avoid</label>
+            <input type="text" id="avoid-input" data-i18n-placeholder="addAvoidPlaceholder" placeholder="Doom-scrolling, 10h of series…" maxlength="500">
+            <button type="submit" class="ghost-btn" data-i18n="addButtonLabel">Add</button>
           </form>
         </div>
 
 
 
         <div>
-          <p class="section-label" title="One line on what helped or hurt today. Included in your CSV export.">Why (a line is enough)</p>
-          <label for="reflection" style="position:absolute;left:-9999px;">Reflection</label>
-          <textarea id="reflection" placeholder="What made today click — or drag?"></textarea>
+          <p class="section-label" data-i18n-title="reflectionTooltip" title="One line on what helped or hurt today. Included in your CSV export." data-i18n="reflectionLabel">Why (a line is enough)</p>
+          <label for="reflection" style="position:absolute;left:-9999px;" data-i18n="reflectionSrLabel">Reflection</label>
+          <textarea id="reflection" data-i18n-placeholder="reflectionPlaceholder" placeholder="What made today click — or drag?"></textarea>
         </div>
 
         <div class="footer-actions">
-          <button class="ghost-btn danger" id="clear-day" title="Erase every block on this day. Undoable with ⌘Z.">Clear day</button>
+          <button class="ghost-btn danger" id="clear-day" data-i18n-title="clearDayTooltip" title="Erase every block on this day. Undoable with ⌘Z." data-i18n="clearDayLabel">Clear day</button>
         </div>
       </div>
     </div>
@@ -301,11 +319,11 @@
     <!-- Filled in by the History feature. -->
     <div class="view" id="view-history" hidden>
       <div class="view-placeholder" id="history-empty" hidden>
-        No history yet. Log a few days on the Day view — once you have a week or
+        <span data-i18n="historyEmptyBefore">No history yet. Log a few days on the Day view — once you have a week or
         two, this tab turns into a month-by-month picture: a heatmap, category
         trends, and week-over-week comparisons. Want to see what that looks like
-        right now? <button type="button" class="link-btn" id="history-empty-sample-data">Load sample data</button>
-        fills in three weeks instantly.
+        right now?</span> <button type="button" class="link-btn" id="history-empty-sample-data" data-i18n="loadSampleDataLabel">Load sample data</button>
+        <span data-i18n="historyEmptyAfter">fills in three weeks instantly.</span>
       </div>
 
       <div id="history-content" hidden>
@@ -315,8 +333,8 @@
              and a tracker that lectures is one people stop opening. -->
         <div class="hist-card review-card" id="review-card" hidden>
           <div class="review-head">
-            <p class="section-label" title="Patterns in your own data over the last few weeks. Nothing here is advice unless you ask for it.">Worth noticing</p>
-            <span class="review-note">from the last few weeks</span>
+            <p class="section-label" data-i18n-title="worthNoticingHistoryTooltip" title="Patterns in your own data over the last few weeks. Nothing here is advice unless you ask for it." data-i18n="worthNoticingLabel">Worth noticing</p>
+            <span class="review-note" data-i18n="worthNoticingSubnote">from the last few weeks</span>
           </div>
           <div class="review-list" id="review-list"></div>
         </div>
@@ -325,25 +343,25 @@
           <div class="hist-month-split">
           <div class="hist-month-main">
           <div class="hist-month-nav">
-            <button type="button" id="hist-prev-month" aria-label="Previous month" title="Previous month">‹</button>
+            <button type="button" id="hist-prev-month" data-i18n-label="prevMonthLabel" aria-label="Previous month" data-i18n-title="prevMonthLabel" title="Previous month">‹</button>
             <span class="label" id="hist-month-label">—</span>
-            <button type="button" id="hist-next-month" aria-label="Next month" title="Next month">›</button>
-            <button type="button" class="ghost-btn" id="hist-this-month" hidden title="Jump back to the current month">This month</button>
+            <button type="button" id="hist-next-month" data-i18n-label="nextMonthLabel" aria-label="Next month" data-i18n-title="nextMonthLabel" title="Next month">›</button>
+            <button type="button" class="ghost-btn" id="hist-this-month" hidden data-i18n-title="thisMonthTooltip" title="Jump back to the current month" data-i18n="thisMonthLabel">This month</button>
           </div>
 
-          <div class="hist-heatmap" id="hist-heatmap" aria-label="Month calendar. Arrow keys move between days, Enter opens one." role="grid" aria-label="Month heatmap, one cell per day"></div>
+          <div class="hist-heatmap" id="hist-heatmap" data-i18n-label="histHeatmapAriaLabel" aria-label="Month calendar. Arrow keys move between days, Enter opens one." role="grid"></div>
 
           <p class="hist-legend">
-            <span class="hist-legend-item"><span class="hist-swatch hist-swatch-empty" aria-hidden="true"></span>Not logged</span>
-            <span class="hist-legend-item" title="Notes, intentions or a reflection, but no time painted on the dial."><span class="hist-swatch hist-swatch-written" aria-hidden="true"></span>Written only</span>
-            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-critical)" aria-hidden="true"></span>Off track</span>
-            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-warning)" aria-hidden="true"></span>Mixed</span>
-            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-good)" aria-hidden="true"></span>Solid+</span>
+            <span class="hist-legend-item"><span class="hist-swatch hist-swatch-empty" aria-hidden="true"></span><span data-i18n="legendNotLoggedLabel">Not logged</span></span>
+            <span class="hist-legend-item" data-i18n-title="legendWrittenTooltip" title="Notes, intentions or a reflection, but no time painted on the dial."><span class="hist-swatch hist-swatch-written" aria-hidden="true"></span><span data-i18n="legendWrittenLabel">Written only</span></span>
+            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-critical)" aria-hidden="true"></span><span data-i18n="legendOffTrackLabel">Off track</span></span>
+            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-warning)" aria-hidden="true"></span><span data-i18n="legendMixedLabel">Mixed</span></span>
+            <span class="hist-legend-item"><span class="hist-swatch" style="background:var(--status-good)" aria-hidden="true"></span><span data-i18n="legendSolidLabel">Solid+</span></span>
           </p>
           </div>
 
           <div class="hist-month-side">
-            <p class="section-label" title="Averages count only days you logged — an unlogged day doesn't drag your average down.">Month summary</p>
+            <p class="section-label" data-i18n-title="monthSummaryTooltip" title="Averages count only days you logged — an unlogged day doesn't drag your average down." data-i18n="monthSummaryLabel">Month summary</p>
             <div class="stat-row" id="hist-summary-stats"></div>
             <div id="hist-summary-extra"></div>
           </div>
@@ -351,20 +369,20 @@
         </div>
 
         <div class="hist-card">
-          <p class="section-label" title="This week vs. last week, both starting on your configured week-start day.">Week over week</p>
+          <p class="section-label" data-i18n-title="weekOverWeekTooltip" title="This week vs. last week, both starting on your configured week-start day." data-i18n="weekOverWeekLabel">Week over week</p>
           <div class="hist-wow" id="hist-wow"></div>
         </div>
 
         <div class="hist-card">
-          <p class="section-label" title="Minutes per category, one bar per calendar week in the visible month. The arrow compares the first week shown to the last.">Category trends</p>
+          <p class="section-label" data-i18n-title="categoryTrendsTooltip" title="Minutes per category, one bar per calendar week in the visible month. The arrow compares the first week shown to the last." data-i18n="categoryTrendsLabel">Category trends</p>
           <div class="hist-trends" id="hist-trends"></div>
         </div>
 
         <div class="hist-card">
-          <p class="section-label">Search notes</p>
+          <p class="section-label" data-i18n="searchNotesLabel">Search notes</p>
           <input type="text" id="hist-search" class="hist-search-input"
-                 placeholder="Search your reflections…" aria-label="Search your reflections"
-                 title="Matches the one-line notes you leave on the Day view.">
+                 data-i18n-placeholder="searchPlaceholder" placeholder="Search your reflections…" data-i18n-label="searchAriaLabel" aria-label="Search your reflections"
+                 data-i18n-title="searchTooltip" title="Matches the one-line notes you leave on the Day view.">
           <div class="hist-search-results" id="hist-search-results"></div>
         </div>
 
@@ -373,15 +391,15 @@
              The charts above say how much; this says what. -->
         <div class="hist-card">
           <div class="log-head">
-            <p class="section-label">The log</p>
-            <div class="log-range" id="log-range" role="group" aria-label="How much of the log to show">
-              <button type="button" data-range="week" aria-pressed="true">This week</button>
-              <button type="button" data-range="month" aria-pressed="false">This month</button>
-              <button type="button" data-range="all" aria-pressed="false">Everything</button>
+            <p class="section-label" data-i18n="theLogLabel">The log</p>
+            <div class="log-range" id="log-range" role="group" data-i18n-label="logRangeGroupLabel" aria-label="How much of the log to show">
+              <button type="button" data-range="week" aria-pressed="true" data-i18n="logRangeWeekLabel">This week</button>
+              <button type="button" data-range="month" aria-pressed="false" data-i18n="logRangeMonthLabel">This month</button>
+              <button type="button" data-range="all" aria-pressed="false" data-i18n="logRangeAllLabel">Everything</button>
             </div>
           </div>
           <div class="log-entries" id="log-entries"></div>
-          <p class="editor-note" id="log-empty" hidden>
+          <p class="editor-note" id="log-empty" hidden data-i18n="logEmptyNote">
             Nothing written down in this range yet. Notes and intentions from the Day view show up here.
           </p>
         </div>
@@ -393,119 +411,121 @@
   <div class="settings-overlay" id="settings-overlay" hidden>
     <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" tabindex="-1">
       <div class="settings-header">
-        <h2 id="settings-title">Settings</h2>
-        <button class="icon-btn" id="settings-close" aria-label="Close settings">✕</button>
+        <h2 id="settings-title" data-i18n="settingsTitle">Settings</h2>
+        <button class="icon-btn" id="settings-close" data-i18n-label="settingsCloseLabel" aria-label="Close settings">✕</button>
       </div>
 
       <div class="settings-tabs" id="settings-tabs" role="tablist">
-        <button type="button" class="tab active" data-tab="categories" role="tab" aria-selected="true">Categories</button>
-        <button type="button" class="tab" data-tab="reminders" role="tab" aria-selected="false">Reminders</button>
-        <button type="button" class="tab" data-tab="goals" role="tab" aria-selected="false">Goals</button>
-        <button type="button" class="tab" data-tab="data" role="tab" aria-selected="false">Data</button>
-        <button type="button" class="tab" data-tab="appearance" role="tab" aria-selected="false">Appearance</button>
-        <button type="button" class="tab" data-tab="about" role="tab" aria-selected="false">About</button>
+        <button type="button" class="tab active" data-tab="categories" role="tab" aria-selected="true" data-i18n="settingsTabCategories">Categories</button>
+        <button type="button" class="tab" data-tab="reminders" role="tab" aria-selected="false" data-i18n="settingsTabReminders">Reminders</button>
+        <button type="button" class="tab" data-tab="goals" role="tab" aria-selected="false" data-i18n="settingsTabGoals">Goals</button>
+        <button type="button" class="tab" data-tab="data" role="tab" aria-selected="false" data-i18n="settingsTabData">Data</button>
+        <button type="button" class="tab" data-tab="appearance" role="tab" aria-selected="false" data-i18n="settingsTabAppearance">Appearance</button>
+        <button type="button" class="tab" data-tab="about" role="tab" aria-selected="false" data-i18n="settingsTabAbout">About</button>
       </div>
 
       <div class="settings-body" id="settings-body">
         <section class="settings-section active" data-panel="categories">
           <div id="cat-editor-rows" style="display:flex;flex-direction:column;gap:12px;"></div>
           <p class="editor-note">
-            <b>+</b> counts toward your score, <b>·</b> is neutral, <b>–</b> counts against it.
-            The circle button hides a category you don't use.
-            The small field under each one is for aliases — your own words
+            <b>+</b> <span data-i18n="categoriesLegendPositive">counts toward your score,</span>
+            <b>·</b> <span data-i18n="categoriesLegendNeutral">is neutral,</span>
+            <b>–</b> <span data-i18n="categoriesLegendNegative">counts against it.</span>
+            <span data-i18n="categoriesHideNote">The circle button hides a category you don't use.</span>
+            <span data-i18n="categoriesAliasNote">The small field under each one is for aliases — your own words
             for the same category (e.g. "leetcode" or "mock interview" for
             Applications) — so the typed-entry box recognizes how you
             actually talk about your day, while it still paints in that
-            category's one weighted colour.
+            category's one weighted colour.</span>
           </p>
         </section>
 
         <section class="settings-section" data-panel="reminders">
-          <p class="section-label">Daily reminders</p>
+          <p class="section-label" data-i18n="dailyRemindersSectionLabel">Daily reminders</p>
           <div class="reminder-row">
-            <label for="reminders-on" title="Two notifications a day at the times below. They only fire while Chrome is running.">Remind me to log</label>
+            <label for="reminders-on" data-i18n-title="reminderToggleTooltip" title="Two notifications a day at the times below. They only fire while Chrome is running." data-i18n="reminderToggleLabel">Remind me to log</label>
             <input type="checkbox" id="reminders-on">
           </div>
           <div class="reminder-row">
-            <label for="reminder-1">Midday nudge</label>
+            <label for="reminder-1" data-i18n="middayNudgeLabel">Midday nudge</label>
             <input type="time" id="reminder-1" value="13:00">
           </div>
           <div class="reminder-row">
-            <label for="reminder-2">Evening wrap-up</label>
+            <label for="reminder-2" data-i18n="eveningWrapupLabel">Evening wrap-up</label>
             <input type="time" id="reminder-2" value="21:00">
           </div>
-          <p class="editor-note">
+          <p class="editor-note" data-i18n="remindersNote">
             Notifications only fire while Chrome is running. The evening one tells you how much
             of the day is still unlogged.
           </p>
 
-          <p class="section-label" style="margin-top:16px;">Weekly recap</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n="weeklyRecapSectionLabel">Weekly recap</p>
           <div class="reminder-row">
-            <label for="weekly-recap-on" title="A summary notification once a week: tracked time, top category, best day, and streak.">Send a weekly recap</label>
+            <label for="weekly-recap-on" data-i18n-title="weeklyRecapToggleTooltip" title="A summary notification once a week: tracked time, top category, best day, and streak." data-i18n="weeklyRecapToggleLabel">Send a weekly recap</label>
             <input type="checkbox" id="weekly-recap-on">
           </div>
           <div class="reminder-row">
-            <label for="weekly-recap-day">Day</label>
+            <label for="weekly-recap-day" data-i18n="weeklyRecapDayLabel">Day</label>
             <select id="weekly-recap-day">
-              <option value="0">Sunday</option>
-              <option value="1">Monday</option>
-              <option value="2">Tuesday</option>
-              <option value="3">Wednesday</option>
-              <option value="4">Thursday</option>
-              <option value="5">Friday</option>
-              <option value="6">Saturday</option>
+              <option value="0" data-i18n="daySunday">Sunday</option>
+              <option value="1" data-i18n="dayMonday">Monday</option>
+              <option value="2" data-i18n="dayTuesday">Tuesday</option>
+              <option value="3" data-i18n="dayWednesday">Wednesday</option>
+              <option value="4" data-i18n="dayThursday">Thursday</option>
+              <option value="5" data-i18n="dayFriday">Friday</option>
+              <option value="6" data-i18n="daySaturday">Saturday</option>
             </select>
           </div>
           <div class="reminder-row">
-            <label for="weekly-recap-time">Time</label>
+            <label for="weekly-recap-time" data-i18n="weeklyRecapTimeLabel">Time</label>
             <input type="time" id="weekly-recap-time" value="20:00">
           </div>
-          <p class="editor-note">Off by default. A short summary of the week just gone — tracked time, top category, best day, streak.</p>
+          <p class="editor-note" data-i18n="weeklyRecapNote">Off by default. A short summary of the week just gone — tracked time, top category, best day, streak.</p>
         </section>
 
         <section class="settings-section" data-panel="goals">
-          <p class="section-label" title="Patterns Daily Dial notices in your own data, shown at the top of History. Turning this off hides the whole section.">Worth noticing</p>
+          <p class="section-label" data-i18n-title="worthNoticingSettingsTooltip" title="Patterns Daily Dial notices in your own data, shown at the top of History. Turning this off hides the whole section." data-i18n="worthNoticingLabel">Worth noticing</p>
           <div class="reminder-row">
-            <label for="observations-on" title="Shows the "Worth noticing" section at the top of History.">Point out patterns in my data</label>
+            <label for="observations-on" data-i18n-title="observationsToggleTooltip" title="Shows the &quot;Worth noticing&quot; section at the top of History." data-i18n="observationsToggleLabel">Point out patterns in my data</label>
             <input type="checkbox" id="observations-on">
           </div>
-          <p class="editor-note">
+          <p class="editor-note" data-i18n="observationsNote">
             Six things, checked over the last few weeks — intentions you set but don't finish,
             stretches with no rest logged, your most productive hour going unprotected, and so on.
             Each states a fact; suggestions only appear if you ask for them. Off means the
             section never appears at all.
           </p>
 
-          <p class="section-label" style="margin-top:16px;">Daily targets, per category</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n="dailyGoalsSectionLabel">Daily targets, per category</p>
           <div id="goals-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
-          <p class="editor-note">Leave blank for no goal. Progress shows in the side panel once a target is set.</p>
+          <p class="editor-note" data-i18n="dailyGoalsNote">Leave blank for no goal. Progress shows in the side panel once a target is set.</p>
 
-          <p class="section-label" style="margin-top:16px;" title="For things that don't happen every day — a target for the week as a whole instead of each individual day.">Weekly targets, per category</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n-title="weeklyGoalsSectionTooltip" title="For things that don't happen every day — a target for the week as a whole instead of each individual day." data-i18n="weeklyGoalsSectionLabel">Weekly targets, per category</p>
           <div id="weekly-goals-editor-rows" style="display:flex;flex-direction:column;gap:8px;"></div>
-          <p class="editor-note">Independent of the daily targets above — set either, both, or neither per category.</p>
+          <p class="editor-note" data-i18n="weeklyGoalsNote">Independent of the daily targets above — set either, both, or neither per category.</p>
 
-          <p class="section-label" style="margin-top:16px;" title="A named run with its own day counter, like a 100-day challenge. Separate from the streak: it counts from a start date and doesn't break if you miss a day.">Challenge</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n-title="challengeSectionTooltip" title="A named run with its own day counter, like a 100-day challenge. Separate from the streak: it counts from a start date and doesn't break if you miss a day." data-i18n="challengeSectionLabel">Challenge</p>
           <div class="challenge-fields">
-            <label for="challenge-name-input">Name</label>
-            <input type="text" id="challenge-name-input" maxlength="40" placeholder="#100days">
-            <label for="challenge-start-input">Started</label>
+            <label for="challenge-name-input" data-i18n="challengeNameFieldLabel">Name</label>
+            <input type="text" id="challenge-name-input" maxlength="40" data-i18n-placeholder="challengeNamePlaceholder" placeholder="#100days">
+            <label for="challenge-start-input" data-i18n="challengeStartedLabel">Started</label>
             <input type="date" id="challenge-start-input">
-            <label for="challenge-target-input">Length (days)</label>
+            <label for="challenge-target-input" data-i18n="challengeLengthLabel">Length (days)</label>
             <input type="number" id="challenge-target-input" min="1" max="3650" placeholder="100">
           </div>
           <div class="footer-actions">
-            <button class="ghost-btn danger" id="challenge-clear" hidden>Clear challenge</button>
+            <button class="ghost-btn danger" id="challenge-clear" hidden data-i18n="clearChallengeLabel">Clear challenge</button>
           </div>
-          <p class="editor-note">A day counter shown next to your streak. Unlike the streak it doesn't break — it just counts from the start date. Leave the name blank for none.</p>
+          <p class="editor-note" data-i18n="challengeNote">A day counter shown next to your streak. Unlike the streak it doesn't break — it just counts from the start date. Leave the name blank for none.</p>
 
-          <p class="section-label" style="margin-top:16px;" title="Most days rhyme — save one's painted shape and stamp it onto any other day.">Templates</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n-title="templatesSectionTooltip" title="Most days rhyme — save one's painted shape and stamp it onto any other day." data-i18n="templatesSectionLabel">Templates</p>
           <form class="journal-form" id="template-form">
-            <label for="template-name-input" class="sr-only">Template name</label>
-            <input type="text" id="template-name-input" placeholder="Name it, e.g. &quot;Weekday&quot;" maxlength="40">
-            <button type="submit" class="ghost-btn" id="save-template">Save today as a template</button>
+            <label for="template-name-input" class="sr-only" data-i18n="templateNameFieldLabel">Template name</label>
+            <input type="text" id="template-name-input" data-i18n-placeholder="templateNamePlaceholder" placeholder="Name it, e.g. &quot;Weekday&quot;" maxlength="40">
+            <button type="submit" class="ghost-btn" id="save-template" data-i18n="saveTemplateLabel">Save today as a template</button>
           </form>
           <div class="template-list" id="templates-list"></div>
-          <p class="editor-note">
+          <p class="editor-note" data-i18n="templatesNote">
             Templates carry painted time only — never notes, intentions, things to avoid, or your
             reflection. Applying one to a day that already has painted time asks for confirmation
             first, and it's undoable (⌘Z) afterward.
@@ -513,188 +533,197 @@
         </section>
 
         <section class="settings-section" data-panel="data">
-          <p class="section-label">Export</p>
+          <p class="section-label" data-i18n="exportSectionLabel">Export</p>
           <div class="footer-actions">
-            <button class="ghost-btn" id="export-csv" title="A spreadsheet of every block: one row per block, ready to pivot. Does not restore settings.">Export CSV</button>
-            <button class="ghost-btn" id="export-json" title="A complete backup — every day, category, and setting. This is the file to keep.">Export JSON backup</button>
+            <button class="ghost-btn" id="export-csv" data-i18n-title="exportCsvTooltip" title="A spreadsheet of every block: one row per block, ready to pivot. Does not restore settings." data-i18n="exportCsvLabel">Export CSV</button>
+            <button class="ghost-btn" id="export-json" data-i18n-title="exportJsonTooltip" title="A complete backup — every day, category, and setting. This is the file to keep." data-i18n="exportJsonLabel">Export JSON backup</button>
           </div>
-          <p class="editor-note" id="backup-status">You haven't exported a backup yet.</p>
+          <p class="editor-note" id="backup-status" data-i18n="noBackupYetStatus">You haven't exported a backup yet.</p>
           <div class="nudge-bar inline" id="data-backup-nudge" hidden>
-            <span>It's been a while since your last backup.</span>
-            <button class="icon-btn" id="data-nudge-dismiss" aria-label="Dismiss">✕</button>
+            <span data-i18n="dataBackupNudgeText">It's been a while since your last backup.</span>
+            <button class="icon-btn" id="data-nudge-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss">✕</button>
           </div>
 
-          <p class="section-label" style="margin-top:16px;">Import</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n="importSectionLabel">Import</p>
           <div class="footer-actions">
-            <button class="ghost-btn" id="import-trigger" title="Restore from a JSON backup or a CSV export">Choose backup file…</button>
+            <button class="ghost-btn" id="import-trigger" data-i18n-title="chooseBackupFileTooltip" title="Restore from a JSON backup or a CSV export" data-i18n="chooseBackupFileLabel">Choose backup file…</button>
           </div>
           <input type="file" id="import-file" accept=".json,.csv" hidden>
           <div class="import-confirm" id="import-confirm" hidden>
             <p class="editor-note" id="import-summary"></p>
             <div class="footer-actions">
-              <button class="ghost-btn" id="import-merge" title="Add days from the file that you don't already have. Existing days are left untouched.">Merge</button>
-              <button class="ghost-btn danger" id="import-replace" title="Erase all current history and restore exactly what is in the file. Cannot be undone.">Replace everything</button>
-              <button class="ghost-btn" id="import-cancel">Cancel</button>
+              <button class="ghost-btn" id="import-merge" data-i18n-title="mergeTooltip" title="Add days from the file that you don't already have. Existing days are left untouched." data-i18n="mergeLabel">Merge</button>
+              <button class="ghost-btn danger" id="import-replace" data-i18n-title="replaceEverythingTooltip" title="Erase all current history and restore exactly what is in the file. Cannot be undone." data-i18n="replaceEverythingLabel">Replace everything</button>
+              <button class="ghost-btn" id="import-cancel" data-i18n="cancelLabel">Cancel</button>
             </div>
           </div>
-          <p class="editor-note">
+          <p class="editor-note" data-i18n="importNote">
             JSON backups keep everything (days, categories, settings). CSV files only restore blocks
             of time, matched against your current categories by name. Merge adds missing days and
             leaves existing ones untouched; Replace wipes your history and restores exactly what's
             in the file.
           </p>
 
-          <p class="section-label" style="margin-top:16px;" title="One action instead of clicking through each day — e.g. &quot;I was away Monday to Friday&quot;.">Fill multiple days</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n-title="multifillSectionTooltip" title="One action instead of clicking through each day — e.g. &quot;I was away Monday to Friday&quot;." data-i18n="multifillSectionLabel">Fill multiple days</p>
           <div class="challenge-fields">
-            <label for="multifill-start-input">From date</label>
+            <label for="multifill-start-input" data-i18n="multifillFromDateLabel">From date</label>
             <input type="date" id="multifill-start-input">
-            <label for="multifill-end-input">To date</label>
+            <label for="multifill-end-input" data-i18n="multifillToDateLabel">To date</label>
             <input type="date" id="multifill-end-input">
-            <label for="multifill-cat-select">Category</label>
+            <label for="multifill-cat-select" data-i18n="multifillCategoryLabel">Category</label>
             <select id="multifill-cat-select"></select>
-            <label for="multifill-from-time">From time</label>
+            <label for="multifill-from-time" data-i18n="multifillFromTimeLabel">From time</label>
             <input type="time" id="multifill-from-time">
-            <label for="multifill-to-time">To time</label>
+            <label for="multifill-to-time" data-i18n="multifillToTimeLabel">To time</label>
             <input type="time" id="multifill-to-time">
           </div>
           <div class="footer-actions">
-            <button class="ghost-btn" id="multifill-apply">Apply</button>
+            <button class="ghost-btn" id="multifill-apply" data-i18n="applyLabel">Apply</button>
           </div>
           <div class="import-confirm" id="multifill-confirm" hidden>
             <p class="editor-note" id="multifill-summary"></p>
             <div class="footer-actions">
-              <button class="ghost-btn danger" id="multifill-confirm-btn">Confirm fill</button>
-              <button class="ghost-btn" id="multifill-cancel">Cancel</button>
+              <button class="ghost-btn danger" id="multifill-confirm-btn" data-i18n="confirmFillLabel">Confirm fill</button>
+              <button class="ghost-btn" id="multifill-cancel" data-i18n="cancelLabel">Cancel</button>
             </div>
           </div>
           <p class="editor-note">
-            Fills the chosen category (or erases) across every day from the start date to the end
-            date, inclusive. Leave the time fields blank to fill the whole day. Capped at
-            <span id="multifill-max-days"></span> days per fill; each affected day is saved and
-            undoable on its own, one at a time, from that day's view.
+            <span data-i18n="multifillNoteBefore">Fills the chosen category (or erases) across every day from the start date to the end
+            date, inclusive. Leave the time fields blank to fill the whole day. Capped at</span>
+            <span id="multifill-max-days"></span>
+            <span data-i18n="multifillNoteAfter">days per fill; each affected day is saved and
+            undoable on its own, one at a time, from that day's view.</span>
           </p>
 
-          <p class="section-label" style="margin-top:16px;">Google Drive backup</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n="driveSectionLabel">Google Drive backup</p>
           <div class="footer-actions">
             <button class="ghost-btn" id="drive-backup"
-                    title="Signs you in with Google and saves a backup to a private, app-only folder in your own Drive — invisible in your normal Drive, and never seen by anyone but you.">Back up to Google Drive</button>
+                    data-i18n-title="driveBackupTooltip"
+                    title="Signs you in with Google and saves a backup to a private, app-only folder in your own Drive — invisible in your normal Drive, and never seen by anyone but you." data-i18n="driveBackupLabel">Back up to Google Drive</button>
             <button class="ghost-btn" id="drive-restore"
-                    title="Downloads your most recent Google Drive backup and opens the same merge/replace confirmation as a file import.">Restore from Google Drive</button>
+                    data-i18n-title="driveRestoreTooltip"
+                    title="Downloads your most recent Google Drive backup and opens the same merge/replace confirmation as a file import." data-i18n="driveRestoreLabel">Restore from Google Drive</button>
           </div>
           <div class="reminder-row">
-            <label for="auto-backup-on" title="Backs up to the same Drive file about once a day, in the background. Only works once you've connected Drive yourself — it will never raise a sign-in window on its own.">Back up automatically</label>
+            <label for="auto-backup-on" data-i18n-title="autoBackupToggleTooltip" title="Backs up to the same Drive file about once a day, in the background. Only works once you've connected Drive yourself — it will never raise a sign-in window on its own." data-i18n="autoBackupToggleLabel">Back up automatically</label>
             <input type="checkbox" id="auto-backup-on">
           </div>
-          <p class="editor-note" id="auto-backup-note">
+          <p class="editor-note" id="auto-backup-note" data-i18n="autoBackupNote">
             Roughly daily, quietly, to the same file. It only ever updates a backup you've
             already made by hand — it can't sign you in, so it does nothing until you've
             connected Drive at least once.
           </p>
           <p class="editor-note" id="drive-account" hidden></p>
-          <p class="editor-note" id="drive-status">Not backed up to Google Drive yet.</p>
+          <p class="editor-note" id="drive-status" data-i18n="driveNotBackedUpStatus">Not backed up to Google Drive yet.</p>
           <div class="footer-actions">
             <button class="ghost-btn danger" id="drive-disconnect" hidden
-                    title="Signs this account out of Daily Dial. Your backup file stays in your Drive; nothing is deleted.">Disconnect Google Drive</button>
+                    data-i18n-title="driveDisconnectTooltip"
+                    title="Signs this account out of Daily Dial. Your backup file stays in your Drive; nothing is deleted." data-i18n="driveDisconnectLabel">Disconnect Google Drive</button>
             <button class="ghost-btn danger" id="drive-delete" hidden
-                    title="Permanently deletes the backup file from your Google Drive. Cannot be undone. Your local data on this device is untouched.">Delete Drive backup</button>
+                    data-i18n-title="driveDeleteTooltip"
+                    title="Permanently deletes the backup file from your Google Drive. Cannot be undone. Your local data on this device is untouched." data-i18n="driveDeleteLabel">Delete Drive backup</button>
           </div>
           <p class="editor-note">
-            Optional, and off unless you use it. Uses Google's <code>appDataFolder</code> — a
+            <span data-i18n="driveNoteBefore">Optional, and off unless you use it. Uses Google's</span> <code>appDataFolder</code> —
+            <span data-i18n="driveNoteAfter">a
             storage space private to this extension that doesn't show up in your regular Drive and
             that no other app can read. This is the only feature in Daily Dial that sends data
-            anywhere; everything else stays on this device. See
-            <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
-            for details.
+            anywhere; everything else stays on this device. See</span>
+            <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener" data-i18n="privacyLinkLabel">Privacy</a>
+            <span data-i18n="driveNoteFor">for details.</span>
           </p>
         </section>
 
         <section class="settings-section" data-panel="appearance">
           <div class="reminder-row">
-            <label for="theme-select">Theme</label>
+            <label for="theme-select" data-i18n="themeLabel">Theme</label>
             <select id="theme-select">
-              <option value="system">System</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
+              <option value="system" data-i18n="themeSystem">System</option>
+              <option value="light" data-i18n="themeLight">Light</option>
+              <option value="dark" data-i18n="themeDark">Dark</option>
             </select>
           </div>
           <div class="reminder-row">
-            <label for="time-format-select">Time format</label>
+            <label for="time-format-select" data-i18n="timeFormatLabel">Time format</label>
             <select id="time-format-select">
-              <option value="24h">24-hour</option>
-              <option value="12h">12-hour</option>
+              <option value="24h" data-i18n="timeFormat24h">24-hour</option>
+              <option value="12h" data-i18n="timeFormat12h">12-hour</option>
             </select>
           </div>
           <div class="reminder-row">
-            <label for="dial-mode-select" title="One ring covering all 24 hours, or two smaller rings — one for AM, one for PM.">Dial layout</label>
+            <label for="dial-mode-select" data-i18n-title="dialModeLabelTooltip" title="One ring covering all 24 hours, or two smaller rings — one for AM, one for PM." data-i18n="dialModeLabel">Dial layout</label>
             <select id="dial-mode-select">
-              <option value="24h">One 24-hour ring</option>
-              <option value="ampm">Two 12-hour rings, side by side</option>
-              <option value="ampm-toggle">One 12-hour ring, with an AM/PM switch</option>
+              <option value="24h" data-i18n="dialModeSingleTooltip">One 24-hour ring</option>
+              <option value="ampm" data-i18n="dialModeAmpmTooltip">Two 12-hour rings, side by side</option>
+              <option value="ampm-toggle" data-i18n="dialModeToggleTooltip">One 12-hour ring, with an AM/PM switch</option>
             </select>
           </div>
           <div class="reminder-row">
-            <label for="week-start-select" title="Which day begins a week, used by the weekly recap.">Week starts on</label>
+            <label for="week-start-select" data-i18n-title="weekStartTooltip" title="Which day begins a week, used by the weekly recap." data-i18n="weekStartLabel">Week starts on</label>
             <select id="week-start-select">
-              <option value="0">Sunday</option>
-              <option value="1">Monday</option>
+              <option value="0" data-i18n="daySunday">Sunday</option>
+              <option value="1" data-i18n="dayMonday">Monday</option>
             </select>
           </div>
 
-          <p class="section-label" style="margin-top:16px;" title="The day's insight only counts untracked time in this window as &quot;still unlogged&quot; — so sleeping hours don't get flagged as a logging gap.">Waking hours</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n-title="wakingHoursTooltip" title="The day's insight only counts untracked time in this window as &quot;still unlogged&quot; — so sleeping hours don't get flagged as a logging gap." data-i18n="wakingHoursSectionLabel">Waking hours</p>
           <div class="reminder-row">
-            <label for="day-window-start">Day starts</label>
+            <label for="day-window-start" data-i18n="dayStartsLabel">Day starts</label>
             <input type="time" id="day-window-start" value="07:00">
           </div>
           <div class="reminder-row">
-            <label for="day-window-end">Day ends</label>
+            <label for="day-window-end" data-i18n="dayEndsLabel">Day ends</label>
             <input type="time" id="day-window-end" value="23:00">
           </div>
         </section>
 
         <section class="settings-section" data-panel="about">
-          <p class="section-label">Daily Dial <span id="about-version"></span></p>
+          <p class="section-label"><span data-i18n="aboutDailyDialName">Daily Dial</span> <span id="about-version"></span></p>
           <p class="editor-note">
-            <a href="https://github.com/pranav083/daily-dial-extension" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://github.com/pranav083/daily-dial-extension" target="_blank" rel="noopener" data-i18n="githubLinkLabel">GitHub</a>
             ·
-            <a href="https://github.com/pranav083/daily-dial-extension/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noopener">Getting started</a>
+            <a href="https://github.com/pranav083/daily-dial-extension/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noopener" data-i18n="gettingStartedLinkLabel">Getting started</a>
             ·
-            <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener" data-i18n="privacyLinkLabel">Privacy</a>
           </p>
 
           <!-- One section, not two: the welcome tour and the sample data
                were separate headings for the same underlying question —
                "show me what this looks like" — and splitting them just
                made someone read twice to find the one they wanted. -->
-          <p class="section-label" style="margin-top:16px;">Demo &amp; tour</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n="demoAndTourLabel">Demo &amp; tour</p>
           <div id="sample-data-block" style="margin-top:8px;">
             <div class="footer-actions">
               <button class="ghost-btn" id="replay-onboarding"
-                      title="Shows the same three-card welcome screen you saw (or would have seen) on first open">Replay welcome tour</button>
+                      data-i18n-title="replayOnboardingTooltip"
+                      title="Shows the same three-card welcome screen you saw (or would have seen) on first open" data-i18n="replayOnboardingLabel">Replay welcome tour</button>
               <button class="ghost-btn" id="load-sample-data"
-                      title="Fills three weeks of realistic (fake) days into dates you haven't logged, so History, streaks, and goals have something to show.">Load sample data</button>
+                      data-i18n-title="loadSampleDataTooltip"
+                      title="Fills three weeks of realistic (fake) days into dates you haven't logged, so History, streaks, and goals have something to show." data-i18n="loadSampleDataLabel">Load sample data</button>
               <button class="ghost-btn danger" id="clear-sample-data" hidden
-                      title="Removes exactly the sample days that were loaded. Anything you logged yourself is untouched.">Exit demo mode</button>
+                      data-i18n-title="clearSampleDataTooltip"
+                      title="Removes exactly the sample days that were loaded. Anything you logged yourself is untouched." data-i18n="clearSampleDataLabel">Exit demo mode</button>
             </div>
-            <p class="editor-note" id="sample-data-note">
+            <p class="editor-note" id="sample-data-note" data-i18n="demoModeOffNote">
               See how History, streaks, and goals look with three weeks of varied (fake) days, before
               you've logged anything of your own.
             </p>
           </div>
 
-          <p class="section-label" style="margin-top:16px;">Personal bests</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n="personalBestsLabel">Personal bests</p>
           <div class="stat-row">
-            <div class="stat"><div class="v" id="bests-streak">0 days</div><div class="l">Longest streak</div></div>
-            <div class="stat"><div class="v" id="bests-score">—</div><div class="l">Best day score</div></div>
-            <div class="stat"><div class="v" id="bests-day">—</div><div class="l">Most productive day</div></div>
+            <div class="stat"><div class="v" id="bests-streak">0 days</div><div class="l" data-i18n="bestsStreakLabel">Longest streak</div></div>
+            <div class="stat"><div class="v" id="bests-score">—</div><div class="l" data-i18n="bestsScoreLabel">Best day score</div></div>
+            <div class="stat"><div class="v" id="bests-day">—</div><div class="l" data-i18n="bestsDayLabel">Most productive day</div></div>
           </div>
 
-          <p class="section-label" style="margin-top:16px;">Keyboard shortcuts</p>
+          <p class="section-label" style="margin-top:16px;" data-i18n="keyboardShortcutsLabel">Keyboard shortcuts</p>
           <ul class="shortcut-list">
-            <li><kbd>1</kbd>–<kbd>6</kbd><span>Select a category pen</span></li>
-            <li><kbd>0</kbd> / <kbd>E</kbd><span>Select the eraser</span></li>
-            <li><kbd>⌘Z</kbd> / <kbd>Ctrl+Z</kbd><span>Undo</span></li>
-            <li><kbd>⇧⌘Z</kbd> / <kbd>Ctrl+Shift+Z</kbd><span>Redo</span></li>
-            <li><kbd>Esc</kbd><span>Close this panel</span></li>
+            <li><kbd>1</kbd>–<kbd>6</kbd><span data-i18n="shortcutSelectPen">Select a category pen</span></li>
+            <li><kbd>0</kbd> / <kbd>E</kbd><span data-i18n="shortcutSelectEraser">Select the eraser</span></li>
+            <li><kbd>⌘Z</kbd> / <kbd>Ctrl+Z</kbd><span data-i18n="shortcutUndo">Undo</span></li>
+            <li><kbd>⇧⌘Z</kbd> / <kbd>Ctrl+Shift+Z</kbd><span data-i18n="shortcutRedo">Redo</span></li>
+            <li><kbd>Esc</kbd><span data-i18n="shortcutCloseSettings">Close this panel</span></li>
           </ul>
         </section>
       </div>
@@ -705,36 +734,36 @@
     <div class="onboarding-panel" role="dialog" aria-modal="true" aria-labelledby="onboarding-title" tabindex="-1">
       <div class="onboarding-header">
         <div class="onboarding-mark">🕐</div>
-        <h2 id="onboarding-title">Welcome to Daily Dial</h2>
-        <p class="onboarding-sub">Three things to know before you paint your first day.</p>
+        <h2 id="onboarding-title" data-i18n="onboardingTitle">Welcome to Daily Dial</h2>
+        <p class="onboarding-sub" data-i18n="onboardingSubtitle">Three things to know before you paint your first day.</p>
       </div>
 
       <div class="onboarding-steps">
         <div class="onboarding-step">
           <div class="onboarding-icon">🖌️</div>
-          <h3>Paint your day</h3>
-          <p>Pick a category below the dial, then drag around the ring. Prefer typing? <code>9-11 deep work</code> works too.</p>
+          <h3 data-i18n="onboardingStep1Title">Paint your day</h3>
+          <p><span data-i18n="onboardingStep1TextBefore">Pick a category below the dial, then drag around the ring. Prefer typing?</span> <code>9-11 deep work</code> <span data-i18n="onboardingStep1TextAfter">works too.</span></p>
         </div>
         <div class="onboarding-step">
           <div class="onboarding-icon">📊</div>
-          <h3>See how it adds up</h3>
-          <p>Your score, productive %, and longest focus streak update as you paint. The line underneath reads your day in plain language.</p>
+          <h3 data-i18n="onboardingStep2Title">See how it adds up</h3>
+          <p data-i18n="onboardingStep2Text">Your score, productive %, and longest focus streak update as you paint. The line underneath reads your day in plain language.</p>
         </div>
         <div class="onboarding-step">
           <div class="onboarding-icon">⚙️</div>
-          <h3>Make it yours</h3>
-          <p>Rename categories, set reminders and goals, or back up to Google Drive — all behind <b>☰</b> at the top right. Everything but painting is optional.</p>
+          <h3 data-i18n="onboardingStep3Title">Make it yours</h3>
+          <p><span data-i18n="onboardingStep3TextBefore">Rename categories, set reminders and goals, or back up to Google Drive — all behind</span> <b>☰</b> <span data-i18n="onboardingStep3TextAfter">at the top right. Everything but painting is optional.</span></p>
         </div>
       </div>
 
       <p class="onboarding-alt" id="onboarding-sample-link-wrap">
-        Prefer to see it with real numbers first?
-        <button type="button" class="link-btn" id="onboarding-sample-data">Load sample data instead</button>
+        <span data-i18n="onboardingAltBefore">Prefer to see it with real numbers first?</span>
+        <button type="button" class="link-btn" id="onboarding-sample-data" data-i18n="loadSampleDataInsteadLabel">Load sample data instead</button>
       </p>
 
       <div class="onboarding-footer">
-        <button type="button" class="ghost-btn" id="onboarding-skip">Skip</button>
-        <button type="button" class="primary-btn" id="onboarding-start">Let's start</button>
+        <button type="button" class="ghost-btn" id="onboarding-skip" data-i18n="skipLabel">Skip</button>
+        <button type="button" class="primary-btn" id="onboarding-start" data-i18n="letsStartLabel">Let's start</button>
       </div>
     </div>
   </div>
