@@ -8,6 +8,28 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.23.0] — 2026-08-29
+
+### Added
+
+- **Automatic Google Drive backup**, off by default, in Settings → Data.
+  Roughly once a day it quietly updates the same backup file, so "your data
+  lives only in this browser" stops depending on you remembering.
+
+  Every part of it is deliberately silent and deliberately limited:
+  - **It can never raise a sign-in window.** A background alarm asking for
+    Google consent, with no action to explain it, would be alarming. It uses
+    a strictly non-interactive connect, so it can only ever *update* a backup
+    you made by hand — turning it on before connecting Drive does nothing at
+    all rather than surprising you.
+  - **It never reports failure.** A skipped run is logged to the service
+    worker console and nothing else. Manual "Back up now" stays the place
+    errors are worth raising, because there someone is waiting for an answer.
+  - Demo days are excluded and an empty backup is refused, exactly as with a
+    manual backup.
+  - The alarm exists only while the setting is on — an alarm that fires and
+    does nothing still wakes the service worker for no reason.
+
 ## [1.22.0] — 2026-08-29
 
 ### Added

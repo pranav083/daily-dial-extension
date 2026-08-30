@@ -105,6 +105,10 @@ export const DEFAULT_SETTINGS = {
   // still someone watching your habits and saying so, which not everyone
   // wants, so it gets a single switch rather than only per-item silencing.
   observationsOn: true,
+  // Automatic Google Drive backup. Meaningless until Drive is connected by
+  // hand, since a background alarm must never raise a sign-in window — see
+  // driveConnectSilently.
+  autoBackupOn: false,
 };
 export const WEIGHT_GLYPH = { 1: "+", 0: "·", "-1": "–" };
 
@@ -454,6 +458,7 @@ export function normalizeSettings(saved) {
     lastExportAt,
     challenge,
     observationsOn: saved?.observationsOn !== false,
+    autoBackupOn: saved?.autoBackupOn === true,
     dayWindow,
   };
 }

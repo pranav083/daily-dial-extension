@@ -120,6 +120,16 @@ async function driveFetch(url, token, options = {}) {
  *  as the cached token stays valid. */
 export const driveConnect = () => getAuthToken(true);
 
+/**
+ * A token only if one can be had without showing the user anything.
+ *
+ * Automatic backup runs from an alarm, where a consent window would appear
+ * out of nowhere with no action to explain it. If the session has lapsed the
+ * right answer is to skip this run silently and try again later, never to
+ * interrupt. Throws when no silent token is available.
+ */
+export const driveConnectSilently = () => getAuthToken(false);
+
 /** Revokes the token with Google and clears our own cache of it, so the next
  *  connect prompts for consent again. Never throws — disconnecting should
  *  always succeed from the user's point of view even if there was nothing

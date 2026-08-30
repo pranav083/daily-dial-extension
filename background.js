@@ -9,12 +9,18 @@
 import {
   CATEGORIES_KEY,
   DAY_PREFIX,
+  DRIVE_BACKUP_SIZE_KEY,
+  DRIVE_FILE_ID_KEY,
+  DRIVE_LAST_SYNC_KEY,
+  SAMPLE_DAY_KEYS_KEY,
   SETTINGS_KEY,
   SLOTS,
   SLOT_MIN,
   UNTRACKED,
+  buildBackup,
   computeStats,
   dateKey,
+  excludeDays,
   recapWeekStart,
   dialUrlSuffix,
   nextOccurrence,
@@ -27,10 +33,15 @@ import {
   weeklyRecap,
   weeklyRecapMessage,
 } from "./lib.js";
+import { driveConnectSilently, driveFindBackupFile, driveUploadBackup } from "./drive.js";
 
 const ALARM_PREFIX = "reminder-";
 const WEEKLY_RECAP_ALARM = "weekly-recap";
 const BADGE_ALARM = "badge-refresh";
+const AUTO_BACKUP_ALARM = "auto-backup";
+/** Once a day is plenty: the data changes slowly and every run costs the
+ *  user a Drive round trip they did not ask for. */
+const AUTO_BACKUP_PERIOD_MIN = 24 * 60;
 
 // Toolbar-badge colours by score bucket — fixed hex, since the badge sits on
 // the browser chrome rather than the page and can't read the dial's CSS
@@ -108,6 +119,57 @@ async function refreshBadge() {
   await chrome.action.setBadgeBackgroundColor({ color: BADGE_COLORS[bucket.tone] ?? BADGE_COLORS.muted });
 }
 
+/**
+ * Backs up to Drive without involving the user.
+ *
+ * Every exit here is silent. This runs on a timer the user is not watching,
+ * so a consent window, an error toast, or a notification would all arrive
+ * with no action to explain them — the honest behaviour when something is
+ * not right is to skip this run and try again tomorrow. The dial's own
+ * "Back up now" button remains the place where failures are worth reporting,
+ * because there a person is waiting for an answer.
+ *
+ * Only ever updates an existing backup: `driveConnectSilently` cannot
+ * establish a first connection, and `fileId` is absent until one has been
+ * made by hand, so turning this on before connecting does nothing rather
+ * than surprising anyone with a sign-in.
+ */
+async function autoBackup() {
+  try {
+    const settings = await getSettings();
+    if (!settings.autoBackupOn) return;
+
+    const stored = await chrome.storage.local.get([DRIVE_FILE_ID_KEY, SAMPLE_DAY_KEYS_KEY]);
+    const fileId = typeof stored[DRIVE_FILE_ID_KEY] === "string" ? stored[DRIVE_FILE_ID_KEY] : null;
+    if (!fileId) return; // never connected by hand — nothing to update
+
+    const [categories, days] = await Promise.all([getCategories(), getAllDays()]);
+    // Demo days are excluded here exactly as they are from a manual backup:
+    // a backup is a copy of the user's data, and sample days carry no marker
+    // that would let a restore tell them apart later.
+    const sampleKeys = Array.isArray(stored[SAMPLE_DAY_KEYS_KEY]) ? stored[SAMPLE_DAY_KEYS_KEY] : [];
+    const mine = excludeDays(days, sampleKeys);
+    if (mine.size === 0) return;
+
+    const token = await driveConnectSilently();
+    const existing = await driveFindBackupFile(token).catch(() => null);
+    const text = JSON.stringify(
+      buildBackup(mine, categories, settings, chrome.runtime.getManifest().version)
+    );
+    const id = await driveUploadBackup(token, existing?.id ?? fileId, text);
+
+    await chrome.storage.local.set({
+      [DRIVE_FILE_ID_KEY]: id,
+      [DRIVE_LAST_SYNC_KEY]: Date.now(),
+      [DRIVE_BACKUP_SIZE_KEY]: new Blob([text]).size,
+    });
+  } catch (err) {
+    // Deliberately quiet — see above. Logged only for anyone with the
+    // service worker console open.
+    console.warn("Daily Dial: automatic backup skipped", err);
+  }
+}
+
 /** The badge alarm runs independently of reminders/recap (which the user can
  *  turn off) and isn't touched by rescheduleAlarms' clear-and-recreate, so
  *  it only needs creating once. Mainly covers the midnight rollover to a
@@ -115,6 +177,26 @@ async function refreshBadge() {
 async function ensureBadgeAlarm() {
   const existing = await chrome.alarms.get(BADGE_ALARM);
   if (!existing) chrome.alarms.create(BADGE_ALARM, { periodInMinutes: 30 });
+}
+
+/**
+ * Keeps the automatic-backup alarm in step with the setting.
+ *
+ * Created only while the setting is on, rather than created always and
+ * ignored when off: an alarm that exists but does nothing still wakes the
+ * service worker on a timer for no reason.
+ */
+async function syncAutoBackupAlarm() {
+  const settings = await getSettings();
+  const existing = await chrome.alarms.get(AUTO_BACKUP_ALARM);
+  if (settings.autoBackupOn && !existing) {
+    chrome.alarms.create(AUTO_BACKUP_ALARM, {
+      delayInMinutes: 1,
+      periodInMinutes: AUTO_BACKUP_PERIOD_MIN,
+    });
+  } else if (!settings.autoBackupOn && existing) {
+    await chrome.alarms.clear(AUTO_BACKUP_ALARM);
+  }
 }
 
 /** Minutes of today still carrying no category. */
@@ -216,6 +298,10 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === AUTO_BACKUP_ALARM) {
+    autoBackup();
+    return;
+  }
   if (alarm.name === BADGE_ALARM) {
     refreshBadge();
     return;
@@ -230,6 +316,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg?.type !== "reschedule") return false;
+  syncAutoBackupAlarm();
   rescheduleAlarms().then(() => sendResponse({ ok: true }));
   return true; // keep the channel open for the async response
 });
@@ -243,3 +330,8 @@ chrome.runtime.onInstalled.addListener(rescheduleAlarms);
 chrome.runtime.onStartup.addListener(rescheduleAlarms);
 chrome.runtime.onInstalled.addListener(initBadge);
 chrome.runtime.onStartup.addListener(initBadge);
+// chrome.storage.session is cleared on shutdown but alarms survive it, so
+// this is really a repair step: it re-creates the alarm if it was lost, and
+// clears it if the setting was turned off while the worker wasn't running.
+chrome.runtime.onInstalled.addListener(syncAutoBackupAlarm);
+chrome.runtime.onStartup.addListener(syncAutoBackupAlarm);

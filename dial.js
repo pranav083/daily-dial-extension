@@ -2128,6 +2128,19 @@ function renderChallenge() {
     : `day ${progress.day}`;
 }
 
+function syncAutoBackupInputs() {
+  $("auto-backup-on").checked = settings.autoBackupOn === true;
+}
+
+function saveAutoBackup() {
+  settings = normalizeSettings({ ...settings, autoBackupOn: $("auto-backup-on").checked });
+  persistSettings();
+  // The service worker owns the alarm; "reschedule" is the existing channel
+  // it already listens on for settings changes.
+  chrome.runtime.sendMessage({ type: "reschedule" }).catch(() => {});
+  toast($("auto-backup-on").checked ? "Automatic backup on" : "Automatic backup off");
+}
+
 function syncObservationInputs() {
   $("observations-on").checked = settings.observationsOn !== false;
 }
@@ -3124,6 +3137,7 @@ function wireEvents() {
     saveTemplateFromToday();
   });
   $("observations-on").addEventListener("change", saveObservations);
+  $("auto-backup-on").addEventListener("change", saveAutoBackup);
   $("just-painted-save").addEventListener("click", saveJustPainted);
   $("just-painted-dismiss").addEventListener("click", hideJustPainted);
   $("just-painted-note").addEventListener("keydown", (evt) => {
@@ -3377,6 +3391,7 @@ async function boot() {
   renderChallenge();
   syncChallengeInputs();
   syncObservationInputs();
+  syncAutoBackupInputs();
   reconcileActivePen();
   applyDialMode();
   renderAll();

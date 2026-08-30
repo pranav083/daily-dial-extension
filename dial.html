@@ -581,6 +581,15 @@
             <button class="ghost-btn" id="drive-restore"
                     title="Downloads your most recent Google Drive backup and opens the same merge/replace confirmation as a file import.">Restore from Google Drive</button>
           </div>
+          <div class="reminder-row">
+            <label for="auto-backup-on" title="Backs up to the same Drive file about once a day, in the background. Only works once you've connected Drive yourself — it will never raise a sign-in window on its own.">Back up automatically</label>
+            <input type="checkbox" id="auto-backup-on">
+          </div>
+          <p class="editor-note" id="auto-backup-note">
+            Roughly daily, quietly, to the same file. It only ever updates a backup you've
+            already made by hand — it can't sign you in, so it does nothing until you've
+            connected Drive at least once.
+          </p>
           <p class="editor-note" id="drive-account" hidden></p>
           <p class="editor-note" id="drive-status">Not backed up to Google Drive yet.</p>
           <div class="footer-actions">
