@@ -936,7 +936,7 @@ export function weeklyRecapMessage(recap) {
   if (recap.trackedMin === 0) return [msg("recapNothingLogged")];
   const parts = [msg("recapTrackedProductive", fmtDuration(recap.trackedMin), String(recap.productivePct))];
   if (recap.topCategory) parts.push(msg("recapTopCategory", recap.topCategory.name));
-  if (recap.intentsSet > 0) parts.push(msg("recapIntentions", String(recap.intentsDone), String(recap.intentsSet)));
+  if (recap.intentsSet > 0) parts.push(plural("recapIntentions", recap.intentsSet, String(recap.intentsDone), String(recap.intentsSet)));
   parts.push(msg("recapAskAdjust"));
   return parts;
 }
@@ -1260,8 +1260,8 @@ export function detectPeakHoursUnprotected(days, categories, now) {
   const hourLabel = `${pad2(peakHour)}:00`;
   return {
     id: "peakHoursUnprotected",
-    headline: msg("obsPeakHourHeadline", hourLabel, String(protectedDays), String(loggedDays.length)),
-    detail: msg("obsPeakHourDetail", String(PEAK_HOURS_WINDOW_DAYS), hourLabel, String(protectedDays), String(loggedDays.length)),
+    headline: plural("obsPeakHourHeadline", loggedDays.length, hourLabel, String(protectedDays), String(loggedDays.length)),
+    detail: plural("obsPeakHourDetail", loggedDays.length, String(PEAK_HOURS_WINDOW_DAYS), hourLabel, String(protectedDays), String(loggedDays.length)),
     suggestionKey: "peakHoursUnprotected",
   };
 }
@@ -1296,7 +1296,7 @@ export function detectUntrackedLifeArea(days, categories, now) {
 
   return {
     id: "untrackedLifeArea",
-    headline: msg("obsUntrackedAreaHeadline", String(UNTRACKED_LIFE_AREA_WINDOW_DAYS), String(usedCount)),
+    headline: plural("obsUntrackedAreaHeadline", usedCount, String(UNTRACKED_LIFE_AREA_WINDOW_DAYS), String(usedCount)),
     detail: msg("obsUntrackedAreaDetail", unused.name),
     suggestionKey: "untrackedLifeArea",
   };

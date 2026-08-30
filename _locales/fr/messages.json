@@ -1805,14 +1805,6 @@
       }
     }
   },
-  "filledDaysUpToNow": {
-    "message": "$COUNT$ jours remplis, arrêté à maintenant",
-    "placeholders": {
-      "count": {
-        "content": "$1"
-      }
-    }
-  },
   "breakdownNotYet": {
     "message": "Pas encore"
   },
@@ -1981,17 +1973,6 @@
       }
     }
   },
-  "recapIntentions": {
-    "message": "Tu as tenu $DONE$ intentions sur $SET$.",
-    "placeholders": {
-      "done": {
-        "content": "$1"
-      },
-      "set": {
-        "content": "$2"
-      }
-    }
-  },
   "recapAskAdjust": {
     "message": "Quelque chose à ajuster cette semaine ?"
   },
@@ -2075,48 +2056,6 @@
       },
       "priordays": {
         "content": "$4"
-      }
-    }
-  },
-  "obsPeakHourHeadline": {
-    "message": "$HOUR$ est ton heure la plus productive, sur $PROTECTED$ des $LOGGED$ jours enregistrés",
-    "placeholders": {
-      "hour": {
-        "content": "$1"
-      },
-      "protected": {
-        "content": "$2"
-      },
-      "logged": {
-        "content": "$3"
-      }
-    }
-  },
-  "obsPeakHourDetail": {
-    "message": "Sur les $DAYS$ derniers jours, $HOUR$ a cumulé plus de temps productif que toute autre heure, mais est resté productif seulement $PROTECTED$ des $LOGGED$ jours enregistrés.",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      },
-      "hour": {
-        "content": "$2"
-      },
-      "protected": {
-        "content": "$3"
-      },
-      "logged": {
-        "content": "$4"
-      }
-    }
-  },
-  "obsUntrackedAreaHeadline": {
-    "message": "Tout ce qui a été enregistré ces $DAYS$ derniers jours tient en $COUNT$ catégories",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      },
-      "count": {
-        "content": "$2"
       }
     }
   },
@@ -2396,5 +2335,127 @@
   },
   "defaultCategory5": {
     "message": "Distraction"
+  },
+  "recapIntentions_other": {
+    "message": "Tu as tenu $DONE$ intentions sur $SET$.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_one": {
+    "message": "Tu as tenu $DONE$ intention sur $SET$.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsPeakHourHeadline_other": {
+    "message": "$HOUR$ est ton heure la plus productive, sur $PROTECTED$ des $LOGGED$ jours enregistrés",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_one": {
+    "message": "$HOUR$ est ton heure la plus productive, sur $PROTECTED$ du $LOGGED$ jour enregistré",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail_other": {
+    "message": "Sur les $DAYS$ derniers jours, $HOUR$ a cumulé plus de temps productif que toute autre heure, mais est resté productif seulement $PROTECTED$ des $LOGGED$ jours enregistrés.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_one": {
+    "message": "Sur les $DAYS$ derniers jours, $HOUR$ a cumulé plus de temps productif que toute autre heure, mais est resté productif seulement $PROTECTED$ des $LOGGED$ jour enregistré.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_other": {
+    "message": "Tout ce qui a été enregistré ces $DAYS$ derniers jours tient en $COUNT$ catégories",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_one": {
+    "message": "Tout ce qui a été enregistré ces $DAYS$ derniers jours tient en $COUNT$ catégorie",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "filledDaysUpToNow_other": {
+    "message": "$COUNT$ jours remplis, arrêté à maintenant",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_one": {
+    "message": "$COUNT$ jour rempli, arrêté à maintenant",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   }
 }

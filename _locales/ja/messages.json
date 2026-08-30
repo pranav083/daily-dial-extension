@@ -1709,14 +1709,6 @@
       }
     }
   },
-  "filledDaysUpToNow": {
-    "message": "現在時刻までの$COUNT$日分を記録しました",
-    "placeholders": {
-      "count": {
-        "content": "$1"
-      }
-    }
-  },
   "breakdownNotYet": {
     "message": "未到来"
   },
@@ -1885,17 +1877,6 @@
       }
     }
   },
-  "recapIntentions": {
-    "message": "$SET$件の予定のうち$DONE$件を達成しました。",
-    "placeholders": {
-      "done": {
-        "content": "$1"
-      },
-      "set": {
-        "content": "$2"
-      }
-    }
-  },
   "recapAskAdjust": {
     "message": "今週調整したいことはありますか。"
   },
@@ -1979,48 +1960,6 @@
       },
       "priordays": {
         "content": "$4"
-      }
-    }
-  },
-  "obsPeakHourHeadline": {
-    "message": "記録した$LOGGED$日のうち$PROTECTED$日で、$HOUR$が最も生産的な時間帯です",
-    "placeholders": {
-      "hour": {
-        "content": "$1"
-      },
-      "protected": {
-        "content": "$2"
-      },
-      "logged": {
-        "content": "$3"
-      }
-    }
-  },
-  "obsPeakHourDetail": {
-    "message": "直近$DAYS$日間で、$HOUR$は他のどの時間帯よりも多くの生産的な時間を積み重ねましたが、記録した$LOGGED$日のうち生産的な状態を保てたのは$PROTECTED$日だけでした。",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      },
-      "hour": {
-        "content": "$2"
-      },
-      "protected": {
-        "content": "$3"
-      },
-      "logged": {
-        "content": "$4"
-      }
-    }
-  },
-  "obsUntrackedAreaHeadline": {
-    "message": "直近$DAYS$日間の記録はすべて$COUNT$個のカテゴリに集中しています",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      },
-      "count": {
-        "content": "$2"
       }
     }
   },
@@ -2300,5 +2239,66 @@
   },
   "defaultCategory5": {
     "message": "気散じ"
+  },
+  "recapIntentions_other": {
+    "message": "$SET$件の予定のうち$DONE$件を達成しました。",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsPeakHourHeadline_other": {
+    "message": "記録した$LOGGED$日のうち$PROTECTED$日で、$HOUR$が最も生産的な時間帯です",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail_other": {
+    "message": "直近$DAYS$日間で、$HOUR$は他のどの時間帯よりも多くの生産的な時間を積み重ねましたが、記録した$LOGGED$日のうち生産的な状態を保てたのは$PROTECTED$日だけでした。",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_other": {
+    "message": "直近$DAYS$日間の記録はすべて$COUNT$個のカテゴリに集中しています",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "filledDaysUpToNow_other": {
+    "message": "現在時刻までの$COUNT$日分を記録しました",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   }
 }

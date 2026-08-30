@@ -447,7 +447,6 @@
  "futureNotLogged": "それはまだ起きていません — 記録できるのは現在時刻までです。",
  "copyYesterdayUpToNowToast": "現在時刻までの昨日の内容をコピーしました — 残りの時間はまだ来ていません",
  "templateAppliedUpToNowToast": "現在時刻まで「$NAME$」を適用しました — 残りの時間はまだ来ていません",
- "filledDaysUpToNow": "現在時刻までの$COUNT$日分を記録しました",
  "breakdownNotYet": "未到来",
  "errPickDates": "開始日と終了日を選択してください。",
  "errEndDateBeforeStart": "終了日が開始日より前になっています。",
@@ -476,7 +475,6 @@
  "recapNothingLogged": "先週は記録がありませんでした。今週は新たに始めてみませんか。",
  "recapTrackedProductive": "記録時間$DURATION$、生産的$PERCENT$%。",
  "recapTopCategory": "最も多くの時間は$CATEGORY$に使われました。",
- "recapIntentions": "$SET$件の予定のうち$DONE$件を達成しました。",
  "recapAskAdjust": "今週調整したいことはありますか。",
  "obsOvercommitHeadline": "終えられる以上の予定を設定しています",
  "obsOvercommitDetail": "直近$DAYS$日間で$SET$件の予定を設定し、達成したのは$DONE$件のみです。",
@@ -486,9 +484,6 @@
  "obsDistractionDetail": "直近$DAYS$日間で妨げとして記録されたのは$CURRENT$で、その前の$DAYS$日間の$PREVIOUS$から増えています。",
  "obsCoverageHeadline": "直近$DAYS$日間と比べて記録が減っています",
  "obsCoverageDetail": "直近$RECENTDAYS$日間は1日あたり$RECENT$を記録し、その前の$PRIORDAYS$日間の1日あたり$PRIOR$から減っています。",
- "obsPeakHourHeadline": "記録した$LOGGED$日のうち$PROTECTED$日で、$HOUR$が最も生産的な時間帯です",
- "obsPeakHourDetail": "直近$DAYS$日間で、$HOUR$は他のどの時間帯よりも多くの生産的な時間を積み重ねましたが、記録した$LOGGED$日のうち生産的な状態を保てたのは$PROTECTED$日だけでした。",
- "obsUntrackedAreaHeadline": "直近$DAYS$日間の記録はすべて$COUNT$個のカテゴリに集中しています",
  "obsUntrackedAreaDetail": "「$CATEGORY$」は有効になっていますが、その期間に0分しか記録されていません — 6つのカテゴリ枠のうち1つが使われていません。",
  "promptMorning": "午前中はどうでしたか。忘れないうちに記録しておきましょう。",
  "promptEveningUnlogged": "今日はまだ$DURATION$が記録されていません。締めくくって、一言理由を添えましょう。",
@@ -559,5 +554,10 @@
  "defaultCategory2": "学習",
  "defaultCategory3": "事務",
  "defaultCategory4": "休憩",
- "defaultCategory5": "気散じ"
+ "defaultCategory5": "気散じ",
+ "recapIntentions_other": "$SET$件の予定のうち$DONE$件を達成しました。",
+ "obsPeakHourHeadline_other": "記録した$LOGGED$日のうち$PROTECTED$日で、$HOUR$が最も生産的な時間帯です",
+ "obsPeakHourDetail_other": "直近$DAYS$日間で、$HOUR$は他のどの時間帯よりも多くの生産的な時間を積み重ねましたが、記録した$LOGGED$日のうち生産的な状態を保てたのは$PROTECTED$日だけでした。",
+ "obsUntrackedAreaHeadline_other": "直近$DAYS$日間の記録はすべて$COUNT$個のカテゴリに集中しています",
+ "filledDaysUpToNow_other": "現在時刻までの$COUNT$日分を記録しました"
 }

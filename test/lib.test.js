@@ -15,8 +15,12 @@ const MESSAGES = JSON.parse(readFileSync(new URL("../_locales/en/messages.json",
 
 function render(d) {
   if (Array.isArray(d)) return d.map(render).join(" ");
-  const entry = MESSAGES[d.key];
-  assert.ok(entry, `no such message key: ${d.key}`);
+  // A descriptor carrying a `count` is a plural family: the UI picks the form
+  // with Intl.PluralRules, and so does this, so a family missing the form
+  // English actually needs fails here rather than in front of a user.
+  const key = d.count === undefined ? d.key : `${d.key}_${new Intl.PluralRules("en").select(d.count)}`;
+  const entry = MESSAGES[key] ?? MESSAGES[`${d.key}_other`];
+  assert.ok(entry, `no such message key: ${key}`);
   let out = entry.message;
   for (const [name, def] of Object.entries(entry.placeholders ?? {})) {
     const i = Number(String(def.content).slice(1)) - 1;
@@ -1343,12 +1347,23 @@ test("the weekly recap message ends by asking what to adjust", () => {
   const slots = paint(blank(), 9, 11, 0);
   const days = new Map([["2026-08-24", normalizeDay({ slots, intents: [{ text: "a", done: true }] })]]);
   const msg = render(weeklyRecapMessage(weeklyRecap(days, cats, new Date(2026, 7, 24))));
-  assert.match(msg, /1 of 1 intentions/);
+  // Singular, not "1 of 1 intentions" — which is what this line asserted
+  // until the count became a plural family.
+  assert.match(msg, /1 of 1 intention\b/);
   assert.match(msg, /adjust/, "a review should prompt a decision, not just report");
+
+  const twoSet = new Map([
+    ["2026-08-24", normalizeDay({ slots, intents: [{ text: "a", done: true }, { text: "b", done: false }] })],
+  ]);
+  assert.match(
+    render(weeklyRecapMessage(weeklyRecap(twoSet, cats, new Date(2026, 7, 24)))),
+    /1 of 2 intentions/,
+    "and plural once there is more than one"
+  );
 
   const empty = render(weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24))));
   assert.match(empty, /Nothing logged/);
-  assert.doesNotMatch(empty, /intentions/, "no intention count when there were none");
+  assert.doesNotMatch(empty, /intention/, "no intention count when there were none");
 });
 
 /* ---------- Drive account email ---------- */

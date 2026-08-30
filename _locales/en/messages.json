@@ -2262,9 +2262,18 @@
       }
     }
   },
-  "filledDaysUpToNow": {
+  "filledDaysUpToNow_one": {
+    "message": "Filled $COUNT$ day, stopping at now",
+    "description": "Toast after a multi-day fill that was trimmed because part of the range is still in the future. Plural form: one.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_other": {
     "message": "Filled $COUNT$ days, stopping at now",
-    "description": "Toast after a multi-day fill that was trimmed because part of the range is still in the future.",
+    "description": "Toast after a multi-day fill that was trimmed because part of the range is still in the future. Plural form: other.",
     "placeholders": {
       "count": {
         "content": "$1"
@@ -2467,9 +2476,21 @@
       }
     }
   },
-  "recapIntentions": {
+  "recapIntentions_one": {
+    "message": "You met $DONE$ of $SET$ intention.",
+    "description": "Text produced by lib.js and shown in the UI. Plural form: one.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_other": {
     "message": "You met $DONE$ of $SET$ intentions.",
-    "description": "Text produced by lib.js and shown in the UI.",
+    "description": "Text produced by lib.js and shown in the UI. Plural form: other.",
     "placeholders": {
       "done": {
         "content": "$1"
@@ -2574,9 +2595,9 @@
       }
     }
   },
-  "obsPeakHourHeadline": {
-    "message": "$HOUR$ is your most productive hour, on $PROTECTED$ of $LOGGED$ logged days",
-    "description": "Text produced by lib.js and shown in the UI.",
+  "obsPeakHourHeadline_one": {
+    "message": "$HOUR$ is your most productive hour, on $PROTECTED$ of $LOGGED$ logged day",
+    "description": "Text produced by lib.js and shown in the UI. Plural form: one.",
     "placeholders": {
       "hour": {
         "content": "$1"
@@ -2589,9 +2610,24 @@
       }
     }
   },
-  "obsPeakHourDetail": {
-    "message": "Over the last $DAYS$ days, $HOUR$ accumulated more productive time than any other hour, but stayed productive on only $PROTECTED$ of $LOGGED$ logged days.",
-    "description": "Text produced by lib.js and shown in the UI.",
+  "obsPeakHourHeadline_other": {
+    "message": "$HOUR$ is your most productive hour, on $PROTECTED$ of $LOGGED$ logged days",
+    "description": "Text produced by lib.js and shown in the UI. Plural form: other.",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail_one": {
+    "message": "Over the last $DAYS$ days, $HOUR$ accumulated more productive time than any other hour, but stayed productive on only $PROTECTED$ of $LOGGED$ logged day.",
+    "description": "Text produced by lib.js and shown in the UI. Plural form: one.",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -2607,9 +2643,39 @@
       }
     }
   },
-  "obsUntrackedAreaHeadline": {
+  "obsPeakHourDetail_other": {
+    "message": "Over the last $DAYS$ days, $HOUR$ accumulated more productive time than any other hour, but stayed productive on only $PROTECTED$ of $LOGGED$ logged days.",
+    "description": "Text produced by lib.js and shown in the UI. Plural form: other.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_one": {
+    "message": "Everything logged in the last $DAYS$ days sits in just $COUNT$ category",
+    "description": "Text produced by lib.js and shown in the UI. Plural form: one.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_other": {
     "message": "Everything logged in the last $DAYS$ days sits in just $COUNT$ categories",
-    "description": "Text produced by lib.js and shown in the UI.",
+    "description": "Text produced by lib.js and shown in the UI. Plural form: other.",
     "placeholders": {
       "days": {
         "content": "$1"

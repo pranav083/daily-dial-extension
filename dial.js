@@ -2946,7 +2946,7 @@ function applyMultiFill() {
   // skipped, and reporting the range's size would claim work that no day
   // actually received.
   if (written === 0) toast(t("futureNotLogged"));
-  else if (clampedDays) toast(t("filledDaysUpToNow", [String(written)]));
+  else if (clampedDays) toast(tp("filledDaysUpToNow", written, [String(written)]));
   else toast(tp("filledDays", written, [String(written)]));
 }
 
