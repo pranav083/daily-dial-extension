@@ -459,6 +459,37 @@
             actually talk about your day, while it still paints in that
             category's one weighted colour.</span>
           </p>
+
+          <p class="section-label" style="margin-top:22px;" data-i18n-title="multifillSectionTooltip" title="One action instead of clicking through each day — e.g. &quot;I was away Monday to Friday&quot;." data-i18n="multifillSectionLabel">Fill multiple days</p>
+          <div class="challenge-fields">
+            <label for="multifill-start-input" data-i18n="multifillFromDateLabel">From date</label>
+            <input type="date" id="multifill-start-input">
+            <label for="multifill-end-input" data-i18n="multifillToDateLabel">To date</label>
+            <input type="date" id="multifill-end-input">
+            <label for="multifill-cat-select" data-i18n="multifillCategoryLabel">Category</label>
+            <select id="multifill-cat-select"></select>
+            <label for="multifill-from-time" data-i18n="multifillFromTimeLabel">From time</label>
+            <input type="time" id="multifill-from-time">
+            <label for="multifill-to-time" data-i18n="multifillToTimeLabel">To time</label>
+            <input type="time" id="multifill-to-time">
+          </div>
+          <div class="footer-actions">
+            <button class="ghost-btn" id="multifill-apply" data-i18n="applyLabel">Apply</button>
+          </div>
+          <div class="import-confirm" id="multifill-confirm" hidden>
+            <p class="editor-note" id="multifill-summary"></p>
+            <div class="footer-actions">
+              <button class="ghost-btn danger" id="multifill-confirm-btn" data-i18n="confirmFillLabel">Confirm fill</button>
+              <button class="ghost-btn" id="multifill-cancel" data-i18n="cancelLabel">Cancel</button>
+            </div>
+          </div>
+          <p class="editor-note">
+            <span data-i18n="multifillNoteBefore">Fills the chosen category (or erases) across every day from the start date to the end
+            date, inclusive. Leave the time fields blank to fill the whole day. Capped at</span>
+            <span id="multifill-max-days"></span>
+            <span data-i18n="multifillNoteAfter">days per fill; each affected day is saved and
+            undoable on its own, one at a time, from that day's view.</span>
+          </p>
         </section>
 
         <section class="settings-section" data-panel="reminders">
@@ -585,37 +616,6 @@
             in the file.
           </p>
 
-          <p class="section-label" style="margin-top:16px;" data-i18n-title="multifillSectionTooltip" title="One action instead of clicking through each day — e.g. &quot;I was away Monday to Friday&quot;." data-i18n="multifillSectionLabel">Fill multiple days</p>
-          <div class="challenge-fields">
-            <label for="multifill-start-input" data-i18n="multifillFromDateLabel">From date</label>
-            <input type="date" id="multifill-start-input">
-            <label for="multifill-end-input" data-i18n="multifillToDateLabel">To date</label>
-            <input type="date" id="multifill-end-input">
-            <label for="multifill-cat-select" data-i18n="multifillCategoryLabel">Category</label>
-            <select id="multifill-cat-select"></select>
-            <label for="multifill-from-time" data-i18n="multifillFromTimeLabel">From time</label>
-            <input type="time" id="multifill-from-time">
-            <label for="multifill-to-time" data-i18n="multifillToTimeLabel">To time</label>
-            <input type="time" id="multifill-to-time">
-          </div>
-          <div class="footer-actions">
-            <button class="ghost-btn" id="multifill-apply" data-i18n="applyLabel">Apply</button>
-          </div>
-          <div class="import-confirm" id="multifill-confirm" hidden>
-            <p class="editor-note" id="multifill-summary"></p>
-            <div class="footer-actions">
-              <button class="ghost-btn danger" id="multifill-confirm-btn" data-i18n="confirmFillLabel">Confirm fill</button>
-              <button class="ghost-btn" id="multifill-cancel" data-i18n="cancelLabel">Cancel</button>
-            </div>
-          </div>
-          <p class="editor-note">
-            <span data-i18n="multifillNoteBefore">Fills the chosen category (or erases) across every day from the start date to the end
-            date, inclusive. Leave the time fields blank to fill the whole day. Capped at</span>
-            <span id="multifill-max-days"></span>
-            <span data-i18n="multifillNoteAfter">days per fill; each affected day is saved and
-            undoable on its own, one at a time, from that day's view.</span>
-          </p>
-
           <p class="section-label" style="margin-top:16px;" data-i18n="driveSectionLabel">Google Drive backup</p>
           <div class="footer-actions">
             <button class="ghost-btn" id="drive-backup"
@@ -656,6 +656,18 @@
         </section>
 
         <section class="settings-section" data-panel="appearance">
+          <!-- Chrome already knows your language, so "Automatic" is the
+               default and costs nothing. This exists for the case Chrome
+               cannot cover: a browser set to one language by someone who
+               wants to read this app in another. -->
+          <div class="reminder-row">
+            <label for="language-select" data-i18n-title="languageTooltip"
+                   title="Automatic follows your browser's language. Changing this reloads the page, and never touches anything you have written."
+                   data-i18n="languageLabel">Language</label>
+            <select id="language-select"></select>
+          </div>
+          <p class="editor-note" data-i18n="languageNote">Only the app's own words change — your notes, intentions and category
+          names stay exactly as you wrote them.</p>
           <div class="reminder-row">
             <label for="theme-select" data-i18n="themeLabel">Theme</label>
             <select id="theme-select">

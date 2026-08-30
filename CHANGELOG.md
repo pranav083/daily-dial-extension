@@ -8,6 +8,28 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.28.0] — 2026-08-30
+
+### Added
+
+- **A language setting.** Settings → Appearance → Language. It was following
+  your browser and there was no way to say otherwise, which left anyone whose
+  Chrome is set to one language unable to read the app in another. Automatic
+  is still the default. Changing it reloads the page, and never touches a word
+  you have written.
+
+### Fixed
+
+- **A challenge name typed before its start date was silently erased.** The
+  form saved on every edit, an incomplete form is not a challenge, and saving
+  "no challenge" wrote itself back over the field you were still filling in.
+  Filling the form in the obvious order — name, then date — could not work.
+
+### Changed
+
+- **"Fill multiple days" moved from Data to Categories.** It paints your time
+  with a category; Data is for export, import and backup.
+
 ## [1.27.0] — 2026-08-30
 
 ### Added

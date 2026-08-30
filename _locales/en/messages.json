@@ -1359,6 +1359,22 @@
     "message": "Couldn't delete from Google Drive.",
     "description": "Toast shown when deleting the Drive backup file fails."
   },
+  "languageLabel": {
+    "message": "Language",
+    "description": "Label for the language picker in Settings → Appearance."
+  },
+  "languageTooltip": {
+    "message": "Automatic follows your browser's language. Changing this reloads the page, and never touches anything you have written.",
+    "description": "Tooltip on the language picker."
+  },
+  "languageNote": {
+    "message": "Only the app's own words change — your notes, intentions and category names stay exactly as you wrote them.",
+    "description": "Note under the language picker, making clear that user-written content is never translated."
+  },
+  "languageAutomatic": {
+    "message": "Automatic",
+    "description": "The default language option: follow the browser's own language."
+  },
   "themeLabel": {
     "message": "Theme",
     "description": "Label for the appearance theme dropdown."

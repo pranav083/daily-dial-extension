@@ -2475,5 +2475,17 @@
         "content": "$1"
       }
     }
+  },
+  "languageLabel": {
+    "message": "Sprache"
+  },
+  "languageTooltip": {
+    "message": "Automatisch folgt der Sprache deines Browsers. Eine Änderung lädt die Seite neu und rührt nichts an, was du geschrieben hast."
+  },
+  "languageNote": {
+    "message": "Nur die Wörter der App ändern sich — deine Notizen, Vorhaben und Kategorienamen bleiben genau so, wie du sie geschrieben hast."
+  },
+  "languageAutomatic": {
+    "message": "Automatisch"
   }
 }

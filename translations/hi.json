@@ -574,5 +574,9 @@
  "filledDaysUpToNow_one": "$COUNT$ दिन भरा गया, अभी तक रोककर",
  "streakBanner_one": "लगातार <b>$COUNT$</b> दिन",
  "streakBanner_other": "लगातार <b>$COUNT$</b> दिन",
- "streakBestSuffix": "· सर्वश्रेष्ठ: $BEST$"
+ "streakBestSuffix": "· सर्वश्रेष्ठ: $BEST$",
+ "languageLabel": "भाषा",
+ "languageTooltip": "स्वचालित आपके ब्राउज़र की भाषा का अनुसरण करता है। इसे बदलने पर पेज दोबारा लोड होता है, और आपका लिखा कुछ भी नहीं छुआ जाता।",
+ "languageNote": "सिर्फ़ ऐप के अपने शब्द बदलते हैं — आपकी टिप्पणियाँ, इरादे और श्रेणियों के नाम ठीक वैसे ही रहते हैं जैसे आपने लिखे थे।",
+ "languageAutomatic": "स्वचालित"
 }

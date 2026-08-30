@@ -8,7 +8,19 @@
  * boot; reads hit that map, writes update it and persist in the background.
  */
 
-import { applyDocumentDirection, dateFmt, fmtFullDate, initDurationUnits, shortWeekdayNames, t, tm, tp } from "./i18n.js";
+import {
+  LANGUAGE_KEY,
+  SUPPORTED_LANGUAGES,
+  applyDocumentDirection,
+  dateFmt,
+  fmtFullDate,
+  initDurationUnits,
+  shortWeekdayNames,
+  storedLanguage,
+  t,
+  tm,
+  tp,
+} from "./i18n.js";
 export { t };
 
 import { SILENCED_KEY } from "./suggestions.js";
@@ -2340,7 +2352,12 @@ function saveChallenge() {
   settings = normalizeSettings({ ...settings, challenge: next });
   persistSettings();
   renderChallenge();
-  syncChallengeInputs();
+  // Only mirror storage back into the fields once something was actually
+  // stored. A half-filled form — a name typed, no start date yet —
+  // normalizes to null, and syncing that back cleared the name the instant
+  // you tabbed out of it. Filling the form in the obvious order was
+  // therefore impossible: the name vanished before you reached the date.
+  if (next) syncChallengeInputs();
 }
 
 function clearChallenge() {
@@ -2520,7 +2537,48 @@ function saveReminders() {
 
 /* ---------- appearance ---------- */
 
+/**
+ * Fills the language picker and marks the current choice.
+ *
+ * Built here rather than in the markup so the list comes from one place —
+ * `SUPPORTED_LANGUAGES` in i18n.js, which is also what the override loader
+ * validates against. Each language is named in itself, because someone
+ * looking for their own language is not helped by seeing it written in a
+ * language they cannot read.
+ */
+function renderLanguageSelect() {
+  const sel = $("language-select");
+  sel.replaceChildren();
+  for (const { code, label } of SUPPORTED_LANGUAGES) {
+    const opt = document.createElement("option");
+    opt.value = code;
+    opt.textContent = code === "auto" ? t("languageAutomatic") : label;
+    sel.appendChild(opt);
+  }
+  sel.value = storedLanguage();
+}
+
+/**
+ * Applying a language means reloading: every string on the page was resolved
+ * once at boot, and the catalog is read synchronously before the first of
+ * them renders. Re-translating a live DOM would mean re-running every render
+ * path and re-deriving text this module does not own, for a setting people
+ * change approximately once.
+ */
+function onLanguageChange() {
+  const chosen = $("language-select").value;
+  try {
+    if (chosen === "auto") localStorage.removeItem(LANGUAGE_KEY);
+    else localStorage.setItem(LANGUAGE_KEY, chosen);
+  } catch {
+    toast(t("saveFailedToast"));
+    return;
+  }
+  window.location.reload();
+}
+
 function syncAppearanceInputs() {
+  renderLanguageSelect();
   $("theme-select").value = settings.theme;
   $("time-format-select").value = settings.timeFormat;
   $("dial-mode-select").value = settings.dialMode;
@@ -3441,6 +3499,9 @@ function wireEvents() {
   ]) {
     $(id).addEventListener("change", saveAppearance);
   }
+  // Not part of saveAppearance: the language lives in localStorage, not in
+  // `settings`, so it never travels in a backup to someone else's device.
+  $("language-select").addEventListener("change", onLanguageChange);
 
   // ---- data: export/import ----
   $("export-csv").addEventListener("click", exportCsv);

@@ -2475,5 +2475,17 @@
         "content": "$1"
       }
     }
+  },
+  "languageLabel": {
+    "message": "Idioma"
+  },
+  "languageTooltip": {
+    "message": "Automático sigue el idioma de tu navegador. Cambiarlo recarga la página y nunca toca nada de lo que has escrito."
+  },
+  "languageNote": {
+    "message": "Solo cambian las palabras de la app — tus notas, intenciones y nombres de categorías se quedan tal como los escribiste."
+  },
+  "languageAutomatic": {
+    "message": "Automático"
   }
 }

@@ -559,5 +559,9 @@
  "obsUntrackedAreaHeadline_other": "直近$DAYS$日間の記録はすべて$COUNT$個のカテゴリに集中しています",
  "filledDaysUpToNow_other": "現在時刻までの$COUNT$日分を記録しました",
  "streakBanner_other": "<b>$COUNT$</b>日連続",
- "streakBestSuffix": "· 最高: $BEST$"
+ "streakBestSuffix": "· 最高: $BEST$",
+ "languageLabel": "言語",
+ "languageTooltip": "「自動」はブラウザの言語に従います。変更するとページが再読み込みされますが、書いた内容には一切触れません。",
+ "languageNote": "変わるのはアプリ自身の言葉だけです。メモ・予定・カテゴリ名は書いたままの形で残ります。",
+ "languageAutomatic": "自動"
 }

@@ -574,5 +574,9 @@
  "filledDaysUpToNow_one": "Se rellenó $COUNT$ día, deteniéndose en el momento actual",
  "streakBanner_one": "<b>$COUNT$</b> día de racha",
  "streakBanner_other": "<b>$COUNT$</b> días de racha",
- "streakBestSuffix": "· mejor: $BEST$"
+ "streakBestSuffix": "· mejor: $BEST$",
+ "languageLabel": "Idioma",
+ "languageTooltip": "Automático sigue el idioma de tu navegador. Cambiarlo recarga la página y nunca toca nada de lo que has escrito.",
+ "languageNote": "Solo cambian las palabras de la app — tus notas, intenciones y nombres de categorías se quedan tal como los escribiste.",
+ "languageAutomatic": "Automático"
 }

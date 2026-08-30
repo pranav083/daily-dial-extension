@@ -634,5 +634,9 @@
  "defaultCategory2": "الدراسة",
  "defaultCategory3": "الإدارة",
  "defaultCategory4": "استراحة",
- "defaultCategory5": "التشتت"
+ "defaultCategory5": "التشتت",
+ "languageLabel": "اللغة",
+ "languageTooltip": "«تلقائي» يتبع لغة متصفحك. التغيير يعيد تحميل الصفحة، ولا يمسّ أي شيء كتبته.",
+ "languageNote": "تتغيّر كلمات التطبيق نفسه فقط — ملاحظاتك ونواياك وأسماء فئاتك تبقى كما كتبتها تمامًا.",
+ "languageAutomatic": "تلقائي"
 }

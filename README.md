@@ -145,9 +145,11 @@ only on studying.
 ### Languages
 
 Available in **English, Arabic, Chinese (Simplified), French, German, Hindi,
-Japanese, Portuguese (Brazil), Russian and Spanish**. Chrome picks whichever
-matches your browser's language and falls back to English otherwise; there is
-no in-app language switch, because the browser already knows.
+Japanese, Portuguese (Brazil), Russian and Spanish**. By default Chrome picks
+whichever matches your browser's language and falls back to English; you can
+override that in **Settings → Appearance → Language**, for the case Chrome
+cannot cover — a browser set to one language by someone who wants to read this
+app in another.
 
 What gets translated is the app's own words — labels, buttons, tooltips, the
 score, the sentence under the dial, the observations. **What you write is never

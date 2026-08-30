@@ -2310,5 +2310,17 @@
         "content": "$1"
       }
     }
+  },
+  "languageLabel": {
+    "message": "言語"
+  },
+  "languageTooltip": {
+    "message": "「自動」はブラウザの言語に従います。変更するとページが再読み込みされますが、書いた内容には一切触れません。"
+  },
+  "languageNote": {
+    "message": "変わるのはアプリ自身の言葉だけです。メモ・予定・カテゴリ名は書いたままの形で残ります。"
+  },
+  "languageAutomatic": {
+    "message": "自動"
   }
 }

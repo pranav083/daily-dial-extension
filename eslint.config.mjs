@@ -25,6 +25,8 @@ const browserGlobals = {
   FileReader: "readonly",
   Image: "readonly",
   File: "readonly",
+  localStorage: "readonly",
+  XMLHttpRequest: "readonly",
 };
 
 export default [

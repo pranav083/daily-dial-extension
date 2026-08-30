@@ -13,6 +13,96 @@
 
 import { setDurationUnits } from "./lib.js";
 
+/**
+ * The languages this build ships, in the order the picker lists them.
+ * `auto` means "whatever Chrome resolved", which is the default and the only
+ * value that costs nothing.
+ */
+export const SUPPORTED_LANGUAGES = [
+  { code: "auto", label: "Automatic" },
+  { code: "en", label: "English" },
+  { code: "ar", label: "العربية" },
+  { code: "de", label: "Deutsch" },
+  { code: "es", label: "Español" },
+  { code: "fr", label: "Français" },
+  { code: "hi", label: "हिन्दी" },
+  { code: "ja", label: "日本語" },
+  { code: "pt_BR", label: "Português (BR)" },
+  { code: "ru", label: "Русский" },
+  { code: "zh_CN", label: "中文（简体）" },
+];
+
+/**
+ * Where a deliberate language choice is stored.
+ *
+ * `localStorage`, not `chrome.storage`, for one reason: this has to be
+ * readable *synchronously*, before the first string is rendered.
+ * `chrome.storage` is async, and a page that painted itself in Chrome's
+ * language and then re-rendered in yours would flash. Everything else the
+ * app owns still lives in `chrome.storage`; this single value is the
+ * exception, and it is a per-device display preference rather than data —
+ * it has no business travelling in a backup to a device someone else reads.
+ */
+export const LANGUAGE_KEY = "dailyDialLanguage";
+
+export function storedLanguage() {
+  try {
+    return localStorage.getItem(LANGUAGE_KEY) || "auto";
+  } catch {
+    return "auto"; // storage disabled — fall back to Chrome's choice
+  }
+}
+
+/**
+ * The chosen catalog, loaded once at module evaluation.
+ *
+ * A synchronous request, which is normally the wrong thing: it blocks the
+ * main thread. Here it reads one packaged file that is already on disk, only
+ * when someone has explicitly overridden the language, and the alternative is
+ * either rendering English first and repainting, or restructuring boot to be
+ * async — and the dial engines below capture their aria-labels at module-eval
+ * time, so "async boot" is a much larger change than it sounds.
+ *
+ * `null` whenever the language is automatic, which is the default: that path
+ * is exactly as fast as before and goes straight to chrome.i18n.
+ */
+const override = (() => {
+  const want = storedLanguage();
+  if (want === "auto") return null;
+  try {
+    const url = chrome.runtime.getURL(`_locales/${want}/messages.json`);
+    const req = new XMLHttpRequest();
+    req.open("GET", url, false);
+    req.send();
+    if (req.status !== 200 && req.status !== 0) return null;
+    const chosen = JSON.parse(req.responseText);
+    // English underneath, so a key the chosen locale omits (Japanese has no
+    // _one forms, for instance) still resolves rather than vanishing.
+    let base = {};
+    if (want !== "en") {
+      const b = new XMLHttpRequest();
+      b.open("GET", chrome.runtime.getURL("_locales/en/messages.json"), false);
+      b.send();
+      if (b.status === 200 || b.status === 0) base = JSON.parse(b.responseText);
+    }
+    return { lang: want.replace("_", "-"), chosen, base };
+  } catch {
+    return null; // a bad stored value must never stop the page loading
+  }
+})();
+
+/** Substitutes `$NAME$` placeholders the way chrome.i18n does. Only needed on
+ *  the override path; chrome.i18n does it itself otherwise. */
+function fill(entry, substitutions) {
+  const args = substitutions === undefined ? [] : Array.isArray(substitutions) ? substitutions : [substitutions];
+  let out = entry.message;
+  for (const [name, def] of Object.entries(entry.placeholders ?? {})) {
+    const i = Number(String(def.content).slice(1)) - 1;
+    out = out.replaceAll(`$${name.toUpperCase()}$`, args[i] ?? "");
+  }
+  return out;
+}
+
 /** Turns a message key into a readable fallback (e.g. "exportCsvLabel" ->
  *  "Export csv label"), used only if a key is ever missing from
  *  messages.json, so a gap degrades to something legible instead of a blank
@@ -25,6 +115,11 @@ function humanizeKey(key) {
 /** Thin wrapper over chrome.i18n.getMessage. `substitutions` is a string or
  *  array of strings, positional against the message's own placeholders. */
 export function t(key, substitutions) {
+  if (override) {
+    const entry = override.chosen[key] ?? override.base[key];
+    if (entry) return fill(entry, substitutions);
+    return humanizeKey(key);
+  }
   try {
     const msg = chrome.i18n?.getMessage(key, substitutions);
     if (msg) return msg;
@@ -37,6 +132,9 @@ export function t(key, substitutions) {
 
 /** The UI language Chrome resolved for this profile, e.g. "hi" or "pt-BR". */
 export const uiLanguage = () => {
+  // A deliberate choice wins, so plural rules, dates and writing direction
+  // all follow the language actually on screen rather than Chrome's.
+  if (override) return override.lang;
   try {
     return chrome.i18n?.getUILanguage?.() || "en";
   } catch {
@@ -63,6 +161,10 @@ export function pluralKey(key, count) {
     // Unknown locale tag — "other" is always a valid form.
   }
   const candidate = `${key}_${form}`;
+  if (override) {
+    if (override.chosen[candidate] ?? override.base[candidate]) return candidate;
+    return `${key}_other`;
+  }
   try {
     if (chrome.i18n?.getMessage(candidate)) return candidate;
   } catch {

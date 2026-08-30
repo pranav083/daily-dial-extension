@@ -574,5 +574,9 @@
  "filledDaysUpToNow_one": "$COUNT$ Tag gefüllt, gestoppt bei jetzt",
  "streakBanner_one": "<b>$COUNT$</b> Tag in Folge",
  "streakBanner_other": "<b>$COUNT$</b> Tage in Folge",
- "streakBestSuffix": "· Bestwert: $BEST$"
+ "streakBestSuffix": "· Bestwert: $BEST$",
+ "languageLabel": "Sprache",
+ "languageTooltip": "Automatisch folgt der Sprache deines Browsers. Eine Änderung lädt die Seite neu und rührt nichts an, was du geschrieben hast.",
+ "languageNote": "Nur die Wörter der App ändern sich — deine Notizen, Vorhaben und Kategorienamen bleiben genau so, wie du sie geschrieben hast.",
+ "languageAutomatic": "Automatisch"
 }

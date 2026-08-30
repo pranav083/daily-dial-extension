@@ -3135,5 +3135,17 @@
   },
   "defaultCategory5": {
     "message": "التشتت"
+  },
+  "languageLabel": {
+    "message": "اللغة"
+  },
+  "languageTooltip": {
+    "message": "«تلقائي» يتبع لغة متصفحك. التغيير يعيد تحميل الصفحة، ولا يمسّ أي شيء كتبته."
+  },
+  "languageNote": {
+    "message": "تتغيّر كلمات التطبيق نفسه فقط — ملاحظاتك ونواياك وأسماء فئاتك تبقى كما كتبتها تمامًا."
+  },
+  "languageAutomatic": {
+    "message": "تلقائي"
   }
 }
