@@ -104,7 +104,7 @@ Defaults: Deep Work · Applications · Study · Admin · Break · Distraction
 
 🌍 IN YOUR LANGUAGE
 🗣️ English · العربية · 中文 · Français · Deutsch · हिन्दी · 日本語 · Português (BR) · Русский · Español
-🔤 Picks your browser's language automatically — nothing to set
+🔤 Follows your browser's language, or pick one yourself in Settings
 ↔️ Arabic reads right to left, layout and all
 ✍️ Only the app is translated — your own notes and category names stay exactly as you wrote them
 

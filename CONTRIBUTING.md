@@ -194,6 +194,22 @@ Maintainers only:
 4. Commit, then `git tag -a vX.Y.Z -m "..."` and push the tag
 5. CI builds the zip and attaches it to the GitHub release
 
+**If the release changed the layout, regenerate the screenshots.** Nothing
+checks these, and they drift silently — the published listing spent several
+versions showing a screenshot with the old layout, the wrong version number,
+and the Study/Distraction colour bug that had already been fixed. They are
+the first thing a prospective user sees.
+
+| Asset | Size | Must match |
+|---|---|---|
+| `docs/store/screenshot-*.png` | exactly 1280×800 | the Store rejects other sizes |
+| `docs/store/promo-*.png` | 440×280, 1400×560 | only needed if featured |
+| `docs/getting-started/*.png` | any, 2× is fine | linked from GETTING_STARTED.md |
+
+Check `docs/STORE_LISTING.md` in the same pass: it carries factual claims
+(permissions, category count, undo depth, the language list) that a release
+can quietly falsify.
+
 ## Code of conduct
 
 By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
