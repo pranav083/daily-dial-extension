@@ -208,19 +208,27 @@ body {
 .strip-header { display: flex; align-items: baseline; gap: 8px; padding: 0 2px; }
 .strip-month { font-size: 0.74rem; font-weight: 700; color: var(--ink-2); }
 .strip-hint { font-size: 0.68rem; color: var(--ink-muted); padding: 0 2px; }
+/* A grid, so the weekday column sizes itself to the longest name and every
+   row still lines up. A fixed width cannot do both: 28px fitted "Sun" and
+   "мар" but clipped six of Arabic's seven ("الأحد" needs 44px), and any
+   number large enough for Arabic wastes the bar's width everywhere else. */
 .strip {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: grid;
+  grid-template-columns: auto minmax(40px, 1fr) auto;
+  gap: 2px 7px;
   background: var(--panel-2);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 8px;
 }
 .strip-day {
-  display: flex;
+  /* subgrid, so each row borrows the strip's three columns rather than
+     measuring its own — that is what keeps the bars aligned down the
+     column once the labels are content-sized. */
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
   align-items: center;
-  gap: 7px;
   padding: 4px 5px;
   border-radius: 7px;
   border: 1px solid transparent;
@@ -240,14 +248,9 @@ body {
   font-size: 0.66rem;
   color: var(--ink-muted);
   letter-spacing: 0.04em;
-  width: 28px;
-  flex: none;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .strip-day .bar-track {
-  flex: 1;
   min-width: 0;
   height: 14px;
   border-radius: 4px;
@@ -259,8 +262,7 @@ body {
 .strip-day .num {
   font-size: 0.64rem;
   color: var(--ink-muted);
-  width: 2ch;
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 
@@ -282,10 +284,10 @@ body {
      makes no sense. */
   .dial-stack { order: -1; }
   .strip-wrap { flex: 0 0 auto; width: 100%; margin-top: 0; }
-  .strip { flex-direction: row; gap: 6px; }
-  .strip-day { flex: 1; flex-direction: column; gap: 5px; padding: 6px 2px; text-align: center; }
-  .strip-day .dow, .strip-day .num { width: auto; text-align: center; }
-  .strip-day .bar-track { flex: none; width: 100%; height: 30px; align-items: flex-end; }
+  .strip { display: flex; flex-direction: row; gap: 6px; }
+  .strip-day { display: flex; flex: 1; flex-direction: column; gap: 5px; padding: 6px 2px; text-align: center; }
+  .strip-day .dow, .strip-day .num { text-align: center; }
+  .strip-day .bar-track { width: 100%; height: 30px; align-items: flex-end; }
   .strip-day .bar-fill { width: 100%; height: var(--fill, 6%); border-radius: 4px 4px 0 0; }
 }
 
