@@ -78,7 +78,7 @@ on macOS, `%LOCALAPPDATA%\Google\Chrome\User Data\Default\Extensions\` on
 Windows). Compare it against the matching tag:
 
 ```bash
-git checkout v1.10.0
+git checkout v1.28.0   # or whichever version you installed
 diff -r . "$CHROME_PROFILE/Extensions/mgcjgngceajnmfhkifccaoeccbmfikhn/<version>/"
 ```
 
