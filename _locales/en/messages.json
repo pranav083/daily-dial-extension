@@ -941,7 +941,7 @@
     "message": "Couldn't read that file.",
     "description": "Toast shown when a chosen import file can't be read."
   },
-  "importSummarySentence1Singular": {
+  "importSummarySentence1_one": {
     "message": "$COUNT$ day in the file, $OVERLAP$ overlapping your $EXISTING$ existing.",
     "description": "First sentence of the import confirmation summary, singular day count.",
     "placeholders": {
@@ -956,7 +956,7 @@
       }
     }
   },
-  "importSummarySentence1Plural": {
+  "importSummarySentence1_other": {
     "message": "$COUNT$ days in the file, $OVERLAP$ overlapping your $EXISTING$ existing.",
     "description": "First sentence of the import confirmation summary, plural day count.",
     "placeholders": {
@@ -971,7 +971,7 @@
       }
     }
   },
-  "importSummarySentence2Singular": {
+  "importSummarySentence2_one": {
     "message": "Merge adds $COUNT$ new day.",
     "description": "Second sentence of the import confirmation summary, singular new-day count.",
     "placeholders": {
@@ -980,7 +980,7 @@
       }
     }
   },
-  "importSummarySentence2Plural": {
+  "importSummarySentence2_other": {
     "message": "Merge adds $COUNT$ new days.",
     "description": "Second sentence of the import confirmation summary, plural new-day count.",
     "placeholders": {
@@ -989,7 +989,7 @@
       }
     }
   },
-  "importSummarySentence3Singular": {
+  "importSummarySentence3_one": {
     "message": "Replace erases all $COUNT$ existing day and restores exactly what's in the file.",
     "description": "Third sentence of the import confirmation summary, singular existing-day count.",
     "placeholders": {
@@ -998,7 +998,7 @@
       }
     }
   },
-  "importSummarySentence3Plural": {
+  "importSummarySentence3_other": {
     "message": "Replace erases all $COUNT$ existing days and restores exactly what's in the file.",
     "description": "Third sentence of the import confirmation summary, plural existing-day count.",
     "placeholders": {
@@ -1100,7 +1100,7 @@
       }
     }
   },
-  "multifillSummarySingular": {
+  "multifillSummary_one": {
     "message": "$COUNT$ day ($FROM$ to $TO$) will be $ACTION$ $WINDOW$.",
     "description": "Multi-day fill confirmation summary, singular day count.",
     "placeholders": {
@@ -1121,7 +1121,7 @@
       }
     }
   },
-  "multifillSummaryPlural": {
+  "multifillSummary_other": {
     "message": "$COUNT$ days ($FROM$ to $TO$) will be $ACTION$ $WINDOW$.",
     "description": "Multi-day fill confirmation summary, plural day count.",
     "placeholders": {
@@ -1142,7 +1142,7 @@
       }
     }
   },
-  "multifillPaintedSingular": {
+  "multifillPainted_one": {
     "message": "$COUNT$ of them already has something painted there and will be overwritten.",
     "description": "Trailing sentence of the multi-day fill summary, singular affected-day count.",
     "placeholders": {
@@ -1151,7 +1151,7 @@
       }
     }
   },
-  "multifillPaintedPlural": {
+  "multifillPainted_other": {
     "message": "$COUNT$ of them already have something painted there and will be overwritten.",
     "description": "Trailing sentence of the multi-day fill summary, plural affected-day count.",
     "placeholders": {
@@ -1164,7 +1164,7 @@
     "message": "None of those days have anything painted there yet.",
     "description": "Trailing sentence of the multi-day fill summary when no affected day has painted time."
   },
-  "filledDaysSingular": {
+  "filledDays_one": {
     "message": "Filled $COUNT$ day",
     "description": "Toast after applying a multi-day fill, singular day count.",
     "placeholders": {
@@ -1173,7 +1173,7 @@
       }
     }
   },
-  "filledDaysPlural": {
+  "filledDays_other": {
     "message": "Filled $COUNT$ days",
     "description": "Toast after applying a multi-day fill, plural day count.",
     "placeholders": {
@@ -1504,7 +1504,7 @@
     "message": "Most productive day",
     "description": "Stat label for the most productive day ever logged."
   },
-  "bestsStreakDaysSingular": {
+  "bestsStreakDays_one": {
     "message": "$COUNT$ day",
     "description": "Longest-streak stat value, singular day count.",
     "placeholders": {
@@ -1513,7 +1513,7 @@
       }
     }
   },
-  "bestsStreakDaysPlural": {
+  "bestsStreakDays_other": {
     "message": "$COUNT$ days",
     "description": "Longest-streak stat value, plural day count.",
     "placeholders": {
@@ -1775,7 +1775,7 @@
       }
     }
   },
-  "breakdownSummarySingular": {
+  "breakdownSummary_one": {
     "message": "$COUNT$ stretch · $LOGGED$ logged, $UNLOGGED$ unlogged",
     "description": "Summary line above the day breakdown table, singular stretch count.",
     "placeholders": {
@@ -1790,7 +1790,7 @@
       }
     }
   },
-  "breakdownSummaryPlural": {
+  "breakdownSummary_other": {
     "message": "$COUNT$ stretches · $LOGGED$ logged, $UNLOGGED$ unlogged",
     "description": "Summary line above the day breakdown table, plural stretch count.",
     "placeholders": {
@@ -2048,7 +2048,7 @@
     "message": "Consecutive logged days, counted only within this month — it doesn't borrow from the month before or after.",
     "description": "Tooltip on the month-streak line in the History summary."
   },
-  "writtenDaysNoteSingular": {
+  "writtenDaysNote_one": {
     "message": "$COUNT$ day is written up this month but have no time painted on the dial, so they don't count toward anything above. They're all in the log below.",
     "description": "Note in the History month summary when all-zero stats are actually due to un-painted written days, singular count.",
     "placeholders": {
@@ -2057,7 +2057,7 @@
       }
     }
   },
-  "writtenDaysNotePlural": {
+  "writtenDaysNote_other": {
     "message": "$COUNT$ days are written up this month but have no time painted on the dial, so they don't count toward anything above. They're all in the log below.",
     "description": "Note in the History month summary when all-zero stats are actually due to un-painted written days, plural count.",
     "placeholders": {

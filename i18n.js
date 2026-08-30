@@ -72,6 +72,16 @@ export function pluralKey(key, count) {
 }
 
 /**
+ * A counted message, straight from the UI: `tp("filledDays", n, [String(n)])`.
+ *
+ * This replaced nine `n === 1 ? t("…Singular") : t("…Plural")` ternaries.
+ * They read as though they were only about English grammar, but they also
+ * fixed the *catalog* at two forms — so no Russian or Arabic translation
+ * could have been correct however well it was written.
+ */
+export const tp = (key, count, params) => t(pluralKey(key, count), params);
+
+/**
  * Resolves a descriptor from the pure layer: `msg(...)` or `plural(...)`.
  * @param {{key:string, params?:string[], count?:number}} descriptor
  */

@@ -8,7 +8,7 @@
  * boot; reads hit that map, writes update it and persist in the background.
  */
 
-import { applyDocumentDirection, initDurationUnits, t, tm } from "./i18n.js";
+import { applyDocumentDirection, initDurationUnits, t, tm, tp } from "./i18n.js";
 export { t };
 
 import { SILENCED_KEY } from "./suggestions.js";
@@ -1618,10 +1618,7 @@ function renderStreak() {
 
 function renderAboutBests() {
   const bests = personalBests(days, categories, new Date());
-  $("bests-streak").textContent =
-    bests.longestStreak === 1
-      ? t("bestsStreakDaysSingular", [String(bests.longestStreak)])
-      : t("bestsStreakDaysPlural", [String(bests.longestStreak)]);
+  $("bests-streak").textContent = tp("bestsStreakDays", bests.longestStreak, [String(bests.longestStreak)]);
   $("bests-score").textContent = bests.bestScore
     ? `${bests.bestScore.score > 0 ? "+" : ""}${bests.bestScore.score} · ${bests.bestScore.key}`
     : "—";
@@ -2154,10 +2151,7 @@ function renderBreakdown() {
   const stretches = spans.filter((s) => s.cat !== UNTRACKED).length;
   const loggedText = fmtDuration(tracked);
   const unloggedText = fmtDuration(SLOTS * SLOT_MIN - tracked);
-  $("breakdown-sum").textContent =
-    stretches === 1
-      ? t("breakdownSummarySingular", [String(stretches), loggedText, unloggedText])
-      : t("breakdownSummaryPlural", [String(stretches), loggedText, unloggedText]);
+  $("breakdown-sum").textContent = tp("breakdownSummary", stretches, [String(stretches), loggedText, unloggedText]);
 }
 
 function extraNoteRow(index, note) {
@@ -2638,18 +2632,11 @@ function showImportConfirm() {
   // import that isn't the one about to happen.
   const summary = summarizeImport(excludeDays(days, sampleDayKeys), pendingImport.days);
   $("import-confirm").hidden = false;
-  const sentence1 =
-    summary.incomingCount === 1
-      ? t("importSummarySentence1Singular", [String(summary.incomingCount), String(summary.overlapping), String(summary.existingCount)])
-      : t("importSummarySentence1Plural", [String(summary.incomingCount), String(summary.overlapping), String(summary.existingCount)]);
-  const sentence2 =
-    summary.newCount === 1
-      ? t("importSummarySentence2Singular", [String(summary.newCount)])
-      : t("importSummarySentence2Plural", [String(summary.newCount)]);
-  const sentence3 =
-    summary.existingCount === 1
-      ? t("importSummarySentence3Singular", [String(summary.existingCount)])
-      : t("importSummarySentence3Plural", [String(summary.existingCount)]);
+  const sentence1 = tp("importSummarySentence1", summary.incomingCount, [
+    String(summary.incomingCount), String(summary.overlapping), String(summary.existingCount),
+  ]);
+  const sentence2 = tp("importSummarySentence2", summary.newCount, [String(summary.newCount)]);
+  const sentence3 = tp("importSummarySentence3", summary.existingCount, [String(summary.existingCount)]);
   $("import-summary").textContent =
     `${sentence1} ${sentence2} ${sentence3}` + (sampleDayKeys.length ? ` ${t("importSummaryDemoClearSentence")}` : "");
   replaceArmed = false;
@@ -2878,15 +2865,12 @@ function showMultiFillConfirm() {
       : t("multifillWindowRange", [fmtSlotClock(fromSlot), fmtSlotClock(toSlot)]);
 
   $("multifill-confirm").hidden = false;
-  const summarySentence =
-    summary.dayCount === 1
-      ? t("multifillSummarySingular", [String(summary.dayCount), keys[0], keys[keys.length - 1], action, windowLabel])
-      : t("multifillSummaryPlural", [String(summary.dayCount), keys[0], keys[keys.length - 1], action, windowLabel]);
+  const summarySentence = tp("multifillSummary", summary.dayCount, [
+    String(summary.dayCount), keys[0], keys[keys.length - 1], action, windowLabel,
+  ]);
   const paintedSentence =
     summary.paintedCount > 0
-      ? summary.paintedCount === 1
-        ? t("multifillPaintedSingular", [String(summary.paintedCount)])
-        : t("multifillPaintedPlural", [String(summary.paintedCount)])
+      ? tp("multifillPainted", summary.paintedCount, [String(summary.paintedCount)])
       : t("multifillNonePainted");
   $("multifill-summary").textContent = `${summarySentence} ${paintedSentence}`;
   resetMultiFillConfirmButton();
@@ -2957,7 +2941,7 @@ function applyMultiFill() {
   // actually received.
   if (written === 0) toast(t("futureNotLogged"));
   else if (clampedDays) toast(t("filledDaysUpToNow", [String(written)]));
-  else toast(written === 1 ? t("filledDaysSingular", ["1"]) : t("filledDaysPlural", [String(written)]));
+  else toast(tp("filledDays", written, [String(written)]));
 }
 
 /* ---------- google drive backup ---------- */

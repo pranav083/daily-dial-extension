@@ -29,7 +29,7 @@ import {
   weekOverWeek,
 } from "./historyLib.js";
 import { getAppData, goToDay, silenceObservation } from "./dial.js";
-import { t, tm } from "./i18n.js";
+import { t, tm, tp } from "./i18n.js";
 import { suggestionFor } from "./suggestions.js";
 
 const $ = (id) => document.getElementById(id);
@@ -237,10 +237,7 @@ function renderSummary(year, month, days, categories) {
     if (written > 0) {
       const note = document.createElement("p");
       note.className = "hist-extra-line";
-      note.textContent =
-        written === 1
-          ? t("writtenDaysNoteSingular", [String(written)])
-          : t("writtenDaysNotePlural", [String(written)]);
+      note.textContent = tp("writtenDaysNote", written, [String(written)]);
       extra.appendChild(note);
     }
   }
