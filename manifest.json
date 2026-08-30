@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Daily Dial – Time Tracker & Focus",
-  "version": "1.18.1",
+  "version": "1.19.0",
   "description": "Paint your day on a 24-hour dial, then see whether the time went where you meant it to.",
   "permissions": ["storage", "unlimitedStorage", "alarms", "notifications", "identity"],
   "background": {

@@ -8,6 +8,33 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.19.0] — 2026-08-29
+
+### Added
+
+- **The pen you last used is remembered.** Every session started on Deep Work
+  regardless of what you actually log most. The eraser counts as a pen worth
+  remembering too, and a saved pen whose category has since been hidden still
+  falls back to the first visible one.
+- **Changing a category's weight now says so where you change it.** Colours
+  encode the default weights — Distraction red, the productive ones cool — so
+  setting Break to `+1` leaves it pink while counting toward your score. The
+  category editor now notes that on the row you edited, and the note goes when
+  the weight goes back. Colours themselves stay put: a category's hue is its
+  identity on the ring, and recolouring on a weight change would make the day
+  unreadable at a glance.
+
+### Fixed
+
+- **Painting didn't update the table directly beneath it.** "The day, end to
+  end" only refreshed on a full view redraw, so a stroke changed the ring and
+  left the rows under it stale until you switched tabs — on the surface that
+  is now the main way to edit a day.
+- **"14 stretches · 15h logged · 9h not"** — the trailing fragment was
+  ungrammatical and got clipped on narrower cards. Now reads
+  "14 stretches · 15h logged, 9h unlogged", and a single stretch is a
+  "stretch".
+
 ## [1.18.1] — 2026-08-29
 
 ### Fixed

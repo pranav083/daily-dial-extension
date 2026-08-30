@@ -12,6 +12,7 @@ import { SILENCED_KEY } from "./suggestions.js";
 import {
   CATEGORIES_KEY,
   DAY_PREFIX,
+  DEFAULT_CATEGORIES,
   DRIVE_FILE_ID_KEY,
   DRIVE_LAST_SYNC_KEY,
   DRIVE_BACKUP_SIZE_KEY,
@@ -105,6 +106,12 @@ let onboardingSeen = false;
  *  already been cleared. */
 let sampleDayKeys = [];
 
+/** Remembers whichever pen (a category id, or UNTRACKED for the eraser) was
+ *  last active, so the dial opens on the pen actually in use rather than
+ *  always defaulting back to category 0. Lives here rather than in lib.js —
+ *  it's UI state, not something any calculation reads. */
+const lastPenKey = "lastPen";
+
 const state = {
   viewDate: new Date(),
   slots: new Array(SLOTS).fill(UNTRACKED),
@@ -135,6 +142,10 @@ async function loadAll() {
   // even though the flag itself was never explicitly set for them.
   onboardingSeen = all[ONBOARDING_SEEN_KEY] === true || days.size > 0;
   sampleDayKeys = Array.isArray(all[SAMPLE_DAY_KEYS_KEY]) ? all[SAMPLE_DAY_KEYS_KEY] : [];
+  // reconcileActivePen() runs after boot loads this and falls back to the
+  // first enabled category (or the eraser) if this one has since been
+  // hidden, so no validation is needed here beyond "is it a number".
+  if (Number.isInteger(all[lastPenKey])) state.activePen = all[lastPenKey];
 
   if (all[SCHEMA_VERSION_KEY] !== SCHEMA_VERSION) {
     saveLocal({ [SCHEMA_VERSION_KEY]: SCHEMA_VERSION }).catch(() => {
@@ -329,6 +340,14 @@ const persistCategories = () =>
 const persistSettings = () =>
   tabIsStale ? undefined : saveLocal({ [SETTINGS_KEY]: settings }).catch(reportStorageFailure);
 
+/** Losing this write costs nothing worse than opening on the default pen
+ *  next time, so it's fire-and-forget rather than routed through
+ *  reportStorageFailure like the persistors above. */
+const persistActivePen = () =>
+  tabIsStale
+    ? undefined
+    : saveLocal({ [lastPenKey]: state.activePen }).catch(() => {});
+
 function reportStorageFailure(err) {
   console.error("Daily Dial: could not save", err);
   toast("Couldn't save — your last change may be lost.");
@@ -489,6 +508,10 @@ function onStrokeEnd() {
   renderStrip();
   renderStreak();
   renderBackupStatus();
+  // The breakdown is a view of the slots just painted and sits directly
+  // below the dial, so leaving it until the next full redraw meant painting
+  // a block and watching the table under it not change.
+  renderBreakdown();
 }
 
 /**
@@ -1105,6 +1128,7 @@ window.addEventListener("keydown", (evt) => {
     const cat = categories.find((c) => c.id === id);
     if (cat?.enabled) {
       state.activePen = id;
+      persistActivePen();
       renderPens();
       refreshCenters();
     }
@@ -1112,6 +1136,7 @@ window.addEventListener("keydown", (evt) => {
   }
   if (evt.key === "0" || evt.key.toLowerCase() === "e") {
     state.activePen = UNTRACKED;
+    persistActivePen();
     renderPens();
     refreshCenters();
   }
@@ -1140,6 +1165,7 @@ function renderPens() {
     btn.append(swatch, document.createTextNode(c.name), weight);
     btn.addEventListener("click", () => {
       state.activePen = c.id;
+      persistActivePen();
       renderPens();
       refreshCenters();
     });
@@ -1154,6 +1180,7 @@ function renderPens() {
   eraser.append(eraserSwatch, document.createTextNode("Eraser"));
   eraser.addEventListener("click", () => {
     state.activePen = UNTRACKED;
+    persistActivePen();
     renderPens();
     refreshCenters();
   });
@@ -1843,9 +1870,10 @@ function renderBreakdown() {
   }
 
   const tracked = state.slots.filter((v) => v !== UNTRACKED).length * SLOT_MIN;
+  const stretches = spans.filter((s) => s.cat !== UNTRACKED).length;
   $("breakdown-sum").textContent =
-    `${spans.filter((s) => s.cat !== UNTRACKED).length} stretches · ` +
-    `${fmtDuration(tracked)} logged · ${fmtDuration(SLOTS * SLOT_MIN - tracked)} not`;
+    `${stretches} ${stretches === 1 ? "stretch" : "stretches"} · ` +
+    `${fmtDuration(tracked)} logged, ${fmtDuration(SLOTS * SLOT_MIN - tracked)} unlogged`;
 }
 
 function extraNoteRow(index, note) {
@@ -2120,6 +2148,20 @@ function renderCategoryEditor() {
     const item = document.createElement("div");
     item.className = "cat-edit-item";
     item.append(row, aliasRow);
+
+    // The hue on the ring is this category's identity and never changes, but
+    // it was chosen assuming the default weight (Distraction red, the two
+    // +1s and Break/Admin their own colours). Re-weighting a category away
+    // from that default leaves its colour arguing with its score, so say so
+    // here rather than trying to recolour a ring people rely on staying put.
+    const defaultCat = DEFAULT_CATEGORIES[c.id];
+    if (defaultCat && c.weight !== defaultCat.weight) {
+      const note = document.createElement("p");
+      note.className = "editor-note";
+      note.textContent = "Its colour still reflects the original weight, not this one.";
+      item.appendChild(note);
+    }
+
     rowsEl.appendChild(item);
   }
 }
