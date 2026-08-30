@@ -545,8 +545,27 @@ export function computeStats(slots, categories, dayWindow = null) {
   };
 }
 
-export function scoreBucket(score) {
+/**
+ * Below this much logged time, the score is arithmetic on too little to mean
+ * anything. Thirty minutes of Deep Work and nothing else divides 30 by 30 and
+ * reads +100 — the same as a flawless twelve-hour day, and better than an
+ * honest one with a bad hour in it.
+ */
+export const MIN_TRACKED_FOR_SCORE = 120;
+
+/**
+ * @param {number|null} score
+ * @param {number} [trackedMin] When given, a day with less than
+ *   `MIN_TRACKED_FOR_SCORE` logged is reported as provisional rather than
+ *   being labelled confidently. The score itself is still returned and still
+ *   stored — this governs how it is presented, not what it is.
+ * @returns {{label:string, tone:string, provisional?:boolean}}
+ */
+export function scoreBucket(score, trackedMin) {
   if (score === null) return { label: "No data yet", tone: "muted" };
+  if (trackedMin !== undefined && trackedMin < MIN_TRACKED_FOR_SCORE) {
+    return { label: "Too little logged to score", tone: "muted", provisional: true };
+  }
   if (score >= 40) return { label: "Locked in", tone: "good" };
   if (score >= 10) return { label: "Solid", tone: "good" };
   if (score >= -15) return { label: "Mixed bag", tone: "warning" };

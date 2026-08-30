@@ -173,7 +173,8 @@ body {
   font-size: 0.95rem;
   cursor: pointer;
 }
-.datenav button:hover { border-color: var(--accent); }
+.datenav button:hover:not(:disabled) { border-color: var(--accent); }
+.datenav button:disabled { opacity: 0.35; cursor: default; }
 .datenav .label {
   min-width: 148px;
   text-align: center;

@@ -41,6 +41,7 @@ import {
   reminderMessage,
   runAt,
   scoreBucket,
+  MIN_TRACKED_FOR_SCORE,
   shouldNudgeBackup,
   slotFromAngle,
   summarizeImport,
@@ -1808,4 +1809,31 @@ test("dialUrlSuffix ignores anything that isn't a hash we recognise", () => {
   assert.equal(dialUrlSuffix(42), "");
   assert.equal(dialUrlSuffix("#nonsense"), "", "an unknown hash is not passed through either");
   assert.equal(dialUrlSuffix("#history"), "#history");
+});
+
+/* ---------- the score needs enough behind it ---------- */
+
+test("scoreBucket refuses to label a day with too little logged", () => {
+  // 30 minutes of Deep Work divides 30 by 30 and reads +100 — the same as a
+  // flawless twelve-hour day, and better than an honest one with a bad hour.
+  const thin = scoreBucket(100, 30);
+  assert.equal(thin.provisional, true);
+  assert.match(thin.label, /too little/i);
+  assert.equal(thin.tone, "muted", "and it must not be coloured like a good day");
+
+  // A bad score is equally meaningless off nothing.
+  assert.equal(scoreBucket(-100, 60).provisional, true);
+});
+
+test("scoreBucket labels normally once there's enough logged", () => {
+  assert.equal(scoreBucket(100, MIN_TRACKED_FOR_SCORE).label, "Locked in");
+  assert.equal(scoreBucket(100, MIN_TRACKED_FOR_SCORE).provisional, undefined);
+  assert.equal(scoreBucket(-50, 600).label, "Off track");
+});
+
+test("scoreBucket without a tracked time behaves as it always did", () => {
+  // Callers that genuinely have no minutes to hand must not start seeing
+  // every day reported as unscorable.
+  assert.equal(scoreBucket(100).label, "Locked in");
+  assert.equal(scoreBucket(null).label, "No data yet");
 });

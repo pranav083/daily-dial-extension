@@ -8,6 +8,26 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.21.0] — 2026-08-29
+
+### Changed
+
+- **A day with barely anything logged no longer gets a score.** Thirty minutes
+  of Deep Work and nothing else divided 30 by 30 and read **+100** — the same
+  as a flawless twelve-hour day, and *better* than an honest one with a bad
+  hour in it. Below two hours logged, the day now reads "Too little logged to
+  score" with a dash instead of a number, on the dial, in the month heatmap,
+  in the log, and on the toolbar badge. The score is still computed and
+  stored; this governs how it's presented, not what it is, so nothing
+  historical is rewritten.
+
+### Fixed
+
+- **You could walk forward into future days and paint them.** There was no
+  upper bound on the date arrows, so days that hadn't happened could be
+  filled in, carried a score, and sat in History looking like something you'd
+  done. The forward arrow now stops at today.
+
 ## [1.20.0] — 2026-08-29
 
 ### Added

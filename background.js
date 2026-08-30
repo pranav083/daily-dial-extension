@@ -98,8 +98,13 @@ async function refreshBadge() {
   }
 
   const stats = computeStats(slots, categories);
-  const bucket = scoreBucket(stats.score);
-  await chrome.action.setBadgeText({ text: `${stats.score > 0 ? "+" : ""}${stats.score}` });
+  const bucket = scoreBucket(stats.score, stats.trackedMin);
+  // A dash rather than a confident number when the day is barely logged —
+  // the badge is the most glanceable surface there is, so a misleading
+  // number does the most damage here.
+  await chrome.action.setBadgeText({
+    text: bucket.provisional ? "–" : `${stats.score > 0 ? "+" : ""}${stats.score}`,
+  });
   await chrome.action.setBadgeBackgroundColor({ color: BADGE_COLORS[bucket.tone] ?? BADGE_COLORS.muted });
 }
 

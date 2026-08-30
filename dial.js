@@ -1236,8 +1236,12 @@ function renderSide() {
   $("stat-focus").textContent = fmtDuration(stats.longestFocusMin);
   $("insight").innerHTML = buildInsight(stats, categories);
 
-  const bucket = scoreBucket(stats.score);
-  $("score-val").textContent = stats.score === null ? "—" : `${stats.score > 0 ? "+" : ""}${stats.score}`;
+  const bucket = scoreBucket(stats.score, stats.trackedMin);
+  // Provisional means the score exists but rests on too little logged time to
+  // be worth printing — showing "+100" off half an hour is worse than showing
+  // nothing, because it reads as a verdict on the day.
+  $("score-val").textContent =
+    stats.score === null || bucket.provisional ? "—" : `${stats.score > 0 ? "+" : ""}${stats.score}`;
   $("score-badge").className = `score-badge ${bucket.tone}`;
   $("score-badge-text").textContent = bucket.label;
 
@@ -1445,7 +1449,7 @@ function renderStrip() {
     const d = new Date(today);
     d.setDate(d.getDate() + offset);
     const stats = computeStats(getDay(dateKey(d)).slots, categories);
-    const bucket = scoreBucket(stats.score);
+    const bucket = scoreBucket(stats.score, stats.trackedMin);
 
     const btn = document.createElement("button");
     btn.className = `strip-day${sameDay(d, state.viewDate) ? " active" : ""}`;
@@ -1478,6 +1482,8 @@ function renderStrip() {
 function renderDateLabel() {
   const label = $("date-label");
   const jump = $("today-jump");
+
+  $("next-day").disabled = isToday(state.viewDate);
 
   if (isToday(state.viewDate)) {
     label.textContent = "Today";
@@ -2878,6 +2884,14 @@ function wireEvents() {
   $("next-day").addEventListener("click", () => {
     const d = new Date(state.viewDate);
     d.setDate(d.getDate() + 1);
+    // Stops at today. This is a record of what happened, and there was no
+    // limit before — you could walk forward indefinitely and paint days that
+    // hadn't occurred, which then carried a score and sat in History looking
+    // like something you'd done.
+    if (dateKey(d) > dateKey(new Date())) {
+      toast("That's tomorrow — there's nothing to log yet");
+      return;
+    }
     switchDay(d);
   });
   $("today-jump").addEventListener("click", () => switchDay(new Date()));

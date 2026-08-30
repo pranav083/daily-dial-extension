@@ -81,8 +81,8 @@ const fmtPct = (n) => (n === null ? "—" : `${n}%`);
 /** Background intensity scales with |score|, so the heatmap reads as a
  *  gradient rather than three flat buckets — a +5 day and a +95 day both
  *  read "good" but shouldn't look identical. */
-function heatColor(score) {
-  const bucket = scoreBucket(score);
+function heatColor(score, trackedMin) {
+  const bucket = scoreBucket(score, trackedMin);
   const intensity = Math.max(30, Math.min(90, 30 + Math.abs(score) * 0.6));
   return `color-mix(in oklab, var(${toneVar(bucket.tone)}) ${intensity}%, var(--panel-2))`;
 }
@@ -123,7 +123,7 @@ function renderHeatmap(year, month, days, categories, weekStart) {
       let label;
       if (cell.logged) {
         btn.classList.add("logged");
-        btn.style.background = heatColor(cell.score);
+        btn.style.background = heatColor(cell.score, cell.trackedMin);
         label = `${cell.date.toDateString()} — score ${fmtScore(cell.score)}, ${fmtDuration(cell.trackedMin)} tracked`;
       } else if (cell.written) {
         // Written up but no time painted. Marked rather than left blank: an
@@ -510,7 +510,7 @@ function renderLogDay(key, day, categories) {
     meta.textContent = fmtDuration(stats.trackedMin);
     head.appendChild(meta);
     if (stats.score !== null) {
-      const bucket = scoreBucket(stats.score);
+      const bucket = scoreBucket(stats.score, stats.trackedMin);
       const chip = document.createElement("span");
       chip.className = "log-score";
       chip.textContent = `${stats.score > 0 ? "+" : ""}${stats.score}`;
