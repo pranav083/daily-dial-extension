@@ -45,6 +45,8 @@ The version here always matches `manifest.json`.
 - The week strip sits under the pens, and its labels size themselves to the
   language, so long weekday names are not cut off.
 - Less empty space between the intentions, avoid and reflection fields.
+- The welcome card and the first-run hint now point at where the categories
+  actually are — they still said "below the dial", with an arrow pointing down.
 
 ## [1.26.0] — 2026-08-30
 
