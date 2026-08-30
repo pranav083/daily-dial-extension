@@ -1,0 +1,2809 @@
+{
+  "appName": {
+    "message": "Daily Dial – учёт времени и фокуса"
+  },
+  "appDescription": {
+    "message": "Закрашивай день на суточном циферблате и смотри, ушло ли время туда, куда ты хотел."
+  },
+  "actionDefaultTitle": {
+    "message": "Открыть Daily Dial"
+  },
+  "saveFailedToast": {
+    "message": "Не удалось сохранить — последнее изменение может быть потеряно."
+  },
+  "wordmarkTitle": {
+    "message": "Daily Dial"
+  },
+  "wordmarkTagline": {
+    "message": "Учёт времени и фокуса"
+  },
+  "streakBannerTooltip": {
+    "message": "Количество дней подряд, когда отмечен хотя бы один блок. Один пропущенный день в неделю прощается — это заморозка."
+  },
+  "streakBanner_one": {
+    "message": "<b>$COUNT$</b> день подряд",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_few": {
+    "message": "<b>$COUNT$</b> дня подряд",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_many": {
+    "message": "<b>$COUNT$</b> дней подряд",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "<b>$COUNT$</b> дней подряд",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· лучший результат: $BEST$",
+    "placeholders": {
+      "best": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakFreezeLabel": {
+    "message": "❄ заморозка использована"
+  },
+  "streakFreezeTooltip": {
+    "message": "На этой неделе был пропущен день, но серия сохранилась — один пропуск за 7 дней прощается."
+  },
+  "streakRiskLabel": {
+    "message": "сегодня ещё не отмечено"
+  },
+  "streakRiskTooltip": {
+    "message": "Отметь сегодня хотя бы один блок, чтобы не прервать серию."
+  },
+  "challengeChipTooltip": {
+    "message": "Твой челлендж. Нажми, чтобы изменить."
+  },
+  "challengeDayProgress": {
+    "message": "день $DAY$ / $TARGET$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDaySimple": {
+    "message": "день $DAY$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      }
+    }
+  },
+  "viewNavLabel": {
+    "message": "Разделы"
+  },
+  "viewTabDay": {
+    "message": "День"
+  },
+  "viewTabHistory": {
+    "message": "История"
+  },
+  "viewTabHistoryTooltip": {
+    "message": "Твои месяцы одним взглядом и то, как категории меняются со временем"
+  },
+  "dateToday": {
+    "message": "Сегодня"
+  },
+  "dateYesterday": {
+    "message": "Вчера"
+  },
+  "prevDayLabel": {
+    "message": "Предыдущий день"
+  },
+  "nextDayLabel": {
+    "message": "Следующий день"
+  },
+  "todayJumpTooltip": {
+    "message": "Вернуться к сегодняшнему дню"
+  },
+  "settingsButtonLabel": {
+    "message": "Настройки"
+  },
+  "settingsButtonTooltip": {
+    "message": "Категории, напоминания, цели, резервные копии и внешний вид"
+  },
+  "demoBannerTitle": {
+    "message": "Демо-режим"
+  },
+  "demoBannerBody": {
+    "message": "— дни ниже включают демо-данные, а не только твои."
+  },
+  "demoBannerExitLabel": {
+    "message": "Выйти из демо"
+  },
+  "demoBannerExitTooltip": {
+    "message": "Удаляет ровно те демо-дни, которые были добавлены. Всё, что ты вносил сам, не тронуто."
+  },
+  "staleBannerHeadline": {
+    "message": "Другая вкладка изменила $WHAT$.",
+    "placeholders": {
+      "what": {
+        "content": "$1"
+      }
+    }
+  },
+  "staleBannerBody": {
+    "message": "Редактирование здесь приостановлено, чтобы эта вкладка не перезаписала данные. Перезагрузи страницу, чтобы получить новую версию."
+  },
+  "staleBannerReload": {
+    "message": "Обновить"
+  },
+  "staleWhatViewedDay": {
+    "message": "день, который ты сейчас смотришь"
+  },
+  "staleWhatCategories": {
+    "message": "твои категории"
+  },
+  "staleWhatSettings": {
+    "message": "твои настройки"
+  },
+  "staleWhatDemoMode": {
+    "message": "демо-режим"
+  },
+  "staleWhatTemplates": {
+    "message": "твои шаблоны"
+  },
+  "firstRunHint": {
+    "message": "👇 Выбери категорию, затем веди пальцем по кольцу, чтобы закрасить первый блок."
+  },
+  "firstRunHintDismiss": {
+    "message": "Понятно"
+  },
+  "shareImageLabel": {
+    "message": "Поделиться картинкой"
+  },
+  "shareImageTooltip": {
+    "message": "Сохрани (или отправь) PNG с циферблатом и оценкой этого дня — ничего не покидает твоё устройство, если ты сам не решишь отправить."
+  },
+  "dialLayoutSwitchLabel": {
+    "message": "Вид циферблата"
+  },
+  "dialModeSingleLabel": {
+    "message": "24ч"
+  },
+  "dialModeSingleTooltip": {
+    "message": "Одно кольцо на 24 часа"
+  },
+  "dialModeAmpmLabel": {
+    "message": "AM+PM"
+  },
+  "dialModeAmpmTooltip": {
+    "message": "Два кольца по 12 часов, рядом"
+  },
+  "dialModeToggleLabel": {
+    "message": "AM⇄PM"
+  },
+  "dialModeToggleTooltip": {
+    "message": "Одно кольцо на 12 часов с переключателем AM/PM"
+  },
+  "dialAriaLabelSingle": {
+    "message": "Циферблат дня на 24 часа. Стрелки перемещают курсор, Shift+стрелка выделяет, Enter закрашивает, Delete стирает."
+  },
+  "dialAriaLabelAm": {
+    "message": "Циферблат AM, от полуночи до полудня. Стрелки перемещают курсор, Shift+стрелка выделяет, Enter закрашивает, Delete стирает."
+  },
+  "dialAriaLabelPm": {
+    "message": "Циферблат PM, от полудня до полуночи. Стрелки перемещают курсор, Shift+стрелка выделяет, Enter закрашивает, Delete стирает."
+  },
+  "dialCenterPickCategory": {
+    "message": "выбери категорию"
+  },
+  "dialTimeLoggedTooltip": {
+    "message": "Время, отмеченное в этой половине"
+  },
+  "dialCurrentTimeTooltip": {
+    "message": "Текущее время"
+  },
+  "dialHalfAm": {
+    "message": "AM"
+  },
+  "dialHalfAmRange": {
+    "message": "· 0–12 ч"
+  },
+  "dialHalfPm": {
+    "message": "PM"
+  },
+  "dialHalfPmRange": {
+    "message": "· 12–24 ч"
+  },
+  "toggleHalfSwitchLabel": {
+    "message": "Показать половину AM или PM"
+  },
+  "copyYesterdayLabel": {
+    "message": "Скопировать вчера"
+  },
+  "copyYesterdayTooltip": {
+    "message": "Заполни сегодня блоками вчерашнего дня — удобно, когда дни похожи друг на друга"
+  },
+  "typedEntryTimeRangeLabel": {
+    "message": "Промежуток времени"
+  },
+  "typedEntryPlaceholder": {
+    "message": "9-11"
+  },
+  "typedEntryTooltip": {
+    "message": "Промежуток времени: \"9-11\", \"13:30-15\" или \"9pm-11pm\". Здесь же можно указать и категорию."
+  },
+  "typedEntryCatTooltip": {
+    "message": "К какой категории относится этот блок"
+  },
+  "addButtonLabel": {
+    "message": "Добавить"
+  },
+  "typedEntryAddTooltip": {
+    "message": "Добавить этот блок на циферблат"
+  },
+  "justPaintedNoteLabel": {
+    "message": "Заметка к тому, что ты только что закрасил"
+  },
+  "justPaintedSaveLabel": {
+    "message": "Сохранить"
+  },
+  "dismissLabel": {
+    "message": "Закрыть"
+  },
+  "hintPaintInstruction": {
+    "message": "Нажми или веди по кольцу, чтобы закрасить"
+  },
+  "hintUndo": {
+    "message": "отменить"
+  },
+  "hintAllShortcuts": {
+    "message": "все горячие клавиши"
+  },
+  "breakdownSectionLabel": {
+    "message": "День от начала до конца"
+  },
+  "breakdownSectionTooltip": {
+    "message": "Каждый промежуток дня по порядку, включая ещё не отмеченные. Печатай заметку прямо в строке; в строке пропуска выбери категорию, чтобы заполнить его."
+  },
+  "breakdownColWhen": {
+    "message": "Когда"
+  },
+  "breakdownColWhat": {
+    "message": "Что"
+  },
+  "breakdownColFor": {
+    "message": "Сколько"
+  },
+  "breakdownColNote": {
+    "message": "Заметка"
+  },
+  "breakdownColClear": {
+    "message": "Очистить"
+  },
+  "todaysReadLabel": {
+    "message": "Итоги дня"
+  },
+  "statTrackedLabel": {
+    "message": "Отслежено"
+  },
+  "statTrackedTooltip": {
+    "message": "Общее время, закрашенное сегодня на циферблате. Остальное считается неучтённым."
+  },
+  "statProductiveLabel": {
+    "message": "Продуктивно"
+  },
+  "statProductiveTooltip": {
+    "message": "Доля отслеженного времени, потраченная на категории с весом +. Неучтённое время не считается."
+  },
+  "statFocusLabel": {
+    "message": "Самая долгая концентрация"
+  },
+  "statFocusTooltip": {
+    "message": "Самый долгий непрерывный отрезок продуктивного времени. Он продолжается через разные + категории и прерывается на нейтральном времени или отвлечениях."
+  },
+  "scoreValTooltip": {
+    "message": "(продуктивное − отвлечения) ÷ отслеженное, в процентах. Показывает форму дня, а не его длину, так что сфокусированные 4 часа обходят разрозненные 10."
+  },
+  "meterTooltip": {
+    "message": "Твоя оценка по шкале от −100 до +100."
+  },
+  "whereTimeWentLabel": {
+    "message": "Куда ушло время"
+  },
+  "whereTimeWentTooltip": {
+    "message": "Как отслеженное сегодня время делится по категориям, с показом неучтённого времени, чтобы были видны пробелы."
+  },
+  "todaysGoalsLabel": {
+    "message": "Цели на сегодня"
+  },
+  "todaysGoalsTooltip": {
+    "message": "Дневные цели, заданные в Настройках → Цели. ✓ отмечает достигнутую."
+  },
+  "weeklyGoalsLabel": {
+    "message": "Цели на неделю"
+  },
+  "weeklyGoalsTooltip": {
+    "message": "Недельные цели, заданные в Настройках → Цели, суммированные за неделю, начиная с выбранного дня недели. ✓ отмечает достигнутую."
+  },
+  "intentionsLabel": {
+    "message": "Намерения на сегодня"
+  },
+  "intentionsTooltip": {
+    "message": "Что ты собирался сделать сегодня. Отмечай по мере выполнения — журнал в Истории покажет, что получилось на самом деле."
+  },
+  "addIntentionLabel": {
+    "message": "Добавить намерение"
+  },
+  "addIntentionPlaceholder": {
+    "message": "Leetcode, письмо научруку…"
+  },
+  "avoidLabel": {
+    "message": "Чего избегать"
+  },
+  "avoidTooltip": {
+    "message": "Чего лучше избегать сегодня. Сохраняется в журнале Истории рядом с тем, что произошло на самом деле."
+  },
+  "addAvoidLabel": {
+    "message": "Добавить пункт, которого нужно избегать"
+  },
+  "addAvoidPlaceholder": {
+    "message": "Бесконечный скроллинг, 10 часов сериалов…"
+  },
+  "reflectionLabel": {
+    "message": "Почему (достаточно одной строки)"
+  },
+  "reflectionTooltip": {
+    "message": "Одна строка о том, что сегодня помогло или помешало. Попадает в CSV-экспорт."
+  },
+  "reflectionSrLabel": {
+    "message": "Рефлексия"
+  },
+  "reflectionPlaceholder": {
+    "message": "Что сделало сегодняшний день удачным — или наоборот?"
+  },
+  "clearDayLabel": {
+    "message": "Очистить день"
+  },
+  "clearDayTooltip": {
+    "message": "Стирает все блоки этого дня. Отменяется через ⌘Z."
+  },
+  "clearDayConfirmLabel": {
+    "message": "Подтвердить очистку?"
+  },
+  "dayClearedToast": {
+    "message": "День очищен — ⌘Z, чтобы отменить"
+  },
+  "settingsTitle": {
+    "message": "Настройки"
+  },
+  "settingsCloseLabel": {
+    "message": "Закрыть настройки"
+  },
+  "settingsTabCategories": {
+    "message": "Категории"
+  },
+  "settingsTabReminders": {
+    "message": "Напоминания"
+  },
+  "settingsTabGoals": {
+    "message": "Цели"
+  },
+  "settingsTabData": {
+    "message": "Данные"
+  },
+  "settingsTabAppearance": {
+    "message": "Внешний вид"
+  },
+  "settingsTabAbout": {
+    "message": "О приложении"
+  },
+  "categoriesLegendPositive": {
+    "message": "засчитывается в оценку,"
+  },
+  "categoriesLegendNeutral": {
+    "message": "нейтрально,"
+  },
+  "categoriesLegendNegative": {
+    "message": "снижает оценку."
+  },
+  "categoriesHideNote": {
+    "message": "Круглая кнопка скрывает категорию, которой ты не пользуешься."
+  },
+  "categoriesAliasNote": {
+    "message": "Маленькое поле под каждой категорией — для алиасов: твоих собственных слов для той же категории (например, «leetcode» или «пробное собеседование» для категории «Отклики»), — чтобы поле для ввода текстом узнавало, как ты сам называешь свой день, при этом закрашивая его тем же весовым цветом категории."
+  },
+  "categoryNameAriaLabel": {
+    "message": "Название категории"
+  },
+  "weightPositiveLabel": {
+    "message": "Засчитывается в оценку"
+  },
+  "weightNeutralLabel": {
+    "message": "Нейтрально"
+  },
+  "weightNegativeLabel": {
+    "message": "Снижает оценку"
+  },
+  "hideCategoryAriaLabel": {
+    "message": "Скрыть $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "showCategoryAriaLabel": {
+    "message": "Показать $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasPlaceholder": {
+    "message": "другие слова для \"$NAME$\"…",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasAriaLabel": {
+    "message": "Алиасы для $NAME$ — другие слова, которые распознаёт поле для ввода текстом",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorNote": {
+    "message": "Её цвет по-прежнему отражает исходный вес, а не этот."
+  },
+  "reminderToggleLabel": {
+    "message": "Напоминать мне отмечать день"
+  },
+  "reminderToggleTooltip": {
+    "message": "Два уведомления в день, в указанное ниже время. Работают, только пока запущен Chrome."
+  },
+  "middayNudgeLabel": {
+    "message": "Напоминание в середине дня"
+  },
+  "eveningWrapupLabel": {
+    "message": "Вечерний итог"
+  },
+  "remindersNote": {
+    "message": "Уведомления приходят только пока запущен Chrome. Вечернее сообщает, сколько дня ещё не отмечено."
+  },
+  "weeklyRecapSectionLabel": {
+    "message": "Итоги недели"
+  },
+  "weeklyRecapToggleLabel": {
+    "message": "Присылать итоги недели"
+  },
+  "weeklyRecapToggleTooltip": {
+    "message": "Уведомление раз в неделю с сводкой: отслеженное время, главная категория, лучший день и серия."
+  },
+  "weeklyRecapDayLabel": {
+    "message": "День"
+  },
+  "weeklyRecapTimeLabel": {
+    "message": "Время"
+  },
+  "weeklyRecapNote": {
+    "message": "По умолчанию отключено. Короткая сводка прошедшей недели — отслеженное время, главная категория, лучший день, серия."
+  },
+  "daySunday": {
+    "message": "Воскресенье"
+  },
+  "dayMonday": {
+    "message": "Понедельник"
+  },
+  "dayTuesday": {
+    "message": "Вторник"
+  },
+  "dayWednesday": {
+    "message": "Среда"
+  },
+  "dayThursday": {
+    "message": "Четверг"
+  },
+  "dayFriday": {
+    "message": "Пятница"
+  },
+  "daySaturday": {
+    "message": "Суббота"
+  },
+  "worthNoticingLabel": {
+    "message": "Стоит заметить"
+  },
+  "worthNoticingSettingsTooltip": {
+    "message": "Закономерности, которые Daily Dial замечает в твоих собственных данных; показываются вверху Истории. Выключение скрывает весь раздел."
+  },
+  "observationsToggleTooltip": {
+    "message": "Показывает раздел «Стоит заметить» вверху Истории."
+  },
+  "observationsToggleLabel": {
+    "message": "Замечать закономерности в моих данных"
+  },
+  "observationsNote": {
+    "message": "Шесть вещей, проверяемых за последние недели — намерения, которые ты ставишь, но не доводишь до конца, отрезки без отдыха, самый продуктивный час, который никак не защищён, и так далее. Каждая формулируется как факт; советы появляются, только если ты сам их запросишь. При выключении раздел не появляется вовсе."
+  },
+  "dailyGoalsSectionLabel": {
+    "message": "Дневные цели по категориям"
+  },
+  "dailyGoalsNote": {
+    "message": "Оставь пустым, если цель не нужна. Прогресс появится в боковой панели, как только цель задана."
+  },
+  "weeklyGoalsSectionLabel": {
+    "message": "Недельные цели по категориям"
+  },
+  "weeklyGoalsSectionTooltip": {
+    "message": "Для того, что происходит не каждый день — цель на неделю целиком, а не на отдельный день."
+  },
+  "weeklyGoalsNote": {
+    "message": "Не зависит от дневных целей выше — задавай хоть одну, хоть обе, хоть ни одной для каждой категории."
+  },
+  "goalOffPlaceholder": {
+    "message": "нет"
+  },
+  "goalAriaLabelDaily": {
+    "message": "Дневная цель для $NAME$, в минутах",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "goalAriaLabelWeekly": {
+    "message": "Недельная цель для $NAME$, в минутах",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeSectionLabel": {
+    "message": "Челлендж"
+  },
+  "challengeSectionTooltip": {
+    "message": "Именованный забег со своим счётчиком дней, вроде челленджа на 100 дней. Отдельно от серии: считает от даты начала и не прерывается, если пропустить день."
+  },
+  "challengeNameFieldLabel": {
+    "message": "Название"
+  },
+  "challengeNamePlaceholder": {
+    "message": "#100days"
+  },
+  "challengeStartedLabel": {
+    "message": "Начат"
+  },
+  "challengeLengthLabel": {
+    "message": "Длительность (дней)"
+  },
+  "clearChallengeLabel": {
+    "message": "Убрать челлендж"
+  },
+  "challengeNote": {
+    "message": "Счётчик дней, показанный рядом с твоей серией. В отличие от серии он не прерывается — просто считает от даты начала. Оставь имя пустым, чтобы отключить."
+  },
+  "templatesSectionLabel": {
+    "message": "Шаблоны"
+  },
+  "templatesSectionTooltip": {
+    "message": "Многие дни похожи друг на друга — сохрани форму закрашенного дня и примени её к любому другому дню."
+  },
+  "templateNameFieldLabel": {
+    "message": "Название шаблона"
+  },
+  "templateNamePlaceholder": {
+    "message": "Дай название, например \"Будни\""
+  },
+  "saveTemplateLabel": {
+    "message": "Сохранить как шаблон"
+  },
+  "templatesNote": {
+    "message": "Шаблоны хранят только закрашенное время — никогда заметки, намерения, пункты «чего избегать» или рефлексию. Применение шаблона к дню, где уже что-то закрашено, сначала запросит подтверждение, и это можно отменить (⌘Z) после."
+  },
+  "templatesEmptyNote": {
+    "message": "Шаблонов пока нет."
+  },
+  "applyLabel": {
+    "message": "Применить"
+  },
+  "applyConfirmLabel": {
+    "message": "Подтвердить применение?"
+  },
+  "deleteLabel": {
+    "message": "Удалить"
+  },
+  "deleteTemplateAriaLabel": {
+    "message": "Удалить шаблон: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateAppliedToast": {
+    "message": "Применён \"$NAME$\" — ⌘Z, чтобы отменить",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateNameRequiredToast": {
+    "message": "Сначала дай шаблону название."
+  },
+  "templateMaxToast": {
+    "message": "Это предел числа шаблонов ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateSavedToast": {
+    "message": "Сохранён \"$NAME$\"",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateDeletedToast": {
+    "message": "Удалён \"$NAME$\"",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "exportSectionLabel": {
+    "message": "Экспорт"
+  },
+  "exportCsvLabel": {
+    "message": "Экспорт CSV"
+  },
+  "exportCsvTooltip": {
+    "message": "Таблица со всеми блоками: одна строка на блок, готова для сводной таблицы. Настройки не восстанавливает."
+  },
+  "exportJsonLabel": {
+    "message": "Экспорт JSON"
+  },
+  "exportJsonTooltip": {
+    "message": "Полная резервная копия — каждый день, категория и настройка. Именно этот файл стоит хранить."
+  },
+  "noBackupYetStatus": {
+    "message": "Ты ещё не экспортировал резервную копию."
+  },
+  "lastBackupStatus": {
+    "message": "Последняя копия: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "dataBackupNudgeText": {
+    "message": "С последней резервной копии прошло много времени."
+  },
+  "backupNudgeText": {
+    "message": "Ты давно не делал резервную копию — данные хранятся только в этом браузере."
+  },
+  "backupNudgeExportLabel": {
+    "message": "Экспортировать"
+  },
+  "backupNudgeExportTooltip": {
+    "message": "Сохранить резервную копию JSON, из которой потом можно восстановиться"
+  },
+  "backupNudgeDismissTooltip": {
+    "message": "Скрыть до следующего раза"
+  },
+  "dailyRemindersSectionLabel": {
+    "message": "Ежедневные напоминания"
+  },
+  "stripHintLabel": {
+    "message": "Нажми на день, чтобы открыть его"
+  },
+  "stripTooltip": {
+    "message": "Последние семь дней. Длина полоски — оценка дня; нажми на день, чтобы открыть или изменить его."
+  },
+  "importSectionLabel": {
+    "message": "Импорт"
+  },
+  "chooseBackupFileLabel": {
+    "message": "Выбрать файл…"
+  },
+  "chooseBackupFileTooltip": {
+    "message": "Восстановить из резервной копии JSON или экспорта CSV"
+  },
+  "mergeLabel": {
+    "message": "Объединить"
+  },
+  "mergeTooltip": {
+    "message": "Добавляет дни из файла, которых у тебя ещё нет. Существующие дни не трогает."
+  },
+  "replaceEverythingLabel": {
+    "message": "Заменить всё"
+  },
+  "replaceEverythingTooltip": {
+    "message": "Стирает всю текущую историю и восстанавливает ровно то, что в файле. Отменить нельзя."
+  },
+  "replaceArmedLabel": {
+    "message": "Нажми ещё раз, чтобы стереть текущие дни"
+  },
+  "cancelLabel": {
+    "message": "Отмена"
+  },
+  "importNote": {
+    "message": "Резервные копии JSON сохраняют всё (дни, категории, настройки). Файлы CSV восстанавливают только блоки времени, сопоставляя их с текущими категориями по имени. Объединение добавляет недостающие дни и не трогает существующие; замена стирает историю и восстанавливает ровно то, что в файле."
+  },
+  "fileReadErrorToast": {
+    "message": "Не удалось прочитать этот файл."
+  },
+  "importSummarySentence1_one": {
+    "message": "$COUNT$ день в файле, из них $OVERLAP$ пересекается с $EXISTING$ уже существующими.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_few": {
+    "message": "$COUNT$ дня в файле, из них $OVERLAP$ пересекается с $EXISTING$ уже существующими.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_many": {
+    "message": "$COUNT$ дней в файле, из них $OVERLAP$ пересекается с $EXISTING$ уже существующими.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_other": {
+    "message": "$COUNT$ дней в файле, из них $OVERLAP$ пересекается с $EXISTING$ уже существующими.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence2_one": {
+    "message": "Объединение добавит $COUNT$ новый день.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_few": {
+    "message": "Объединение добавит $COUNT$ новых дня.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_many": {
+    "message": "Объединение добавит $COUNT$ новых дней.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_other": {
+    "message": "Объединение добавит $COUNT$ новых дней.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_one": {
+    "message": "Замена сотрёт весь $COUNT$ существующий день и восстановит ровно то, что в файле.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_few": {
+    "message": "Замена сотрёт все $COUNT$ существующих дня и восстановит ровно то, что в файле.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_many": {
+    "message": "Замена сотрёт все $COUNT$ существующих дней и восстановит ровно то, что в файле.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_other": {
+    "message": "Замена сотрёт все $COUNT$ существующих дней и восстановит ровно то, что в файле.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummaryDemoClearSentence": {
+    "message": "Демо-данные будут сначала очищены."
+  },
+  "backupRestoredToast": {
+    "message": "Резервная копия восстановлена"
+  },
+  "backupMergedToast": {
+    "message": "Резервная копия объединена"
+  },
+  "multifillSectionLabel": {
+    "message": "Заполнить несколько дней"
+  },
+  "multifillSectionTooltip": {
+    "message": "Одно действие вместо перебора каждого дня — например, «меня не было с понедельника по пятницу»."
+  },
+  "multifillFromDateLabel": {
+    "message": "С какой даты"
+  },
+  "multifillToDateLabel": {
+    "message": "По какую дату"
+  },
+  "multifillCategoryLabel": {
+    "message": "Категория"
+  },
+  "multifillFromTimeLabel": {
+    "message": "С какого времени"
+  },
+  "multifillToTimeLabel": {
+    "message": "По какое время"
+  },
+  "eraseOptionLabel": {
+    "message": "Стереть (сделать неучтённым)"
+  },
+  "multifillNoteBefore": {
+    "message": "Заполняет выбранной категорией (или стирает) каждый день от начальной до конечной даты включительно. Оставь поля времени пустыми, чтобы заполнить весь день. Ограничено"
+  },
+  "multifillNoteAfter": {
+    "message": "днями за одно заполнение; каждый затронутый день сохраняется и отменяется отдельно, из представления этого дня."
+  },
+  "confirmFillLabel": {
+    "message": "Подтвердить заполнение"
+  },
+  "multifillArmedLabel": {
+    "message": "Нажми ещё раз, чтобы заполнить"
+  },
+  "multifillActionErase": {
+    "message": "стёрто"
+  },
+  "multifillActionSetTo": {
+    "message": "установлено на $CATEGORY$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillWindowWholeDay": {
+    "message": "на весь день"
+  },
+  "multifillUnknownCategory": {
+    "message": "эта категория"
+  },
+  "multifillWindowRange": {
+    "message": "с $FROM$ по $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "multifillSummary_one": {
+    "message": "$COUNT$ день ($FROM$–$TO$) будет $ACTION$ $WINDOW$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_few": {
+    "message": "$COUNT$ дня ($FROM$–$TO$) будут $ACTION$ $WINDOW$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_many": {
+    "message": "$COUNT$ дней ($FROM$–$TO$) будут $ACTION$ $WINDOW$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_other": {
+    "message": "$COUNT$ дней ($FROM$–$TO$) будут $ACTION$ $WINDOW$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillPainted_one": {
+    "message": "На $COUNT$ из них уже что-то закрашено, и это будет перезаписано.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_few": {
+    "message": "На $COUNT$ из них уже что-то закрашено, и это будет перезаписано.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_many": {
+    "message": "На $COUNT$ из них уже что-то закрашено, и это будет перезаписано.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_other": {
+    "message": "На $COUNT$ из них уже что-то закрашено, и это будет перезаписано.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillNonePainted": {
+    "message": "Ни на один из этих дней ещё ничего не закрашено."
+  },
+  "filledDays_one": {
+    "message": "Заполнен $COUNT$ день",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_few": {
+    "message": "Заполнено $COUNT$ дня",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_many": {
+    "message": "Заполнено $COUNT$ дней",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_other": {
+    "message": "Заполнено $COUNT$ дней",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveSectionLabel": {
+    "message": "Резервная копия в Google Drive"
+  },
+  "driveBackupLabel": {
+    "message": "Сохранить в Google Drive"
+  },
+  "driveBackupTooltip": {
+    "message": "Выполняет вход через Google и сохраняет копию в приватную папку только для этого приложения в твоём собственном Drive — невидимую в обычном Drive и недоступную никому, кроме тебя."
+  },
+  "driveRestoreLabel": {
+    "message": "Восстановить из Google Drive"
+  },
+  "driveRestoreTooltip": {
+    "message": "Скачивает последнюю резервную копию из Google Drive и открывает то же окно подтверждения объединения/замены, что и при импорте файла."
+  },
+  "autoBackupToggleLabel": {
+    "message": "Делать резервные копии автоматически"
+  },
+  "autoBackupToggleTooltip": {
+    "message": "Сохраняет копию в тот же файл Drive примерно раз в день, в фоне. Работает только после того, как ты сам подключишь Drive — самостоятельно окно входа она не откроет."
+  },
+  "autoBackupNote": {
+    "message": "Примерно раз в день, незаметно, в тот же файл. Она лишь обновляет копию, которую ты уже создал вручную — сама войти в аккаунт не может, поэтому ничего не делает, пока ты хотя бы раз не подключишь Drive."
+  },
+  "driveConnectedAsStatus": {
+    "message": "Подключено как $EMAIL$",
+    "placeholders": {
+      "email": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveNotBackedUpStatus": {
+    "message": "Резервная копия в Google Drive ещё не создана."
+  },
+  "driveConnectedNoUploadStatus": {
+    "message": "Google Drive подключён. Данные восстановлены из копии; отсюда пока ничего не загружалось."
+  },
+  "driveLastSyncStatus": {
+    "message": "Последняя синхронизация с Google Drive: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveDisconnectLabel": {
+    "message": "Отключить Google Drive"
+  },
+  "driveDisconnectTooltip": {
+    "message": "Выходит из этого аккаунта в Daily Dial. Файл резервной копии остаётся в Drive; ничего не удаляется."
+  },
+  "driveDeleteLabel": {
+    "message": "Удалить копию в Drive"
+  },
+  "driveDeleteTooltip": {
+    "message": "Навсегда удаляет файл резервной копии из твоего Google Drive. Отменить нельзя. Локальные данные на этом устройстве не затрагиваются."
+  },
+  "driveDeleteArmedLabel": {
+    "message": "Нажми ещё раз, чтобы удалить навсегда"
+  },
+  "driveNoteBefore": {
+    "message": "Не обязательно и отключено, пока ты не используешь эту функцию. Использует Google"
+  },
+  "driveNoteAfter": {
+    "message": "— место для хранения, приватное для этого расширения, не отображающееся в твоём обычном Drive и недоступное другим приложениям. Это единственная функция Daily Dial, которая куда-либо отправляет данные; всё остальное остаётся на этом устройстве. Подробности — на странице"
+  },
+  "driveNoteFor": {
+    "message": "."
+  },
+  "privacyLinkLabel": {
+    "message": "Конфиденциальность"
+  },
+  "nothingToExportToast": {
+    "message": "Пока нечего экспортировать."
+  },
+  "onlyDemoExportToast": {
+    "message": "Загружены только демо-данные — пока нечего экспортировать из своего."
+  },
+  "exportedCsvToast": {
+    "message": "CSV экспортирован"
+  },
+  "exportedJsonToast": {
+    "message": "Резервная копия JSON экспортирована"
+  },
+  "nothingToBackupToast": {
+    "message": "Пока нечего сохранять в резервную копию."
+  },
+  "onlyDemoBackupToast": {
+    "message": "Загружены только демо-данные — пока нечего сохранять из своего."
+  },
+  "driveConnectingToast": {
+    "message": "Подключение к Google Drive…"
+  },
+  "driveBackedUpToast": {
+    "message": "Резервная копия сохранена в Google Drive"
+  },
+  "driveBackupErrorToast": {
+    "message": "Не удалось сохранить копию в Google Drive."
+  },
+  "driveCheckingToast": {
+    "message": "Проверка Google Drive…"
+  },
+  "driveNoBackupFoundToast": {
+    "message": "В этом аккаунте Google не найдено резервной копии Daily Dial."
+  },
+  "driveUnreachableToast": {
+    "message": "Не удалось связаться с Google Drive."
+  },
+  "driveDisconnectedToast": {
+    "message": "Google Drive отключён"
+  },
+  "driveDeletingToast": {
+    "message": "Удаление из Google Drive…"
+  },
+  "driveDeletedToast": {
+    "message": "Резервная копия в Google Drive удалена"
+  },
+  "driveDeleteErrorToast": {
+    "message": "Не удалось удалить из Google Drive."
+  },
+  "themeLabel": {
+    "message": "Тема"
+  },
+  "themeSystem": {
+    "message": "Как в системе"
+  },
+  "themeLight": {
+    "message": "Светлая"
+  },
+  "themeDark": {
+    "message": "Тёмная"
+  },
+  "timeFormatLabel": {
+    "message": "Формат времени"
+  },
+  "timeFormat24h": {
+    "message": "24-часовой"
+  },
+  "timeFormat12h": {
+    "message": "12-часовой"
+  },
+  "dialModeLabel": {
+    "message": "Вид циферблата"
+  },
+  "dialModeLabelTooltip": {
+    "message": "Одно кольцо на все 24 часа или два кольца поменьше — одно для AM, одно для PM."
+  },
+  "weekStartLabel": {
+    "message": "Неделя начинается с"
+  },
+  "weekStartTooltip": {
+    "message": "Какой день начинает неделю; используется в еженедельных итогах."
+  },
+  "wakingHoursSectionLabel": {
+    "message": "Часы бодрствования"
+  },
+  "wakingHoursTooltip": {
+    "message": "Инсайт дня считает неучтённым временем «ещё не отмечено» только в этом промежутке — так часы сна не помечаются как пробел в записях."
+  },
+  "dayStartsLabel": {
+    "message": "День начинается"
+  },
+  "dayEndsLabel": {
+    "message": "День заканчивается"
+  },
+  "appearanceUpdatedToast": {
+    "message": "Внешний вид обновлён"
+  },
+  "remindersSetToast": {
+    "message": "Напоминания установлены на $T1$ и $T2$",
+    "placeholders": {
+      "t1": {
+        "content": "$1"
+      },
+      "t2": {
+        "content": "$2"
+      }
+    }
+  },
+  "remindersOffToast": {
+    "message": "Напоминания выключены"
+  },
+  "autoBackupOnToast": {
+    "message": "Автоматическое резервное копирование включено"
+  },
+  "autoBackupOffToast": {
+    "message": "Автоматическое резервное копирование выключено"
+  },
+  "aboutDailyDialName": {
+    "message": "Daily Dial"
+  },
+  "githubLinkLabel": {
+    "message": "GitHub"
+  },
+  "gettingStartedLinkLabel": {
+    "message": "Начало работы"
+  },
+  "demoAndTourLabel": {
+    "message": "Демо и тур"
+  },
+  "replayOnboardingLabel": {
+    "message": "Показать приветствие снова"
+  },
+  "replayOnboardingTooltip": {
+    "message": "Показывает тот же экран приветствия из трёх карточек, что и при первом открытии (или показал бы)"
+  },
+  "loadSampleDataLabel": {
+    "message": "Загрузить демо-данные"
+  },
+  "loadSampleDataTooltip": {
+    "message": "Заполняет три недели реалистичными (вымышленными) днями в датах, которые ты не отмечал, чтобы История, серии и цели было на чём показать."
+  },
+  "clearSampleDataLabel": {
+    "message": "Выйти из демо-режима"
+  },
+  "clearSampleDataTooltip": {
+    "message": "Удаляет ровно те демо-дни, которые были добавлены. Всё, что ты вносил сам, не тронуто."
+  },
+  "demoModeOffNote": {
+    "message": "Посмотри, как выглядят История, серии и цели с тремя неделями разнообразных (вымышленных) дней. Твои собственные дни остаются как есть."
+  },
+  "demoModeOnNote": {
+    "message": "Демо-режим включён. Демо-дни заполняют только те даты, которые ты не отмечал — при выключении удаляются ровно они, и ничего твоего."
+  },
+  "demoModeOnToast": {
+    "message": "Демо-режим включён — демо-дни добавлены вокруг твоих собственных"
+  },
+  "demoModeNothingToAddToast": {
+    "message": "Каждый день в демо-диапазоне уже твой — добавлять нечего"
+  },
+  "demoModeOffToast": {
+    "message": "Демо-режим выключен — твои собственные дни не тронуты"
+  },
+  "personalBestsLabel": {
+    "message": "Личные рекорды"
+  },
+  "bestsStreakLabel": {
+    "message": "Самая длинная серия"
+  },
+  "bestsScoreLabel": {
+    "message": "Лучшая оценка дня"
+  },
+  "bestsDayLabel": {
+    "message": "Самый продуктивный день"
+  },
+  "bestsStreakDays_one": {
+    "message": "$COUNT$ день",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_few": {
+    "message": "$COUNT$ дня",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_many": {
+    "message": "$COUNT$ дней",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_other": {
+    "message": "$COUNT$ дней",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "keyboardShortcutsLabel": {
+    "message": "Горячие клавиши"
+  },
+  "shortcutSelectPen": {
+    "message": "Выбрать категорию (ручку)"
+  },
+  "shortcutSelectEraser": {
+    "message": "Выбрать ластик"
+  },
+  "shortcutUndo": {
+    "message": "Отменить"
+  },
+  "shortcutRedo": {
+    "message": "Повторить"
+  },
+  "shortcutCloseSettings": {
+    "message": "Закрыть эту панель"
+  },
+  "onboardingTitle": {
+    "message": "Добро пожаловать в Daily Dial"
+  },
+  "onboardingSubtitle": {
+    "message": "Три вещи, которые стоит знать перед тем, как закрасить свой первый день."
+  },
+  "onboardingStep1Title": {
+    "message": "Закрашивай свой день"
+  },
+  "onboardingStep1TextBefore": {
+    "message": "Выбери категорию под циферблатом, затем веди по кольцу. Предпочитаешь печатать?"
+  },
+  "onboardingStep1TextAfter": {
+    "message": "тоже подойдёт."
+  },
+  "onboardingStep2Title": {
+    "message": "Смотри, как всё складывается"
+  },
+  "onboardingStep2Text": {
+    "message": "Твоя оценка, процент продуктивности и самая длинная концентрация обновляются по ходу закрашивания. Строка под ними описывает твой день простыми словами."
+  },
+  "onboardingStep3Title": {
+    "message": "Настрой под себя"
+  },
+  "onboardingStep3TextBefore": {
+    "message": "Переименовывай категории, задавай напоминания и цели или делай резервную копию в Google Drive — всё за"
+  },
+  "onboardingStep3TextAfter": {
+    "message": "в правом верхнем углу. Всё, кроме закрашивания, необязательно."
+  },
+  "onboardingAltBefore": {
+    "message": "Хочешь сначала увидеть настоящие цифры?"
+  },
+  "loadSampleDataInsteadLabel": {
+    "message": "Загрузить демо-данные вместо этого"
+  },
+  "skipLabel": {
+    "message": "Пропустить"
+  },
+  "letsStartLabel": {
+    "message": "Начнём"
+  },
+  "onboardingNudgePaintToast": {
+    "message": "Выбери категорию ниже, затем веди по кольцу, чтобы закрасить"
+  },
+  "onboardingNudgeSettingsToast": {
+    "message": "Всё готово — в Настройках (☰, вверху справа) есть категории, напоминания, цели и резервные копии"
+  },
+  "futureDayToast": {
+    "message": "Это завтра — там пока нечего отмечать"
+  },
+  "dayRolledOverToast": {
+    "message": "Наступил новый день — циферблат обновился"
+  },
+  "undoDone": {
+    "message": "Отменено"
+  },
+  "undoEmpty": {
+    "message": "Нечего отменять"
+  },
+  "redoDone": {
+    "message": "Повторено"
+  },
+  "redoEmpty": {
+    "message": "Нечего повторять"
+  },
+  "copyYesterdayEmptyToast": {
+    "message": "Во вчерашнем дне нечего копировать."
+  },
+  "copyYesterdayConfirm": {
+    "message": "Сегодня уже есть записи — заменить их вчерашними?"
+  },
+  "copyYesterdaySuccessToast": {
+    "message": "Вчера скопировано — ⌘Z, чтобы отменить"
+  },
+  "shareImageErrorToast": {
+    "message": "Не удалось создать изображение."
+  },
+  "shareImageSavedToast": {
+    "message": "Изображение сохранено"
+  },
+  "typedEntryAddedToast": {
+    "message": "Добавлено"
+  },
+  "typedEntryOverflowToast": {
+    "message": "Добавлено — часть после полуночи ушла на следующий день"
+  },
+  "noteSavedAnnounce": {
+    "message": "Заметка сохранена для $FROM$–$TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "removeIntentionAriaLabel": {
+    "message": "Удалить намерение: $TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeAvoidAriaLabel": {
+    "message": "Удалить: $TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeNoteAriaLabel": {
+    "message": "Удалить заметку для $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "unloggedOptionLabel": {
+    "message": "Не отмечено"
+  },
+  "breakdownGapPlaceholder": {
+    "message": "Пока ничего не отмечено"
+  },
+  "fillSpanAriaLabel": {
+    "message": "Заполнить $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "noteForAriaLabel": {
+    "message": "Заметка для $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanTooltip": {
+    "message": "Очистить $WHEN$ — время снова станет неучтённым",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanAriaLabel": {
+    "message": "Очистить $CATEGORY$, $WHEN$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "when": {
+        "content": "$2"
+      }
+    }
+  },
+  "maxNotesToast": {
+    "message": "Это предел количества заметок за день ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxAvoidToast": {
+    "message": "Это предел количества пунктов за день ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxIntentsToast": {
+    "message": "Это предел количества намерений за день ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownSummary_one": {
+    "message": "$COUNT$ отрезок · $LOGGED$ отмечено, $UNLOGGED$ не отмечено",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_few": {
+    "message": "$COUNT$ отрезка · $LOGGED$ отмечено, $UNLOGGED$ не отмечено",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_many": {
+    "message": "$COUNT$ отрезков · $LOGGED$ отмечено, $UNLOGGED$ не отмечено",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_other": {
+    "message": "$COUNT$ отрезков · $LOGGED$ отмечено, $UNLOGGED$ не отмечено",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "clearedAnnounce": {
+    "message": "Очищено с $FROM$ по $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "caretCommitAnnounce": {
+    "message": "$CATEGORY$ установлена с $FROM$ по $TO$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretAnnounce": {
+    "message": "$FROM$–$TO$, $WHAT$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "what": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretMixedLabel": {
+    "message": "смешанное"
+  },
+  "untrackedLower": {
+    "message": "не отслежено"
+  },
+  "untrackedCapitalized": {
+    "message": "Не отслежено"
+  },
+  "penEraserLabel": {
+    "message": "Ластик"
+  },
+  "dialEraserLabel": {
+    "message": "ластик"
+  },
+  "dialPenLabel": {
+    "message": "ручка: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "edgeRangeLabel": {
+    "message": "$FROM$–$TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "edgeGoneLabel": {
+    "message": "$CATEGORY$ исчезнет",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "dialAriaNothingLoggedSuffix": {
+    "message": "Пока ничего не отмечено."
+  },
+  "dialAriaRangePart": {
+    "message": "$FROM$–$TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "histHeatmapAriaLabel": {
+    "message": "Календарь месяца. Стрелки перемещают между днями, Enter открывает день."
+  },
+  "heatmapLoggedLabel": {
+    "message": "$DATE$ — оценка $SCORE$, отслежено $DURATION$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      },
+      "duration": {
+        "content": "$3"
+      }
+    }
+  },
+  "heatmapWrittenLabel": {
+    "message": "$DATE$ — записано, время не закрашено",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "heatmapEmptyLabel": {
+    "message": "$DATE$ — не отмечено",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "legendNotLoggedLabel": {
+    "message": "Не отмечено"
+  },
+  "legendWrittenLabel": {
+    "message": "Только записи"
+  },
+  "legendWrittenTooltip": {
+    "message": "Заметки, намерения или рефлексия, но время на циферблате не закрашено."
+  },
+  "legendOffTrackLabel": {
+    "message": "Не задалось"
+  },
+  "legendMixedLabel": {
+    "message": "Смешанно"
+  },
+  "legendSolidLabel": {
+    "message": "Отлично"
+  },
+  "prevMonthLabel": {
+    "message": "Предыдущий месяц"
+  },
+  "nextMonthLabel": {
+    "message": "Следующий месяц"
+  },
+  "thisMonthLabel": {
+    "message": "Этот месяц"
+  },
+  "thisMonthTooltip": {
+    "message": "Вернуться к текущему месяцу"
+  },
+  "monthSummaryLabel": {
+    "message": "Итоги месяца"
+  },
+  "monthSummaryTooltip": {
+    "message": "Средние значения учитывают только отмеченные дни — неотмеченный день не занижает среднее."
+  },
+  "statDaysLoggedLabel": {
+    "message": "Отмечено дней"
+  },
+  "statAvgScoreLabel": {
+    "message": "Средняя оценка"
+  },
+  "statAvgProductiveLabel": {
+    "message": "Средняя продуктивность"
+  },
+  "bestDayLabel": {
+    "message": "Лучший день: $KEY$ ($SCORE$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      }
+    }
+  },
+  "bestDayEmptyLabel": {
+    "message": "Лучший день: — в этом месяце пока нет оценок."
+  },
+  "monthStreakLabel": {
+    "message": "Серия в этом месяце: $CURRENT$ текущая · $LONGEST$ самая долгая",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "longest": {
+        "content": "$2"
+      }
+    }
+  },
+  "monthStreakTooltip": {
+    "message": "Дни подряд, посчитанные только в пределах этого месяца — не заимствует дни из соседних месяцев."
+  },
+  "writtenDaysNote_one": {
+    "message": "$COUNT$ день в этом месяце записан, но время на нём не закрашено, поэтому он не учитывается ни в чём выше. Все такие дни есть в журнале ниже.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_few": {
+    "message": "$COUNT$ дня в этом месяце записаны, но время на них не закрашено, поэтому они не учитываются ни в чём выше. Все такие дни есть в журнале ниже.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_many": {
+    "message": "$COUNT$ дней в этом месяце записаны, но время на них не закрашено, поэтому они не учитываются ни в чём выше. Все такие дни есть в журнале ниже.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_other": {
+    "message": "$COUNT$ дней в этом месяце записаны, но время на них не закрашено, поэтому они не учитываются ни в чём выше. Все такие дни есть в журнале ниже.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryTrendsLabel": {
+    "message": "Тренды по категориям"
+  },
+  "categoryTrendsTooltip": {
+    "message": "Минуты по категориям, один столбец на календарную неделю в видимом месяце. Стрелка сравнивает первую показанную неделю с последней."
+  },
+  "trendsEmptyNote": {
+    "message": "В этом месяце пока ничего не отмечено — тренды появятся по мере закрашивания дней."
+  },
+  "trendWeekTooltip": {
+    "message": "Неделя $WEEK$: $DURATION$",
+    "placeholders": {
+      "week": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "trendDirectionTooltip": {
+    "message": "Первая неделя против последней показанной, чтобы один провал в середине не искажал картину."
+  },
+  "weekOverWeekLabel": {
+    "message": "Неделя к неделе"
+  },
+  "weekOverWeekTooltip": {
+    "message": "Эта неделя против прошлой, обе начинаются с выбранного тобой дня недели."
+  },
+  "wowTrackedLabel": {
+    "message": "Отслежено"
+  },
+  "wowProductiveLabel": {
+    "message": "Продуктивно"
+  },
+  "wowAvgScoreLabel": {
+    "message": "Средняя оценка"
+  },
+  "wowNoPreviousTooltip": {
+    "message": "На прошлой неделе не с чем сравнивать — там ничего не отмечено."
+  },
+  "wowPreviousTooltip": {
+    "message": "Прошлая неделя: $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "wowDeltaPoints": {
+    "message": "$N$ п.п.",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchNotesLabel": {
+    "message": "Поиск по заметкам"
+  },
+  "searchPlaceholder": {
+    "message": "Ищи в своих заметках…"
+  },
+  "searchAriaLabel": {
+    "message": "Поиск по своим заметкам"
+  },
+  "searchTooltip": {
+    "message": "Ищет по однострочным заметкам, которые ты оставляешь на вкладке День."
+  },
+  "searchPromptNote": {
+    "message": "Начни печатать, чтобы найти свои заметки."
+  },
+  "searchNoMatchNote": {
+    "message": "Нет заметок, подходящих под \"$QUERY$\".",
+    "placeholders": {
+      "query": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchResultTooltip": {
+    "message": "Перейти к этому дню"
+  },
+  "theLogLabel": {
+    "message": "Журнал"
+  },
+  "logRangeGroupLabel": {
+    "message": "Сколько журнала показывать"
+  },
+  "logRangeWeekLabel": {
+    "message": "Эта неделя"
+  },
+  "logRangeMonthLabel": {
+    "message": "Этот месяц"
+  },
+  "logRangeAllLabel": {
+    "message": "Всё"
+  },
+  "logEmptyNote": {
+    "message": "В этом диапазоне пока ничего не записано. Заметки и намерения со вкладки День появляются здесь."
+  },
+  "openDayTooltip": {
+    "message": "Открыть этот день"
+  },
+  "logMeantToLabel": {
+    "message": "Собирался сделать"
+  },
+  "logWhatHappenedLabel": {
+    "message": "Что случилось"
+  },
+  "logMeantToAvoidLabel": {
+    "message": "Собирался избегать"
+  },
+  "worthNoticingHistoryTooltip": {
+    "message": "Закономерности в твоих собственных данных за последние недели. Здесь нет советов, если ты сам их не запросишь."
+  },
+  "worthNoticingSubnote": {
+    "message": "за последние недели"
+  },
+  "suggestionShowLabel": {
+    "message": "Что делают в таких случаях"
+  },
+  "suggestionHideLabel": {
+    "message": "Скрыть"
+  },
+  "silenceObservationLabel": {
+    "message": "Больше не показывать"
+  },
+  "silenceObservationTooltip": {
+    "message": "Навсегда, а не только сейчас."
+  },
+  "suggestionDisclaimer": {
+    "message": "Это примеры подхода, а не рекомендации — ни один из них не связан с Daily Dial."
+  },
+  "historyEmptyBefore": {
+    "message": "Истории пока нет. Отметь несколько дней на вкладке День — когда наберётся неделя-другая, эта вкладка превратится в картину месяца: тепловая карта, тренды по категориям и сравнение недель. Хочешь посмотреть, как это выглядит, прямо сейчас?"
+  },
+  "historyEmptyAfter": {
+    "message": "заполняет три недели мгновенно."
+  },
+  "futureNotLogged": {
+    "message": "Это ещё не произошло — можно отмечать время только до текущего момента."
+  },
+  "copyYesterdayUpToNowToast": {
+    "message": "Вчера скопировано до текущего момента — остаток дня ещё не наступил"
+  },
+  "templateAppliedUpToNowToast": {
+    "message": "Применён \"$NAME$\" до текущего момента — остаток дня ещё не наступил",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_one": {
+    "message": "Заполнен $COUNT$ день, до текущего момента",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_few": {
+    "message": "Заполнено $COUNT$ дня, до текущего момента",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_many": {
+    "message": "Заполнено $COUNT$ дней, до текущего момента",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_other": {
+    "message": "Заполнено $COUNT$ дней, до текущего момента",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownNotYet": {
+    "message": "Ещё не наступило"
+  },
+  "errPickDates": {
+    "message": "Выбери дату начала и конца."
+  },
+  "errEndDateBeforeStart": {
+    "message": "Дата конца раньше даты начала."
+  },
+  "errRangeTooLong": {
+    "message": "Это $COUNT$ дней — одно заполнение может охватывать не больше $MAX$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "errBadStartTime": {
+    "message": "Некорректное время начала."
+  },
+  "errBadEndTime": {
+    "message": "Некорректное время конца."
+  },
+  "errEndTimeBeforeStart": {
+    "message": "Время конца раньше времени начала."
+  },
+  "errTryExample": {
+    "message": "Попробуй что-то вроде \"9-11 deep work\"."
+  },
+  "errUnreadableEntry": {
+    "message": "Не удалось это прочитать. Попробуй \"9-11 deep work\" или \"9pm-11pm study\"."
+  },
+  "errUnreadableTime": {
+    "message": "Не удалось прочитать время — используй 24-часовой (13:30) или 12-часовой формат (1:30pm)."
+  },
+  "errNoCategoryGiven": {
+    "message": "Добавь категорию, например \"9-11 deep work\"."
+  },
+  "errNoCategoryMatch": {
+    "message": "Ни одна категория не подходит под \"$TEXT$\".",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "errCategoryAmbiguous": {
+    "message": "\"$TEXT$\" подходит под $MATCHES$ — уточни.",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      },
+      "matches": {
+        "content": "$2"
+      }
+    }
+  },
+  "errFileEmpty": {
+    "message": "Этот файл пуст."
+  },
+  "errNotDailyDialCsv": {
+    "message": "Это не похоже на CSV-экспорт Daily Dial."
+  },
+  "errCsvBadDate": {
+    "message": "Строка $ROW$: некорректная дата \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadStartTime": {
+    "message": "Строка $ROW$: некорректное время начала \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadEndTime": {
+    "message": "Строка $ROW$: некорректное время конца \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvUnknownCategory": {
+    "message": "Строка $ROW$: неизвестная категория \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBlockTooShort": {
+    "message": "Строка $ROW$: блок короче $MIN$ минут.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "min": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvEndNotAfterStart": {
+    "message": "Строка $ROW$: конец не позже начала.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      }
+    }
+  },
+  "errNotValidJson": {
+    "message": "Этот файл не является корректным JSON."
+  },
+  "errNotDailyDialBackup": {
+    "message": "Это не похоже на резервную копию Daily Dial."
+  },
+  "errMissingSchemaVersion": {
+    "message": "Отсутствует версия схемы — это не похоже на резервную копию Daily Dial."
+  },
+  "errBackupTooNew": {
+    "message": "Эта копия сделана более новой версией Daily Dial (схема $VERSION$). Сначала обнови расширение.",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapNothingLogged": {
+    "message": "На прошлой неделе ничего не отмечено. Стоит начать эту неделю с чистого листа?"
+  },
+  "recapTrackedProductive": {
+    "message": "$DURATION$ отслежено, $PERCENT$% продуктивно.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapTopCategory": {
+    "message": "Больше всего времени ушло на $CATEGORY$.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapIntentions_one": {
+    "message": "Ты выполнил $DONE$ из $SET$ намерения.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_few": {
+    "message": "Ты выполнил $DONE$ из $SET$ намерений.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_many": {
+    "message": "Ты выполнил $DONE$ из $SET$ намерений.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_other": {
+    "message": "Ты выполнил $DONE$ из $SET$ намерений.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapAskAdjust": {
+    "message": "Есть что скорректировать на этой неделе?"
+  },
+  "obsOvercommitHeadline": {
+    "message": "Ты ставишь больше намерений, чем выполняешь"
+  },
+  "obsOvercommitDetail": {
+    "message": "$SET$ намерений поставлено за последние $DAYS$ дней, выполнено только $DONE$.",
+    "placeholders": {
+      "set": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "done": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsNoBreaksHeadline": {
+    "message": "За последние $DAYS$ дней не отмечено ни отдыха, ни нейтрального времени",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsNoBreaksDetail": {
+    "message": "$DURATION$ отслежено за последние $DAYS$ дней, и ни минуты — в нейтральной категории.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsDistractionHeadline": {
+    "message": "Отвлечения растут последние $DAYS$ дней",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsDistractionDetail": {
+    "message": "$CURRENT$ отмечено как отвлечение за последние $DAYS$ дней — больше, чем $PREVIOUS$ за предыдущие $DAYS$ дней.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "previous": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsCoverageHeadline": {
+    "message": "Записи стали реже по сравнению с предыдущими $DAYS$ днями",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsCoverageDetail": {
+    "message": "$RECENT$/день отслежено за последние $RECENTDAYS$ дней — меньше, чем $PRIOR$/день за предыдущие $PRIORDAYS$ дней.",
+    "placeholders": {
+      "recent": {
+        "content": "$1"
+      },
+      "recentdays": {
+        "content": "$2"
+      },
+      "prior": {
+        "content": "$3"
+      },
+      "priordays": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourHeadline_one": {
+    "message": "$HOUR$ — твой самый продуктивный час, но продуктивен он был только $PROTECTED$ из $LOGGED$ отмеченного дня",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_few": {
+    "message": "$HOUR$ — твой самый продуктивный час, но продуктивен он был только $PROTECTED$ из $LOGGED$ отмеченных дней",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_many": {
+    "message": "$HOUR$ — твой самый продуктивный час, но продуктивен он был только $PROTECTED$ из $LOGGED$ отмеченных дней",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_other": {
+    "message": "$HOUR$ — твой самый продуктивный час, но продуктивен он был только $PROTECTED$ из $LOGGED$ отмеченных дней",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail_one": {
+    "message": "За последние $DAYS$ дней час $HOUR$ накопил больше продуктивного времени, чем любой другой, но оставался продуктивным только $PROTECTED$ из $LOGGED$ отмеченного дня.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_few": {
+    "message": "За последние $DAYS$ дней час $HOUR$ накопил больше продуктивного времени, чем любой другой, но оставался продуктивным только $PROTECTED$ из $LOGGED$ отмеченных дней.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_many": {
+    "message": "За последние $DAYS$ дней час $HOUR$ накопил больше продуктивного времени, чем любой другой, но оставался продуктивным только $PROTECTED$ из $LOGGED$ отмеченных дней.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_other": {
+    "message": "За последние $DAYS$ дней час $HOUR$ накопил больше продуктивного времени, чем любой другой, но оставался продуктивным только $PROTECTED$ из $LOGGED$ отмеченных дней.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_one": {
+    "message": "Всё, что отмечено за последние $DAYS$ дней, укладывается лишь в $COUNT$ категорию",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_few": {
+    "message": "Всё, что отмечено за последние $DAYS$ дней, укладывается лишь в $COUNT$ категории",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_many": {
+    "message": "Всё, что отмечено за последние $DAYS$ дней, укладывается лишь в $COUNT$ категорий",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_other": {
+    "message": "Всё, что отмечено за последние $DAYS$ дней, укладывается лишь в $COUNT$ категорий",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaDetail": {
+    "message": "«$CATEGORY$» включена, но за этот период набрала ноль минут — один из шести слотов категорий простаивает.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptMorning": {
+    "message": "Как прошло утро? Закрась его, пока не забыл."
+  },
+  "promptEveningUnlogged": {
+    "message": "$DURATION$ сегодняшнего дня ещё не отмечено. Закрой день и добавь свою строку о том, почему так вышло.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptEveningComplete": {
+    "message": "Сегодняшний день отмечен полностью. Добавь свою строку о том, почему так вышло, пока не забыл."
+  },
+  "insightNothingLogged": {
+    "message": "Пока ничего не отмечено. Выбери категорию и веди по кольцу, чтобы закрасить первый блок."
+  },
+  "insightProductivePct": {
+    "message": "<b>$PERCENT$%</b> отслеженного времени было продуктивным.",
+    "placeholders": {
+      "percent": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightMostlyDrain": {
+    "message": "<b>$DURATION$</b> ушло на время, отмеченное как потеря — больше, чем на движение вперёд.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightTopCategory": {
+    "message": "<b>$CATEGORY$</b> лидирует за день с результатом <b>$DURATION$</b>.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "insightFragmented": {
+    "message": "Правда, оно шло короткими кусками — самый длинный непрерывный отрезок составил всего $DURATION$.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightLongStretch": {
+    "message": "Самый длинный непрерывный отрезок составил <b>$DURATION$</b>.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightStillUnlogged": {
+    "message": "$DURATION$ всё ещё не отмечено.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "scoreNoData": {
+    "message": "Пока нет данных"
+  },
+  "scoreTooLittle": {
+    "message": "Слишком мало отмечено для оценки"
+  },
+  "scoreLockedIn": {
+    "message": "Полная концентрация"
+  },
+  "scoreSolid": {
+    "message": "Уверенно"
+  },
+  "scoreMixedBag": {
+    "message": "Неоднозначно"
+  },
+  "scoreOffTrack": {
+    "message": "Не задалось"
+  },
+  "sampleReflectionGoodFocus": {
+    "message": "Хорошая концентрация после обеда."
+  },
+  "sampleReflectionDistracted": {
+    "message": "Весь вечер отвлекался."
+  },
+  "sampleReflectionRough": {
+    "message": "Тяжёлый день, в основном скроллинг."
+  },
+  "shareScoreLabel": {
+    "message": "оценка"
+  },
+  "shareNothingLogged": {
+    "message": "Пока ничего не отмечено"
+  },
+  "shareTrackedLine": {
+    "message": "$DURATION$ отслежено · $PERCENT$% продуктивно",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareLedLine": {
+    "message": "$CATEGORY$ лидирует с $DURATION$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareStreakLine": {
+    "message": "🔥 $COUNT$ дней подряд",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "durationHourSuffix": {
+    "message": "ч"
+  },
+  "durationMinuteSuffix": {
+    "message": "мин"
+  },
+  "sug_intentionOvercommit_lead": {
+    "message": "Три-четыре дела, которые ты правда доводишь до конца, лучше десяти, которые только собирался сделать."
+  },
+  "sug_intentionOvercommit_text1": {
+    "message": "Ставь меньше целей. Одно обязательное дело и два желательных — уже полноценный день для большинства людей."
+  },
+  "sug_intentionOvercommit_text2": {
+    "message": "Делай каждое намерение достаточно маленьким, чтобы закончить за один присест — «набросать письмо», а не «разобраться с заявкой»."
+  },
+  "sug_intentionOvercommit_text3": {
+    "message": "Переноси то, что раз за разом откладывается, в отдельную заметку «когда-нибудь», чтобы это перестало выглядеть провалом сегодняшнего дня."
+  },
+  "sug_noBreaks_lead": {
+    "message": "Отдых, который никогда не записывают, обычно и есть отдых, которого никогда не бывает."
+  },
+  "sug_noBreaks_text1": {
+    "message": "Ставь таймер на перерывы, чтобы остановиться не было решением, которое нужно принимать в разгар концентрации."
+  },
+  "sug_noBreaks_text2": {
+    "message": "Отходи на перерыве от экрана целиком — прогулка, еда или что угодно, что не является ещё одним окном."
+  },
+  "sug_noBreaks_text3": {
+    "message": "Если ты уже отдыхаешь, но не отмечаешь это — отмечай. День, который выглядит как шестнадцать часов без перерыва, не был тем днём, который у тебя правда был."
+  },
+  "sug_peakHoursUnprotected_lead": {
+    "message": "Час, в который ты работаешь лучше всего, стоит защитить раньше, чем на него успеет претендовать что-то ещё."
+  },
+  "sug_peakHoursUnprotected_text1": {
+    "message": "Заблокируй его в календаре, который видят другие, чтобы время было занято раньше, чем его займёт кто-то другой."
+  },
+  "sug_peakHoursUnprotected_text2": {
+    "message": "Отключи уведомления на этот час целиком, а не полагайся на то, что просто не будешь смотреть."
+  },
+  "sug_peakHoursUnprotected_text3": {
+    "message": "Начинай с самого сложного дела дня именно в этот час, а не с самого простого. Лёгкая работа переживёт худшее время, а сложная — часто нет."
+  },
+  "sug_peakHoursUnprotected_text4": {
+    "message": "Если можешь, смени место на этот час. Другая комната или библиотека часто помогают больше, чем любое приложение."
+  },
+  "sug_distractionTrend_lead": {
+    "message": "Растущее отвлечение — это обычно проблема трения, а не силы воли: цель в том, чтобы сделать лёгкое чуть менее лёгким."
+  },
+  "sug_distractionTrend_text1": {
+    "message": "Блокируй сайты, которые отнимают время, но только в те часы, когда ты правда хочешь работать — блокировка на весь день обычно просто отключают целиком."
+  },
+  "sug_distractionTrend_text2": {
+    "message": "Добавь паузу перед открытием приложения, вместо того чтобы его блокировать. Несколько секунд трения убирают большую часть открытий «на автомате»."
+  },
+  "sug_distractionTrend_text3": {
+    "message": "Сделай телефон скучным на время, а не запретным."
+  },
+  "sug_distractionTrend_text4": {
+    "message": "Оставляй телефон в другой комнате во время работы. Негламурно, бесплатно и надёжнее всего, что можно установить на устройство, от которого пытаешься отвлечься."
+  },
+  "sug_distractionTrend_text5": {
+    "message": "Заменяй, а не просто убирай — реши, на что пойдёт это время вместо, иначе оно обычно находит дорогу назад."
+  },
+  "sug_coverageDecline_lead": {
+    "message": "Записывать меньше — обычно первый признак того, что период идёт плохо, и именно то, что мешает это заметить."
+  },
+  "sug_coverageDecline_text1": {
+    "message": "Отмечай день в двух-трёх фиксированных точках, а не восстанавливай его по памяти в полночь. Для этого и существуют напоминания Daily Dial (Настройки → Напоминания)."
+  },
+  "sug_coverageDecline_text2": {
+    "message": "Отмечай приблизительно, но отмечай. Примерный день стоит куда больше пустого, а уточнить его можно всегда."
+  },
+  "sug_coverageDecline_text3": {
+    "message": "Используй «День от начала до конца» под циферблатом, чтобы заполнить пробелы за пару минут — строки уже есть, нужны только слова."
+  },
+  "sug_coverageDecline_text4": {
+    "message": "Если это перестало стоить усилий, это тоже стоит знать. Трекер, который вызывает раздражение — это трекер, который скоро забросят."
+  },
+  "sug_untrackedLifeArea_lead": {
+    "message": "То, что не стало категорией, не может показаться ни в одной из этих цифр — а то, что не показывается, легко упустить из виду."
+  },
+  "sug_untrackedLifeArea_text1": {
+    "message": "Переименуй неиспользуемую категорию под то, чего не хватает — время с людьми, спорт, сон или что угодно, в чём ты хочешь быть с собой честен (Настройки → Категории)."
+  },
+  "sug_untrackedLifeArea_text2": {
+    "message": "Дай ей нейтральный вес, а не продуктивный. Цель — увидеть это, а не оценивать."
+  },
+  "sug_untrackedLifeArea_text3": {
+    "message": "Как только это станет категорией, уже имеющиеся цели и тренды Истории сделают всё остальное сами."
+  },
+  "sugPlat_Stretchly": {
+    "message": "Windows · macOS · Linux · бесплатно, open source"
+  },
+  "sugPlat_TimeOut": {
+    "message": "macOS · бесплатно"
+  },
+  "sugPlat_Focusmodes": {
+    "message": "macOS · iOS · встроено"
+  },
+  "sugPlat_DigitalWellbeingFocusmode": {
+    "message": "Android · встроено"
+  },
+  "sugPlat_SelfControl": {
+    "message": "macOS · бесплатно, open source"
+  },
+  "sugPlat_ColdTurkey": {
+    "message": "Windows · macOS · есть бесплатная версия"
+  },
+  "sugPlat_Freedom": {
+    "message": "Windows · macOS · iOS · Android · платно"
+  },
+  "sugPlat_onesec": {
+    "message": "iOS · Android · есть бесплатная версия"
+  },
+  "sugPlat_AssistiveAccess": {
+    "message": "iOS 17+ · встроено — сводит телефон к нескольким крупным, простым приложениям"
+  },
+  "sugPlat_ScreenTimeapplimits": {
+    "message": "iOS · macOS · встроено"
+  },
+  "defaultCategory0": {
+    "message": "Глубокая работа"
+  },
+  "defaultCategory1": {
+    "message": "Отклики"
+  },
+  "defaultCategory2": {
+    "message": "Учёба"
+  },
+  "defaultCategory3": {
+    "message": "Дела"
+  },
+  "defaultCategory4": {
+    "message": "Пауза"
+  },
+  "defaultCategory5": {
+    "message": "Отвлечения"
+  }
+}
