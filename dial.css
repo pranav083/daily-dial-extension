@@ -39,16 +39,21 @@
      indicator needs — so light mode rings with the darker accent. */
   --focus-ring: #a8661a;
 
-  /* Chosen so no two stay confusable under deuteranopia or protanopia
-     (worst-pair CVD dE 12.1 -> 18.0) and every one clears 3:1 against the
-     panel. Study and Break were previously near-identical to a red-green
-     colourblind reader, and they sit on opposite sides of the score. */
+  /* Two constraints, both learned the hard way.
+     1. No two confusable under deuteranopia or protanopia (worst pair sits
+        at dE 18), and every one clears 3:1 against the panel.
+     2. Categories on opposite sides of the score must not share a hue
+        family. Distraction was green while Study was green — numerically
+        far apart, semantically the worst possible pairing, since one counts
+        for you and the other against. Distraction is red now. Weights are
+        user-editable, so this can only ever be true of the defaults, but
+        the defaults are what almost everyone keeps. */
   --cat-0: #2a78d6;
   --cat-1: #ec6836;
   --cat-2: #18a972;
   --cat-3: #ac9400;
   --cat-4: #df70a5;
-  --cat-5: #008200;
+  --cat-5: #af2427;
 
   --font-ui: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -83,7 +88,7 @@
     --cat-2: #32a16e;
     --cat-3: #d59105;
     --cat-4: #d24c83;
-    --cat-5: #008300;
+    --cat-5: #bc3a3f;
   }
 }
 :root[data-theme="dark"] {
@@ -111,7 +116,7 @@
   --cat-2: #32a16e;
   --cat-3: #d59105;
   --cat-4: #d24c83;
-  --cat-5: #008300;
+  --cat-5: #bc3a3f;
 }
 
 * { box-sizing: border-box; }
@@ -1470,6 +1475,7 @@ select {
 .breakdown-table th:nth-child(2) { width: 132px; }
 .breakdown-table th:nth-child(3) { width: 62px; }
 .breakdown-table th.note-col { width: auto; }
+.breakdown-table th:nth-child(5) { width: 30px; }
 .breakdown-table td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
 .breakdown-table tr:last-child td { border-bottom: none; }
 
@@ -1494,6 +1500,24 @@ select {
 .bd-note::placeholder { color: color-mix(in oklab, var(--ink-muted) 55%, transparent); }
 .bd-note:hover { border-color: var(--border); background: var(--panel-2); }
 .bd-note:focus { outline: none; border-color: var(--accent); background: var(--panel-2); color: var(--ink); }
+
+.bd-clear-cell { text-align: right; }
+.bd-clear {
+  border: none;
+  background: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 5px;
+  opacity: 0;
+}
+/* Hidden until the row is hovered or the button focused: a column of crosses
+   turns a day's summary into a list of things to delete. */
+.bd-row:hover .bd-clear, .bd-clear:focus-visible { opacity: 1; }
+.bd-clear:hover { color: var(--status-critical-text); background: var(--panel-2); }
+.bd-clear:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
 /* A gap is a row like any other, just visibly hollow — present enough to
    act on, quiet enough not to shout on a half-logged day. */
@@ -1585,3 +1609,40 @@ select {
 .review-tool:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .review-tool .platforms { color: var(--ink-muted); font-size: 0.7rem; }
 .review-disclaimer { margin: 9px 0 0; font-size: 0.72rem; color: var(--ink-muted); }
+
+
+/* ---- note for the stretch just painted ---- */
+.just-painted {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+}
+.just-painted[hidden] { display: none; }
+.jp-what {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.just-painted input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+}
+.just-painted input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+@media (max-width: 560px) {
+  .just-painted { flex-wrap: wrap; }
+  .jp-what { width: 100%; }
+}

@@ -177,6 +177,16 @@
           </form>
         </div>
 
+        <!-- Appears where the eyes already are, right after a stroke. Writing
+             the note about what you just painted otherwise means scrolling
+             past the pens and the whole breakdown table to find the row. -->
+        <div class="just-painted" id="just-painted" hidden>
+          <span class="jp-what" id="just-painted-what"></span>
+          <input type="text" id="just-painted-note" maxlength="500" aria-label="Note for what you just painted">
+          <button type="button" class="ghost-btn" id="just-painted-save">Save</button>
+          <button type="button" class="icon-btn" id="just-painted-dismiss" aria-label="Dismiss" title="Dismiss">✕</button>
+        </div>
+
         <p class="hint">
           Click or drag around the ring to paint ·
           <kbd>⌘Z</kbd> undo ·
@@ -201,6 +211,7 @@
                 <th scope="col">What</th>
                 <th scope="col">For</th>
                 <th scope="col" class="note-col">Note</th>
+                <th scope="col"><span class="sr-only">Clear</span></th>
               </tr>
             </thead>
             <tbody id="breakdown-rows"></tbody>

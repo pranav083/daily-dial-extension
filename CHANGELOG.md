@@ -8,6 +8,31 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.18.0] — 2026-08-29
+
+### Fixed
+
+- **Distraction was green, the same family as Study.** One counts for your
+  score and the other against it, which makes them the worst possible pair to
+  render alike — and the colourblind-safe palette in 1.11.0 made it worse by
+  optimising numeric distance without ever checking that opposite weights
+  shouldn't share a hue. Distraction is red now. The new colour still clears
+  the same floors: no pair confusable under deuteranopia or protanopia, and
+  3:1 contrast against the panel.
+
+### Added
+
+- **A note field appears right where you paint.** Writing a note about the
+  stretch you just painted meant scrolling past the pens and the whole
+  breakdown table to find its row — so the note usually didn't get written.
+  A finishing stroke, or a typed entry, now offers a labelled field in place;
+  Enter saves, Escape dismisses.
+- **Each painted row in "The day, end to end" can be cleared from the table.**
+  Removing a stretch previously meant going back to the ring, finding the
+  same range, and painting over it with the eraser. Shown on hover rather
+  than always, since a column of crosses turns a day's summary into a list of
+  things to delete.
+
 ## [1.17.0] — 2026-08-29
 
 ### Added

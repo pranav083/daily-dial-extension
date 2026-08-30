@@ -517,6 +517,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
 
   let isPaintingLocal = false;
   let lastLocal = null;
+  let strokeFrom = null;
 
   const localSlice = () => state.slots.slice(slotOffset, slotOffset + slotsInView);
   const writeSlice = (sub) => {
@@ -841,6 +842,11 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     }
     if (!isPaintingLocal) return;
     isPaintingLocal = false;
+    if (strokeFrom !== null && lastLocal !== null) {
+      const a = Math.min(strokeFrom, lastLocal);
+      const b = Math.max(strokeFrom, lastLocal) + 1;
+      showJustPainted(slotOffset + a, slotOffset + b);
+    }
     lastLocal = null;
     onStrokeEnd();
   }
@@ -880,6 +886,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
       // Synthetic or already-released pointers can't be captured; painting still works.
     }
     const idx = slotFromAngle(angle, slotsInView);
+    strokeFrom = idx;
     paintAtLocal(idx);
     render();
     showTooltip(evt, slotOffset + idx);
@@ -1475,6 +1482,7 @@ function switchDay(d) {
   state.intents = (day.intents ?? []).map((i) => ({ ...i }));
   state.avoid = [...(day.avoid ?? [])];
   $("reflection").value = state.reflection;
+  hideJustPainted();
   renderJournal();
   renderAll();
 }
@@ -1623,6 +1631,7 @@ function submitTypedEntry(evt) {
   renderStrip();
   renderStreak();
   input.value = "";
+  showJustPainted(result.startSlot, endOfDay);
   toast(overflow > 0 ? "Added — the part past midnight went to the next day" : "Added");
 }
 
@@ -1654,6 +1663,39 @@ function toast(message) {
   el.classList.add("show");
   if (toastTimer) clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+/* ---------- note for the stretch just painted ---------- */
+
+/** The range a freshly finished stroke covered, offered for a note while the
+ *  user is still looking at the dial. Cleared on day change or once used. */
+let justPainted = null;
+
+function showJustPainted(from, to) {
+  justPainted = { from, to };
+  const cat = state.slots[from];
+  const label = `${fmtSlotClock(from)}–${fmtSlotClock(to)}`;
+  $("just-painted-what").textContent =
+    cat === UNTRACKED ? label : `${label} · ${categories[cat].name}`;
+  $("just-painted-note").value = "";
+  $("just-painted").hidden = false;
+}
+
+function hideJustPainted() {
+  justPainted = null;
+  $("just-painted").hidden = true;
+}
+
+function saveJustPainted() {
+  if (!justPainted) return;
+  const text = $("just-painted-note").value.trim();
+  if (!text) {
+    hideJustPainted();
+    return;
+  }
+  saveSpanNote({ start: justPainted.from, end: justPainted.to }, undefined, text);
+  announce(`Note saved for ${fmtSlotClock(justPainted.from)} to ${fmtSlotClock(justPainted.to)}`);
+  hideJustPainted();
 }
 
 /* ---------- journal: intentions and ranged notes ---------- */
@@ -1781,7 +1823,22 @@ function renderBreakdown() {
       noteCell.appendChild(extraNoteRow(extra, notes[extra]));
     }
 
-    row.append(when, what, dur, noteCell);
+    // Clearing a stretch from here saves going back to the ring, finding
+    // the same range, and painting it with the eraser.
+    const clearCell = document.createElement("td");
+    clearCell.className = "bd-clear-cell";
+    if (!isGap) {
+      const clear = document.createElement("button");
+      clear.type = "button";
+      clear.className = "bd-clear";
+      clear.textContent = "✕";
+      clear.title = `Clear ${when.textContent} — the time goes back to unlogged`;
+      clear.setAttribute("aria-label", `Clear ${categories[span.cat].name}, ${when.textContent}`);
+      clear.addEventListener("click", () => fillSpan(span.start, span.end, UNTRACKED));
+      clearCell.appendChild(clear);
+    }
+
+    row.append(when, what, dur, noteCell, clearCell);
     body.appendChild(row);
   }
 
@@ -1848,7 +1905,11 @@ function fillSpan(from, to, categoryId) {
   persistDay();
   renderAll();
   onStrokeEnd();
-  announce(`${categories[categoryId].name} set for ${fmtSlotClock(from)} to ${fmtSlotClock(to)}`);
+  announce(
+    categoryId === UNTRACKED
+      ? `Cleared ${fmtSlotClock(from)} to ${fmtSlotClock(to)}`
+      : `${categories[categoryId].name} set for ${fmtSlotClock(from)} to ${fmtSlotClock(to)}`
+  );
 }
 
 function renderAvoid() {
@@ -2755,6 +2816,12 @@ function wireEvents() {
   }
   $("challenge-clear").addEventListener("click", clearChallenge);
   $("observations-on").addEventListener("change", saveObservations);
+  $("just-painted-save").addEventListener("click", saveJustPainted);
+  $("just-painted-dismiss").addEventListener("click", hideJustPainted);
+  $("just-painted-note").addEventListener("keydown", (evt) => {
+    if (evt.key === "Enter") { evt.preventDefault(); saveJustPainted(); }
+    if (evt.key === "Escape") hideJustPainted();
+  });
   // The recap notification focuses an existing dial rather than reloading it
   // (a reload would discard unsaved edits), so the switch arrives as a message.
   chrome.runtime.onMessage.addListener((msg) => {
