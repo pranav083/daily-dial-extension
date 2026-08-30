@@ -89,13 +89,6 @@
 
     <!-- The strip showed bare day numbers with nothing to say which month
          they belonged to, which is ambiguous at every month boundary. -->
-    <div class="strip-wrap">
-      <div class="strip-header">
-        <span class="strip-month" id="strip-month"></span>
-        <span class="strip-hint" data-i18n="stripHintLabel">Last 7 days · click one to open it</span>
-      </div>
-      <div class="strip" id="strip" data-i18n-title="stripTooltip" title="The last seven days. Bar height is that day's score; click one to view or edit it."></div>
-    </div>
 
     <div class="grid">
       <div class="dial-card">
@@ -163,6 +156,13 @@
 
         <div id="tooltip"></div>
 
+        <div class="just-painted" id="just-painted" hidden>
+          <span class="jp-what" id="just-painted-what"></span>
+          <input type="text" id="just-painted-note" maxlength="500" data-i18n-label="justPaintedNoteLabel" aria-label="Note for what you just painted">
+          <button type="button" class="ghost-btn" id="just-painted-save" data-i18n="justPaintedSaveLabel">Save</button>
+          <button type="button" class="icon-btn" id="just-painted-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss" data-i18n-title="dismissLabel" title="Dismiss">✕</button>
+        </div>
+
         <!-- "Let's start" used to close into an empty dial with only a
              2.6s toast, which read as nothing having happened. This points
              at the actual next action and stays until the first block
@@ -197,12 +197,6 @@
         <!-- Appears where the eyes already are, right after a stroke. Writing
              the note about what you just painted otherwise means scrolling
              past the pens and the whole breakdown table to find the row. -->
-        <div class="just-painted" id="just-painted" hidden>
-          <span class="jp-what" id="just-painted-what"></span>
-          <input type="text" id="just-painted-note" maxlength="500" data-i18n-label="justPaintedNoteLabel" aria-label="Note for what you just painted">
-          <button type="button" class="ghost-btn" id="just-painted-save" data-i18n="justPaintedSaveLabel">Save</button>
-          <button type="button" class="icon-btn" id="just-painted-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss" data-i18n-title="dismissLabel" title="Dismiss">✕</button>
-        </div>
 
         <p class="hint">
           <span data-i18n="hintPaintInstruction">Click or drag around the ring to paint</span> ·
@@ -314,6 +308,14 @@
         </div>
       </div>
     </div>
+    </div>
+
+    <div class="strip-wrap">
+      <div class="strip-header">
+        <span class="strip-month" id="strip-month"></span>
+        <span class="strip-hint" data-i18n="stripHintLabel">Last 7 days · click one to open it</span>
+      </div>
+      <div class="strip" id="strip" data-i18n-title="stripTooltip" title="The last seven days. Bar height is that day's score; click one to view or edit it."></div>
     </div>
 
     <!-- Filled in by the History feature. -->

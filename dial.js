@@ -771,8 +771,13 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     checkDayRollover();
     pushUndo();
     const sub = localSlice();
-    for (const i of rangeSlots(range)) sub[i] = cat;
+    let skipped = 0;
+    for (const i of rangeSlots(range)) {
+      if (cat !== UNTRACKED && isFutureSlot(slotOffset + i)) { skipped++; continue; }
+      sub[i] = cat;
+    }
     writeSlice(sub);
+    if (skipped) toast(t("futureNotLogged"));
     render();
     renderCaret();
     onStrokeEnd();
@@ -907,12 +912,23 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
 
   function paintAtLocal(localIdx) {
     const cat = state.activePen === null ? UNTRACKED : state.activePen;
+    // Erasing the future is always fine — it can only remove something that
+    // shouldn't be there. Painting it is what gets refused.
+    const paintable = (local) => cat === UNTRACKED || !isFutureSlot(slotOffset + local);
+
     if (lastLocal === null) {
+      if (!paintable(localIdx)) return;
       const sub = localSlice();
       sub[localIdx] = cat;
       writeSlice(sub);
     } else {
-      writeSlice(fillRange(localSlice(), lastLocal, localIdx, cat));
+      const filled = fillRange(localSlice(), lastLocal, localIdx, cat);
+      const sub = localSlice();
+      // Keep only the part of the stroke that has already happened, rather
+      // than rejecting the whole drag — dragging across "now" should paint
+      // up to it, not do nothing.
+      for (let i = 0; i < slotsInView; i++) if (paintable(i)) sub[i] = filled[i];
+      writeSlice(sub);
     }
     lastLocal = localIdx;
   }
@@ -1079,6 +1095,24 @@ function reconcileActivePen() {
   const firstEnabled = categories.find((c) => c.enabled);
   state.activePen = firstEnabled ? firstEnabled.id : UNTRACKED;
 }
+
+/**
+ * The first slot that hasn't happened yet.
+ *
+ * Painting ahead on today records time that hasn't occurred — it inflates
+ * the day's tracked total, its score, and the streak, all from something
+ * imagined. Forward day navigation was stopped for the same reason; this is
+ * the same rule applied within today. Past days are wide open, since there
+ * every slot has happened.
+ */
+function firstUnpaintableSlot() {
+  if (!isToday(state.viewDate)) return SLOTS;
+  const now = new Date();
+  return Math.min(SLOTS, Math.floor((now.getHours() * 60 + now.getMinutes()) / SLOT_MIN) + 1);
+}
+
+/** True when a slot is in the future on the day being viewed. */
+const isFutureSlot = (globalSlot) => globalSlot >= firstUnpaintableSlot();
 
 /** The clock-face upkeep a 30-second timer does: move the needle, refresh
  *  the centre time. No data changed, so segments are left alone. */
@@ -1820,10 +1854,18 @@ function submitTypedEntry(evt) {
   // wiped whatever was already in that early hour, and split what should be
   // one two-hour block into two, so longest-focus read 60 minutes.
   const endOfDay = Math.min(result.endSlot, SLOTS);
-  for (let i = result.startSlot; i < endOfDay; i++) state.slots[i] = result.categoryId;
+  // Typed entry gets the same rule as the ring: an erase can reach anywhere,
+  // but "20-22 deep work" typed at nine in the morning is a plan, not a log.
+  const limit = result.categoryId === UNTRACKED ? SLOTS : firstUnpaintableSlot();
+  if (result.startSlot >= limit) {
+    toast(t("futureNotLogged"));
+    return;
+  }
+  const cappedEnd = Math.min(endOfDay, limit);
+  for (let i = result.startSlot; i < cappedEnd; i++) state.slots[i] = result.categoryId;
   persistDay();
 
-  const overflow = result.endSlot - SLOTS;
+  const overflow = cappedEnd === endOfDay ? result.endSlot - SLOTS : 0;
   if (overflow > 0) {
     const next = new Date(state.viewDate);
     next.setDate(next.getDate() + 1);
@@ -1834,7 +1876,7 @@ function submitTypedEntry(evt) {
   renderStrip();
   renderStreak();
   input.value = "";
-  showJustPainted(result.startSlot, endOfDay);
+  showJustPainted(result.startSlot, cappedEnd);
   toast(overflow > 0 ? t("typedEntryOverflowToast") : t("typedEntryAddedToast"));
 }
 

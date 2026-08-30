@@ -8,6 +8,29 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.25.0] — 2026-08-29
+
+### Fixed
+
+- **Time that hasn't happened yet can no longer be painted.** Stopping the
+  date arrows at today only covered future *days*; you could still paint this
+  evening at nine in the morning, which inflated the day's tracked total, its
+  score and the streak from something imagined. A stroke that crosses "now"
+  paints up to it and stops, rather than refusing entirely. Erasing is
+  unaffected — it can only ever remove something that shouldn't be there.
+
+### Changed
+
+- **Writing a note no longer means scrolling away from the dial.** The field
+  offered after a stroke sat below the pens and the typed-entry row, which on
+  a laptop put it off the bottom of the window: you painted, scrolled down,
+  typed, scrolled back. It now sits directly beneath the ring, so painting
+  and annotating happen in the same place.
+- **The week strip moved below the dial.** It's reference rather than
+  something acted on each session, and at the top it was pushing the pens and
+  the note field off-screen. With both changes the whole loop — ring, note,
+  pens, typed entry — fits on one screen.
+
 ## [1.24.0] — 2026-08-29
 
 ### Added

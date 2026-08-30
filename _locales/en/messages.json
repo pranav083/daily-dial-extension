@@ -15,7 +15,6 @@
     "message": "Couldn't save — your last change may be lost.",
     "description": "Toast shown when a write to browser storage fails."
   },
-
   "wordmarkTitle": {
     "message": "Daily Dial",
     "description": "Brand wordmark in the top-left corner of the app, next to the version number."
@@ -60,15 +59,21 @@
     "message": "day $DAY$ / $TARGET$",
     "description": "Challenge progress shown in the top bar when a target length is set, e.g. 'day 12 / 100'.",
     "placeholders": {
-      "day": { "content": "$1" },
-      "target": { "content": "$2" }
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
     }
   },
   "challengeDaySimple": {
     "message": "day $DAY$",
     "description": "Challenge progress shown in the top bar when no target length is set, e.g. 'day 12'.",
     "placeholders": {
-      "day": { "content": "$1" }
+      "day": {
+        "content": "$1"
+      }
     }
   },
   "viewNavLabel": {
@@ -135,7 +140,9 @@
     "message": "Another tab changed $WHAT$.",
     "description": "Bold headline in the banner shown when another open tab has changed data this tab was showing.",
     "placeholders": {
-      "what": { "content": "$1" }
+      "what": {
+        "content": "$1"
+      }
     }
   },
   "staleBannerBody": {
@@ -533,22 +540,38 @@
   "hideCategoryAriaLabel": {
     "message": "Hide $NAME$",
     "description": "Accessible label on the show/hide toggle for an enabled category, naming it.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "showCategoryAriaLabel": {
     "message": "Show $NAME$",
     "description": "Accessible label on the show/hide toggle for a hidden category, naming it.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "aliasPlaceholder": {
     "message": "other words for \"$NAME$\"…",
     "description": "Placeholder in a category's alias input field, naming the category.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "aliasAriaLabel": {
     "message": "Aliases for $NAME$ — other words the typed entry box recognizes",
     "description": "Accessible label on a category's alias input field, naming the category.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "categoryColorNote": {
     "message": "Its colour still reflects the original weight, not this one.",
@@ -598,13 +621,34 @@
     "message": "Off by default. A short summary of the week just gone — tracked time, top category, best day, streak.",
     "description": "Note under the weekly recap settings."
   },
-  "daySunday": { "message": "Sunday", "description": "Day-of-week option, used in the weekly recap day and week-start pickers." },
-  "dayMonday": { "message": "Monday", "description": "Day-of-week option, used in the weekly recap day and week-start pickers." },
-  "dayTuesday": { "message": "Tuesday", "description": "Day-of-week option, used in the weekly recap day picker." },
-  "dayWednesday": { "message": "Wednesday", "description": "Day-of-week option, used in the weekly recap day picker." },
-  "dayThursday": { "message": "Thursday", "description": "Day-of-week option, used in the weekly recap day picker." },
-  "dayFriday": { "message": "Friday", "description": "Day-of-week option, used in the weekly recap day picker." },
-  "daySaturday": { "message": "Saturday", "description": "Day-of-week option, used in the weekly recap day picker." },
+  "daySunday": {
+    "message": "Sunday",
+    "description": "Day-of-week option, used in the weekly recap day and week-start pickers."
+  },
+  "dayMonday": {
+    "message": "Monday",
+    "description": "Day-of-week option, used in the weekly recap day and week-start pickers."
+  },
+  "dayTuesday": {
+    "message": "Tuesday",
+    "description": "Day-of-week option, used in the weekly recap day picker."
+  },
+  "dayWednesday": {
+    "message": "Wednesday",
+    "description": "Day-of-week option, used in the weekly recap day picker."
+  },
+  "dayThursday": {
+    "message": "Thursday",
+    "description": "Day-of-week option, used in the weekly recap day picker."
+  },
+  "dayFriday": {
+    "message": "Friday",
+    "description": "Day-of-week option, used in the weekly recap day picker."
+  },
+  "daySaturday": {
+    "message": "Saturday",
+    "description": "Day-of-week option, used in the weekly recap day picker."
+  },
   "worthNoticingLabel": {
     "message": "Worth noticing",
     "description": "Heading used both for the Settings → Goals toggle and the History panel of observations."
@@ -652,12 +696,20 @@
   "goalAriaLabelDaily": {
     "message": "Daily goal for $NAME$, in minutes",
     "description": "Accessible label on a category's daily goal input, naming the category.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "goalAriaLabelWeekly": {
     "message": "Weekly goal for $NAME$, in minutes",
     "description": "Accessible label on a category's weekly goal input, naming the category.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "challengeSectionLabel": {
     "message": "Challenge",
@@ -734,12 +786,20 @@
   "deleteTemplateAriaLabel": {
     "message": "Delete template: $NAME$",
     "description": "Accessible label on a template's delete button, naming the template.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "templateAppliedToast": {
     "message": "Applied \"$NAME$\" — ⌘Z to undo",
     "description": "Toast shown after applying a template, naming it.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "templateNameRequiredToast": {
     "message": "Name the template first.",
@@ -748,17 +808,29 @@
   "templateMaxToast": {
     "message": "That's the most templates you can save ($MAX$).",
     "description": "Toast shown when the template limit is reached.",
-    "placeholders": { "max": { "content": "$1" } }
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
   },
   "templateSavedToast": {
     "message": "Saved \"$NAME$\"",
     "description": "Toast shown after saving a template, naming it.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "templateDeletedToast": {
     "message": "Deleted \"$NAME$\"",
     "description": "Toast shown after deleting a template, naming it.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "exportSectionLabel": {
     "message": "Export",
@@ -787,7 +859,11 @@
   "lastBackupStatus": {
     "message": "Last backup: $DATE$",
     "description": "Status line showing when the last backup was exported.",
-    "placeholders": { "date": { "content": "$1" } }
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
   },
   "dataBackupNudgeText": {
     "message": "It's been a while since your last backup.",
@@ -869,39 +945,67 @@
     "message": "$COUNT$ day in the file, $OVERLAP$ overlapping your $EXISTING$ existing.",
     "description": "First sentence of the import confirmation summary, singular day count.",
     "placeholders": {
-      "count": { "content": "$1" },
-      "overlap": { "content": "$2" },
-      "existing": { "content": "$3" }
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
     }
   },
   "importSummarySentence1Plural": {
     "message": "$COUNT$ days in the file, $OVERLAP$ overlapping your $EXISTING$ existing.",
     "description": "First sentence of the import confirmation summary, plural day count.",
     "placeholders": {
-      "count": { "content": "$1" },
-      "overlap": { "content": "$2" },
-      "existing": { "content": "$3" }
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
     }
   },
   "importSummarySentence2Singular": {
     "message": "Merge adds $COUNT$ new day.",
     "description": "Second sentence of the import confirmation summary, singular new-day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "importSummarySentence2Plural": {
     "message": "Merge adds $COUNT$ new days.",
     "description": "Second sentence of the import confirmation summary, plural new-day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "importSummarySentence3Singular": {
     "message": "Replace erases all $COUNT$ existing day and restores exactly what's in the file.",
     "description": "Third sentence of the import confirmation summary, singular existing-day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "importSummarySentence3Plural": {
     "message": "Replace erases all $COUNT$ existing days and restores exactly what's in the file.",
     "description": "Third sentence of the import confirmation summary, plural existing-day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "importSummaryDemoClearSentence": {
     "message": "Demo data will be cleared first.",
@@ -970,7 +1074,11 @@
   "multifillActionSetTo": {
     "message": "set to $CATEGORY$",
     "description": "Describes the multi-day fill action when painting a category, substituted into the fill confirmation sentence.",
-    "placeholders": { "category": { "content": "$1" } }
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
   },
   "multifillWindowWholeDay": {
     "message": "for the whole day",
@@ -983,39 +1091,74 @@
   "multifillWindowRange": {
     "message": "from $FROM$ to $TO$",
     "description": "Describes the time window of a multi-day fill spanning part of the day, substituted into the fill confirmation sentence.",
-    "placeholders": { "from": { "content": "$1" }, "to": { "content": "$2" } }
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
   },
   "multifillSummarySingular": {
     "message": "$COUNT$ day ($FROM$ to $TO$) will be $ACTION$ $WINDOW$.",
     "description": "Multi-day fill confirmation summary, singular day count.",
     "placeholders": {
-      "count": { "content": "$1" },
-      "from": { "content": "$2" },
-      "to": { "content": "$3" },
-      "action": { "content": "$4" },
-      "window": { "content": "$5" }
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
     }
   },
   "multifillSummaryPlural": {
     "message": "$COUNT$ days ($FROM$ to $TO$) will be $ACTION$ $WINDOW$.",
     "description": "Multi-day fill confirmation summary, plural day count.",
     "placeholders": {
-      "count": { "content": "$1" },
-      "from": { "content": "$2" },
-      "to": { "content": "$3" },
-      "action": { "content": "$4" },
-      "window": { "content": "$5" }
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
     }
   },
   "multifillPaintedSingular": {
     "message": "$COUNT$ of them already has something painted there and will be overwritten.",
     "description": "Trailing sentence of the multi-day fill summary, singular affected-day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "multifillPaintedPlural": {
     "message": "$COUNT$ of them already have something painted there and will be overwritten.",
     "description": "Trailing sentence of the multi-day fill summary, plural affected-day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "multifillNonePainted": {
     "message": "None of those days have anything painted there yet.",
@@ -1024,12 +1167,20 @@
   "filledDaysSingular": {
     "message": "Filled $COUNT$ day",
     "description": "Toast after applying a multi-day fill, singular day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "filledDaysPlural": {
     "message": "Filled $COUNT$ days",
     "description": "Toast after applying a multi-day fill, plural day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "driveSectionLabel": {
     "message": "Google Drive backup",
@@ -1066,7 +1217,11 @@
   "driveConnectedAsStatus": {
     "message": "Connected as $EMAIL$",
     "description": "Status line showing which Google account is connected for Drive backup.",
-    "placeholders": { "email": { "content": "$1" } }
+    "placeholders": {
+      "email": {
+        "content": "$1"
+      }
+    }
   },
   "driveNotBackedUpStatus": {
     "message": "Not backed up to Google Drive yet.",
@@ -1079,7 +1234,11 @@
   "driveLastSyncStatus": {
     "message": "Last synced to Google Drive: $DATE$",
     "description": "Status line showing when the last Drive backup upload happened.",
-    "placeholders": { "date": { "content": "$1" } }
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
   },
   "driveDisconnectLabel": {
     "message": "Disconnect Google Drive",
@@ -1185,15 +1344,30 @@
     "message": "Theme",
     "description": "Label for the appearance theme dropdown."
   },
-  "themeSystem": { "message": "System", "description": "Theme option that follows the OS setting." },
-  "themeLight": { "message": "Light", "description": "Light theme option." },
-  "themeDark": { "message": "Dark", "description": "Dark theme option." },
+  "themeSystem": {
+    "message": "System",
+    "description": "Theme option that follows the OS setting."
+  },
+  "themeLight": {
+    "message": "Light",
+    "description": "Light theme option."
+  },
+  "themeDark": {
+    "message": "Dark",
+    "description": "Dark theme option."
+  },
   "timeFormatLabel": {
     "message": "Time format",
     "description": "Label for the 24-hour/12-hour time format dropdown."
   },
-  "timeFormat24h": { "message": "24-hour", "description": "24-hour time format option." },
-  "timeFormat12h": { "message": "12-hour", "description": "12-hour time format option." },
+  "timeFormat24h": {
+    "message": "24-hour",
+    "description": "24-hour time format option."
+  },
+  "timeFormat12h": {
+    "message": "12-hour",
+    "description": "12-hour time format option."
+  },
   "dialModeLabel": {
     "message": "Dial layout",
     "description": "Label for the dial-layout dropdown in Settings → Appearance."
@@ -1233,7 +1407,14 @@
   "remindersSetToast": {
     "message": "Reminders set for $T1$ and $T2$",
     "description": "Toast shown after enabling reminders, naming the two times.",
-    "placeholders": { "t1": { "content": "$1" }, "t2": { "content": "$2" } }
+    "placeholders": {
+      "t1": {
+        "content": "$1"
+      },
+      "t2": {
+        "content": "$2"
+      }
+    }
   },
   "remindersOffToast": {
     "message": "Reminders off",
@@ -1326,12 +1507,20 @@
   "bestsStreakDaysSingular": {
     "message": "$COUNT$ day",
     "description": "Longest-streak stat value, singular day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "bestsStreakDaysPlural": {
     "message": "$COUNT$ days",
     "description": "Longest-streak stat value, plural day count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "keyboardShortcutsLabel": {
     "message": "Keyboard shortcuts",
@@ -1476,22 +1665,41 @@
   "noteSavedAnnounce": {
     "message": "Note saved for $FROM$ to $TO$",
     "description": "Screen-reader announcement after saving a note for the just-painted stretch.",
-    "placeholders": { "from": { "content": "$1" }, "to": { "content": "$2" } }
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
   },
   "removeIntentionAriaLabel": {
     "message": "Remove intention: $TEXT$",
     "description": "Accessible label on the remove button next to an intention, including the intention's own text verbatim.",
-    "placeholders": { "text": { "content": "$1" } }
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
   },
   "removeAvoidAriaLabel": {
     "message": "Remove: $TEXT$",
     "description": "Accessible label on the remove button next to a 'things to avoid' entry, including its own text verbatim.",
-    "placeholders": { "text": { "content": "$1" } }
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
   },
   "removeNoteAriaLabel": {
     "message": "Remove note for $WHEN$",
     "description": "Accessible label on the remove button next to an extra note in the breakdown table.",
-    "placeholders": { "when": { "content": "$1" } }
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
   },
   "unloggedOptionLabel": {
     "message": "Unlogged",
@@ -1504,74 +1712,140 @@
   "fillSpanAriaLabel": {
     "message": "Fill $WHEN$",
     "description": "Accessible label on a gap row's category dropdown in the breakdown table.",
-    "placeholders": { "when": { "content": "$1" } }
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
   },
   "noteForAriaLabel": {
     "message": "Note for $WHEN$",
     "description": "Accessible label on a breakdown row's note field.",
-    "placeholders": { "when": { "content": "$1" } }
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
   },
   "clearSpanTooltip": {
     "message": "Clear $WHEN$ — the time goes back to unlogged",
     "description": "Tooltip on a breakdown row's clear button.",
-    "placeholders": { "when": { "content": "$1" } }
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
   },
   "clearSpanAriaLabel": {
     "message": "Clear $CATEGORY$, $WHEN$",
     "description": "Accessible label on a breakdown row's clear button, naming the category and time.",
-    "placeholders": { "category": { "content": "$1" }, "when": { "content": "$2" } }
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "when": {
+        "content": "$2"
+      }
+    }
   },
   "maxNotesToast": {
     "message": "That's the most notes a day can hold ($MAX$).",
     "description": "Toast shown when the per-day note limit is reached.",
-    "placeholders": { "max": { "content": "$1" } }
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
   },
   "maxAvoidToast": {
     "message": "That's the most a day can hold ($MAX$).",
     "description": "Toast shown when the per-day 'things to avoid' limit is reached.",
-    "placeholders": { "max": { "content": "$1" } }
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
   },
   "maxIntentsToast": {
     "message": "That's the most intentions a day can hold ($MAX$).",
     "description": "Toast shown when the per-day intentions limit is reached.",
-    "placeholders": { "max": { "content": "$1" } }
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
   },
   "breakdownSummarySingular": {
     "message": "$COUNT$ stretch · $LOGGED$ logged, $UNLOGGED$ unlogged",
     "description": "Summary line above the day breakdown table, singular stretch count.",
     "placeholders": {
-      "count": { "content": "$1" },
-      "logged": { "content": "$2" },
-      "unlogged": { "content": "$3" }
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
     }
   },
   "breakdownSummaryPlural": {
     "message": "$COUNT$ stretches · $LOGGED$ logged, $UNLOGGED$ unlogged",
     "description": "Summary line above the day breakdown table, plural stretch count.",
     "placeholders": {
-      "count": { "content": "$1" },
-      "logged": { "content": "$2" },
-      "unlogged": { "content": "$3" }
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
     }
   },
   "clearedAnnounce": {
     "message": "Cleared $FROM$ to $TO$",
     "description": "Screen-reader announcement after clearing a stretch of the day.",
-    "placeholders": { "from": { "content": "$1" }, "to": { "content": "$2" } }
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
   },
   "caretCommitAnnounce": {
     "message": "$CATEGORY$ set for $FROM$ to $TO$",
     "description": "Screen-reader announcement after painting a category onto a stretch of the day, from the keyboard cursor or the breakdown table.",
     "placeholders": {
-      "category": { "content": "$1" },
-      "from": { "content": "$2" },
-      "to": { "content": "$3" }
+      "category": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      }
     }
   },
   "caretAnnounce": {
     "message": "$FROM$ to $TO$, $WHAT$",
     "description": "Screen-reader announcement describing the keyboard cursor's current selection on the dial.",
-    "placeholders": { "from": { "content": "$1" }, "to": { "content": "$2" }, "what": { "content": "$3" } }
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "what": {
+        "content": "$3"
+      }
+    }
   },
   "caretMixedLabel": {
     "message": "mixed",
@@ -1596,17 +1870,35 @@
   "dialPenLabel": {
     "message": "pen: $NAME$",
     "description": "Sub-label shown in the middle of a dial naming the active category pen.",
-    "placeholders": { "name": { "content": "$1" } }
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   },
   "edgeRangeLabel": {
     "message": "$FROM$–$TO$ $CATEGORY$",
     "description": "Tooltip fragment describing one side of a dragged block boundary.",
-    "placeholders": { "from": { "content": "$1" }, "to": { "content": "$2" }, "category": { "content": "$3" } }
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
   },
   "edgeGoneLabel": {
     "message": "$CATEGORY$ gone",
     "description": "Tooltip fragment shown when dragging a block boundary would remove one side entirely.",
-    "placeholders": { "category": { "content": "$1" } }
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
   },
   "dialAriaNothingLoggedSuffix": {
     "message": "Nothing logged yet.",
@@ -1615,9 +1907,18 @@
   "dialAriaRangePart": {
     "message": "$FROM$ to $TO$ $CATEGORY$",
     "description": "One logged stretch, listed in a dial's accessible label.",
-    "placeholders": { "from": { "content": "$1" }, "to": { "content": "$2" }, "category": { "content": "$3" } }
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
   },
-
   "histHeatmapAriaLabel": {
     "message": "Month calendar. Arrow keys move between days, Enter opens one.",
     "description": "Accessible label on the History month heatmap grid."
@@ -1625,17 +1926,35 @@
   "heatmapLoggedLabel": {
     "message": "$DATE$ — score $SCORE$, $DURATION$ tracked",
     "description": "Accessible label and tooltip on a heatmap day cell with logged time.",
-    "placeholders": { "date": { "content": "$1" }, "score": { "content": "$2" }, "duration": { "content": "$3" } }
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      },
+      "duration": {
+        "content": "$3"
+      }
+    }
   },
   "heatmapWrittenLabel": {
     "message": "$DATE$ — written up, no time painted",
     "description": "Accessible label and tooltip on a heatmap day cell with notes/intentions but no painted time.",
-    "placeholders": { "date": { "content": "$1" } }
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
   },
   "heatmapEmptyLabel": {
     "message": "$DATE$ — not logged",
     "description": "Accessible label and tooltip on a heatmap day cell with nothing recorded.",
-    "placeholders": { "date": { "content": "$1" } }
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
   },
   "legendNotLoggedLabel": {
     "message": "Not logged",
@@ -1700,7 +2019,14 @@
   "bestDayLabel": {
     "message": "Best day: $KEY$ ($SCORE$)",
     "description": "Line in the History month summary naming the month's best-scoring day.",
-    "placeholders": { "key": { "content": "$1" }, "score": { "content": "$2" } }
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      }
+    }
   },
   "bestDayEmptyLabel": {
     "message": "Best day: — nothing scored yet this month.",
@@ -1709,7 +2035,14 @@
   "monthStreakLabel": {
     "message": "Streak this month: $CURRENT$ current · $LONGEST$ longest",
     "description": "Line in the History month summary showing this month's logging streak.",
-    "placeholders": { "current": { "content": "$1" }, "longest": { "content": "$2" } }
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "longest": {
+        "content": "$2"
+      }
+    }
   },
   "monthStreakTooltip": {
     "message": "Consecutive logged days, counted only within this month — it doesn't borrow from the month before or after.",
@@ -1718,12 +2051,20 @@
   "writtenDaysNoteSingular": {
     "message": "$COUNT$ day is written up this month but have no time painted on the dial, so they don't count toward anything above. They're all in the log below.",
     "description": "Note in the History month summary when all-zero stats are actually due to un-painted written days, singular count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "writtenDaysNotePlural": {
     "message": "$COUNT$ days are written up this month but have no time painted on the dial, so they don't count toward anything above. They're all in the log below.",
     "description": "Note in the History month summary when all-zero stats are actually due to un-painted written days, plural count.",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
   "categoryTrendsLabel": {
     "message": "Category trends",
@@ -1740,7 +2081,14 @@
   "trendWeekTooltip": {
     "message": "Week of $WEEK$: $DURATION$",
     "description": "Tooltip on a single bar of a category trend chart.",
-    "placeholders": { "week": { "content": "$1" }, "duration": { "content": "$2" } }
+    "placeholders": {
+      "week": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
   },
   "trendDirectionTooltip": {
     "message": "First week vs. last week shown, so a single dip in the middle doesn't flip the read.",
@@ -1773,12 +2121,20 @@
   "wowPreviousTooltip": {
     "message": "Last week: $VALUE$",
     "description": "Tooltip on a week-over-week delta, naming last week's value.",
-    "placeholders": { "value": { "content": "$1" } }
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
   },
   "wowDeltaPoints": {
     "message": "$N$pt",
     "description": "Formats a percentage-point change in the week-over-week comparison.",
-    "placeholders": { "n": { "content": "$1" } }
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
   },
   "searchNotesLabel": {
     "message": "Search notes",
@@ -1803,7 +2159,11 @@
   "searchNoMatchNote": {
     "message": "No notes match \"$QUERY$\".",
     "description": "Shown in the search results area when a search finds nothing, including the user's own search text verbatim.",
-    "placeholders": { "query": { "content": "$1" } }
+    "placeholders": {
+      "query": {
+        "content": "$1"
+      }
+    }
   },
   "searchResultTooltip": {
     "message": "Jump to this day",
@@ -1884,5 +2244,9 @@
   "historyEmptyAfter": {
     "message": "fills in three weeks instantly.",
     "description": "Placeholder text shown on the History tab before any data exists, after the 'Load sample data' link."
+  },
+  "futureNotLogged": {
+    "message": "That hasn't happened yet — you can only log time up to now.",
+    "description": "Toast shown when the user tries to paint a part of today that is still in the future."
   }
 }
