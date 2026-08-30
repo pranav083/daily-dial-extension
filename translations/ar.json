@@ -641,5 +641,8 @@
  "languageAutomatic": "تلقائي",
  "alreadyLoggedHint": "مسجَّل بالفعل كـ$CATEGORY$ — انقر مرتين للاستبدال",
  "replacedBlockToast": "تم استبدال $FROM$ بـ$TO$، $START$–$END$ — ⌘Z للتراجع",
- "tooltipReplaceHint": "انقر مرتين للاستبدال"
+ "tooltipReplaceHint": "انقر مرتين للاستبدال",
+ "notifyEveningTitle": "أنهِ يومك",
+ "notifyRecapTitle": "ملخّص الأسبوع",
+ "appNameShort": "Daily Dial"
 }

@@ -581,5 +581,8 @@
  "languageAutomatic": "स्वचालित",
  "alreadyLoggedHint": "यह पहले से $CATEGORY$ है — बदलने के लिए डबल-क्लिक करें",
  "replacedBlockToast": "$FROM$ की जगह $TO$ रखा गया, $START$–$END$ — वापस लाने के लिए ⌘Z",
- "tooltipReplaceHint": "बदलने के लिए डबल-क्लिक करें"
+ "tooltipReplaceHint": "बदलने के लिए डबल-क्लिक करें",
+ "notifyEveningTitle": "अपना दिन पूरा कीजिए",
+ "notifyRecapTitle": "साप्ताहिक सारांश",
+ "appNameShort": "Daily Dial"
 }

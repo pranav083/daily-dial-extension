@@ -6,7 +6,7 @@
  * settings are re-read from storage on every wake.
  */
 
-import { initDurationUnits, tm, tmJoin } from "./i18n.js";
+import { initDurationUnits, loadStoredOverride, t, tm, tmJoin } from "./i18n.js";
 
 import {
   CATEGORIES_KEY,
@@ -217,11 +217,14 @@ async function untrackedMinutesToday() {
 }
 
 async function notify(index) {
+  // Before any text is composed: the worker cannot read the language choice
+  // synchronously the way the page does.
+  await loadStoredOverride();
   const untracked = await untrackedMinutesToday();
   chrome.notifications.create(`dial-${index}-${Date.now()}`, {
     type: "basic",
     iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
-    title: index === 1 ? "Close out your day" : "Daily Dial",
+    title: index === 1 ? t("notifyEveningTitle") : t("appNameShort"),
     message: tm(reminderMessage(index, untracked)),
     priority: 1,
   });
@@ -231,6 +234,7 @@ async function notify(index) {
  *  occurrence of the chosen week-start day is the *current* (in-progress)
  *  week; the completed one is exactly 7 days before that. */
 async function notifyWeeklyRecap() {
+  await loadStoredOverride();
   const [settings, categories, days] = await Promise.all([getSettings(), getCategories(), getAllDays()]);
   // Anchored on when the recap actually fires, not on weekStart alone — the
   // two disagreed whenever either setting moved off its default, and the
@@ -241,7 +245,7 @@ async function notifyWeeklyRecap() {
   chrome.notifications.create(`dial-recap-${Date.now()}`, {
     type: "basic",
     iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
-    title: "Weekly recap",
+    title: t("notifyRecapTitle"),
     message: tmJoin(weeklyRecapMessage(recap)),
     priority: 1,
   });

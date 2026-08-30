@@ -213,3 +213,86 @@ test("every locale resolves the plural form its language actually needs", async 
     }
   }
 });
+
+/* ---------- the service worker's constraints ---------- */
+
+test("i18n.js loads where there is no localStorage and no XMLHttpRequest", async () => {
+  // Exactly a service worker: background.js imports this module, and a worker
+  // has neither API. The language override reads both, so a missing guard
+  // here would throw at module evaluation and take every reminder with it.
+  const savedXhr = globalThis.XMLHttpRequest;
+  delete globalThis.XMLHttpRequest;
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+  Object.defineProperty(globalThis, "localStorage", {
+    get() {
+      throw new ReferenceError("localStorage is not defined");
+    },
+    configurable: true,
+  });
+  try {
+    globalThis.chrome = {
+      i18n: { getUILanguage: () => "en", getMessage: () => "ok" },
+      runtime: { getURL: (p) => p },
+    };
+    const i18n = await import(`../i18n.js?worker=${Math.random()}`);
+    assert.equal(i18n.storedLanguage(), "auto", "a worker cannot hold a choice, and must not throw asking");
+    assert.equal(i18n.t("anything"), "ok");
+  } finally {
+    if (descriptor) Object.defineProperty(globalThis, "localStorage", descriptor);
+    else delete globalThis.localStorage;
+    if (savedXhr) globalThis.XMLHttpRequest = savedXhr;
+  }
+});
+
+test("loadStoredOverride gives the worker the chosen language", async () => {
+  // The page reads the choice synchronously before it renders; the worker
+  // cannot, so it awaits this. Without it the dial is in one language and the
+  // reminder it fires arrives in another.
+  const catalogs = {
+    hi: catalogFor("hi"),
+    en: catalogFor("en"),
+  };
+  globalThis.chrome = {
+    i18n: { getUILanguage: () => "en", getMessage: (k) => catalogs.en[k]?.message ?? "" },
+    runtime: { getURL: (p) => p },
+    storage: { local: { get: async () => ({ dailyDialLanguage: "hi" }) } },
+  };
+  const savedFetch = globalThis.fetch;
+  globalThis.fetch = async (path) => ({
+    ok: true,
+    json: async () => (String(path).includes("/hi/") ? catalogs.hi : catalogs.en),
+  });
+  try {
+    const i18n = await import(`../i18n.js?override=${Math.random()}`);
+    assert.equal(i18n.t("notifyEveningTitle"), catalogs.en.notifyEveningTitle.message, "English before loading");
+    assert.equal(await i18n.loadStoredOverride(), "hi");
+    assert.equal(i18n.t("notifyEveningTitle"), catalogs.hi.notifyEveningTitle.message, "Hindi after");
+    assert.equal(i18n.uiLanguage(), "hi", "plural rules and dates follow it too");
+  } finally {
+    globalThis.fetch = savedFetch;
+  }
+});
+
+test("loadStoredOverride stays quiet when there is no choice, or it fails", async () => {
+  globalThis.chrome = {
+    i18n: { getUILanguage: () => "en", getMessage: () => "en text" },
+    runtime: { getURL: (p) => p },
+    storage: { local: { get: async () => ({}) } },
+  };
+  let i18n = await import(`../i18n.js?none=${Math.random()}`);
+  assert.equal(await i18n.loadStoredOverride(), null, "no stored choice");
+
+  // A catalog that cannot be fetched must never stop a notification firing.
+  globalThis.chrome.storage.local.get = async () => ({ dailyDialLanguage: "hi" });
+  const savedFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    throw new Error("offline");
+  };
+  try {
+    i18n = await import(`../i18n.js?fail=${Math.random()}`);
+    assert.equal(await i18n.loadStoredOverride(), null);
+    assert.equal(i18n.t("whatever"), "en text", "and English still resolves");
+  } finally {
+    globalThis.fetch = savedFetch;
+  }
+});

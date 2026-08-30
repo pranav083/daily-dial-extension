@@ -566,5 +566,8 @@
  "languageAutomatic": "自動",
  "alreadyLoggedHint": "すでに$CATEGORY$です — 置き換えるにはダブルクリック",
  "replacedBlockToast": "$START$–$END$ の $FROM$ を $TO$ に置き換えました — 元に戻すには ⌘Z",
- "tooltipReplaceHint": "ダブルクリックで置き換え"
+ "tooltipReplaceHint": "ダブルクリックで置き換え",
+ "notifyEveningTitle": "今日を締めくくりましょう",
+ "notifyRecapTitle": "週間まとめ",
+ "appNameShort": "Daily Dial"
 }

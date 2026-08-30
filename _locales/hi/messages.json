@@ -2515,5 +2515,14 @@
   },
   "tooltipReplaceHint": {
     "message": "बदलने के लिए डबल-क्लिक करें"
+  },
+  "notifyEveningTitle": {
+    "message": "अपना दिन पूरा कीजिए"
+  },
+  "notifyRecapTitle": {
+    "message": "साप्ताहिक सारांश"
+  },
+  "appNameShort": {
+    "message": "Daily Dial"
   }
 }

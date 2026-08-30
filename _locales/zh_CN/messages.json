@@ -2350,5 +2350,14 @@
   },
   "tooltipReplaceHint": {
     "message": "双击可替换"
+  },
+  "notifyEveningTitle": {
+    "message": "为今天收个尾"
+  },
+  "notifyRecapTitle": {
+    "message": "每周回顾"
+  },
+  "appNameShort": {
+    "message": "Daily Dial"
   }
 }

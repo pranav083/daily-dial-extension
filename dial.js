@@ -2679,7 +2679,7 @@ function renderLanguageSelect() {
  * path and re-deriving text this module does not own, for a setting people
  * change approximately once.
  */
-function onLanguageChange() {
+async function onLanguageChange() {
   const chosen = $("language-select").value;
   try {
     if (chosen === "auto") localStorage.removeItem(LANGUAGE_KEY);
@@ -2687,6 +2687,18 @@ function onLanguageChange() {
   } catch {
     toast(t("saveFailedToast"));
     return;
+  }
+  // Also into chrome.storage, the only one the service worker can read —
+  // without it the dial speaks your language and the reminder it fires
+  // speaks Chrome's.
+  //
+  // Awaited, because reloading is what kills it otherwise: the write is
+  // async, `location.reload()` tears the page down immediately, and the
+  // value never lands. Measured — it wrote nothing at all until this waited.
+  try {
+    await saveLocal({ [LANGUAGE_KEY]: chosen });
+  } catch (err) {
+    reportStorageFailure(err);
   }
   window.location.reload();
 }

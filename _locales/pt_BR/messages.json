@@ -2515,5 +2515,14 @@
   },
   "tooltipReplaceHint": {
     "message": "clique duas vezes para substituir"
+  },
+  "notifyEveningTitle": {
+    "message": "Feche o seu dia"
+  },
+  "notifyRecapTitle": {
+    "message": "Resumo da semana"
+  },
+  "appNameShort": {
+    "message": "Daily Dial"
   }
 }

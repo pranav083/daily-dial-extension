@@ -2845,5 +2845,14 @@
   },
   "tooltipReplaceHint": {
     "message": "двойной щелчок заменит"
+  },
+  "notifyEveningTitle": {
+    "message": "Заверши свой день"
+  },
+  "notifyRecapTitle": {
+    "message": "Итоги недели"
+  },
+  "appNameShort": {
+    "message": "Daily Dial"
   }
 }

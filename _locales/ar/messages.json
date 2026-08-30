@@ -3175,5 +3175,14 @@
   },
   "tooltipReplaceHint": {
     "message": "انقر مرتين للاستبدال"
+  },
+  "notifyEveningTitle": {
+    "message": "أنهِ يومك"
+  },
+  "notifyRecapTitle": {
+    "message": "ملخّص الأسبوع"
+  },
+  "appNameShort": {
+    "message": "Daily Dial"
   }
 }

@@ -2284,6 +2284,18 @@
     "message": "That hasn't happened yet — you can only log time up to now.",
     "description": "Toast shown when the user tries to paint a part of today that is still in the future."
   },
+  "notifyEveningTitle": {
+    "message": "Close out your day",
+    "description": "Title of the evening reminder notification."
+  },
+  "notifyRecapTitle": {
+    "message": "Weekly recap",
+    "description": "Title of the weekly recap notification."
+  },
+  "appNameShort": {
+    "message": "Daily Dial",
+    "description": "Product name used as a notification title. A brand name: never translated."
+  },
   "alreadyLoggedHint": {
     "message": "Already $CATEGORY$ — double-click to replace it",
     "description": "Shown when a stroke would have painted over time that already holds a different category. Names what is there and how to override.",

@@ -8,6 +8,15 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.29.1] — 2026-08-30
+
+### Fixed
+
+- **Reminders now arrive in the language you chose.** Picking a language set
+  it for the dial but not for notifications, which kept following the
+  browser — so the app could be in Hindi and its evening reminder in English.
+- The two notification titles were never translated at all, in any language.
+
 ## [1.29.0] — 2026-08-30
 
 ### Changed

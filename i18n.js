@@ -66,7 +66,7 @@ export function storedLanguage() {
  * `null` whenever the language is automatic, which is the default: that path
  * is exactly as fast as before and goes straight to chrome.i18n.
  */
-const override = (() => {
+let override = (() => {
   const want = storedLanguage();
   if (want === "auto") return null;
   try {
@@ -90,6 +90,37 @@ const override = (() => {
     return null; // a bad stored value must never stop the page loading
   }
 })();
+
+/**
+ * Loads a stored language choice in a context that has no `localStorage` and
+ * no synchronous XHR — which is to say, the service worker.
+ *
+ * The page reads the choice synchronously, before its first string renders.
+ * A worker has neither of those APIs, so without this it always fell back to
+ * Chrome's own language: the dial would be in Hindi and the reminder that
+ * fired from it would arrive in English. Await this before composing any
+ * text a person will read.
+ */
+export async function loadStoredOverride() {
+  if (override) return override.lang;
+  try {
+    const stored = await chrome.storage?.local?.get?.(LANGUAGE_KEY);
+    const want = stored?.[LANGUAGE_KEY];
+    if (!want || want === "auto") return null;
+    const grab = async (loc) => {
+      const res = await fetch(chrome.runtime.getURL(`_locales/${loc}/messages.json`));
+      return res.ok ? res.json() : null;
+    };
+    const chosen = await grab(want);
+    if (!chosen) return null;
+    const base = want === "en" ? {} : ((await grab("en")) ?? {});
+    override = { lang: want.replace("_", "-"), chosen, base };
+    setDurationUnits(t("durationHourSuffix"), t("durationMinuteSuffix"));
+    return override.lang;
+  } catch {
+    return null; // never let a language preference stop a notification firing
+  }
+}
 
 /** Substitutes `$NAME$` placeholders the way chrome.i18n does. Only needed on
  *  the override path; chrome.i18n does it itself otherwise. */

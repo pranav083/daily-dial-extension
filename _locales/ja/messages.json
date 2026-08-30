@@ -2350,5 +2350,14 @@
   },
   "tooltipReplaceHint": {
     "message": "ダブルクリックで置き換え"
+  },
+  "notifyEveningTitle": {
+    "message": "今日を締めくくりましょう"
+  },
+  "notifyRecapTitle": {
+    "message": "週間まとめ"
+  },
+  "appNameShort": {
+    "message": "Daily Dial"
   }
 }

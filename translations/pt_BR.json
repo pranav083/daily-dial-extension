@@ -581,5 +581,8 @@
  "languageAutomatic": "Automático",
  "alreadyLoggedHint": "Já é $CATEGORY$ — clique duas vezes para substituir",
  "replacedBlockToast": "$FROM$ substituído por $TO$, $START$–$END$ — ⌘Z para desfazer",
- "tooltipReplaceHint": "clique duas vezes para substituir"
+ "tooltipReplaceHint": "clique duas vezes para substituir",
+ "notifyEveningTitle": "Feche o seu dia",
+ "notifyRecapTitle": "Resumo da semana",
+ "appNameShort": "Daily Dial"
 }

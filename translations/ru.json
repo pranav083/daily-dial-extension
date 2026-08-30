@@ -611,5 +611,8 @@
  "languageAutomatic": "Автоматически",
  "alreadyLoggedHint": "Уже $CATEGORY$ — дважды щёлкни, чтобы заменить",
  "replacedBlockToast": "$FROM$ заменено на $TO$, $START$–$END$ — ⌘Z чтобы отменить",
- "tooltipReplaceHint": "двойной щелчок заменит"
+ "tooltipReplaceHint": "двойной щелчок заменит",
+ "notifyEveningTitle": "Заверши свой день",
+ "notifyRecapTitle": "Итоги недели",
+ "appNameShort": "Daily Dial"
 }

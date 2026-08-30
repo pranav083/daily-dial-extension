@@ -566,5 +566,8 @@
  "languageAutomatic": "自动",
  "alreadyLoggedHint": "已经是$CATEGORY$——双击可替换",
  "replacedBlockToast": "$START$–$END$ 的$FROM$已替换为$TO$——按 ⌘Z 撤销",
- "tooltipReplaceHint": "双击可替换"
+ "tooltipReplaceHint": "双击可替换",
+ "notifyEveningTitle": "为今天收个尾",
+ "notifyRecapTitle": "每周回顾",
+ "appNameShort": "Daily Dial"
 }
