@@ -251,15 +251,24 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* ---- dial + strip row ---- */
+/* ---- dial + left rail ---- */
 .dial-row { display: flex; gap: 18px; align-items: flex-start; }
 .dial-stack { flex: 1; min-width: 0; }
+/* Wide enough for the longest category name plus its swatch and weight
+   glyph; the week strip inside it simply takes the same width. */
+.dial-rail { display: flex; flex-direction: column; gap: 14px; flex: 0 0 156px; min-width: 0; }
+.dial-rail .strip-wrap { flex: 0 0 auto; width: 100%; margin-top: auto; }
 /* A container query on the card, for the same reason the twin dials use one:
    once the card itself is narrow, the strip goes back above the ring rather
    than squeezing both into a width neither can use. */
 @container (max-width: 520px) {
   .dial-row { flex-direction: column; }
-  .strip-wrap { flex: 0 0 auto; width: 100%; }
+  .dial-rail { flex: 0 0 auto; width: 100%; }
+  /* Ring first when everything stacks: the rail is a set of controls *for*
+     the dial, and reading three of them before seeing what they act on
+     makes no sense. */
+  .dial-stack { order: -1; }
+  .strip-wrap { flex: 0 0 auto; width: 100%; margin-top: 0; }
   .strip { flex-direction: row; gap: 6px; }
   .strip-day { flex: 1; flex-direction: column; gap: 5px; padding: 6px 2px; text-align: center; }
   .strip-day .dow, .strip-day .num { width: auto; text-align: center; }
@@ -418,7 +427,26 @@ svg.edge-grab { cursor: ew-resize; }
 }
 
 /* ---- pen palette ---- */
-.pens { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; justify-content: center; }
+/* A column in the left rail rather than a row under the dial. Stacked, the
+   pens read as a list you pick from — and they stop competing with the ring
+   for the width they were both wrapping to. */
+.pens { display: flex; flex-direction: column; gap: 6px; }
+.pens-eraser {
+  display: flex;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-soft);
+}
+.pens .pen, .pens-eraser .pen { width: 100%; }
+
+/* The stacked fallback for the rail's pens. This has to live *after* the
+   base .pens rule above: a container query carries no extra specificity, so
+   declared earlier in the file it silently lost every tie. */
+@container (max-width: 520px) {
+  .pens { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .pens .pen, .pens-eraser .pen { width: auto; }
+  .pens-eraser { justify-content: center; margin-top: 0; padding-top: 0; border-top: none; }
+}
 .pen {
   display: flex;
   align-items: center;
@@ -449,7 +477,7 @@ input[type="time"]:focus-visible {
 }
 
 /* ---- side card ---- */
-.side-card { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+.side-card { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
 .section-label {
   font-size: 0.72rem;
   font-weight: 700;
@@ -458,6 +486,10 @@ input[type="time"]:focus-visible {
   color: var(--ink-muted);
   margin: 0 0 10px;
 }
+/* Inside a journal block the flex `gap` already separates the label from
+   what follows; the margin was being added on top of it, which is half the
+   reason those three fields sat so far apart. */
+.journal-block > .section-label { margin-bottom: 0; }
 
 .stat-row { display: flex; gap: 14px; }
 .stat { flex: 1; background: var(--panel-2); border-radius: 10px; padding: 10px 12px; }
@@ -986,7 +1018,12 @@ select {
 .avoid-row .drop:hover { color: var(--status-critical-text); background: var(--panel-2); }
 .avoid-row .drop:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
-.journal-block { display: flex; flex-direction: column; gap: 8px; }
+.journal-block { display: flex; flex-direction: column; gap: 6px; }
+/* An empty list renders at zero height but still claims a `gap` on each
+   side, so a day with no intentions yet paid for a list that wasn't there.
+   Three blocks × two phantom gaps was most of the space between the
+   headings and their input rows. */
+.journal-block > ul:empty { display: none; }
 
 .intent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .intent-row { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; }

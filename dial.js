@@ -1286,6 +1286,12 @@ function renderPens() {
     pensEl.appendChild(btn);
   }
 
+  // The eraser lives in its own slot, not in the pen list. It isn't a
+  // category — it doesn't get renamed, hidden or reweighted, and it is there
+  // whether you have six categories or one. Sitting in the row it read as a
+  // seventh category, and moved every time the others did.
+  const eraserSlot = $("pens-eraser");
+  eraserSlot.replaceChildren();
   const eraser = document.createElement("button");
   eraser.className = `pen eraser${state.activePen === UNTRACKED ? " active" : ""}`;
   eraser.setAttribute("aria-pressed", String(state.activePen === UNTRACKED));
@@ -1298,7 +1304,7 @@ function renderPens() {
     renderPens();
     refreshCenters();
   });
-  pensEl.appendChild(eraser);
+  eraserSlot.appendChild(eraser);
 }
 
 /* ---------- side panel ---------- */

@@ -111,12 +111,20 @@
              reference, not something acted on each session, and at the top
              it pushed the pens and the note field off a laptop screen. -->
         <div class="dial-row">
+          <!-- The left rail. Pens at the top because picking one is the
+               first thing you do; the eraser below a rule because it isn't
+               a category and doesn't come and go as categories do; the week
+               at the bottom because it's reference, not an action. -->
+          <div class="dial-rail">
+            <div class="pens" id="pens"></div>
+            <div class="pens-eraser" id="pens-eraser"></div>
           <div class="strip-wrap">
             <div class="strip-header">
               <span class="strip-month" id="strip-month"></span>
             </div>
             <div class="strip" id="strip" data-i18n-title="stripTooltip" title="The last seven days. Bar length is that day's score; click one to view or edit it."></div>
             <span class="strip-hint" data-i18n="stripHintLabel">Click a day to open it</span>
+          </div>
           </div>
           <div class="dial-stack">
             <div class="dial-wrap" id="dial-wrap-single">
@@ -185,8 +193,6 @@
           <span data-i18n="firstRunHint">👇 Pick a category, then drag around the ring to paint your first block.</span>
           <button type="button" class="link-btn" id="first-run-hint-dismiss" data-i18n="firstRunHintDismiss">Got it</button>
         </p>
-
-        <div class="pens" id="pens"></div>
 
         <div class="quick-entry">
           <button class="ghost-btn" id="copy-yesterday"
@@ -309,9 +315,7 @@
           </form>
         </div>
 
-
-
-        <div>
+        <div class="journal-block">
           <p class="section-label" data-i18n-title="reflectionTooltip" title="One line on what helped or hurt today. Included in your CSV export." data-i18n="reflectionLabel">Why (a line is enough)</p>
           <label for="reflection" style="position:absolute;left:-9999px;" data-i18n="reflectionSrLabel">Reflection</label>
           <textarea id="reflection" data-i18n-placeholder="reflectionPlaceholder" placeholder="What made today click — or drag?"></textarea>
