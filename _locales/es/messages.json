@@ -20,12 +20,6 @@
   "streakBannerTooltip": {
     "message": "Días seguidos con al menos un bloque registrado. Un día perdido a la semana se perdona como congelación."
   },
-  "streakDayLabel": {
-    "message": "días de racha"
-  },
-  "streakBestLabel": {
-    "message": "mejor:"
-  },
   "streakFreezeLabel": {
     "message": "❄ congelación usada"
   },
@@ -2454,6 +2448,30 @@
     "message": "Se rellenó $COUNT$ día, deteniéndose en el momento actual",
     "placeholders": {
       "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_one": {
+    "message": "<b>$COUNT$</b> día de racha",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "<b>$COUNT$</b> días de racha",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· mejor: $BEST$",
+    "placeholders": {
+      "best": {
         "content": "$1"
       }
     }

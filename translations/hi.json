@@ -6,8 +6,6 @@
  "wordmarkTitle": "Daily Dial",
  "wordmarkTagline": "समय और फ़ोकस लॉग",
  "streakBannerTooltip": "लगातार वे दिन जिनमें कम से कम एक ब्लॉक दर्ज हुआ। हफ़्ते में एक दिन छूटना फ़्रीज़ के रूप में माफ़ है।",
- "streakDayLabel": "दिन की लय",
- "streakBestLabel": "सर्वश्रेष्ठ:",
  "streakFreezeLabel": "❄ फ़्रीज़ इस्तेमाल हुआ",
  "streakFreezeTooltip": "इस हफ़्ते आपका एक दिन छूटा, पर लय बची रही — हर 7 दिनों में एक चूक माफ़ है।",
  "streakRiskLabel": "आज अभी कुछ दर्ज नहीं",
@@ -573,5 +571,8 @@
  "obsUntrackedAreaHeadline_other": "पिछले $DAYS$ दिनों का सारा दर्ज समय सिर्फ़ $COUNT$ श्रेणियों में है",
  "obsUntrackedAreaHeadline_one": "पिछले $DAYS$ दिनों का सारा दर्ज समय सिर्फ़ $COUNT$ श्रेणी में है",
  "filledDaysUpToNow_other": "$COUNT$ दिन भरे गए, अभी तक रोककर",
- "filledDaysUpToNow_one": "$COUNT$ दिन भरा गया, अभी तक रोककर"
+ "filledDaysUpToNow_one": "$COUNT$ दिन भरा गया, अभी तक रोककर",
+ "streakBanner_one": "लगातार <b>$COUNT$</b> दिन",
+ "streakBanner_other": "लगातार <b>$COUNT$</b> दिन",
+ "streakBestSuffix": "· सर्वश्रेष्ठ: $BEST$"
 }

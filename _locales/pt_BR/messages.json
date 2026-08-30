@@ -20,12 +20,6 @@
   "streakBannerTooltip": {
     "message": "Dias seguidos com pelo menos um bloco registrado. Um dia perdido por semana é perdoado como congelamento."
   },
-  "streakDayLabel": {
-    "message": "dias de sequência"
-  },
-  "streakBestLabel": {
-    "message": "melhor:"
-  },
   "streakFreezeLabel": {
     "message": "❄ congelamento usado"
   },
@@ -2454,6 +2448,30 @@
     "message": "$COUNT$ dia preenchido, parando em agora",
     "placeholders": {
       "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_one": {
+    "message": "<b>$COUNT$</b> dia seguido",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "<b>$COUNT$</b> dias seguidos",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· recorde: $BEST$",
+    "placeholders": {
+      "best": {
         "content": "$1"
       }
     }

@@ -20,12 +20,6 @@
   "streakBannerTooltip": {
     "message": "लगातार वे दिन जिनमें कम से कम एक ब्लॉक दर्ज हुआ। हफ़्ते में एक दिन छूटना फ़्रीज़ के रूप में माफ़ है।"
   },
-  "streakDayLabel": {
-    "message": "दिन की लय"
-  },
-  "streakBestLabel": {
-    "message": "सर्वश्रेष्ठ:"
-  },
   "streakFreezeLabel": {
     "message": "❄ फ़्रीज़ इस्तेमाल हुआ"
   },
@@ -2454,6 +2448,30 @@
     "message": "$COUNT$ दिन भरा गया, अभी तक रोककर",
     "placeholders": {
       "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_one": {
+    "message": "लगातार <b>$COUNT$</b> दिन",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "लगातार <b>$COUNT$</b> दिन",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· सर्वश्रेष्ठ: $BEST$",
+    "placeholders": {
+      "best": {
         "content": "$1"
       }
     }

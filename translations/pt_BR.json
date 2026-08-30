@@ -6,8 +6,6 @@
  "wordmarkTitle": "Daily Dial",
  "wordmarkTagline": "Registro de tempo e foco",
  "streakBannerTooltip": "Dias seguidos com pelo menos um bloco registrado. Um dia perdido por semana é perdoado como congelamento.",
- "streakDayLabel": "dias de sequência",
- "streakBestLabel": "melhor:",
  "streakFreezeLabel": "❄ congelamento usado",
  "streakFreezeTooltip": "Você perdeu um dia esta semana, mas sua sequência sobreviveu — uma falha a cada 7 dias corridos é perdoada.",
  "streakRiskLabel": "ainda não registrado hoje",
@@ -573,5 +571,8 @@
  "obsUntrackedAreaHeadline_other": "Tudo o que foi registrado nos últimos $DAYS$ dias está em apenas $COUNT$ categorias",
  "obsUntrackedAreaHeadline_one": "Tudo o que foi registrado nos últimos $DAYS$ dias está em apenas $COUNT$ categoria",
  "filledDaysUpToNow_other": "$COUNT$ dias preenchidos, parando em agora",
- "filledDaysUpToNow_one": "$COUNT$ dia preenchido, parando em agora"
+ "filledDaysUpToNow_one": "$COUNT$ dia preenchido, parando em agora",
+ "streakBanner_one": "<b>$COUNT$</b> dia seguido",
+ "streakBanner_other": "<b>$COUNT$</b> dias seguidos",
+ "streakBestSuffix": "· recorde: $BEST$"
 }

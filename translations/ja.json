@@ -6,8 +6,6 @@
  "wordmarkTitle": "Daily Dial",
  "wordmarkTagline": "時間と集中の記録",
  "streakBannerTooltip": "1つ以上のブロックを記録した日が連続している日数です。週に1日の未記録は凍結として許容されます。",
- "streakDayLabel": "日連続",
- "streakBestLabel": "最長:",
  "streakFreezeLabel": "❄ 凍結使用",
  "streakFreezeTooltip": "今週1日記録がありませんでしたが、連続記録は途切れていません。直近7日間で1回の未記録は許容されます。",
  "streakRiskLabel": "今日はまだ記録がありません",
@@ -559,5 +557,7 @@
  "obsPeakHourHeadline_other": "記録した$LOGGED$日のうち$PROTECTED$日で、$HOUR$が最も生産的な時間帯です",
  "obsPeakHourDetail_other": "直近$DAYS$日間で、$HOUR$は他のどの時間帯よりも多くの生産的な時間を積み重ねましたが、記録した$LOGGED$日のうち生産的な状態を保てたのは$PROTECTED$日だけでした。",
  "obsUntrackedAreaHeadline_other": "直近$DAYS$日間の記録はすべて$COUNT$個のカテゴリに集中しています",
- "filledDaysUpToNow_other": "現在時刻までの$COUNT$日分を記録しました"
+ "filledDaysUpToNow_other": "現在時刻までの$COUNT$日分を記録しました",
+ "streakBanner_other": "<b>$COUNT$</b>日連続",
+ "streakBestSuffix": "· 最高: $BEST$"
 }

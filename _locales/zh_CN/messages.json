@@ -1,0 +1,2314 @@
+{
+  "appName": {
+    "message": "Daily Dial – 时间跟踪与专注"
+  },
+  "appDescription": {
+    "message": "在24小时表盘上描绘你的一天，看看时间是否花在了你想花的地方。"
+  },
+  "actionDefaultTitle": {
+    "message": "打开 Daily Dial"
+  },
+  "saveFailedToast": {
+    "message": "保存失败 — 最近的更改可能已丢失。"
+  },
+  "wordmarkTitle": {
+    "message": "Daily Dial"
+  },
+  "wordmarkTagline": {
+    "message": "时间与专注记录"
+  },
+  "streakBannerTooltip": {
+    "message": "连续记录了至少一个时间块的天数。每周可以有一天未记录，会被视为冻结日而不中断连续记录。"
+  },
+  "streakFreezeLabel": {
+    "message": "❄ 已使用冻结"
+  },
+  "streakFreezeTooltip": {
+    "message": "你这周有一天没有记录，但连续记录并未中断——每7天内允许一次未记录。"
+  },
+  "streakRiskLabel": {
+    "message": "今天还没有记录"
+  },
+  "streakRiskTooltip": {
+    "message": "今天至少记录一个时间块，才能保持连续记录。"
+  },
+  "challengeChipTooltip": {
+    "message": "你命名的挑战。点击可以修改。"
+  },
+  "challengeDayProgress": {
+    "message": "第$DAY$/$TARGET$天",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDaySimple": {
+    "message": "第$DAY$天",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      }
+    }
+  },
+  "viewNavLabel": {
+    "message": "视图"
+  },
+  "viewTabDay": {
+    "message": "日"
+  },
+  "viewTabHistory": {
+    "message": "历史"
+  },
+  "viewTabHistoryTooltip": {
+    "message": "一览你每个月的情况，以及各类别随时间的变化趋势"
+  },
+  "dateToday": {
+    "message": "今天"
+  },
+  "dateYesterday": {
+    "message": "昨天"
+  },
+  "prevDayLabel": {
+    "message": "上一天"
+  },
+  "nextDayLabel": {
+    "message": "下一天"
+  },
+  "todayJumpTooltip": {
+    "message": "跳转回今天"
+  },
+  "settingsButtonLabel": {
+    "message": "设置"
+  },
+  "settingsButtonTooltip": {
+    "message": "类别、提醒、目标、备份和外观"
+  },
+  "demoBannerTitle": {
+    "message": "演示模式"
+  },
+  "demoBannerBody": {
+    "message": "——以下日期包含示例数据，不仅仅是你自己的记录。"
+  },
+  "demoBannerExitLabel": {
+    "message": "退出演示"
+  },
+  "demoBannerExitTooltip": {
+    "message": "只移除已加载的示例日期，你自己记录的内容不受影响。"
+  },
+  "staleBannerHeadline": {
+    "message": "另一个标签页修改了$WHAT$。",
+    "placeholders": {
+      "what": {
+        "content": "$1"
+      }
+    }
+  },
+  "staleBannerBody": {
+    "message": "为了避免覆盖，这里的编辑已暂停。重新加载即可获取最新版本。"
+  },
+  "staleBannerReload": {
+    "message": "重新加载"
+  },
+  "staleWhatViewedDay": {
+    "message": "你正在查看的这一天"
+  },
+  "staleWhatCategories": {
+    "message": "你的类别"
+  },
+  "staleWhatSettings": {
+    "message": "你的设置"
+  },
+  "staleWhatDemoMode": {
+    "message": "演示模式"
+  },
+  "staleWhatTemplates": {
+    "message": "你的模板"
+  },
+  "firstRunHint": {
+    "message": "👇 选择一个类别，然后沿着圆环拖动，画出第一个时间块。"
+  },
+  "firstRunHintDismiss": {
+    "message": "知道了"
+  },
+  "shareImageLabel": {
+    "message": "分享为图片"
+  },
+  "shareImageTooltip": {
+    "message": "保存（或分享）这一天表盘与分数的 PNG 图片——除非你主动发送，否则不会离开你的设备。"
+  },
+  "dialLayoutSwitchLabel": {
+    "message": "表盘布局"
+  },
+  "dialModeSingleLabel": {
+    "message": "24小时"
+  },
+  "dialModeSingleTooltip": {
+    "message": "一个24小时圆环"
+  },
+  "dialModeAmpmLabel": {
+    "message": "上午+下午"
+  },
+  "dialModeAmpmTooltip": {
+    "message": "两个12小时圆环并排显示"
+  },
+  "dialModeToggleLabel": {
+    "message": "上午⇄下午"
+  },
+  "dialModeToggleTooltip": {
+    "message": "一个12小时圆环，带上午/下午切换"
+  },
+  "dialAriaLabelSingle": {
+    "message": "24小时活动表盘。方向键移动光标，Shift+方向键进行选择，Enter 绘制，Delete 擦除。"
+  },
+  "dialAriaLabelAm": {
+    "message": "上午活动表盘，从午夜到正午。方向键移动光标，Shift+方向键进行选择，Enter 绘制，Delete 擦除。"
+  },
+  "dialAriaLabelPm": {
+    "message": "下午活动表盘，从正午到午夜。方向键移动光标，Shift+方向键进行选择，Enter 绘制，Delete 擦除。"
+  },
+  "dialCenterPickCategory": {
+    "message": "选择一个类别"
+  },
+  "dialTimeLoggedTooltip": {
+    "message": "这一半记录的时间"
+  },
+  "dialCurrentTimeTooltip": {
+    "message": "当前时间"
+  },
+  "dialHalfAm": {
+    "message": "上午"
+  },
+  "dialHalfAmRange": {
+    "message": "· 0:00–12:00"
+  },
+  "dialHalfPm": {
+    "message": "下午"
+  },
+  "dialHalfPmRange": {
+    "message": "· 12:00–24:00"
+  },
+  "toggleHalfSwitchLabel": {
+    "message": "显示上午或下午"
+  },
+  "copyYesterdayLabel": {
+    "message": "复制昨天"
+  },
+  "copyYesterdayTooltip": {
+    "message": "用昨天的时间块填充今天——适合日程相似的日子"
+  },
+  "typedEntryTimeRangeLabel": {
+    "message": "时间范围"
+  },
+  "typedEntryPlaceholder": {
+    "message": "9-11"
+  },
+  "typedEntryTooltip": {
+    "message": "一个时间范围：“9-11”、“13:30-15”或“9pm-11pm”。你也可以在这里直接输入类别。"
+  },
+  "typedEntryCatTooltip": {
+    "message": "这个时间块属于哪个类别"
+  },
+  "addButtonLabel": {
+    "message": "添加"
+  },
+  "typedEntryAddTooltip": {
+    "message": "将这个时间块添加到表盘"
+  },
+  "justPaintedNoteLabel": {
+    "message": "为刚才绘制的内容添加备注"
+  },
+  "justPaintedSaveLabel": {
+    "message": "保存"
+  },
+  "dismissLabel": {
+    "message": "关闭"
+  },
+  "hintPaintInstruction": {
+    "message": "点击或沿圆环拖动即可绘制"
+  },
+  "hintUndo": {
+    "message": "撤销"
+  },
+  "hintAllShortcuts": {
+    "message": "全部快捷键"
+  },
+  "breakdownSectionLabel": {
+    "message": "完整的一天"
+  },
+  "breakdownSectionTooltip": {
+    "message": "按顺序列出这一天的每一段时间，包括尚未记录的部分。可以直接在任意一行中输入备注；在空白行中选择类别即可填补。"
+  },
+  "breakdownColWhen": {
+    "message": "时间"
+  },
+  "breakdownColWhat": {
+    "message": "内容"
+  },
+  "breakdownColFor": {
+    "message": "时长"
+  },
+  "breakdownColNote": {
+    "message": "备注"
+  },
+  "breakdownColClear": {
+    "message": "清除"
+  },
+  "todaysReadLabel": {
+    "message": "今日概况"
+  },
+  "statTrackedLabel": {
+    "message": "已记录"
+  },
+  "statTrackedTooltip": {
+    "message": "你今天在表盘上绘制的总时长。其余时间算作未记录。"
+  },
+  "statProductiveLabel": {
+    "message": "高效"
+  },
+  "statProductiveTooltip": {
+    "message": "已记录时间中，用于加权为“+”的类别的占比。未记录的时间不计入。"
+  },
+  "statFocusLabel": {
+    "message": "最长专注"
+  },
+  "statFocusTooltip": {
+    "message": "你最长的一段不间断高效时间。可以跨越不同的“+”类别持续，但会被中性或分心时间打断。"
+  },
+  "scoreValTooltip": {
+    "message": "（高效 − 分心）÷ 已记录时间，以百分比表示。衡量的是这一天的质量而非长度，因此专注的4小时胜过散乱的10小时。"
+  },
+  "meterTooltip": {
+    "message": "你的分数范围是 −100 到 +100。"
+  },
+  "whereTimeWentLabel": {
+    "message": "时间去向"
+  },
+  "whereTimeWentTooltip": {
+    "message": "今天已记录的时间在各类别之间的分布，同时显示未记录时间，让空缺一目了然。"
+  },
+  "todaysGoalsLabel": {
+    "message": "今日目标"
+  },
+  "todaysGoalsTooltip": {
+    "message": "你在“设置→目标”中设定的每日目标。✓ 表示已经达成。"
+  },
+  "weeklyGoalsLabel": {
+    "message": "本周目标"
+  },
+  "weeklyGoalsTooltip": {
+    "message": "你在“设置→目标”中设定的每周目标，从你设置的一周起始日开始累计。✓ 表示已经达成。"
+  },
+  "intentionsLabel": {
+    "message": "今日计划"
+  },
+  "intentionsTooltip": {
+    "message": "你今天打算做的事情。完成后打勾——历史记录会显示你实际完成了哪些。"
+  },
+  "addIntentionLabel": {
+    "message": "添加一项计划"
+  },
+  "addIntentionPlaceholder": {
+    "message": "刷 Leetcode，给教授发邮件…"
+  },
+  "avoidLabel": {
+    "message": "要避免的事"
+  },
+  "avoidTooltip": {
+    "message": "今天要避免做的事。会与你实际做的事一起保留在历史记录中。"
+  },
+  "addAvoidLabel": {
+    "message": "添加要避免的事"
+  },
+  "addAvoidPlaceholder": {
+    "message": "刷手机停不下来，追剧一整天…"
+  },
+  "reflectionLabel": {
+    "message": "原因（一句话就够）"
+  },
+  "reflectionTooltip": {
+    "message": "用一句话说说今天什么起了作用、什么帮了倒忙。会包含在 CSV 导出中。"
+  },
+  "reflectionSrLabel": {
+    "message": "反思"
+  },
+  "reflectionPlaceholder": {
+    "message": "今天为什么顺利，或者不顺利？"
+  },
+  "clearDayLabel": {
+    "message": "清空这一天"
+  },
+  "clearDayTooltip": {
+    "message": "清除这一天的所有时间块。可用 ⌘Z 撤销。"
+  },
+  "clearDayConfirmLabel": {
+    "message": "确认清空？"
+  },
+  "dayClearedToast": {
+    "message": "已清空这一天 — ⌘Z 可撤销"
+  },
+  "settingsTitle": {
+    "message": "设置"
+  },
+  "settingsCloseLabel": {
+    "message": "关闭设置"
+  },
+  "settingsTabCategories": {
+    "message": "类别"
+  },
+  "settingsTabReminders": {
+    "message": "提醒"
+  },
+  "settingsTabGoals": {
+    "message": "目标"
+  },
+  "settingsTabData": {
+    "message": "数据"
+  },
+  "settingsTabAppearance": {
+    "message": "外观"
+  },
+  "settingsTabAbout": {
+    "message": "关于"
+  },
+  "categoriesLegendPositive": {
+    "message": "计入你的分数，"
+  },
+  "categoriesLegendNeutral": {
+    "message": "为中性，"
+  },
+  "categoriesLegendNegative": {
+    "message": "则从分数中扣除。"
+  },
+  "categoriesHideNote": {
+    "message": "圆形按钮可以隐藏你不使用的类别。"
+  },
+  "categoriesAliasNote": {
+    "message": "每个类别下方的小输入框用于设置别名——也就是你自己描述同一类别的说法（比如“Applications”类别可以设置“leetcode”或“mock interview”），这样输入框就能识别你实际使用的说法，同时仍以该类别原本的加权颜色绘制。"
+  },
+  "categoryNameAriaLabel": {
+    "message": "类别名称"
+  },
+  "weightPositiveLabel": {
+    "message": "计入分数"
+  },
+  "weightNeutralLabel": {
+    "message": "中性"
+  },
+  "weightNegativeLabel": {
+    "message": "从分数中扣除"
+  },
+  "hideCategoryAriaLabel": {
+    "message": "隐藏$NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "showCategoryAriaLabel": {
+    "message": "显示$NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasPlaceholder": {
+    "message": "“$NAME$”的其他说法…",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasAriaLabel": {
+    "message": "$NAME$的别名 — 输入框可以识别的其他说法",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorNote": {
+    "message": "它的颜色仍反映原来的权重，而非当前的权重。"
+  },
+  "reminderToggleLabel": {
+    "message": "提醒我记录"
+  },
+  "reminderToggleTooltip": {
+    "message": "每天在以下时间发送两次通知。仅在 Chrome 运行时生效。"
+  },
+  "middayNudgeLabel": {
+    "message": "午间提醒"
+  },
+  "eveningWrapupLabel": {
+    "message": "晚间总结"
+  },
+  "remindersNote": {
+    "message": "通知仅在 Chrome 运行时发送。晚间通知会告诉你这一天还有多少时间未记录。"
+  },
+  "weeklyRecapSectionLabel": {
+    "message": "每周回顾"
+  },
+  "weeklyRecapToggleLabel": {
+    "message": "发送每周回顾"
+  },
+  "weeklyRecapToggleTooltip": {
+    "message": "每周一次的摘要通知：已记录时间、主要类别、最佳一天和连续记录。"
+  },
+  "weeklyRecapDayLabel": {
+    "message": "星期"
+  },
+  "weeklyRecapTimeLabel": {
+    "message": "时间"
+  },
+  "weeklyRecapNote": {
+    "message": "默认关闭。是对刚过去一周的简短总结——已记录时间、主要类别、最佳一天、连续记录。"
+  },
+  "daySunday": {
+    "message": "星期日"
+  },
+  "dayMonday": {
+    "message": "星期一"
+  },
+  "dayTuesday": {
+    "message": "星期二"
+  },
+  "dayWednesday": {
+    "message": "星期三"
+  },
+  "dayThursday": {
+    "message": "星期四"
+  },
+  "dayFriday": {
+    "message": "星期五"
+  },
+  "daySaturday": {
+    "message": "星期六"
+  },
+  "worthNoticingLabel": {
+    "message": "值得注意"
+  },
+  "worthNoticingSettingsTooltip": {
+    "message": "Daily Dial 从你自己的数据中发现的规律，显示在“历史”页顶部。关闭后将隐藏整个板块。"
+  },
+  "observationsToggleTooltip": {
+    "message": "在“历史”页顶部显示“值得注意”板块。"
+  },
+  "observationsToggleLabel": {
+    "message": "指出我数据中的规律"
+  },
+  "observationsNote": {
+    "message": "检查最近几周内的六项内容——设定但未完成的计划、没有记录休息的时段、最高效的时段未被保护等等。每一条都只陈述事实，建议只有在你主动查看时才会出现。关闭后这个板块将完全不显示。"
+  },
+  "dailyGoalsSectionLabel": {
+    "message": "每个类别的每日目标"
+  },
+  "dailyGoalsNote": {
+    "message": "留空表示不设目标。设定目标后，进度会显示在侧边面板中。"
+  },
+  "weeklyGoalsSectionLabel": {
+    "message": "每个类别的每周目标"
+  },
+  "weeklyGoalsSectionTooltip": {
+    "message": "适用于不是每天都做的事——为整周而不是每一天设定目标。"
+  },
+  "weeklyGoalsNote": {
+    "message": "与上面的每日目标相互独立——每个类别可以只设其中一个、两个都设，或都不设。"
+  },
+  "goalOffPlaceholder": {
+    "message": "关闭"
+  },
+  "goalAriaLabelDaily": {
+    "message": "$NAME$的每日目标（分钟）",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "goalAriaLabelWeekly": {
+    "message": "$NAME$的每周目标（分钟）",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeSectionLabel": {
+    "message": "挑战"
+  },
+  "challengeSectionTooltip": {
+    "message": "一个有名称、独立计数的挑战，比如百日挑战。与连续记录不同：它从开始日期起计数，即使某天未记录也不会中断。"
+  },
+  "challengeNameFieldLabel": {
+    "message": "名称"
+  },
+  "challengeNamePlaceholder": {
+    "message": "#100days"
+  },
+  "challengeStartedLabel": {
+    "message": "开始日期"
+  },
+  "challengeLengthLabel": {
+    "message": "时长（天）"
+  },
+  "clearChallengeLabel": {
+    "message": "清除挑战"
+  },
+  "challengeNote": {
+    "message": "显示在连续记录旁边的天数计数器。与连续记录不同，它不会中断——只是从开始日期起计数。名称留空即表示不设挑战。"
+  },
+  "templatesSectionLabel": {
+    "message": "模板"
+  },
+  "templatesSectionTooltip": {
+    "message": "大多数日子很相似——保存某一天的绘制形态，然后套用到其他任意一天。"
+  },
+  "templateNameFieldLabel": {
+    "message": "模板名称"
+  },
+  "templateNamePlaceholder": {
+    "message": "起个名字，例如“工作日”"
+  },
+  "saveTemplateLabel": {
+    "message": "将今天保存为模板"
+  },
+  "templatesNote": {
+    "message": "模板只保存绘制的时间——不包括备注、计划、要避免的事或反思。应用到已有绘制内容的日子时会先要求确认，应用后可用 ⌘Z 撤销。"
+  },
+  "templatesEmptyNote": {
+    "message": "还没有保存任何模板。"
+  },
+  "applyLabel": {
+    "message": "应用"
+  },
+  "applyConfirmLabel": {
+    "message": "确认应用？"
+  },
+  "deleteLabel": {
+    "message": "删除"
+  },
+  "deleteTemplateAriaLabel": {
+    "message": "删除模板：$NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateAppliedToast": {
+    "message": "已应用“$NAME$” — ⌘Z 可撤销",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateNameRequiredToast": {
+    "message": "请先为模板命名。"
+  },
+  "templateMaxToast": {
+    "message": "最多只能保存 $MAX$ 个模板。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateSavedToast": {
+    "message": "已保存“$NAME$”",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateDeletedToast": {
+    "message": "已删除“$NAME$”",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "exportSectionLabel": {
+    "message": "导出"
+  },
+  "exportCsvLabel": {
+    "message": "导出 CSV"
+  },
+  "exportCsvTooltip": {
+    "message": "包含每个时间块的表格：每行一个时间块，方便做数据透视。不会恢复设置。"
+  },
+  "exportJsonLabel": {
+    "message": "导出 JSON 备份"
+  },
+  "exportJsonTooltip": {
+    "message": "完整备份——包含每一天、每个类别和每项设置。这是需要妥善保存的文件。"
+  },
+  "noBackupYetStatus": {
+    "message": "你还没有导出过备份。"
+  },
+  "lastBackupStatus": {
+    "message": "上次备份：$DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "dataBackupNudgeText": {
+    "message": "距离上次备份已经有一段时间了。"
+  },
+  "backupNudgeText": {
+    "message": "你已经有一段时间没有备份了——你的数据只保存在这个浏览器中。"
+  },
+  "backupNudgeExportLabel": {
+    "message": "立即导出"
+  },
+  "backupNudgeExportTooltip": {
+    "message": "保存一份 JSON 备份，之后可以用它恢复数据"
+  },
+  "backupNudgeDismissTooltip": {
+    "message": "先隐藏，下次再提醒"
+  },
+  "dailyRemindersSectionLabel": {
+    "message": "每日提醒"
+  },
+  "stripHintLabel": {
+    "message": "点击某一天即可打开"
+  },
+  "stripTooltip": {
+    "message": "最近七天。柱状条的长度代表当天的分数，点击即可查看或编辑。"
+  },
+  "importSectionLabel": {
+    "message": "导入"
+  },
+  "chooseBackupFileLabel": {
+    "message": "选择备份文件…"
+  },
+  "chooseBackupFileTooltip": {
+    "message": "从 JSON 备份或 CSV 导出文件中恢复"
+  },
+  "mergeLabel": {
+    "message": "合并"
+  },
+  "mergeTooltip": {
+    "message": "添加文件中你尚未拥有的日子，已有的日子不受影响。"
+  },
+  "replaceEverythingLabel": {
+    "message": "全部替换"
+  },
+  "replaceEverythingTooltip": {
+    "message": "清除当前所有历史记录，并完全按照文件内容恢复。此操作无法撤销。"
+  },
+  "replaceArmedLabel": {
+    "message": "再次点击以清除现有的日子"
+  },
+  "cancelLabel": {
+    "message": "取消"
+  },
+  "importNote": {
+    "message": "JSON 备份保留所有内容（日期、类别、设置）。CSV 文件只能恢复时间块，并按名称与你当前的类别匹配。合并会添加缺失的日子，已有的日子保持不变；替换会清除你的历史记录，并完全按文件内容恢复。"
+  },
+  "fileReadErrorToast": {
+    "message": "无法读取该文件。"
+  },
+  "importSummarySentence1_other": {
+    "message": "文件中共有 $COUNT$ 天，其中 $OVERLAP$ 天与你现有的 $EXISTING$ 天重叠。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence2_other": {
+    "message": "合并将新增 $COUNT$ 天。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_other": {
+    "message": "替换将清除全部 $COUNT$ 天现有记录，并完全按文件内容恢复。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummaryDemoClearSentence": {
+    "message": "将先清除演示数据。"
+  },
+  "backupRestoredToast": {
+    "message": "备份已恢复"
+  },
+  "backupMergedToast": {
+    "message": "备份已合并"
+  },
+  "multifillSectionLabel": {
+    "message": "批量填写多天"
+  },
+  "multifillSectionTooltip": {
+    "message": "一次操作即可完成，无需逐天点击——例如“周一到周五都不在”。"
+  },
+  "multifillFromDateLabel": {
+    "message": "起始日期"
+  },
+  "multifillToDateLabel": {
+    "message": "结束日期"
+  },
+  "multifillCategoryLabel": {
+    "message": "类别"
+  },
+  "multifillFromTimeLabel": {
+    "message": "起始时间"
+  },
+  "multifillToTimeLabel": {
+    "message": "结束时间"
+  },
+  "eraseOptionLabel": {
+    "message": "清除（标记为未记录）"
+  },
+  "multifillNoteBefore": {
+    "message": "在起始日期到结束日期（含首尾）之间的每一天填入所选类别（或清除）。时间字段留空则填满整天。上限为"
+  },
+  "multifillNoteAfter": {
+    "message": "天；每个受影响的日子都会单独保存，可以在该日的视图中逐一撤销。"
+  },
+  "confirmFillLabel": {
+    "message": "确认填写"
+  },
+  "multifillArmedLabel": {
+    "message": "再次点击以填写"
+  },
+  "multifillActionErase": {
+    "message": "清除"
+  },
+  "multifillActionSetTo": {
+    "message": "设为$CATEGORY$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillWindowWholeDay": {
+    "message": "整天"
+  },
+  "multifillUnknownCategory": {
+    "message": "该类别"
+  },
+  "multifillWindowRange": {
+    "message": "$FROM$至$TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "multifillSummary_other": {
+    "message": "$COUNT$天（$FROM$至$TO$），$WINDOW$将被$ACTION$。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillPainted_other": {
+    "message": "其中 $COUNT$ 天已经有记录，将被覆盖。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillNonePainted": {
+    "message": "这些天目前都还没有任何记录。"
+  },
+  "filledDays_other": {
+    "message": "已填写 $COUNT$ 天",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveSectionLabel": {
+    "message": "Google Drive 备份"
+  },
+  "driveBackupLabel": {
+    "message": "备份到 Google Drive"
+  },
+  "driveBackupTooltip": {
+    "message": "使用 Google 账号登录，并将备份保存到你自己 Drive 中一个仅限本应用使用的私密文件夹——在你的常规 Drive 中不可见，也只有你自己能看到。"
+  },
+  "driveRestoreLabel": {
+    "message": "从 Google Drive 恢复"
+  },
+  "driveRestoreTooltip": {
+    "message": "下载你最近一次的 Google Drive 备份，并打开与文件导入相同的合并/替换确认界面。"
+  },
+  "autoBackupToggleLabel": {
+    "message": "自动备份"
+  },
+  "autoBackupToggleTooltip": {
+    "message": "在后台大约每天一次自动备份到同一个 Drive 文件。只有在你自己连接过 Drive 后才会生效——不会自动弹出登录窗口。"
+  },
+  "autoBackupNote": {
+    "message": "大约每天一次，悄悄更新到同一个文件。它只会更新你手动创建过的备份——它无法帮你登录，因此在你至少连接一次 Drive 之前不会做任何事。"
+  },
+  "driveConnectedAsStatus": {
+    "message": "已连接账号：$EMAIL$",
+    "placeholders": {
+      "email": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveNotBackedUpStatus": {
+    "message": "尚未备份到 Google Drive。"
+  },
+  "driveConnectedNoUploadStatus": {
+    "message": "已连接 Google Drive。已从备份恢复；此设备尚未上传过任何内容。"
+  },
+  "driveLastSyncStatus": {
+    "message": "上次同步到 Google Drive：$DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveDisconnectLabel": {
+    "message": "断开 Google Drive 连接"
+  },
+  "driveDisconnectTooltip": {
+    "message": "将此账号从 Daily Dial 中退出登录。备份文件仍保留在你的 Drive 中，不会被删除。"
+  },
+  "driveDeleteLabel": {
+    "message": "删除 Drive 备份"
+  },
+  "driveDeleteTooltip": {
+    "message": "永久删除 Google Drive 中的备份文件。此操作无法撤销。此设备上的本地数据不受影响。"
+  },
+  "driveDeleteArmedLabel": {
+    "message": "再次点击以永久删除"
+  },
+  "driveNoteBefore": {
+    "message": "此功能为可选项，除非使用否则保持关闭。使用的是 Google 的"
+  },
+  "driveNoteAfter": {
+    "message": "——一个仅供本扩展使用的私密存储空间，不会出现在你常规的 Drive 中，其他应用也无法读取。这是 Daily Dial 中唯一会将数据发送到其他地方的功能，其余部分都保存在本设备上。详见"
+  },
+  "driveNoteFor": {
+    "message": "了解详情。"
+  },
+  "privacyLinkLabel": {
+    "message": "隐私政策"
+  },
+  "nothingToExportToast": {
+    "message": "还没有可导出的记录。"
+  },
+  "onlyDemoExportToast": {
+    "message": "目前只加载了演示数据——还没有你自己的内容可以导出。"
+  },
+  "exportedCsvToast": {
+    "message": "已导出 CSV"
+  },
+  "exportedJsonToast": {
+    "message": "已导出 JSON 备份"
+  },
+  "nothingToBackupToast": {
+    "message": "还没有可备份的记录。"
+  },
+  "onlyDemoBackupToast": {
+    "message": "目前只加载了演示数据——还没有你自己的内容可以备份。"
+  },
+  "driveConnectingToast": {
+    "message": "正在连接 Google Drive…"
+  },
+  "driveBackedUpToast": {
+    "message": "已备份到 Google Drive"
+  },
+  "driveBackupErrorToast": {
+    "message": "无法备份到 Google Drive。"
+  },
+  "driveCheckingToast": {
+    "message": "正在检查 Google Drive…"
+  },
+  "driveNoBackupFoundToast": {
+    "message": "此 Google 账号中未找到 Daily Dial 备份。"
+  },
+  "driveUnreachableToast": {
+    "message": "无法连接到 Google Drive。"
+  },
+  "driveDisconnectedToast": {
+    "message": "已断开与 Google Drive 的连接"
+  },
+  "driveDeletingToast": {
+    "message": "正在从 Google Drive 删除…"
+  },
+  "driveDeletedToast": {
+    "message": "已删除你的 Google Drive 备份"
+  },
+  "driveDeleteErrorToast": {
+    "message": "无法从 Google Drive 删除。"
+  },
+  "themeLabel": {
+    "message": "主题"
+  },
+  "themeSystem": {
+    "message": "跟随系统"
+  },
+  "themeLight": {
+    "message": "浅色"
+  },
+  "themeDark": {
+    "message": "深色"
+  },
+  "timeFormatLabel": {
+    "message": "时间格式"
+  },
+  "timeFormat24h": {
+    "message": "24小时制"
+  },
+  "timeFormat12h": {
+    "message": "12小时制"
+  },
+  "dialModeLabel": {
+    "message": "表盘布局"
+  },
+  "dialModeLabelTooltip": {
+    "message": "可选择一个覆盖全部24小时的圆环，或两个较小的圆环——分别对应上午和下午。"
+  },
+  "weekStartLabel": {
+    "message": "一周从这天开始"
+  },
+  "weekStartTooltip": {
+    "message": "决定一周从哪一天开始，用于每周回顾。"
+  },
+  "wakingHoursSectionLabel": {
+    "message": "清醒时段"
+  },
+  "wakingHoursTooltip": {
+    "message": "当天的洞察只会把这段时间内未记录的时间视为“尚未记录”——这样睡眠时间就不会被标记为记录空缺。"
+  },
+  "dayStartsLabel": {
+    "message": "一天开始"
+  },
+  "dayEndsLabel": {
+    "message": "一天结束"
+  },
+  "appearanceUpdatedToast": {
+    "message": "外观已更新"
+  },
+  "remindersSetToast": {
+    "message": "已设置提醒：$T1$ 和 $T2$",
+    "placeholders": {
+      "t1": {
+        "content": "$1"
+      },
+      "t2": {
+        "content": "$2"
+      }
+    }
+  },
+  "remindersOffToast": {
+    "message": "提醒已关闭"
+  },
+  "autoBackupOnToast": {
+    "message": "自动备份已开启"
+  },
+  "autoBackupOffToast": {
+    "message": "自动备份已关闭"
+  },
+  "aboutDailyDialName": {
+    "message": "Daily Dial"
+  },
+  "githubLinkLabel": {
+    "message": "GitHub"
+  },
+  "gettingStartedLinkLabel": {
+    "message": "快速入门"
+  },
+  "demoAndTourLabel": {
+    "message": "演示与导览"
+  },
+  "replayOnboardingLabel": {
+    "message": "重新播放欢迎导览"
+  },
+  "replayOnboardingTooltip": {
+    "message": "显示你首次打开时看到（或本应看到）的三张卡片欢迎界面"
+  },
+  "loadSampleDataLabel": {
+    "message": "加载示例数据"
+  },
+  "loadSampleDataTooltip": {
+    "message": "在你尚未记录的日期中填入三周逼真的（虚构）数据，让历史、连续记录和目标都有内容可以展示。"
+  },
+  "clearSampleDataLabel": {
+    "message": "退出演示模式"
+  },
+  "clearSampleDataTooltip": {
+    "message": "只移除已加载的示例日期，你自己记录的内容不受影响。"
+  },
+  "demoModeOffNote": {
+    "message": "通过三周多样化的（虚构）数据，看看历史、连续记录和目标会是什么样子。你自己的记录不会受到影响。"
+  },
+  "demoModeOnNote": {
+    "message": "演示模式已开启。示例数据只会填入你尚未记录的日期——退出时只会移除这些示例，不影响你自己的内容。"
+  },
+  "demoModeOnToast": {
+    "message": "演示模式已开启 — 已在你自己的记录周围添加示例数据"
+  },
+  "demoModeNothingToAddToast": {
+    "message": "示例范围内的每一天都已经是你自己的记录 — 无需添加"
+  },
+  "demoModeOffToast": {
+    "message": "演示模式已关闭 — 你自己的记录未受影响"
+  },
+  "personalBestsLabel": {
+    "message": "个人最佳"
+  },
+  "bestsStreakLabel": {
+    "message": "最长连续记录"
+  },
+  "bestsScoreLabel": {
+    "message": "最高单日分数"
+  },
+  "bestsDayLabel": {
+    "message": "最高效的一天"
+  },
+  "bestsStreakDays_other": {
+    "message": "$COUNT$ 天",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "keyboardShortcutsLabel": {
+    "message": "键盘快捷键"
+  },
+  "shortcutSelectPen": {
+    "message": "选择类别画笔"
+  },
+  "shortcutSelectEraser": {
+    "message": "选择橡皮擦"
+  },
+  "shortcutUndo": {
+    "message": "撤销"
+  },
+  "shortcutRedo": {
+    "message": "重做"
+  },
+  "shortcutCloseSettings": {
+    "message": "关闭此面板"
+  },
+  "onboardingTitle": {
+    "message": "欢迎使用 Daily Dial"
+  },
+  "onboardingSubtitle": {
+    "message": "在你绘制第一天之前，有三件事需要了解。"
+  },
+  "onboardingStep1Title": {
+    "message": "绘制你的一天"
+  },
+  "onboardingStep1TextBefore": {
+    "message": "在表盘下方选择一个类别，然后沿圆环拖动。更喜欢打字输入？"
+  },
+  "onboardingStep1TextAfter": {
+    "message": "同样可以。"
+  },
+  "onboardingStep2Title": {
+    "message": "看看数据如何累积"
+  },
+  "onboardingStep2Text": {
+    "message": "随着你的绘制，分数、高效占比和最长专注时间都会实时更新。下方的一行文字会用简单的语言总结你的一天。"
+  },
+  "onboardingStep3Title": {
+    "message": "打造属于你的版本"
+  },
+  "onboardingStep3TextBefore": {
+    "message": "重命名类别、设置提醒和目标、备份到 Google Drive——全部都在"
+  },
+  "onboardingStep3TextAfter": {
+    "message": "（右上角）中。除了绘制之外，其余一切都是可选的。"
+  },
+  "onboardingAltBefore": {
+    "message": "想先用真实数据看看效果？"
+  },
+  "loadSampleDataInsteadLabel": {
+    "message": "改为加载示例数据"
+  },
+  "skipLabel": {
+    "message": "跳过"
+  },
+  "letsStartLabel": {
+    "message": "开始使用"
+  },
+  "onboardingNudgePaintToast": {
+    "message": "在下方选择一个类别，然后沿圆环拖动进行绘制"
+  },
+  "onboardingNudgeSettingsToast": {
+    "message": "一切就绪 — 设置（右上角 ☰）中包含类别、提醒、目标和备份"
+  },
+  "futureDayToast": {
+    "message": "那是明天 — 还没有内容可以记录"
+  },
+  "dayRolledOverToast": {
+    "message": "新的一天开始了 — 表盘已经切换"
+  },
+  "undoDone": {
+    "message": "已撤销"
+  },
+  "undoEmpty": {
+    "message": "没有可撤销的操作"
+  },
+  "redoDone": {
+    "message": "已重做"
+  },
+  "redoEmpty": {
+    "message": "没有可重做的操作"
+  },
+  "copyYesterdayEmptyToast": {
+    "message": "昨天没有可复制的内容。"
+  },
+  "copyYesterdayConfirm": {
+    "message": "今天已经有记录 — 要用昨天的内容覆盖吗？"
+  },
+  "copyYesterdaySuccessToast": {
+    "message": "已复制昨天的内容 — ⌘Z 可撤销"
+  },
+  "shareImageErrorToast": {
+    "message": "无法生成图片。"
+  },
+  "shareImageSavedToast": {
+    "message": "图片已保存"
+  },
+  "typedEntryAddedToast": {
+    "message": "已添加"
+  },
+  "typedEntryOverflowToast": {
+    "message": "已添加 — 超过午夜的部分归入次日"
+  },
+  "noteSavedAnnounce": {
+    "message": "已保存 $FROM$ 到 $TO$ 的备注",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "removeIntentionAriaLabel": {
+    "message": "移除计划：$TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeAvoidAriaLabel": {
+    "message": "移除：$TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeNoteAriaLabel": {
+    "message": "移除 $WHEN$ 的备注",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "unloggedOptionLabel": {
+    "message": "未记录"
+  },
+  "breakdownGapPlaceholder": {
+    "message": "还没有记录"
+  },
+  "fillSpanAriaLabel": {
+    "message": "填写 $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "noteForAriaLabel": {
+    "message": "$WHEN$ 的备注",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanTooltip": {
+    "message": "清除 $WHEN$ — 这段时间将恢复为未记录",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanAriaLabel": {
+    "message": "清除 $CATEGORY$，$WHEN$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "when": {
+        "content": "$2"
+      }
+    }
+  },
+  "maxNotesToast": {
+    "message": "一天最多只能有 $MAX$ 条备注。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxAvoidToast": {
+    "message": "一天最多只能有 $MAX$ 条。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxIntentsToast": {
+    "message": "一天最多只能有 $MAX$ 项计划。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownSummary_other": {
+    "message": "$COUNT$ 段 · 已记录 $LOGGED$，未记录 $UNLOGGED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "clearedAnnounce": {
+    "message": "已清除 $FROM$ 到 $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "caretCommitAnnounce": {
+    "message": "$FROM$ 到 $TO$ 已设为 $CATEGORY$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretAnnounce": {
+    "message": "$FROM$ 到 $TO$，$WHAT$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "what": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretMixedLabel": {
+    "message": "混合"
+  },
+  "untrackedLower": {
+    "message": "未记录"
+  },
+  "untrackedCapitalized": {
+    "message": "未记录"
+  },
+  "penEraserLabel": {
+    "message": "橡皮擦"
+  },
+  "dialEraserLabel": {
+    "message": "橡皮擦"
+  },
+  "dialPenLabel": {
+    "message": "画笔：$NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "edgeRangeLabel": {
+    "message": "$FROM$–$TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "edgeGoneLabel": {
+    "message": "$CATEGORY$ 已消失",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "dialAriaNothingLoggedSuffix": {
+    "message": "还没有任何记录。"
+  },
+  "dialAriaRangePart": {
+    "message": "$FROM$ 到 $TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "histHeatmapAriaLabel": {
+    "message": "月历。方向键在日期间移动，Enter 打开选中的日期。"
+  },
+  "heatmapLoggedLabel": {
+    "message": "$DATE$ — 分数 $SCORE$，已记录 $DURATION$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      },
+      "duration": {
+        "content": "$3"
+      }
+    }
+  },
+  "heatmapWrittenLabel": {
+    "message": "$DATE$ — 已写下内容，但没有绘制时间",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "heatmapEmptyLabel": {
+    "message": "$DATE$ — 未记录",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "legendNotLoggedLabel": {
+    "message": "未记录"
+  },
+  "legendWrittenLabel": {
+    "message": "仅有文字"
+  },
+  "legendWrittenTooltip": {
+    "message": "有备注、计划或反思，但表盘上没有绘制时间。"
+  },
+  "legendOffTrackLabel": {
+    "message": "偏离轨道"
+  },
+  "legendMixedLabel": {
+    "message": "参差不齐"
+  },
+  "legendSolidLabel": {
+    "message": "稳定+"
+  },
+  "prevMonthLabel": {
+    "message": "上个月"
+  },
+  "nextMonthLabel": {
+    "message": "下个月"
+  },
+  "thisMonthLabel": {
+    "message": "本月"
+  },
+  "thisMonthTooltip": {
+    "message": "跳转回本月"
+  },
+  "monthSummaryLabel": {
+    "message": "月度摘要"
+  },
+  "monthSummaryTooltip": {
+    "message": "平均值只计算你记录过的日子——未记录的日子不会拉低平均值。"
+  },
+  "statDaysLoggedLabel": {
+    "message": "已记录天数"
+  },
+  "statAvgScoreLabel": {
+    "message": "平均分数"
+  },
+  "statAvgProductiveLabel": {
+    "message": "平均高效占比"
+  },
+  "bestDayLabel": {
+    "message": "最佳一天：$KEY$（$SCORE$）",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      }
+    }
+  },
+  "bestDayEmptyLabel": {
+    "message": "最佳一天：— 本月还没有分数。"
+  },
+  "monthStreakLabel": {
+    "message": "本月连续记录：当前 $CURRENT$ · 最长 $LONGEST$",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "longest": {
+        "content": "$2"
+      }
+    }
+  },
+  "monthStreakTooltip": {
+    "message": "连续记录的天数，仅在本月内计算——不会借用上个月或下个月的数据。"
+  },
+  "categoryTrendsLabel": {
+    "message": "类别趋势"
+  },
+  "categoryTrendsTooltip": {
+    "message": "当前显示月份中，每个日历周对应一根柱状条，表示各类别的分钟数。箭头比较第一周与最后一周的变化。"
+  },
+  "trendsEmptyNote": {
+    "message": "本月还没有记录 — 随着你在表盘上绘制，趋势会逐渐显示出来。"
+  },
+  "trendWeekTooltip": {
+    "message": "$WEEK$ 那一周：$DURATION$",
+    "placeholders": {
+      "week": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "trendDirectionTooltip": {
+    "message": "比较显示范围内的第一周与最后一周，因此中间的单次波动不会影响整体判断。"
+  },
+  "weekOverWeekLabel": {
+    "message": "周环比"
+  },
+  "weekOverWeekTooltip": {
+    "message": "本周与上周对比，均以你设置的一周起始日为起点。"
+  },
+  "wowTrackedLabel": {
+    "message": "已记录"
+  },
+  "wowProductiveLabel": {
+    "message": "高效"
+  },
+  "wowAvgScoreLabel": {
+    "message": "平均分数"
+  },
+  "wowNoPreviousTooltip": {
+    "message": "上周没有记录可供比较。"
+  },
+  "wowPreviousTooltip": {
+    "message": "上周：$VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "wowDeltaPoints": {
+    "message": "$N$pt",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_other": {
+    "message": "本月有 $COUNT$ 天写下了内容，但表盘上没有绘制时间，因此不计入以上任何统计。它们都在下方的记录中。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchNotesLabel": {
+    "message": "搜索备注"
+  },
+  "searchPlaceholder": {
+    "message": "搜索你的反思…"
+  },
+  "searchAriaLabel": {
+    "message": "搜索你的反思"
+  },
+  "searchTooltip": {
+    "message": "匹配你在“日”视图中留下的一句话备注。"
+  },
+  "searchPromptNote": {
+    "message": "输入内容以搜索你的反思。"
+  },
+  "searchNoMatchNote": {
+    "message": "没有备注与“$QUERY$”匹配。",
+    "placeholders": {
+      "query": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchResultTooltip": {
+    "message": "跳转到这一天"
+  },
+  "theLogLabel": {
+    "message": "记录日志"
+  },
+  "logRangeGroupLabel": {
+    "message": "显示多长时间范围的日志"
+  },
+  "logRangeWeekLabel": {
+    "message": "本周"
+  },
+  "logRangeMonthLabel": {
+    "message": "本月"
+  },
+  "logRangeAllLabel": {
+    "message": "全部"
+  },
+  "logEmptyNote": {
+    "message": "这个范围内还没有写下任何内容。“日”视图中的备注和计划会显示在这里。"
+  },
+  "openDayTooltip": {
+    "message": "打开这一天"
+  },
+  "logMeantToLabel": {
+    "message": "计划"
+  },
+  "logWhatHappenedLabel": {
+    "message": "实际情况"
+  },
+  "logMeantToAvoidLabel": {
+    "message": "想要避免"
+  },
+  "worthNoticingHistoryTooltip": {
+    "message": "最近几周内你自己数据中的规律。除非你主动查看，否则这里不会出现建议。"
+  },
+  "worthNoticingSubnote": {
+    "message": "来自最近几周"
+  },
+  "suggestionShowLabel": {
+    "message": "别人是怎么做的"
+  },
+  "suggestionHideLabel": {
+    "message": "隐藏"
+  },
+  "silenceObservationLabel": {
+    "message": "不再显示"
+  },
+  "silenceObservationTooltip": {
+    "message": "永久隐藏，而不只是这一次。"
+  },
+  "suggestionDisclaimer": {
+    "message": "这些只是方法示例，并非推荐 — 均与 Daily Dial 无关联。"
+  },
+  "historyEmptyBefore": {
+    "message": "还没有历史记录。在“日”视图中记录几天——积累一两周后，这个标签页就会变成按月呈现的全貌：热力图、类别趋势和周环比。想现在就看看效果吗？"
+  },
+  "historyEmptyAfter": {
+    "message": "可以立即填充三周的数据。"
+  },
+  "futureNotLogged": {
+    "message": "那还没有发生 — 你只能记录到目前为止的时间。"
+  },
+  "copyYesterdayUpToNowToast": {
+    "message": "已复制昨天到当前时刻的内容 — 剩余时间还没有发生"
+  },
+  "templateAppliedUpToNowToast": {
+    "message": "已应用“$NAME$”到当前时刻 — 剩余时间还没有发生",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_other": {
+    "message": "已填写 $COUNT$ 天，到当前时刻为止",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownNotYet": {
+    "message": "尚未到达"
+  },
+  "errPickDates": {
+    "message": "请选择起始和结束日期。"
+  },
+  "errEndDateBeforeStart": {
+    "message": "结束日期早于起始日期。"
+  },
+  "errRangeTooLong": {
+    "message": "共 $COUNT$ 天 — 单次填写最多支持 $MAX$ 天。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "errBadStartTime": {
+    "message": "起始时间无效。"
+  },
+  "errBadEndTime": {
+    "message": "结束时间无效。"
+  },
+  "errEndTimeBeforeStart": {
+    "message": "结束时间早于起始时间。"
+  },
+  "errTryExample": {
+    "message": "试试类似“9-11 deep work”这样的格式。"
+  },
+  "errUnreadableEntry": {
+    "message": "无法识别。试试“9-11 deep work”或“9pm-11pm study”这样的格式。"
+  },
+  "errUnreadableTime": {
+    "message": "无法识别时间 — 请使用24小时制（13:30）或12小时制（1:30pm）。"
+  },
+  "errNoCategoryGiven": {
+    "message": "请添加一个类别，例如“9-11 deep work”。"
+  },
+  "errNoCategoryMatch": {
+    "message": "没有类别与“$TEXT$”匹配。",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "errCategoryAmbiguous": {
+    "message": "“$TEXT$”匹配到 $MATCHES$ — 请更具体一些。",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      },
+      "matches": {
+        "content": "$2"
+      }
+    }
+  },
+  "errFileEmpty": {
+    "message": "该文件为空。"
+  },
+  "errNotDailyDialCsv": {
+    "message": "这看起来不是 Daily Dial 的 CSV 导出文件。"
+  },
+  "errCsvBadDate": {
+    "message": "第 $ROW$ 行：日期“$VALUE$”无效。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadStartTime": {
+    "message": "第 $ROW$ 行：起始时间“$VALUE$”无效。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadEndTime": {
+    "message": "第 $ROW$ 行：结束时间“$VALUE$”无效。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvUnknownCategory": {
+    "message": "第 $ROW$ 行：未知类别“$VALUE$”。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBlockTooShort": {
+    "message": "第 $ROW$ 行：时间块短于 $MIN$ 分钟。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "min": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvEndNotAfterStart": {
+    "message": "第 $ROW$ 行：结束时间未晚于起始时间。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      }
+    }
+  },
+  "errNotValidJson": {
+    "message": "该文件不是有效的 JSON。"
+  },
+  "errNotDailyDialBackup": {
+    "message": "这看起来不是 Daily Dial 的备份文件。"
+  },
+  "errMissingSchemaVersion": {
+    "message": "缺少架构版本号 — 这看起来不是 Daily Dial 的备份文件。"
+  },
+  "errBackupTooNew": {
+    "message": "此备份由更新版本的 Daily Dial 生成（架构 $VERSION$）。请先更新扩展程序。",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapNothingLogged": {
+    "message": "上周没有记录。这周要不要重新开始？"
+  },
+  "recapTrackedProductive": {
+    "message": "已记录 $DURATION$，高效占比 $PERCENT$%。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapTopCategory": {
+    "message": "大部分时间用在了 $CATEGORY$。",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapIntentions_other": {
+    "message": "你完成了 $SET$ 项计划中的 $DONE$ 项。",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapAskAdjust": {
+    "message": "这周有什么需要调整的吗？"
+  },
+  "obsOvercommitHeadline": {
+    "message": "你设定的计划多于实际完成的"
+  },
+  "obsOvercommitDetail": {
+    "message": "最近 $DAYS$ 天设定了 $SET$ 项计划，只完成了 $DONE$ 项。",
+    "placeholders": {
+      "set": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "done": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsNoBreaksHeadline": {
+    "message": "最近 $DAYS$ 天没有记录任何休息或中性时间",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsNoBreaksDetail": {
+    "message": "最近 $DAYS$ 天共记录了 $DURATION$，其中没有属于中性类别的时间。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsDistractionHeadline": {
+    "message": "最近 $DAYS$ 天分心时间一直在上升",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsDistractionDetail": {
+    "message": "最近 $DAYS$ 天记录为分心的时间为 $CURRENT$，高于再往前 $DAYS$ 天的 $PREVIOUS$。",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "previous": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsCoverageHeadline": {
+    "message": "与之前 $DAYS$ 天相比，记录频率有所下降",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsCoverageDetail": {
+    "message": "最近 $RECENTDAYS$ 天平均每天记录 $RECENT$，低于再往前 $PRIORDAYS$ 天的平均每天 $PRIOR$。",
+    "placeholders": {
+      "recent": {
+        "content": "$1"
+      },
+      "recentdays": {
+        "content": "$2"
+      },
+      "prior": {
+        "content": "$3"
+      },
+      "priordays": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourHeadline_other": {
+    "message": "$HOUR$ 是你最高效的时段，在已记录的 $LOGGED$ 天中有 $PROTECTED$ 天保持高效",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail_other": {
+    "message": "在最近 $DAYS$ 天中，$HOUR$ 积累的高效时间超过其他任何时段，但在已记录的 $LOGGED$ 天中，只有 $PROTECTED$ 天保持了高效。",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_other": {
+    "message": "最近 $DAYS$ 天记录的所有内容只集中在 $COUNT$ 个类别中",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaDetail": {
+    "message": "“$CATEGORY$”已启用，但在这段时间内记录了零分钟 — 你六个类别位中有一个处于闲置状态。",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptMorning": {
+    "message": "早上过得怎么样？趁还记得，赶紧记录下来。"
+  },
+  "promptEveningUnlogged": {
+    "message": "今天还有 $DURATION$ 未记录。把它补上，再写一句话说说原因。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptEveningComplete": {
+    "message": "今天已全部记录完毕。趁记忆犹新，写一句话说说原因吧。"
+  },
+  "insightNothingLogged": {
+    "message": "还没有任何记录。选择一个类别，沿圆环拖动，画出第一个时间块。"
+  },
+  "insightProductivePct": {
+    "message": "你已记录时间中有 <b>$PERCENT$%</b> 是高效的。",
+    "placeholders": {
+      "percent": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightMostlyDrain": {
+    "message": "<b>$DURATION$</b> 用在了你标记为消耗的时间上 — 超过了你用于前进的时间。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightTopCategory": {
+    "message": "这一天用时最多的是 <b>$CATEGORY$</b>，共 <b>$DURATION$</b>。",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "insightFragmented": {
+    "message": "不过时间比较零碎 — 你最长的连续时段只有 $DURATION$。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightLongStretch": {
+    "message": "你最长的连续时段是 <b>$DURATION$</b>。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightStillUnlogged": {
+    "message": "还有 $DURATION$ 未记录。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "scoreNoData": {
+    "message": "暂无数据"
+  },
+  "scoreTooLittle": {
+    "message": "记录太少，无法评分"
+  },
+  "scoreLockedIn": {
+    "message": "全情投入"
+  },
+  "scoreSolid": {
+    "message": "表现稳定"
+  },
+  "scoreMixedBag": {
+    "message": "参差不齐"
+  },
+  "scoreOffTrack": {
+    "message": "偏离轨道"
+  },
+  "sampleReflectionGoodFocus": {
+    "message": "午饭后专注度很高。"
+  },
+  "sampleReflectionDistracted": {
+    "message": "晚上大部分时间都在分心。"
+  },
+  "sampleReflectionRough": {
+    "message": "糟糕的一天，大部分时间都在刷手机。"
+  },
+  "shareScoreLabel": {
+    "message": "分数"
+  },
+  "shareNothingLogged": {
+    "message": "还没有记录"
+  },
+  "shareTrackedLine": {
+    "message": "已记录 $DURATION$ · 高效 $PERCENT$%",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareLedLine": {
+    "message": "$CATEGORY$ 以 $DURATION$ 领先",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareStreakLine": {
+    "message": "🔥 连续 $COUNT$ 天",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "durationHourSuffix": {
+    "message": "时"
+  },
+  "durationMinuteSuffix": {
+    "message": "分"
+  },
+  "sug_intentionOvercommit_lead": {
+    "message": "真正完成的三四件事，胜过打算做的十件事。"
+  },
+  "sug_intentionOvercommit_text1": {
+    "message": "少设定一些。一件必须完成的事，加上两件锦上添花的事，对大多数人来说已经是充实的一天。"
+  },
+  "sug_intentionOvercommit_text2": {
+    "message": "把每一项都拆小到一次坐下就能完成——比如“写好邮件草稿”，而不是“搞定申请”。"
+  },
+  "sug_intentionOvercommit_text3": {
+    "message": "把那些一直拖延的事项集中放进一条“以后再说”的备注里，这样它们就不会一再作为今天的未完成事项出现。"
+  },
+  "sug_noBreaks_lead": {
+    "message": "从不记录的休息，往往就是从未真正休息过。"
+  },
+  "sug_noBreaks_text1": {
+    "message": "给休息设置一个计时器，这样停下来就不需要在专注时临时做决定。"
+  },
+  "sug_noBreaks_text2": {
+    "message": "让休息完全远离屏幕——散步、吃点东西，或者任何不是打开另一个窗口的事。"
+  },
+  "sug_noBreaks_text3": {
+    "message": "如果你已经在休息只是没有记录，那就记录下来。看起来连续十六个小时不间断的一天，并不是你实际过的那一天。"
+  },
+  "sug_peakHoursUnprotected_lead": {
+    "message": "你状态最好的那个小时，值得在被其他事情占用之前先保护起来。"
+  },
+  "sug_peakHoursUnprotected_text1": {
+    "message": "在别人能看到的日历上把这段时间占上，抢先一步，以免被别人占用。"
+  },
+  "sug_peakHoursUnprotected_text2": {
+    "message": "在这一个小时里把所有通知都静音，而不是只靠自己不去看。"
+  },
+  "sug_peakHoursUnprotected_text3": {
+    "message": "在这个时段开始做当天最难的事，而不是最简单的事。简单的事放到状态不好的时候做也无妨；难的事往往不行。"
+  },
+  "sug_peakHoursUnprotected_text4": {
+    "message": "如果可以的话，在这一个小时里换个地方。换一个房间或去图书馆，效果往往比大多数软件都好。"
+  },
+  "sug_distractionTrend_lead": {
+    "message": "分心增多通常是摩擦力的问题，而不是意志力的问题——目标是让容易做的事变得稍微麻烦一点。"
+  },
+  "sug_distractionTrend_text1": {
+    "message": "屏蔽占用时间的网站，但只在你真正想工作的时段进行——全天屏蔽往往会被整个关掉。"
+  },
+  "sug_distractionTrend_text2": {
+    "message": "在应用打开之前加一个停顿，而不是直接屏蔽它。几秒钟的阻力就能消除大部分“没想清楚就打开”的情况。"
+  },
+  "sug_distractionTrend_text3": {
+    "message": "让手机在一段时间里变得无聊，而不是被禁止使用。"
+  },
+  "sug_distractionTrend_text4": {
+    "message": "工作时把手机放到另一个房间。这个方法不起眼、不花钱，却比你在手机上安装的任何应用都更可靠。"
+  },
+  "sug_distractionTrend_text5": {
+    "message": "替换而不是单纯去除——提前决定这段时间用来做什么，否则它往往会卷土重来。"
+  },
+  "sug_coverageDecline_lead": {
+    "message": "记录变少通常是状况变糟的第一个信号——同时也让人难以看清究竟糟到什么程度。"
+  },
+  "sug_coverageDecline_text1": {
+    "message": "在一天中固定的两三个时间点记录，而不是等到深夜再回忆重建。Daily Dial 自带的提醒功能（设置→提醒）正是为此而设。"
+  },
+  "sug_coverageDecline_text2": {
+    "message": "大致记录也好过完全不记录。一个大概的记录远比空白强得多，之后随时可以再细化。"
+  },
+  "sug_coverageDecline_text3": {
+    "message": "使用表盘下方的“完整的一天”，几分钟就能填补空缺——行都已经在那里了，只需要填上文字。"
+  },
+  "sug_coverageDecline_text4": {
+    "message": "如果这件事已经不再值得花力气去做，知道这一点本身也很有价值。一个让你厌烦的记录工具，最终会被放弃。"
+  },
+  "sug_untrackedLifeArea_lead": {
+    "message": "没有成为类别的事，就不会出现在这些数字中——而不出现的事很容易被忽略。"
+  },
+  "sug_untrackedLifeArea_text1": {
+    "message": "把一个不用的类别重命名，用来覆盖缺失的部分——比如与他人相处的时间、运动、睡眠，或任何你想对自己诚实面对的事（设置→类别）。"
+  },
+  "sug_untrackedLifeArea_text2": {
+    "message": "给它设为中性权重，而不是高效权重。重点是看见它，而不是给它打分。"
+  },
+  "sug_untrackedLifeArea_text3": {
+    "message": "一旦它成为一个类别，你现有的目标和历史趋势功能就会自动处理剩下的一切，无需额外操作。"
+  },
+  "sugPlat_Stretchly": {
+    "message": "Windows · macOS · Linux · 免费、开源"
+  },
+  "sugPlat_TimeOut": {
+    "message": "macOS · 免费"
+  },
+  "sugPlat_Focusmodes": {
+    "message": "macOS · iOS · 内置"
+  },
+  "sugPlat_DigitalWellbeingFocusmode": {
+    "message": "Android · 内置"
+  },
+  "sugPlat_SelfControl": {
+    "message": "macOS · 免费、开源"
+  },
+  "sugPlat_ColdTurkey": {
+    "message": "Windows · macOS · 有免费版"
+  },
+  "sugPlat_Freedom": {
+    "message": "Windows · macOS · iOS · Android · 付费"
+  },
+  "sugPlat_onesec": {
+    "message": "iOS · Android · 有免费版"
+  },
+  "sugPlat_AssistiveAccess": {
+    "message": "iOS 17+ · 内置 — 将手机简化为几个大图标的简单应用"
+  },
+  "sugPlat_ScreenTimeapplimits": {
+    "message": "iOS · macOS · 内置"
+  },
+  "defaultCategory0": {
+    "message": "深度工作"
+  },
+  "defaultCategory1": {
+    "message": "求职"
+  },
+  "defaultCategory2": {
+    "message": "学习"
+  },
+  "defaultCategory3": {
+    "message": "杂务"
+  },
+  "defaultCategory4": {
+    "message": "休息"
+  },
+  "defaultCategory5": {
+    "message": "分心"
+  },
+  "streakBanner_other": {
+    "message": "连续 <b>$COUNT$</b> 天",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· 最佳：$BEST$",
+    "placeholders": {
+      "best": {
+        "content": "$1"
+      }
+    }
+  }
+}

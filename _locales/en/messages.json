@@ -27,13 +27,32 @@
     "message": "Days in a row with at least one block logged. One missed day a week is forgiven as a freeze.",
     "description": "Tooltip on the streak banner in the top bar."
   },
-  "streakDayLabel": {
-    "message": "day streak",
-    "description": "Follows the current streak number in the top bar, e.g. '5 day streak'."
+  "streakBanner_one": {
+    "message": "<b>$COUNT$</b> day streak",
+    "description": "The streak count and its label as one sentence, so the number can sit wherever the language puts it. Keeps the <b> around the count. Plural form: one.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
-  "streakBestLabel": {
-    "message": "best:",
-    "description": "Label before the best-streak number in the top bar streak banner."
+  "streakBanner_other": {
+    "message": "<b>$COUNT$</b> day streak",
+    "description": "The streak count and its label as one sentence, so the number can sit wherever the language puts it. Keeps the <b> around the count. Plural form: other.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· best: $BEST$",
+    "description": "The all-time best streak, shown dimmed after the current one.",
+    "placeholders": {
+      "best": {
+        "content": "$1"
+      }
+    }
   },
   "streakFreezeLabel": {
     "message": "❄ freeze used",

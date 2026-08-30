@@ -20,12 +20,6 @@
   "streakBannerTooltip": {
     "message": "Tage in Folge mit mindestens einem erfassten Block. Ein verpasster Tag pro Woche wird als Freeze verziehen."
   },
-  "streakDayLabel": {
-    "message": "Tage-Serie"
-  },
-  "streakBestLabel": {
-    "message": "Bestwert:"
-  },
   "streakFreezeLabel": {
     "message": "❄ Freeze genutzt"
   },
@@ -2454,6 +2448,30 @@
     "message": "$COUNT$ Tag gefüllt, gestoppt bei jetzt",
     "placeholders": {
       "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_one": {
+    "message": "<b>$COUNT$</b> Tag in Folge",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "<b>$COUNT$</b> Tage in Folge",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· Bestwert: $BEST$",
+    "placeholders": {
+      "best": {
         "content": "$1"
       }
     }

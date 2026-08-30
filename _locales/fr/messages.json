@@ -20,12 +20,6 @@
   "streakBannerTooltip": {
     "message": "Jours consécutifs avec au moins un bloc enregistré. Un jour manqué par semaine est pardonné comme un gel."
   },
-  "streakDayLabel": {
-    "message": "jours de suite"
-  },
-  "streakBestLabel": {
-    "message": "record :"
-  },
   "streakFreezeLabel": {
     "message": "❄ gel utilisé"
   },
@@ -2454,6 +2448,30 @@
     "message": "$COUNT$ jour rempli, arrêté à maintenant",
     "placeholders": {
       "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_one": {
+    "message": "<b>$COUNT$</b> jour de suite",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "<b>$COUNT$</b> jours de suite",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· record : $BEST$",
+    "placeholders": {
+      "best": {
         "content": "$1"
       }
     }

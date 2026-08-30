@@ -6,8 +6,6 @@
  "wordmarkTitle": "Daily Dial",
  "wordmarkTagline": "Zeit- und Fokusprotokoll",
  "streakBannerTooltip": "Tage in Folge mit mindestens einem erfassten Block. Ein verpasster Tag pro Woche wird als Freeze verziehen.",
- "streakDayLabel": "Tage-Serie",
- "streakBestLabel": "Bestwert:",
  "streakFreezeLabel": "❄ Freeze genutzt",
  "streakFreezeTooltip": "Du hast diese Woche einen Tag verpasst, aber deine Serie hat überlebt — ein Fehltag pro 7 Tage wird verziehen.",
  "streakRiskLabel": "heute noch nicht erfasst",
@@ -573,5 +571,8 @@
  "obsUntrackedAreaHeadline_other": "Alles Erfasste der letzten $DAYS$ Tage liegt in nur $COUNT$ Kategorien",
  "obsUntrackedAreaHeadline_one": "Alles Erfasste der letzten $DAYS$ Tage liegt in nur $COUNT$ Kategorie",
  "filledDaysUpToNow_other": "$COUNT$ Tage gefüllt, gestoppt bei jetzt",
- "filledDaysUpToNow_one": "$COUNT$ Tag gefüllt, gestoppt bei jetzt"
+ "filledDaysUpToNow_one": "$COUNT$ Tag gefüllt, gestoppt bei jetzt",
+ "streakBanner_one": "<b>$COUNT$</b> Tag in Folge",
+ "streakBanner_other": "<b>$COUNT$</b> Tage in Folge",
+ "streakBestSuffix": "· Bestwert: $BEST$"
 }

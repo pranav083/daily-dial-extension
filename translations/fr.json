@@ -6,8 +6,6 @@
  "wordmarkTitle": "Daily Dial",
  "wordmarkTagline": "Temps & concentration",
  "streakBannerTooltip": "Jours consécutifs avec au moins un bloc enregistré. Un jour manqué par semaine est pardonné comme un gel.",
- "streakDayLabel": "jours de suite",
- "streakBestLabel": "record :",
  "streakFreezeLabel": "❄ gel utilisé",
  "streakFreezeTooltip": "Tu as manqué un jour cette semaine, mais ta série a survécu — un manquement par tranche de 7 jours est pardonné.",
  "streakRiskLabel": "pas encore enregistré aujourd'hui",
@@ -573,5 +571,8 @@
  "obsUntrackedAreaHeadline_other": "Tout ce qui a été enregistré ces $DAYS$ derniers jours tient en $COUNT$ catégories",
  "obsUntrackedAreaHeadline_one": "Tout ce qui a été enregistré ces $DAYS$ derniers jours tient en $COUNT$ catégorie",
  "filledDaysUpToNow_other": "$COUNT$ jours remplis, arrêté à maintenant",
- "filledDaysUpToNow_one": "$COUNT$ jour rempli, arrêté à maintenant"
+ "filledDaysUpToNow_one": "$COUNT$ jour rempli, arrêté à maintenant",
+ "streakBanner_one": "<b>$COUNT$</b> jour de suite",
+ "streakBanner_other": "<b>$COUNT$</b> jours de suite",
+ "streakBestSuffix": "· record : $BEST$"
 }

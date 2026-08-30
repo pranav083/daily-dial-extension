@@ -20,12 +20,6 @@
   "streakBannerTooltip": {
     "message": "1つ以上のブロックを記録した日が連続している日数です。週に1日の未記録は凍結として許容されます。"
   },
-  "streakDayLabel": {
-    "message": "日連続"
-  },
-  "streakBestLabel": {
-    "message": "最長:"
-  },
   "streakFreezeLabel": {
     "message": "❄ 凍結使用"
   },
@@ -2297,6 +2291,22 @@
     "message": "現在時刻までの$COUNT$日分を記録しました",
     "placeholders": {
       "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "<b>$COUNT$</b>日連続",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· 最高: $BEST$",
+    "placeholders": {
+      "best": {
         "content": "$1"
       }
     }

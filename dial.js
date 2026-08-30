@@ -1613,8 +1613,11 @@ function renderTemplatesEditor() {
 
 function renderStreak() {
   const streak = computeStreak(days, new Date());
-  $("streak-current").textContent = streak.current;
-  $("streak-best").textContent = streak.longest;
+  // innerHTML because the message carries the <b> around the count; both
+  // substituted values are numbers this module produced, never user text.
+  $("streak-text").innerHTML =
+    tp("streakBanner", streak.current, [String(streak.current)]) +
+    ` <span class="muted">${t("streakBestSuffix", [String(streak.longest)])}</span>`;
   $("streak-icon").textContent = streak.current > 0 ? "🔥" : "○";
   $("streak-freeze").hidden = streak.freezesUsedThisWeek === 0;
   $("streak-risk").hidden = !streak.isAtRisk;

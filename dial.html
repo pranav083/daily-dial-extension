@@ -14,7 +14,11 @@
            data-i18n-title="streakBannerTooltip"
            title="Days in a row with at least one block logged. One missed day a week is forgiven as a freeze.">
         <span class="streak-icon" id="streak-icon">🔥</span>
-        <span class="streak-text"><b id="streak-current">0</b> <span data-i18n="streakDayLabel">day streak</span> <span class="muted">· <span data-i18n="streakBestLabel">best:</span> <span id="streak-best">0</span></span></span>
+        <!-- One message, not "<b>N</b>" + "day streak". The number's
+             position was pinned by this markup, so Chinese could not say
+             连续5天 and Hindi could not reorder either -- the same
+             fragment-assembly problem the insight line had. -->
+        <span class="streak-text" id="streak-text"></span>
         <span class="streak-freeze" id="streak-freeze" hidden
               data-i18n-title="streakFreezeTooltip"
               title="You missed a day this week, but your streak survived — one miss per rolling 7 days is forgiven."
