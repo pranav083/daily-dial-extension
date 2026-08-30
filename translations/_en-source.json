@@ -1,0 +1,2258 @@
+{
+ "appName": {
+  "message": "Daily Dial – Time Tracker & Focus",
+  "description": "The extension's name, shown in the Chrome Web Store, the extensions page, and the toolbar tooltip. Must stay exactly this in English."
+ },
+ "appDescription": {
+  "message": "Paint your day on a 24-hour dial, then see whether the time went where you meant it to.",
+  "description": "The extension's short description, shown in the Chrome Web Store and the extensions page."
+ },
+ "actionDefaultTitle": {
+  "message": "Open Daily Dial",
+  "description": "Tooltip shown when hovering the extension's toolbar icon."
+ },
+ "saveFailedToast": {
+  "message": "Couldn't save — your last change may be lost.",
+  "description": "Toast shown when a write to browser storage fails."
+ },
+ "wordmarkTitle": {
+  "message": "Daily Dial",
+  "description": "Brand wordmark in the top-left corner of the app, next to the version number."
+ },
+ "wordmarkTagline": {
+  "message": "Time & focus log",
+  "description": "Fallback tagline text next to the wordmark, shown only for an instant before the version number replaces it."
+ },
+ "streakBannerTooltip": {
+  "message": "Days in a row with at least one block logged. One missed day a week is forgiven as a freeze.",
+  "description": "Tooltip on the streak banner in the top bar."
+ },
+ "streakDayLabel": {
+  "message": "day streak",
+  "description": "Follows the current streak number in the top bar, e.g. '5 day streak'."
+ },
+ "streakBestLabel": {
+  "message": "best:",
+  "description": "Label before the best-streak number in the top bar streak banner."
+ },
+ "streakFreezeLabel": {
+  "message": "❄ freeze used",
+  "description": "Badge shown in the streak banner when a missed day was forgiven this week."
+ },
+ "streakFreezeTooltip": {
+  "message": "You missed a day this week, but your streak survived — one miss per rolling 7 days is forgiven.",
+  "description": "Tooltip on the streak-freeze badge."
+ },
+ "streakRiskLabel": {
+  "message": "not logged yet today",
+  "description": "Badge in the streak banner warning today isn't logged yet."
+ },
+ "streakRiskTooltip": {
+  "message": "Log at least one block today to keep the streak alive.",
+  "description": "Tooltip on the streak-at-risk badge."
+ },
+ "challengeChipTooltip": {
+  "message": "Your named challenge. Click to change it.",
+  "description": "Tooltip on the challenge chip in the top bar."
+ },
+ "challengeDayProgress": {
+  "message": "day $DAY$ / $TARGET$",
+  "description": "Challenge progress shown in the top bar when a target length is set, e.g. 'day 12 / 100'."
+ },
+ "challengeDaySimple": {
+  "message": "day $DAY$",
+  "description": "Challenge progress shown in the top bar when no target length is set, e.g. 'day 12'."
+ },
+ "viewNavLabel": {
+  "message": "Views",
+  "description": "Accessible label on the Day/History view switcher in the top bar."
+ },
+ "viewTabDay": {
+  "message": "Day",
+  "description": "Tab label for the Day view."
+ },
+ "viewTabHistory": {
+  "message": "History",
+  "description": "Tab label for the History view."
+ },
+ "viewTabHistoryTooltip": {
+  "message": "Your months at a glance, and how categories trend over time",
+  "description": "Tooltip on the History tab."
+ },
+ "dateToday": {
+  "message": "Today",
+  "description": "Shown as the date label when viewing today, and as the label of the 'jump to today' button."
+ },
+ "dateYesterday": {
+  "message": "Yesterday",
+  "description": "Shown as the date label when viewing yesterday."
+ },
+ "prevDayLabel": {
+  "message": "Previous day",
+  "description": "Accessible label and tooltip on the previous-day arrow button."
+ },
+ "nextDayLabel": {
+  "message": "Next day",
+  "description": "Accessible label and tooltip on the next-day arrow button."
+ },
+ "todayJumpTooltip": {
+  "message": "Jump back to today",
+  "description": "Tooltip on the 'Today' jump button in the date navigator."
+ },
+ "settingsButtonLabel": {
+  "message": "Settings",
+  "description": "Accessible label on the settings (hamburger) button in the top bar."
+ },
+ "settingsButtonTooltip": {
+  "message": "Categories, reminders, goals, backup, and appearance",
+  "description": "Tooltip on the settings (hamburger) button."
+ },
+ "demoBannerTitle": {
+  "message": "Demo mode",
+  "description": "Bold lead-in of the banner shown across the app while sample/demo data is loaded."
+ },
+ "demoBannerBody": {
+  "message": "— the days below include sample data, not just yours.",
+  "description": "Rest of the demo-mode banner text, after the bold 'Demo mode' lead-in."
+ },
+ "demoBannerExitLabel": {
+  "message": "Exit demo",
+  "description": "Button in the demo-mode banner that clears the sample data."
+ },
+ "demoBannerExitTooltip": {
+  "message": "Removes exactly the sample days that were loaded. Anything you logged yourself is untouched.",
+  "description": "Tooltip on the exit-demo button in the demo banner."
+ },
+ "staleBannerHeadline": {
+  "message": "Another tab changed $WHAT$.",
+  "description": "Bold headline in the banner shown when another open tab has changed data this tab was showing."
+ },
+ "staleBannerBody": {
+  "message": "Editing is paused here so this tab can't overwrite it. Reload to pick up the newer version.",
+  "description": "Body text of the stale-tab banner, after the bold headline."
+ },
+ "staleBannerReload": {
+  "message": "Reload",
+  "description": "Button in the stale-tab banner that reloads the page."
+ },
+ "staleWhatViewedDay": {
+  "message": "the day you're looking at",
+  "description": "Names what changed elsewhere, substituted into 'Another tab changed ___', when it was the currently-viewed day."
+ },
+ "staleWhatCategories": {
+  "message": "your categories",
+  "description": "Names what changed elsewhere, substituted into 'Another tab changed ___', when it was the category list."
+ },
+ "staleWhatSettings": {
+  "message": "your settings",
+  "description": "Names what changed elsewhere, substituted into 'Another tab changed ___', when it was app settings."
+ },
+ "staleWhatDemoMode": {
+  "message": "demo mode",
+  "description": "Names what changed elsewhere, substituted into 'Another tab changed ___', when it was the demo/sample data set."
+ },
+ "staleWhatTemplates": {
+  "message": "your templates",
+  "description": "Names what changed elsewhere, substituted into 'Another tab changed ___', when it was the saved day templates."
+ },
+ "firstRunHint": {
+  "message": "👇 Pick a category, then drag around the ring to paint your first block.",
+  "description": "One-line hint shown above the pens until the first block is painted."
+ },
+ "firstRunHintDismiss": {
+  "message": "Got it",
+  "description": "Dismiss button on the first-run hint."
+ },
+ "shareImageLabel": {
+  "message": "Share as image",
+  "description": "Button that saves/shares a PNG of the day's dial."
+ },
+ "shareImageTooltip": {
+  "message": "Save (or share) a PNG of this day's dial and score — nothing leaves your device unless you choose to send it.",
+  "description": "Tooltip on the 'Share as image' button."
+ },
+ "dialLayoutSwitchLabel": {
+  "message": "Dial layout",
+  "description": "Accessible group label for the quick dial-layout switch (24h / AM+PM / AM⇄PM)."
+ },
+ "dialModeSingleLabel": {
+  "message": "24h",
+  "description": "Label for the single 24-hour ring layout option."
+ },
+ "dialModeSingleTooltip": {
+  "message": "One 24-hour ring",
+  "description": "Tooltip/option text describing the single 24-hour ring dial layout."
+ },
+ "dialModeAmpmLabel": {
+  "message": "AM+PM",
+  "description": "Label for the two-rings-side-by-side layout option."
+ },
+ "dialModeAmpmTooltip": {
+  "message": "Two 12-hour rings, side by side",
+  "description": "Tooltip/option text describing the two-rings-side-by-side dial layout."
+ },
+ "dialModeToggleLabel": {
+  "message": "AM⇄PM",
+  "description": "Label for the single-ring-with-AM/PM-switch layout option."
+ },
+ "dialModeToggleTooltip": {
+  "message": "One 12-hour ring, with an AM/PM switch",
+  "description": "Tooltip/option text describing the single-ring-with-toggle dial layout."
+ },
+ "dialAriaLabelSingle": {
+  "message": "24-hour activity dial. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.",
+  "description": "Accessible label on the single 24-hour dial."
+ },
+ "dialAriaLabelAm": {
+  "message": "AM activity dial, midnight to noon. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.",
+  "description": "Accessible label on the AM half-dial."
+ },
+ "dialAriaLabelPm": {
+  "message": "PM activity dial, noon to midnight. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.",
+  "description": "Accessible label on the PM half-dial."
+ },
+ "dialCenterPickCategory": {
+  "message": "pick a category",
+  "description": "Placeholder sub-label shown in the middle of a dial before any pen is selected."
+ },
+ "dialTimeLoggedTooltip": {
+  "message": "Time logged in this half",
+  "description": "Tooltip on the center time reading of an AM/PM half-dial, when 'now' isn't inside that half."
+ },
+ "dialCurrentTimeTooltip": {
+  "message": "Current time",
+  "description": "Tooltip on the center time reading of a dial, when 'now' is inside its window."
+ },
+ "dialHalfAm": {
+  "message": "AM",
+  "description": "Label for the AM half-dial and the AM/PM toggle switch's AM button."
+ },
+ "dialHalfAmRange": {
+  "message": "· 12a–12p",
+  "description": "Time range shown under the AM half-dial label."
+ },
+ "dialHalfPm": {
+  "message": "PM",
+  "description": "Label for the PM half-dial and the AM/PM toggle switch's PM button."
+ },
+ "dialHalfPmRange": {
+  "message": "· 12p–12a",
+  "description": "Time range shown under the PM half-dial label."
+ },
+ "toggleHalfSwitchLabel": {
+  "message": "Show the AM or PM half",
+  "description": "Accessible group label for the AM/PM half toggle switch."
+ },
+ "copyYesterdayLabel": {
+  "message": "Copy yesterday",
+  "description": "Button that fills today with yesterday's painted blocks."
+ },
+ "copyYesterdayTooltip": {
+  "message": "Fill today with yesterday's blocks — useful when your days rhyme",
+  "description": "Tooltip on the 'Copy yesterday' button."
+ },
+ "typedEntryTimeRangeLabel": {
+  "message": "Time range",
+  "description": "Screen-reader label and accessible name for the typed time-range entry field."
+ },
+ "typedEntryPlaceholder": {
+  "message": "9-11",
+  "description": "Placeholder example text in the typed time-range entry field."
+ },
+ "typedEntryTooltip": {
+  "message": "A time range: \"9-11\", \"13:30-15\", or \"9pm-11pm\". You can still type the category here too.",
+  "description": "Tooltip on the typed time-range entry field."
+ },
+ "typedEntryCatTooltip": {
+  "message": "Which category this block is",
+  "description": "Tooltip on the category dropdown next to the typed time-range entry."
+ },
+ "addButtonLabel": {
+  "message": "Add",
+  "description": "Submit button label shared by the typed time entry, intentions, and avoid-list forms."
+ },
+ "typedEntryAddTooltip": {
+  "message": "Add this block to the dial",
+  "description": "Tooltip on the typed-entry form's Add button."
+ },
+ "justPaintedNoteLabel": {
+  "message": "Note for what you just painted",
+  "description": "Accessible label on the note field that appears right after painting a block."
+ },
+ "justPaintedSaveLabel": {
+  "message": "Save",
+  "description": "Save button on the 'note for what you just painted' bar."
+ },
+ "dismissLabel": {
+  "message": "Dismiss",
+  "description": "Generic dismiss/close button used on several small banners and bars."
+ },
+ "hintPaintInstruction": {
+  "message": "Click or drag around the ring to paint",
+  "description": "First part of the hint line under the dial controls."
+ },
+ "hintUndo": {
+  "message": "undo",
+  "description": "Word following the ⌘Z key combo in the hint line under the dial controls."
+ },
+ "hintAllShortcuts": {
+  "message": "all shortcuts",
+  "description": "Link in the hint line that opens the About tab's keyboard shortcuts list."
+ },
+ "breakdownSectionLabel": {
+  "message": "The day, end to end",
+  "description": "Section heading above the day breakdown table."
+ },
+ "breakdownSectionTooltip": {
+  "message": "Every stretch of the day in order, including the parts you haven't logged. Type a note straight onto any row; pick a category on a gap row to fill it in.",
+  "description": "Tooltip on the day-breakdown section heading."
+ },
+ "breakdownColWhen": {
+  "message": "When",
+  "description": "Column header in the day breakdown table."
+ },
+ "breakdownColWhat": {
+  "message": "What",
+  "description": "Column header in the day breakdown table."
+ },
+ "breakdownColFor": {
+  "message": "For",
+  "description": "Column header in the day breakdown table (duration)."
+ },
+ "breakdownColNote": {
+  "message": "Note",
+  "description": "Column header in the day breakdown table."
+ },
+ "breakdownColClear": {
+  "message": "Clear",
+  "description": "Screen-reader-only column header for the clear-row button column in the day breakdown table."
+ },
+ "todaysReadLabel": {
+  "message": "Today's read",
+  "description": "Section heading over the day's stat row (Tracked / Productive / Longest focus)."
+ },
+ "statTrackedLabel": {
+  "message": "Tracked",
+  "description": "Stat label for total tracked time, used on the Day view and in History."
+ },
+ "statTrackedTooltip": {
+  "message": "Total time you've painted on the dial today. The rest of the day counts as untracked.",
+  "description": "Tooltip on the 'Tracked' stat."
+ },
+ "statProductiveLabel": {
+  "message": "Productive",
+  "description": "Stat label for the productive-time percentage, used on the Day view and in History."
+ },
+ "statProductiveTooltip": {
+  "message": "Share of your tracked time spent on categories weighted +. Untracked time is excluded.",
+  "description": "Tooltip on the 'Productive' stat."
+ },
+ "statFocusLabel": {
+  "message": "Longest focus",
+  "description": "Stat label for the longest unbroken productive stretch."
+ },
+ "statFocusTooltip": {
+  "message": "Your longest unbroken run of productive time. It continues across different + categories, and breaks on neutral or distraction time.",
+  "description": "Tooltip on the 'Longest focus' stat."
+ },
+ "scoreValTooltip": {
+  "message": "(productive − distraction) ÷ tracked, as a percentage. Measures the shape of your day rather than its length, so a focused 4 hours beats a scattered 10.",
+  "description": "Tooltip on the day score value."
+ },
+ "meterTooltip": {
+  "message": "Your score on a scale from −100 to +100.",
+  "description": "Tooltip on the score meter bar."
+ },
+ "whereTimeWentLabel": {
+  "message": "Where the time went",
+  "description": "Section heading over the per-category time bars."
+ },
+ "whereTimeWentTooltip": {
+  "message": "How today's tracked time splits across categories, with untracked time shown so gaps stay visible.",
+  "description": "Tooltip on the 'Where the time went' section heading."
+ },
+ "todaysGoalsLabel": {
+  "message": "Today's goals",
+  "description": "Section heading over today's daily-goal progress rows."
+ },
+ "todaysGoalsTooltip": {
+  "message": "Daily targets you set in Settings → Goals. A ✓ marks one you've met.",
+  "description": "Tooltip on the 'Today's goals' section heading."
+ },
+ "weeklyGoalsLabel": {
+  "message": "This week's goals",
+  "description": "Section heading over this week's weekly-goal progress rows."
+ },
+ "weeklyGoalsTooltip": {
+  "message": "Weekly targets you set in Settings → Goals, summed across the week starting on your configured week-start day. A ✓ marks one you've met.",
+  "description": "Tooltip on the 'This week's goals' section heading."
+ },
+ "intentionsLabel": {
+  "message": "Today's intentions",
+  "description": "Section heading over the day's intentions list."
+ },
+ "intentionsTooltip": {
+  "message": "What you meant to do today. Tick them off as they land — the History log shows which ones you actually did.",
+  "description": "Tooltip on the 'Today's intentions' section heading."
+ },
+ "addIntentionLabel": {
+  "message": "Add an intention",
+  "description": "Screen-reader label on the add-intention input field."
+ },
+ "addIntentionPlaceholder": {
+  "message": "Leetcode, mail the prof…",
+  "description": "Placeholder example text in the add-intention input field."
+ },
+ "avoidLabel": {
+  "message": "To avoid",
+  "description": "Section heading over the day's 'things to avoid' list."
+ },
+ "avoidTooltip": {
+  "message": "What to steer clear of today. Kept in the History log beside what you actually did.",
+  "description": "Tooltip on the 'To avoid' section heading."
+ },
+ "addAvoidLabel": {
+  "message": "Add something to avoid",
+  "description": "Screen-reader label on the add-something-to-avoid input field."
+ },
+ "addAvoidPlaceholder": {
+  "message": "Doom-scrolling, 10h of series…",
+  "description": "Placeholder example text in the add-something-to-avoid input field."
+ },
+ "reflectionLabel": {
+  "message": "Why (a line is enough)",
+  "description": "Section heading over the day's reflection textarea."
+ },
+ "reflectionTooltip": {
+  "message": "One line on what helped or hurt today. Included in your CSV export.",
+  "description": "Tooltip on the reflection section heading."
+ },
+ "reflectionSrLabel": {
+  "message": "Reflection",
+  "description": "Screen-reader label for the reflection textarea."
+ },
+ "reflectionPlaceholder": {
+  "message": "What made today click — or drag?",
+  "description": "Placeholder text in the reflection textarea."
+ },
+ "clearDayLabel": {
+  "message": "Clear day",
+  "description": "Button that erases every block on the currently viewed day; also its resting label after a confirm times out."
+ },
+ "clearDayTooltip": {
+  "message": "Erase every block on this day. Undoable with ⌘Z.",
+  "description": "Tooltip on the 'Clear day' button."
+ },
+ "clearDayConfirmLabel": {
+  "message": "Confirm clear?",
+  "description": "Armed state of the 'Clear day' button, shown after the first click, awaiting a confirming second click."
+ },
+ "dayClearedToast": {
+  "message": "Day cleared — ⌘Z to undo",
+  "description": "Toast shown after clearing the day."
+ },
+ "settingsTitle": {
+  "message": "Settings",
+  "description": "Heading of the settings panel."
+ },
+ "settingsCloseLabel": {
+  "message": "Close settings",
+  "description": "Accessible label on the settings panel's close button."
+ },
+ "settingsTabCategories": {
+  "message": "Categories",
+  "description": "Settings tab name."
+ },
+ "settingsTabReminders": {
+  "message": "Reminders",
+  "description": "Settings tab name."
+ },
+ "settingsTabGoals": {
+  "message": "Goals",
+  "description": "Settings tab name."
+ },
+ "settingsTabData": {
+  "message": "Data",
+  "description": "Settings tab name."
+ },
+ "settingsTabAppearance": {
+  "message": "Appearance",
+  "description": "Settings tab name."
+ },
+ "settingsTabAbout": {
+  "message": "About",
+  "description": "Settings tab name."
+ },
+ "categoriesLegendPositive": {
+  "message": "counts toward your score,",
+  "description": "Part of the legend under the category editor, following the '+' glyph."
+ },
+ "categoriesLegendNeutral": {
+  "message": "is neutral,",
+  "description": "Part of the legend under the category editor, following the '·' glyph."
+ },
+ "categoriesLegendNegative": {
+  "message": "counts against it.",
+  "description": "Part of the legend under the category editor, following the '–' glyph."
+ },
+ "categoriesHideNote": {
+  "message": "The circle button hides a category you don't use.",
+  "description": "Note under the category editor explaining the show/hide toggle."
+ },
+ "categoriesAliasNote": {
+  "message": "The small field under each one is for aliases — your own words for the same category (e.g. \"leetcode\" or \"mock interview\" for Applications) — so the typed-entry box recognizes how you actually talk about your day, while it still paints in that category's one weighted colour.",
+  "description": "Note under the category editor explaining aliases."
+ },
+ "categoryNameAriaLabel": {
+  "message": "Category name",
+  "description": "Accessible label on a category's name input field in the category editor."
+ },
+ "weightPositiveLabel": {
+  "message": "Counts toward score",
+  "description": "Accessible label on the '+' weight button in the category editor."
+ },
+ "weightNeutralLabel": {
+  "message": "Neutral",
+  "description": "Accessible label on the '·' (neutral) weight button in the category editor."
+ },
+ "weightNegativeLabel": {
+  "message": "Counts against score",
+  "description": "Accessible label on the '–' weight button in the category editor."
+ },
+ "hideCategoryAriaLabel": {
+  "message": "Hide $NAME$",
+  "description": "Accessible label on the show/hide toggle for an enabled category, naming it."
+ },
+ "showCategoryAriaLabel": {
+  "message": "Show $NAME$",
+  "description": "Accessible label on the show/hide toggle for a hidden category, naming it."
+ },
+ "aliasPlaceholder": {
+  "message": "other words for \"$NAME$\"…",
+  "description": "Placeholder in a category's alias input field, naming the category."
+ },
+ "aliasAriaLabel": {
+  "message": "Aliases for $NAME$ — other words the typed entry box recognizes",
+  "description": "Accessible label on a category's alias input field, naming the category."
+ },
+ "categoryColorNote": {
+  "message": "Its colour still reflects the original weight, not this one.",
+  "description": "Note shown under a category whose weight no longer matches its original default."
+ },
+ "reminderToggleLabel": {
+  "message": "Remind me to log",
+  "description": "Checkbox label for enabling daily reminders."
+ },
+ "reminderToggleTooltip": {
+  "message": "Two notifications a day at the times below. They only fire while Chrome is running.",
+  "description": "Tooltip on the daily-reminders checkbox."
+ },
+ "middayNudgeLabel": {
+  "message": "Midday nudge",
+  "description": "Label for the first daily reminder time field."
+ },
+ "eveningWrapupLabel": {
+  "message": "Evening wrap-up",
+  "description": "Label for the second daily reminder time field."
+ },
+ "remindersNote": {
+  "message": "Notifications only fire while Chrome is running. The evening one tells you how much of the day is still unlogged.",
+  "description": "Note under the daily reminder time fields."
+ },
+ "weeklyRecapSectionLabel": {
+  "message": "Weekly recap",
+  "description": "Section heading over the weekly recap settings."
+ },
+ "weeklyRecapToggleLabel": {
+  "message": "Send a weekly recap",
+  "description": "Checkbox label for enabling the weekly recap notification."
+ },
+ "weeklyRecapToggleTooltip": {
+  "message": "A summary notification once a week: tracked time, top category, best day, and streak.",
+  "description": "Tooltip on the weekly-recap checkbox."
+ },
+ "weeklyRecapDayLabel": {
+  "message": "Day",
+  "description": "Label for the weekly recap's day-of-week dropdown."
+ },
+ "weeklyRecapTimeLabel": {
+  "message": "Time",
+  "description": "Label for the weekly recap's time field."
+ },
+ "weeklyRecapNote": {
+  "message": "Off by default. A short summary of the week just gone — tracked time, top category, best day, streak.",
+  "description": "Note under the weekly recap settings."
+ },
+ "daySunday": {
+  "message": "Sunday",
+  "description": "Day-of-week option, used in the weekly recap day and week-start pickers."
+ },
+ "dayMonday": {
+  "message": "Monday",
+  "description": "Day-of-week option, used in the weekly recap day and week-start pickers."
+ },
+ "dayTuesday": {
+  "message": "Tuesday",
+  "description": "Day-of-week option, used in the weekly recap day picker."
+ },
+ "dayWednesday": {
+  "message": "Wednesday",
+  "description": "Day-of-week option, used in the weekly recap day picker."
+ },
+ "dayThursday": {
+  "message": "Thursday",
+  "description": "Day-of-week option, used in the weekly recap day picker."
+ },
+ "dayFriday": {
+  "message": "Friday",
+  "description": "Day-of-week option, used in the weekly recap day picker."
+ },
+ "daySaturday": {
+  "message": "Saturday",
+  "description": "Day-of-week option, used in the weekly recap day picker."
+ },
+ "worthNoticingLabel": {
+  "message": "Worth noticing",
+  "description": "Heading used both for the Settings → Goals toggle and the History panel of observations."
+ },
+ "worthNoticingSettingsTooltip": {
+  "message": "Patterns Daily Dial notices in your own data, shown at the top of History. Turning this off hides the whole section.",
+  "description": "Tooltip on the 'Worth noticing' section heading in Settings → Goals."
+ },
+ "observationsToggleTooltip": {
+  "message": "Shows the \"Worth noticing\" section at the top of History.",
+  "description": "Tooltip on the 'Point out patterns in my data' checkbox."
+ },
+ "observationsToggleLabel": {
+  "message": "Point out patterns in my data",
+  "description": "Checkbox label enabling the 'Worth noticing' observations section."
+ },
+ "observationsNote": {
+  "message": "Six things, checked over the last few weeks — intentions you set but don't finish, stretches with no rest logged, your most productive hour going unprotected, and so on. Each states a fact; suggestions only appear if you ask for them. Off means the section never appears at all.",
+  "description": "Note explaining the observations feature under its toggle."
+ },
+ "dailyGoalsSectionLabel": {
+  "message": "Daily targets, per category",
+  "description": "Section heading over the per-category daily goal inputs."
+ },
+ "dailyGoalsNote": {
+  "message": "Leave blank for no goal. Progress shows in the side panel once a target is set.",
+  "description": "Note under the daily goal inputs."
+ },
+ "weeklyGoalsSectionLabel": {
+  "message": "Weekly targets, per category",
+  "description": "Section heading over the per-category weekly goal inputs."
+ },
+ "weeklyGoalsSectionTooltip": {
+  "message": "For things that don't happen every day — a target for the week as a whole instead of each individual day.",
+  "description": "Tooltip on the weekly targets section heading."
+ },
+ "weeklyGoalsNote": {
+  "message": "Independent of the daily targets above — set either, both, or neither per category.",
+  "description": "Note under the weekly goal inputs."
+ },
+ "goalOffPlaceholder": {
+  "message": "off",
+  "description": "Placeholder in a per-category daily/weekly goal input, shown when no target is set."
+ },
+ "goalAriaLabelDaily": {
+  "message": "Daily goal for $NAME$, in minutes",
+  "description": "Accessible label on a category's daily goal input, naming the category."
+ },
+ "goalAriaLabelWeekly": {
+  "message": "Weekly goal for $NAME$, in minutes",
+  "description": "Accessible label on a category's weekly goal input, naming the category."
+ },
+ "challengeSectionLabel": {
+  "message": "Challenge",
+  "description": "Section heading over the named-challenge fields."
+ },
+ "challengeSectionTooltip": {
+  "message": "A named run with its own day counter, like a 100-day challenge. Separate from the streak: it counts from a start date and doesn't break if you miss a day.",
+  "description": "Tooltip on the Challenge section heading."
+ },
+ "challengeNameFieldLabel": {
+  "message": "Name",
+  "description": "Label for the challenge name input field."
+ },
+ "challengeNamePlaceholder": {
+  "message": "#100days",
+  "description": "Placeholder example text in the challenge name input field."
+ },
+ "challengeStartedLabel": {
+  "message": "Started",
+  "description": "Label for the challenge start-date input field."
+ },
+ "challengeLengthLabel": {
+  "message": "Length (days)",
+  "description": "Label for the challenge target-length input field."
+ },
+ "clearChallengeLabel": {
+  "message": "Clear challenge",
+  "description": "Button that removes the current named challenge."
+ },
+ "challengeNote": {
+  "message": "A day counter shown next to your streak. Unlike the streak it doesn't break — it just counts from the start date. Leave the name blank for none.",
+  "description": "Note under the challenge fields."
+ },
+ "templatesSectionLabel": {
+  "message": "Templates",
+  "description": "Section heading over the day-templates feature."
+ },
+ "templatesSectionTooltip": {
+  "message": "Most days rhyme — save one's painted shape and stamp it onto any other day.",
+  "description": "Tooltip on the Templates section heading."
+ },
+ "templateNameFieldLabel": {
+  "message": "Template name",
+  "description": "Screen-reader label on the save-template name input."
+ },
+ "templateNamePlaceholder": {
+  "message": "Name it, e.g. \"Weekday\"",
+  "description": "Placeholder example text in the save-template name input."
+ },
+ "saveTemplateLabel": {
+  "message": "Save today as a template",
+  "description": "Button that saves the current day's painted shape as a template."
+ },
+ "templatesNote": {
+  "message": "Templates carry painted time only — never notes, intentions, things to avoid, or your reflection. Applying one to a day that already has painted time asks for confirmation first, and it's undoable (⌘Z) afterward.",
+  "description": "Note under the templates list."
+ },
+ "templatesEmptyNote": {
+  "message": "No templates saved yet.",
+  "description": "Shown in place of the templates list when none have been saved."
+ },
+ "applyLabel": {
+  "message": "Apply",
+  "description": "Button that applies a saved template to the current day."
+ },
+ "applyConfirmLabel": {
+  "message": "Confirm apply?",
+  "description": "Armed state of a template's Apply button, shown after the first click when it would overwrite existing data."
+ },
+ "deleteLabel": {
+  "message": "Delete",
+  "description": "Button that deletes a saved template."
+ },
+ "deleteTemplateAriaLabel": {
+  "message": "Delete template: $NAME$",
+  "description": "Accessible label on a template's delete button, naming the template."
+ },
+ "templateAppliedToast": {
+  "message": "Applied \"$NAME$\" — ⌘Z to undo",
+  "description": "Toast shown after applying a template, naming it."
+ },
+ "templateNameRequiredToast": {
+  "message": "Name the template first.",
+  "description": "Toast shown when trying to save a template without a name."
+ },
+ "templateMaxToast": {
+  "message": "That's the most templates you can save ($MAX$).",
+  "description": "Toast shown when the template limit is reached."
+ },
+ "templateSavedToast": {
+  "message": "Saved \"$NAME$\"",
+  "description": "Toast shown after saving a template, naming it."
+ },
+ "templateDeletedToast": {
+  "message": "Deleted \"$NAME$\"",
+  "description": "Toast shown after deleting a template, naming it."
+ },
+ "exportSectionLabel": {
+  "message": "Export",
+  "description": "Section heading over the export buttons in Settings → Data."
+ },
+ "exportCsvLabel": {
+  "message": "Export CSV",
+  "description": "Button that downloads a CSV export."
+ },
+ "exportCsvTooltip": {
+  "message": "A spreadsheet of every block: one row per block, ready to pivot. Does not restore settings.",
+  "description": "Tooltip on the Export CSV button."
+ },
+ "exportJsonLabel": {
+  "message": "Export JSON backup",
+  "description": "Button that downloads a full JSON backup."
+ },
+ "exportJsonTooltip": {
+  "message": "A complete backup — every day, category, and setting. This is the file to keep.",
+  "description": "Tooltip on the Export JSON backup button."
+ },
+ "noBackupYetStatus": {
+  "message": "You haven't exported a backup yet.",
+  "description": "Status line shown when no backup has ever been exported."
+ },
+ "lastBackupStatus": {
+  "message": "Last backup: $DATE$",
+  "description": "Status line showing when the last backup was exported."
+ },
+ "dataBackupNudgeText": {
+  "message": "It's been a while since your last backup.",
+  "description": "Text in the inline backup-nudge bar in Settings → Data."
+ },
+ "backupNudgeText": {
+  "message": "You haven't backed up in a while — your data lives only in this browser.",
+  "description": "Text in the backup-nudge bar shown on the Day view."
+ },
+ "backupNudgeExportLabel": {
+  "message": "Export now",
+  "description": "Button in the Day-view backup-nudge bar that exports a JSON backup."
+ },
+ "backupNudgeExportTooltip": {
+  "message": "Save a JSON backup you can restore from later",
+  "description": "Tooltip on the Day-view backup-nudge bar's export button."
+ },
+ "backupNudgeDismissTooltip": {
+  "message": "Hide until next time",
+  "description": "Tooltip on the Day-view backup-nudge bar's dismiss button."
+ },
+ "dailyRemindersSectionLabel": {
+  "message": "Daily reminders",
+  "description": "Section heading over the daily reminder time fields in Settings → Reminders."
+ },
+ "stripHintLabel": {
+  "message": "Click a day to open it",
+  "description": "Small hint text next to the 7-day strip's month label."
+ },
+ "stripTooltip": {
+  "message": "The last seven days. Bar length is that day's score; click one to view or edit it.",
+  "description": "Tooltip on the 7-day strip."
+ },
+ "importSectionLabel": {
+  "message": "Import",
+  "description": "Section heading over the import controls in Settings → Data."
+ },
+ "chooseBackupFileLabel": {
+  "message": "Choose backup file…",
+  "description": "Button that opens the file picker to import a backup."
+ },
+ "chooseBackupFileTooltip": {
+  "message": "Restore from a JSON backup or a CSV export",
+  "description": "Tooltip on the choose-backup-file button."
+ },
+ "mergeLabel": {
+  "message": "Merge",
+  "description": "Button that merges an imported file's days into existing history."
+ },
+ "mergeTooltip": {
+  "message": "Add days from the file that you don't already have. Existing days are left untouched.",
+  "description": "Tooltip on the Merge button."
+ },
+ "replaceEverythingLabel": {
+  "message": "Replace everything",
+  "description": "Button that replaces all local history and settings with an imported file's contents; also its resting label after an armed confirm times out."
+ },
+ "replaceEverythingTooltip": {
+  "message": "Erase all current history and restore exactly what is in the file. Cannot be undone.",
+  "description": "Tooltip on the Replace everything button."
+ },
+ "replaceArmedLabel": {
+  "message": "Click again to erase existing days",
+  "description": "Armed state of the Replace everything button, shown after the first click, awaiting a confirming second click."
+ },
+ "cancelLabel": {
+  "message": "Cancel",
+  "description": "Cancel button, shared by the import and multi-day fill confirmation panels."
+ },
+ "importNote": {
+  "message": "JSON backups keep everything (days, categories, settings). CSV files only restore blocks of time, matched against your current categories by name. Merge adds missing days and leaves existing ones untouched; Replace wipes your history and restores exactly what's in the file.",
+  "description": "Note explaining the difference between JSON and CSV import."
+ },
+ "fileReadErrorToast": {
+  "message": "Couldn't read that file.",
+  "description": "Toast shown when a chosen import file can't be read."
+ },
+ "importSummarySentence1_one": {
+  "message": "$COUNT$ day in the file, $OVERLAP$ overlapping your $EXISTING$ existing.",
+  "description": "First sentence of the import confirmation summary, singular day count."
+ },
+ "importSummarySentence1_other": {
+  "message": "$COUNT$ days in the file, $OVERLAP$ overlapping your $EXISTING$ existing.",
+  "description": "First sentence of the import confirmation summary, plural day count."
+ },
+ "importSummarySentence2_one": {
+  "message": "Merge adds $COUNT$ new day.",
+  "description": "Second sentence of the import confirmation summary, singular new-day count."
+ },
+ "importSummarySentence2_other": {
+  "message": "Merge adds $COUNT$ new days.",
+  "description": "Second sentence of the import confirmation summary, plural new-day count."
+ },
+ "importSummarySentence3_one": {
+  "message": "Replace erases all $COUNT$ existing day and restores exactly what's in the file.",
+  "description": "Third sentence of the import confirmation summary, singular existing-day count."
+ },
+ "importSummarySentence3_other": {
+  "message": "Replace erases all $COUNT$ existing days and restores exactly what's in the file.",
+  "description": "Third sentence of the import confirmation summary, plural existing-day count."
+ },
+ "importSummaryDemoClearSentence": {
+  "message": "Demo data will be cleared first.",
+  "description": "Trailing sentence in the import confirmation summary when demo data is currently loaded."
+ },
+ "backupRestoredToast": {
+  "message": "Backup restored",
+  "description": "Toast shown after a Replace import completes."
+ },
+ "backupMergedToast": {
+  "message": "Backup merged in",
+  "description": "Toast shown after a Merge import completes."
+ },
+ "multifillSectionLabel": {
+  "message": "Fill multiple days",
+  "description": "Section heading over the multi-day fill controls in Settings → Data."
+ },
+ "multifillSectionTooltip": {
+  "message": "One action instead of clicking through each day — e.g. \"I was away Monday to Friday\".",
+  "description": "Tooltip on the 'Fill multiple days' section heading."
+ },
+ "multifillFromDateLabel": {
+  "message": "From date",
+  "description": "Label for the multi-day fill's start-date field."
+ },
+ "multifillToDateLabel": {
+  "message": "To date",
+  "description": "Label for the multi-day fill's end-date field."
+ },
+ "multifillCategoryLabel": {
+  "message": "Category",
+  "description": "Label for the multi-day fill's category dropdown."
+ },
+ "multifillFromTimeLabel": {
+  "message": "From time",
+  "description": "Label for the multi-day fill's start-time field."
+ },
+ "multifillToTimeLabel": {
+  "message": "To time",
+  "description": "Label for the multi-day fill's end-time field."
+ },
+ "eraseOptionLabel": {
+  "message": "Erase (mark as untracked)",
+  "description": "Option in the multi-day fill category dropdown that erases instead of painting."
+ },
+ "multifillNoteBefore": {
+  "message": "Fills the chosen category (or erases) across every day from the start date to the end date, inclusive. Leave the time fields blank to fill the whole day. Capped at",
+  "description": "Note under the multi-day fill controls, before the day-cap number."
+ },
+ "multifillNoteAfter": {
+  "message": "days per fill; each affected day is saved and undoable on its own, one at a time, from that day's view.",
+  "description": "Note under the multi-day fill controls, after the day-cap number."
+ },
+ "confirmFillLabel": {
+  "message": "Confirm fill",
+  "description": "Button that commits a pending multi-day fill; also its resting label after an armed confirm times out."
+ },
+ "multifillArmedLabel": {
+  "message": "Click again to fill",
+  "description": "Armed state of the Confirm fill button, shown after the first click, awaiting a confirming second click."
+ },
+ "multifillActionErase": {
+  "message": "erased",
+  "description": "Describes the multi-day fill action when erasing, substituted into the fill confirmation sentence."
+ },
+ "multifillActionSetTo": {
+  "message": "set to $CATEGORY$",
+  "description": "Describes the multi-day fill action when painting a category, substituted into the fill confirmation sentence."
+ },
+ "multifillWindowWholeDay": {
+  "message": "for the whole day",
+  "description": "Describes the time window of a multi-day fill spanning the whole day, substituted into the fill confirmation sentence."
+ },
+ "multifillUnknownCategory": {
+  "message": "that category",
+  "description": "Fallback name substituted into the multi-day fill summary if the chosen category can no longer be found."
+ },
+ "multifillWindowRange": {
+  "message": "from $FROM$ to $TO$",
+  "description": "Describes the time window of a multi-day fill spanning part of the day, substituted into the fill confirmation sentence."
+ },
+ "multifillSummary_one": {
+  "message": "$COUNT$ day ($FROM$ to $TO$) will be $ACTION$ $WINDOW$.",
+  "description": "Multi-day fill confirmation summary, singular day count."
+ },
+ "multifillSummary_other": {
+  "message": "$COUNT$ days ($FROM$ to $TO$) will be $ACTION$ $WINDOW$.",
+  "description": "Multi-day fill confirmation summary, plural day count."
+ },
+ "multifillPainted_one": {
+  "message": "$COUNT$ of them already has something painted there and will be overwritten.",
+  "description": "Trailing sentence of the multi-day fill summary, singular affected-day count."
+ },
+ "multifillPainted_other": {
+  "message": "$COUNT$ of them already have something painted there and will be overwritten.",
+  "description": "Trailing sentence of the multi-day fill summary, plural affected-day count."
+ },
+ "multifillNonePainted": {
+  "message": "None of those days have anything painted there yet.",
+  "description": "Trailing sentence of the multi-day fill summary when no affected day has painted time."
+ },
+ "filledDays_one": {
+  "message": "Filled $COUNT$ day",
+  "description": "Toast after applying a multi-day fill, singular day count."
+ },
+ "filledDays_other": {
+  "message": "Filled $COUNT$ days",
+  "description": "Toast after applying a multi-day fill, plural day count."
+ },
+ "driveSectionLabel": {
+  "message": "Google Drive backup",
+  "description": "Section heading over the Google Drive backup controls."
+ },
+ "driveBackupLabel": {
+  "message": "Back up to Google Drive",
+  "description": "Button that uploads a backup to Google Drive."
+ },
+ "driveBackupTooltip": {
+  "message": "Signs you in with Google and saves a backup to a private, app-only folder in your own Drive — invisible in your normal Drive, and never seen by anyone but you.",
+  "description": "Tooltip on the Back up to Google Drive button."
+ },
+ "driveRestoreLabel": {
+  "message": "Restore from Google Drive",
+  "description": "Button that downloads the most recent Google Drive backup."
+ },
+ "driveRestoreTooltip": {
+  "message": "Downloads your most recent Google Drive backup and opens the same merge/replace confirmation as a file import.",
+  "description": "Tooltip on the Restore from Google Drive button."
+ },
+ "autoBackupToggleLabel": {
+  "message": "Back up automatically",
+  "description": "Checkbox label for automatic Google Drive backups."
+ },
+ "autoBackupToggleTooltip": {
+  "message": "Backs up to the same Drive file about once a day, in the background. Only works once you've connected Drive yourself — it will never raise a sign-in window on its own.",
+  "description": "Tooltip on the automatic-backup checkbox."
+ },
+ "autoBackupNote": {
+  "message": "Roughly daily, quietly, to the same file. It only ever updates a backup you've already made by hand — it can't sign you in, so it does nothing until you've connected Drive at least once.",
+  "description": "Note under the automatic-backup checkbox."
+ },
+ "driveConnectedAsStatus": {
+  "message": "Connected as $EMAIL$",
+  "description": "Status line showing which Google account is connected for Drive backup."
+ },
+ "driveNotBackedUpStatus": {
+  "message": "Not backed up to Google Drive yet.",
+  "description": "Status line shown when Drive backup has never been used."
+ },
+ "driveConnectedNoUploadStatus": {
+  "message": "Connected to Google Drive. Restored from a backup; nothing uploaded from here yet.",
+  "description": "Status line shown when Drive is linked via a restore, but nothing has been uploaded from this device."
+ },
+ "driveLastSyncStatus": {
+  "message": "Last synced to Google Drive: $DATE$",
+  "description": "Status line showing when the last Drive backup upload happened."
+ },
+ "driveDisconnectLabel": {
+  "message": "Disconnect Google Drive",
+  "description": "Button that signs the extension out of the connected Google account."
+ },
+ "driveDisconnectTooltip": {
+  "message": "Signs this account out of Daily Dial. Your backup file stays in your Drive; nothing is deleted.",
+  "description": "Tooltip on the Disconnect Google Drive button."
+ },
+ "driveDeleteLabel": {
+  "message": "Delete Drive backup",
+  "description": "Button that permanently deletes the Drive backup file; also its resting label after an armed confirm times out."
+ },
+ "driveDeleteTooltip": {
+  "message": "Permanently deletes the backup file from your Google Drive. Cannot be undone. Your local data on this device is untouched.",
+  "description": "Tooltip on the Delete Drive backup button."
+ },
+ "driveDeleteArmedLabel": {
+  "message": "Click again to delete permanently",
+  "description": "Armed state of the Delete Drive backup button, shown after the first click, awaiting a confirming second click."
+ },
+ "driveNoteBefore": {
+  "message": "Optional, and off unless you use it. Uses Google's",
+  "description": "Privacy note about Drive backup, before the 'appDataFolder' API name."
+ },
+ "driveNoteAfter": {
+  "message": "— a storage space private to this extension that doesn't show up in your regular Drive and that no other app can read. This is the only feature in Daily Dial that sends data anywhere; everything else stays on this device. See",
+  "description": "Privacy note about Drive backup, after the 'appDataFolder' API name and before the Privacy link."
+ },
+ "driveNoteFor": {
+  "message": "for details.",
+  "description": "Privacy note about Drive backup, after the Privacy link."
+ },
+ "privacyLinkLabel": {
+  "message": "Privacy",
+  "description": "Link text pointing at the extension's privacy policy document."
+ },
+ "nothingToExportToast": {
+  "message": "Nothing logged yet to export.",
+  "description": "Toast shown when trying to export with no data logged."
+ },
+ "onlyDemoExportToast": {
+  "message": "Only demo data is loaded — there's nothing of your own to export yet.",
+  "description": "Toast shown when trying to export while only demo/sample data is present."
+ },
+ "exportedCsvToast": {
+  "message": "Exported CSV",
+  "description": "Toast shown after a successful CSV export."
+ },
+ "exportedJsonToast": {
+  "message": "Exported JSON backup",
+  "description": "Toast shown after a successful JSON backup export."
+ },
+ "nothingToBackupToast": {
+  "message": "Nothing logged yet to back up.",
+  "description": "Toast shown when trying to back up to Drive with no data logged."
+ },
+ "onlyDemoBackupToast": {
+  "message": "Only demo data is loaded — there's nothing of your own to back up yet.",
+  "description": "Toast shown when trying to back up to Drive while only demo/sample data is present."
+ },
+ "driveConnectingToast": {
+  "message": "Connecting to Google Drive…",
+  "description": "Toast shown while the Google Drive sign-in/connect flow is in progress."
+ },
+ "driveBackedUpToast": {
+  "message": "Backed up to Google Drive",
+  "description": "Toast shown after a successful Drive backup upload."
+ },
+ "driveBackupErrorToast": {
+  "message": "Couldn't back up to Google Drive.",
+  "description": "Toast shown when a Drive backup upload fails."
+ },
+ "driveCheckingToast": {
+  "message": "Checking Google Drive…",
+  "description": "Toast shown while looking for an existing Drive backup to restore."
+ },
+ "driveNoBackupFoundToast": {
+  "message": "No Daily Dial backup found in this Google account.",
+  "description": "Toast shown when no Drive backup file exists for the connected account."
+ },
+ "driveUnreachableToast": {
+  "message": "Couldn't reach Google Drive.",
+  "description": "Toast shown when a Drive restore attempt fails."
+ },
+ "driveDisconnectedToast": {
+  "message": "Disconnected from Google Drive",
+  "description": "Toast shown after disconnecting the Google account."
+ },
+ "driveDeletingToast": {
+  "message": "Deleting from Google Drive…",
+  "description": "Toast shown while a Drive backup file is being deleted."
+ },
+ "driveDeletedToast": {
+  "message": "Deleted your Google Drive backup",
+  "description": "Toast shown after successfully deleting the Drive backup file."
+ },
+ "driveDeleteErrorToast": {
+  "message": "Couldn't delete from Google Drive.",
+  "description": "Toast shown when deleting the Drive backup file fails."
+ },
+ "themeLabel": {
+  "message": "Theme",
+  "description": "Label for the appearance theme dropdown."
+ },
+ "themeSystem": {
+  "message": "System",
+  "description": "Theme option that follows the OS setting."
+ },
+ "themeLight": {
+  "message": "Light",
+  "description": "Light theme option."
+ },
+ "themeDark": {
+  "message": "Dark",
+  "description": "Dark theme option."
+ },
+ "timeFormatLabel": {
+  "message": "Time format",
+  "description": "Label for the 24-hour/12-hour time format dropdown."
+ },
+ "timeFormat24h": {
+  "message": "24-hour",
+  "description": "24-hour time format option."
+ },
+ "timeFormat12h": {
+  "message": "12-hour",
+  "description": "12-hour time format option."
+ },
+ "dialModeLabel": {
+  "message": "Dial layout",
+  "description": "Label for the dial-layout dropdown in Settings → Appearance."
+ },
+ "dialModeLabelTooltip": {
+  "message": "One ring covering all 24 hours, or two smaller rings — one for AM, one for PM.",
+  "description": "Tooltip on the dial-layout dropdown label."
+ },
+ "weekStartLabel": {
+  "message": "Week starts on",
+  "description": "Label for the week-start-day dropdown."
+ },
+ "weekStartTooltip": {
+  "message": "Which day begins a week, used by the weekly recap.",
+  "description": "Tooltip on the week-start-day dropdown label."
+ },
+ "wakingHoursSectionLabel": {
+  "message": "Waking hours",
+  "description": "Section heading over the day-window start/end time fields."
+ },
+ "wakingHoursTooltip": {
+  "message": "The day's insight only counts untracked time in this window as \"still unlogged\" — so sleeping hours don't get flagged as a logging gap.",
+  "description": "Tooltip on the Waking hours section heading."
+ },
+ "dayStartsLabel": {
+  "message": "Day starts",
+  "description": "Label for the waking-hours start-time field."
+ },
+ "dayEndsLabel": {
+  "message": "Day ends",
+  "description": "Label for the waking-hours end-time field."
+ },
+ "appearanceUpdatedToast": {
+  "message": "Appearance updated",
+  "description": "Toast shown after saving appearance settings."
+ },
+ "remindersSetToast": {
+  "message": "Reminders set for $T1$ and $T2$",
+  "description": "Toast shown after enabling reminders, naming the two times."
+ },
+ "remindersOffToast": {
+  "message": "Reminders off",
+  "description": "Toast shown after disabling reminders."
+ },
+ "autoBackupOnToast": {
+  "message": "Automatic backup on",
+  "description": "Toast shown after enabling automatic Drive backup."
+ },
+ "autoBackupOffToast": {
+  "message": "Automatic backup off",
+  "description": "Toast shown after disabling automatic Drive backup."
+ },
+ "aboutDailyDialName": {
+  "message": "Daily Dial",
+  "description": "App name shown next to the version number at the top of the About tab."
+ },
+ "githubLinkLabel": {
+  "message": "GitHub",
+  "description": "Link to the project's GitHub repository, shown in the About tab."
+ },
+ "gettingStartedLinkLabel": {
+  "message": "Getting started",
+  "description": "Link to the getting-started guide, shown in the About tab."
+ },
+ "demoAndTourLabel": {
+  "message": "Demo & tour",
+  "description": "Section heading over the demo-data and onboarding-replay controls in the About tab."
+ },
+ "replayOnboardingLabel": {
+  "message": "Replay welcome tour",
+  "description": "Button that replays the first-run welcome tour."
+ },
+ "replayOnboardingTooltip": {
+  "message": "Shows the same three-card welcome screen you saw (or would have seen) on first open",
+  "description": "Tooltip on the Replay welcome tour button."
+ },
+ "loadSampleDataLabel": {
+  "message": "Load sample data",
+  "description": "Button that fills unlogged days with sample/demo data."
+ },
+ "loadSampleDataTooltip": {
+  "message": "Fills three weeks of realistic (fake) days into dates you haven't logged, so History, streaks, and goals have something to show.",
+  "description": "Tooltip on the Load sample data button."
+ },
+ "clearSampleDataLabel": {
+  "message": "Exit demo mode",
+  "description": "Button in the About tab that removes sample/demo data."
+ },
+ "clearSampleDataTooltip": {
+  "message": "Removes exactly the sample days that were loaded. Anything you logged yourself is untouched.",
+  "description": "Tooltip on the About tab's Exit demo mode button."
+ },
+ "demoModeOffNote": {
+  "message": "See how History, streaks, and goals look with three weeks of varied (fake) days. Your own days are left as they are.",
+  "description": "Note shown under the demo-data controls when demo mode is off."
+ },
+ "demoModeOnNote": {
+  "message": "Demo mode is on. Sample days fill only dates you hadn't logged — leaving it removes exactly those, and nothing of yours.",
+  "description": "Note shown under the demo-data controls when demo mode is on."
+ },
+ "demoModeOnToast": {
+  "message": "Demo mode on — sample days added around your own",
+  "description": "Toast shown after loading sample data adds at least one day."
+ },
+ "demoModeNothingToAddToast": {
+  "message": "Every day in the sample range is already yours — nothing to add",
+  "description": "Toast shown when loading sample data finds every candidate date already logged."
+ },
+ "demoModeOffToast": {
+  "message": "Demo mode off — your own days are untouched",
+  "description": "Toast shown after clearing sample/demo data."
+ },
+ "personalBestsLabel": {
+  "message": "Personal bests",
+  "description": "Section heading over the personal-bests stats in the About tab."
+ },
+ "bestsStreakLabel": {
+  "message": "Longest streak",
+  "description": "Stat label for the longest-ever streak."
+ },
+ "bestsScoreLabel": {
+  "message": "Best day score",
+  "description": "Stat label for the best-ever day score."
+ },
+ "bestsDayLabel": {
+  "message": "Most productive day",
+  "description": "Stat label for the most productive day ever logged."
+ },
+ "bestsStreakDays_one": {
+  "message": "$COUNT$ day",
+  "description": "Longest-streak stat value, singular day count."
+ },
+ "bestsStreakDays_other": {
+  "message": "$COUNT$ days",
+  "description": "Longest-streak stat value, plural day count."
+ },
+ "keyboardShortcutsLabel": {
+  "message": "Keyboard shortcuts",
+  "description": "Section heading over the keyboard shortcuts list in the About tab."
+ },
+ "shortcutSelectPen": {
+  "message": "Select a category pen",
+  "description": "Description of the 1–6 keyboard shortcut."
+ },
+ "shortcutSelectEraser": {
+  "message": "Select the eraser",
+  "description": "Description of the 0/E keyboard shortcut."
+ },
+ "shortcutUndo": {
+  "message": "Undo",
+  "description": "Description of the ⌘Z / Ctrl+Z keyboard shortcut."
+ },
+ "shortcutRedo": {
+  "message": "Redo",
+  "description": "Description of the ⇧⌘Z / Ctrl+Shift+Z keyboard shortcut."
+ },
+ "shortcutCloseSettings": {
+  "message": "Close this panel",
+  "description": "Description of the Esc keyboard shortcut in Settings."
+ },
+ "onboardingTitle": {
+  "message": "Welcome to Daily Dial",
+  "description": "Heading of the first-run welcome tour dialog."
+ },
+ "onboardingSubtitle": {
+  "message": "Three things to know before you paint your first day.",
+  "description": "Subtitle of the first-run welcome tour dialog."
+ },
+ "onboardingStep1Title": {
+  "message": "Paint your day",
+  "description": "Heading of the first welcome-tour step."
+ },
+ "onboardingStep1TextBefore": {
+  "message": "Pick a category below the dial, then drag around the ring. Prefer typing?",
+  "description": "Body text of the first welcome-tour step, before the '9-11 deep work' code example."
+ },
+ "onboardingStep1TextAfter": {
+  "message": "works too.",
+  "description": "Body text of the first welcome-tour step, after the '9-11 deep work' code example."
+ },
+ "onboardingStep2Title": {
+  "message": "See how it adds up",
+  "description": "Heading of the second welcome-tour step."
+ },
+ "onboardingStep2Text": {
+  "message": "Your score, productive %, and longest focus streak update as you paint. The line underneath reads your day in plain language.",
+  "description": "Body text of the second welcome-tour step."
+ },
+ "onboardingStep3Title": {
+  "message": "Make it yours",
+  "description": "Heading of the third welcome-tour step."
+ },
+ "onboardingStep3TextBefore": {
+  "message": "Rename categories, set reminders and goals, or back up to Google Drive — all behind",
+  "description": "Body text of the third welcome-tour step, before the ☰ glyph."
+ },
+ "onboardingStep3TextAfter": {
+  "message": "at the top right. Everything but painting is optional.",
+  "description": "Body text of the third welcome-tour step, after the ☰ glyph."
+ },
+ "onboardingAltBefore": {
+  "message": "Prefer to see it with real numbers first?",
+  "description": "Text in the welcome-tour footer, before the 'Load sample data instead' link."
+ },
+ "loadSampleDataInsteadLabel": {
+  "message": "Load sample data instead",
+  "description": "Link in the welcome-tour footer that loads sample data instead of starting fresh."
+ },
+ "skipLabel": {
+  "message": "Skip",
+  "description": "Button that dismisses the welcome tour without starting."
+ },
+ "letsStartLabel": {
+  "message": "Let's start",
+  "description": "Button that dismisses the welcome tour and begins using the app."
+ },
+ "onboardingNudgePaintToast": {
+  "message": "Pick a category below, then drag around the ring to paint",
+  "description": "Toast shown after starting the tour for a user with nothing logged yet."
+ },
+ "onboardingNudgeSettingsToast": {
+  "message": "You're set — Settings (☰, top right) has categories, reminders, goals, and backup",
+  "description": "Toast shown after starting the tour for a returning user who already has data."
+ },
+ "futureDayToast": {
+  "message": "That's tomorrow — there's nothing to log yet",
+  "description": "Toast shown when trying to navigate past today into the future."
+ },
+ "dayRolledOverToast": {
+  "message": "It's a new day — the dial has rolled over",
+  "description": "Toast shown when midnight passes while the app is open on today."
+ },
+ "undoDone": {
+  "message": "Undone",
+  "description": "Toast shown after an undo."
+ },
+ "undoEmpty": {
+  "message": "Nothing to undo",
+  "description": "Toast shown when undo has nothing to revert."
+ },
+ "redoDone": {
+  "message": "Redone",
+  "description": "Toast shown after a redo."
+ },
+ "redoEmpty": {
+  "message": "Nothing to redo",
+  "description": "Toast shown when redo has nothing to reapply."
+ },
+ "copyYesterdayEmptyToast": {
+  "message": "Yesterday has nothing to copy.",
+  "description": "Toast shown when Copy yesterday is used but yesterday has no data."
+ },
+ "copyYesterdayConfirm": {
+  "message": "Today already has entries — overwrite them with yesterday's?",
+  "description": "Confirmation dialog shown when Copy yesterday would overwrite today's existing blocks."
+ },
+ "copyYesterdaySuccessToast": {
+  "message": "Copied yesterday — ⌘Z to undo",
+  "description": "Toast shown after successfully copying yesterday's blocks."
+ },
+ "shareImageErrorToast": {
+  "message": "Couldn't create the image.",
+  "description": "Toast shown when generating a shareable image fails."
+ },
+ "shareImageSavedToast": {
+  "message": "Saved image",
+  "description": "Toast shown after a shareable image is downloaded."
+ },
+ "typedEntryAddedToast": {
+  "message": "Added",
+  "description": "Toast shown after a typed time-range entry is painted onto the dial."
+ },
+ "typedEntryOverflowToast": {
+  "message": "Added — the part past midnight went to the next day",
+  "description": "Toast shown after a typed time-range entry that crosses midnight is painted."
+ },
+ "noteSavedAnnounce": {
+  "message": "Note saved for $FROM$ to $TO$",
+  "description": "Screen-reader announcement after saving a note for the just-painted stretch."
+ },
+ "removeIntentionAriaLabel": {
+  "message": "Remove intention: $TEXT$",
+  "description": "Accessible label on the remove button next to an intention, including the intention's own text verbatim."
+ },
+ "removeAvoidAriaLabel": {
+  "message": "Remove: $TEXT$",
+  "description": "Accessible label on the remove button next to a 'things to avoid' entry, including its own text verbatim."
+ },
+ "removeNoteAriaLabel": {
+  "message": "Remove note for $WHEN$",
+  "description": "Accessible label on the remove button next to an extra note in the breakdown table."
+ },
+ "unloggedOptionLabel": {
+  "message": "Unlogged",
+  "description": "Blank/default option in a breakdown-row category dropdown, meaning no category chosen."
+ },
+ "breakdownGapPlaceholder": {
+  "message": "Nothing logged yet",
+  "description": "Placeholder text in an unlogged breakdown row's note field."
+ },
+ "fillSpanAriaLabel": {
+  "message": "Fill $WHEN$",
+  "description": "Accessible label on a gap row's category dropdown in the breakdown table."
+ },
+ "noteForAriaLabel": {
+  "message": "Note for $WHEN$",
+  "description": "Accessible label on a breakdown row's note field."
+ },
+ "clearSpanTooltip": {
+  "message": "Clear $WHEN$ — the time goes back to unlogged",
+  "description": "Tooltip on a breakdown row's clear button."
+ },
+ "clearSpanAriaLabel": {
+  "message": "Clear $CATEGORY$, $WHEN$",
+  "description": "Accessible label on a breakdown row's clear button, naming the category and time."
+ },
+ "maxNotesToast": {
+  "message": "That's the most notes a day can hold ($MAX$).",
+  "description": "Toast shown when the per-day note limit is reached."
+ },
+ "maxAvoidToast": {
+  "message": "That's the most a day can hold ($MAX$).",
+  "description": "Toast shown when the per-day 'things to avoid' limit is reached."
+ },
+ "maxIntentsToast": {
+  "message": "That's the most intentions a day can hold ($MAX$).",
+  "description": "Toast shown when the per-day intentions limit is reached."
+ },
+ "breakdownSummary_one": {
+  "message": "$COUNT$ stretch · $LOGGED$ logged, $UNLOGGED$ unlogged",
+  "description": "Summary line above the day breakdown table, singular stretch count."
+ },
+ "breakdownSummary_other": {
+  "message": "$COUNT$ stretches · $LOGGED$ logged, $UNLOGGED$ unlogged",
+  "description": "Summary line above the day breakdown table, plural stretch count."
+ },
+ "clearedAnnounce": {
+  "message": "Cleared $FROM$ to $TO$",
+  "description": "Screen-reader announcement after clearing a stretch of the day."
+ },
+ "caretCommitAnnounce": {
+  "message": "$CATEGORY$ set for $FROM$ to $TO$",
+  "description": "Screen-reader announcement after painting a category onto a stretch of the day, from the keyboard cursor or the breakdown table."
+ },
+ "caretAnnounce": {
+  "message": "$FROM$ to $TO$, $WHAT$",
+  "description": "Screen-reader announcement describing the keyboard cursor's current selection on the dial."
+ },
+ "caretMixedLabel": {
+  "message": "mixed",
+  "description": "Substituted for the category name in the keyboard-cursor announcement when the selection spans more than one category."
+ },
+ "untrackedLower": {
+  "message": "untracked",
+  "description": "Lowercase name for unpainted time, used inline in tooltips and announcements."
+ },
+ "untrackedCapitalized": {
+  "message": "Untracked",
+  "description": "Capitalized name for unpainted time, used as a row label in the 'Where the time went' bars."
+ },
+ "penEraserLabel": {
+  "message": "Eraser",
+  "description": "Label on the eraser pen button."
+ },
+ "dialEraserLabel": {
+  "message": "eraser",
+  "description": "Sub-label shown in the middle of a dial when the eraser is the active pen."
+ },
+ "dialPenLabel": {
+  "message": "pen: $NAME$",
+  "description": "Sub-label shown in the middle of a dial naming the active category pen."
+ },
+ "edgeRangeLabel": {
+  "message": "$FROM$–$TO$ $CATEGORY$",
+  "description": "Tooltip fragment describing one side of a dragged block boundary."
+ },
+ "edgeGoneLabel": {
+  "message": "$CATEGORY$ gone",
+  "description": "Tooltip fragment shown when dragging a block boundary would remove one side entirely."
+ },
+ "dialAriaNothingLoggedSuffix": {
+  "message": "Nothing logged yet.",
+  "description": "Appended to a dial's accessible label when it has nothing painted."
+ },
+ "dialAriaRangePart": {
+  "message": "$FROM$ to $TO$ $CATEGORY$",
+  "description": "One logged stretch, listed in a dial's accessible label."
+ },
+ "histHeatmapAriaLabel": {
+  "message": "Month calendar. Arrow keys move between days, Enter opens one.",
+  "description": "Accessible label on the History month heatmap grid."
+ },
+ "heatmapLoggedLabel": {
+  "message": "$DATE$ — score $SCORE$, $DURATION$ tracked",
+  "description": "Accessible label and tooltip on a heatmap day cell with logged time."
+ },
+ "heatmapWrittenLabel": {
+  "message": "$DATE$ — written up, no time painted",
+  "description": "Accessible label and tooltip on a heatmap day cell with notes/intentions but no painted time."
+ },
+ "heatmapEmptyLabel": {
+  "message": "$DATE$ — not logged",
+  "description": "Accessible label and tooltip on a heatmap day cell with nothing recorded."
+ },
+ "legendNotLoggedLabel": {
+  "message": "Not logged",
+  "description": "Heatmap legend item for an empty day."
+ },
+ "legendWrittenLabel": {
+  "message": "Written only",
+  "description": "Heatmap legend item for a day with notes/intentions but no painted time."
+ },
+ "legendWrittenTooltip": {
+  "message": "Notes, intentions or a reflection, but no time painted on the dial.",
+  "description": "Tooltip on the 'Written only' heatmap legend item."
+ },
+ "legendOffTrackLabel": {
+  "message": "Off track",
+  "description": "Heatmap legend item for a low-scoring logged day."
+ },
+ "legendMixedLabel": {
+  "message": "Mixed",
+  "description": "Heatmap legend item for a mid-scoring logged day."
+ },
+ "legendSolidLabel": {
+  "message": "Solid+",
+  "description": "Heatmap legend item for a high-scoring logged day."
+ },
+ "prevMonthLabel": {
+  "message": "Previous month",
+  "description": "Accessible label and tooltip on the previous-month arrow button in History."
+ },
+ "nextMonthLabel": {
+  "message": "Next month",
+  "description": "Accessible label and tooltip on the next-month arrow button in History."
+ },
+ "thisMonthLabel": {
+  "message": "This month",
+  "description": "Button that jumps the History month view back to the current month."
+ },
+ "thisMonthTooltip": {
+  "message": "Jump back to the current month",
+  "description": "Tooltip on the This month button in History."
+ },
+ "monthSummaryLabel": {
+  "message": "Month summary",
+  "description": "Section heading over the month's summary stats in History."
+ },
+ "monthSummaryTooltip": {
+  "message": "Averages count only days you logged — an unlogged day doesn't drag your average down.",
+  "description": "Tooltip on the Month summary section heading."
+ },
+ "statDaysLoggedLabel": {
+  "message": "Days logged",
+  "description": "Stat label in the History month summary."
+ },
+ "statAvgScoreLabel": {
+  "message": "Avg score",
+  "description": "Stat label used in the History month summary and the week-over-week comparison."
+ },
+ "statAvgProductiveLabel": {
+  "message": "Avg productive",
+  "description": "Stat label in the History month summary."
+ },
+ "bestDayLabel": {
+  "message": "Best day: $KEY$ ($SCORE$)",
+  "description": "Line in the History month summary naming the month's best-scoring day."
+ },
+ "bestDayEmptyLabel": {
+  "message": "Best day: — nothing scored yet this month.",
+  "description": "Line in the History month summary when no day this month has a score yet."
+ },
+ "monthStreakLabel": {
+  "message": "Streak this month: $CURRENT$ current · $LONGEST$ longest",
+  "description": "Line in the History month summary showing this month's logging streak."
+ },
+ "monthStreakTooltip": {
+  "message": "Consecutive logged days, counted only within this month — it doesn't borrow from the month before or after.",
+  "description": "Tooltip on the month-streak line in the History summary."
+ },
+ "writtenDaysNote_one": {
+  "message": "$COUNT$ day is written up this month but have no time painted on the dial, so they don't count toward anything above. They're all in the log below.",
+  "description": "Note in the History month summary when all-zero stats are actually due to un-painted written days, singular count."
+ },
+ "writtenDaysNote_other": {
+  "message": "$COUNT$ days are written up this month but have no time painted on the dial, so they don't count toward anything above. They're all in the log below.",
+  "description": "Note in the History month summary when all-zero stats are actually due to un-painted written days, plural count."
+ },
+ "categoryTrendsLabel": {
+  "message": "Category trends",
+  "description": "Section heading over the category trend charts in History."
+ },
+ "categoryTrendsTooltip": {
+  "message": "Minutes per category, one bar per calendar week in the visible month. The arrow compares the first week shown to the last.",
+  "description": "Tooltip on the Category trends section heading."
+ },
+ "trendsEmptyNote": {
+  "message": "Nothing logged this month yet — trends fill in as you paint days on the dial.",
+  "description": "Shown in place of the category trend charts when the month has no data."
+ },
+ "trendWeekTooltip": {
+  "message": "Week of $WEEK$: $DURATION$",
+  "description": "Tooltip on a single bar of a category trend chart."
+ },
+ "trendDirectionTooltip": {
+  "message": "First week vs. last week shown, so a single dip in the middle doesn't flip the read.",
+  "description": "Tooltip on a category trend's direction arrow."
+ },
+ "weekOverWeekLabel": {
+  "message": "Week over week",
+  "description": "Section heading over the week-over-week comparison in History."
+ },
+ "weekOverWeekTooltip": {
+  "message": "This week vs. last week, both starting on your configured week-start day.",
+  "description": "Tooltip on the Week over week section heading."
+ },
+ "wowTrackedLabel": {
+  "message": "Tracked",
+  "description": "Row label in the week-over-week comparison."
+ },
+ "wowProductiveLabel": {
+  "message": "Productive",
+  "description": "Row label in the week-over-week comparison."
+ },
+ "wowAvgScoreLabel": {
+  "message": "Avg score",
+  "description": "Row label in the week-over-week comparison."
+ },
+ "wowNoPreviousTooltip": {
+  "message": "Nothing logged last week to compare against.",
+  "description": "Tooltip on a week-over-week delta when there is no previous-week value to compare."
+ },
+ "wowPreviousTooltip": {
+  "message": "Last week: $VALUE$",
+  "description": "Tooltip on a week-over-week delta, naming last week's value."
+ },
+ "wowDeltaPoints": {
+  "message": "$N$pt",
+  "description": "Formats a percentage-point change in the week-over-week comparison."
+ },
+ "searchNotesLabel": {
+  "message": "Search notes",
+  "description": "Section heading over the note-search box in History."
+ },
+ "searchPlaceholder": {
+  "message": "Search your reflections…",
+  "description": "Placeholder text in the History note-search input."
+ },
+ "searchAriaLabel": {
+  "message": "Search your reflections",
+  "description": "Accessible label on the History note-search input."
+ },
+ "searchTooltip": {
+  "message": "Matches the one-line notes you leave on the Day view.",
+  "description": "Tooltip on the History note-search input."
+ },
+ "searchPromptNote": {
+  "message": "Type to search your reflections.",
+  "description": "Shown in the search results area before anything has been typed."
+ },
+ "searchNoMatchNote": {
+  "message": "No notes match \"$QUERY$\".",
+  "description": "Shown in the search results area when a search finds nothing, including the user's own search text verbatim."
+ },
+ "searchResultTooltip": {
+  "message": "Jump to this day",
+  "description": "Tooltip on a note search result."
+ },
+ "theLogLabel": {
+  "message": "The log",
+  "description": "Section heading over the written log in History."
+ },
+ "logRangeGroupLabel": {
+  "message": "How much of the log to show",
+  "description": "Accessible group label on the log's time-range switch."
+ },
+ "logRangeWeekLabel": {
+  "message": "This week",
+  "description": "Log range option showing the last 7 days."
+ },
+ "logRangeMonthLabel": {
+  "message": "This month",
+  "description": "Log range option showing the last 30 days."
+ },
+ "logRangeAllLabel": {
+  "message": "Everything",
+  "description": "Log range option showing all logged history."
+ },
+ "logEmptyNote": {
+  "message": "Nothing written down in this range yet. Notes and intentions from the Day view show up here.",
+  "description": "Shown in place of the log when the selected range has nothing written."
+ },
+ "openDayTooltip": {
+  "message": "Open this day",
+  "description": "Tooltip on a log entry's date button."
+ },
+ "logMeantToLabel": {
+  "message": "Meant to",
+  "description": "Sub-heading over a log entry's intentions list."
+ },
+ "logWhatHappenedLabel": {
+  "message": "What happened",
+  "description": "Sub-heading over a log entry's notes list."
+ },
+ "logMeantToAvoidLabel": {
+  "message": "Meant to avoid",
+  "description": "Sub-heading over a log entry's avoid-list."
+ },
+ "worthNoticingHistoryTooltip": {
+  "message": "Patterns in your own data over the last few weeks. Nothing here is advice unless you ask for it.",
+  "description": "Tooltip on the 'Worth noticing' section heading in History."
+ },
+ "worthNoticingSubnote": {
+  "message": "from the last few weeks",
+  "description": "Small note next to the 'Worth noticing' heading in History."
+ },
+ "suggestionShowLabel": {
+  "message": "What people do about this",
+  "description": "Button that expands a suggested-approaches panel under an observation."
+ },
+ "suggestionHideLabel": {
+  "message": "Hide",
+  "description": "Button that collapses an expanded suggested-approaches panel."
+ },
+ "silenceObservationLabel": {
+  "message": "Don't show this again",
+  "description": "Button that permanently hides one observation."
+ },
+ "silenceObservationTooltip": {
+  "message": "Permanently, not just for now.",
+  "description": "Tooltip on the 'Don't show this again' button."
+ },
+ "suggestionDisclaimer": {
+  "message": "These are examples of an approach, not recommendations — none are affiliated with Daily Dial.",
+  "description": "Disclaimer shown under a suggested-approaches list."
+ },
+ "historyEmptyBefore": {
+  "message": "No history yet. Log a few days on the Day view — once you have a week or two, this tab turns into a month-by-month picture: a heatmap, category trends, and week-over-week comparisons. Want to see what that looks like right now?",
+  "description": "Placeholder text shown on the History tab before any data exists, before the 'Load sample data' link."
+ },
+ "historyEmptyAfter": {
+  "message": "fills in three weeks instantly.",
+  "description": "Placeholder text shown on the History tab before any data exists, after the 'Load sample data' link."
+ },
+ "futureNotLogged": {
+  "message": "That hasn't happened yet — you can only log time up to now.",
+  "description": "Toast shown when the user tries to paint a part of today that is still in the future."
+ },
+ "copyYesterdayUpToNowToast": {
+  "message": "Copied yesterday up to now — the rest of the day hasn't happened yet",
+  "description": "Toast after copying yesterday onto today, when the copy had to stop at the current time."
+ },
+ "templateAppliedUpToNowToast": {
+  "message": "Applied \"$NAME$\" up to now — the rest of the day hasn't happened yet",
+  "description": "Toast after applying a template to today, when the template had to stop at the current time."
+ },
+ "filledDaysUpToNow": {
+  "message": "Filled $COUNT$ days, stopping at now",
+  "description": "Toast after a multi-day fill that was trimmed because part of the range is still in the future."
+ },
+ "breakdownNotYet": {
+  "message": "Not yet",
+  "description": "Shown in place of the fill dropdown on breakdown rows covering time later today."
+ },
+ "errPickDates": {
+  "message": "Pick a start and end date.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errEndDateBeforeStart": {
+  "message": "End date is before the start date.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errRangeTooLong": {
+  "message": "That's $COUNT$ days — a single fill can cover at most $MAX$.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errBadStartTime": {
+  "message": "Bad start time.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errBadEndTime": {
+  "message": "Bad end time.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errEndTimeBeforeStart": {
+  "message": "End time is before the start time.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errTryExample": {
+  "message": "Try something like \"9-11 deep work\".",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errUnreadableEntry": {
+  "message": "Couldn't read that. Try \"9-11 deep work\" or \"9pm-11pm study\".",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errUnreadableTime": {
+  "message": "Couldn't read the time — use 24h (13:30) or 12h (1:30pm).",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errNoCategoryGiven": {
+  "message": "Add a category, like \"9-11 deep work\".",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errNoCategoryMatch": {
+  "message": "No category matches \"$TEXT$\".",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errCategoryAmbiguous": {
+  "message": "\"$TEXT$\" matches $MATCHES$ — be more specific.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errFileEmpty": {
+  "message": "That file is empty.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errNotDailyDialCsv": {
+  "message": "That doesn't look like a Daily Dial CSV export.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errCsvBadDate": {
+  "message": "Row $ROW$: bad date \"$VALUE$\".",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errCsvBadStartTime": {
+  "message": "Row $ROW$: bad start time \"$VALUE$\".",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errCsvBadEndTime": {
+  "message": "Row $ROW$: bad end time \"$VALUE$\".",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errCsvUnknownCategory": {
+  "message": "Row $ROW$: unknown category \"$VALUE$\".",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errCsvBlockTooShort": {
+  "message": "Row $ROW$: block is shorter than $MIN$ minutes.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errCsvEndNotAfterStart": {
+  "message": "Row $ROW$: end is not after start.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errNotValidJson": {
+  "message": "That file isn't valid JSON.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errNotDailyDialBackup": {
+  "message": "That doesn't look like a Daily Dial backup.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errMissingSchemaVersion": {
+  "message": "Missing schema version — this doesn't look like a Daily Dial backup.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "errBackupTooNew": {
+  "message": "This backup was made by a newer version of Daily Dial (schema $VERSION$). Update the extension first.",
+  "description": "Validation error surfaced by lib.js."
+ },
+ "recapNothingLogged": {
+  "message": "Nothing logged last week. Worth a fresh start this week?",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "recapTrackedProductive": {
+  "message": "$DURATION$ tracked, $PERCENT$% productive.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "recapTopCategory": {
+  "message": "Most of it went to $CATEGORY$.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "recapIntentions": {
+  "message": "You met $DONE$ of $SET$ intentions.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "recapAskAdjust": {
+  "message": "Anything to adjust this week?",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsOvercommitHeadline": {
+  "message": "You're setting more intentions than you finish",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsOvercommitDetail": {
+  "message": "$SET$ intentions set in the last $DAYS$ days, only $DONE$ finished.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsNoBreaksHeadline": {
+  "message": "No rest or neutral time has been logged in $DAYS$ days",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsNoBreaksDetail": {
+  "message": "$DURATION$ tracked over the last $DAYS$ days, none of it in a neutral category.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsDistractionHeadline": {
+  "message": "Distraction has been rising over the last $DAYS$ days",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsDistractionDetail": {
+  "message": "$CURRENT$ logged as distraction in the last $DAYS$ days, up from $PREVIOUS$ the $DAYS$ days before that.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsCoverageHeadline": {
+  "message": "Logging has dropped off compared to the prior $DAYS$ days",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsCoverageDetail": {
+  "message": "$RECENT$/day tracked over the last $RECENTDAYS$ days, down from $PRIOR$/day over the $PRIORDAYS$ days before that.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsPeakHourHeadline": {
+  "message": "$HOUR$ is your most productive hour, on $PROTECTED$ of $LOGGED$ logged days",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsPeakHourDetail": {
+  "message": "Over the last $DAYS$ days, $HOUR$ accumulated more productive time than any other hour, but stayed productive on only $PROTECTED$ of $LOGGED$ logged days.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsUntrackedAreaHeadline": {
+  "message": "Everything logged in the last $DAYS$ days sits in just $COUNT$ categories",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "obsUntrackedAreaDetail": {
+  "message": "\"$CATEGORY$\" is enabled but logged zero minutes in that window — one of your six category slots is sitting unused.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "promptMorning": {
+  "message": "How did your morning go? Paint it in while you still remember.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "promptEveningUnlogged": {
+  "message": "$DURATION$ of today isn't logged yet. Close it out and add your one-line why.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "promptEveningComplete": {
+  "message": "Today is fully logged. Add your one-line why while it's fresh.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "insightNothingLogged": {
+  "message": "Nothing logged yet. Pick a category and drag around the ring to paint your first block.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "insightProductivePct": {
+  "message": "<b>$PERCENT$%</b> of your tracked time was productive.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "insightMostlyDrain": {
+  "message": "<b>$DURATION$</b> went to time you marked as a drain — more than you spent moving forward.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "insightTopCategory": {
+  "message": "<b>$CATEGORY$</b> led the day at <b>$DURATION$</b>.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "insightFragmented": {
+  "message": "It came in short pieces though — your longest unbroken stretch was only $DURATION$.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "insightLongStretch": {
+  "message": "Your longest unbroken stretch was <b>$DURATION$</b>.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "insightStillUnlogged": {
+  "message": "$DURATION$ is still unlogged.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "scoreNoData": {
+  "message": "No data yet",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "scoreTooLittle": {
+  "message": "Too little logged to score",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "scoreLockedIn": {
+  "message": "Locked in",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "scoreSolid": {
+  "message": "Solid",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "scoreMixedBag": {
+  "message": "Mixed bag",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "scoreOffTrack": {
+  "message": "Off track",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "sampleReflectionGoodFocus": {
+  "message": "Good focus after lunch.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "sampleReflectionDistracted": {
+  "message": "Distracted most of the evening.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "sampleReflectionRough": {
+  "message": "Rough day, mostly scrolling.",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "shareScoreLabel": {
+  "message": "score",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "shareNothingLogged": {
+  "message": "Nothing logged yet",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "shareTrackedLine": {
+  "message": "$DURATION$ tracked · $PERCENT$% productive",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "shareLedLine": {
+  "message": "$CATEGORY$ led at $DURATION$",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "shareStreakLine": {
+  "message": "🔥 $COUNT$ day streak",
+  "description": "Text produced by lib.js and shown in the UI."
+ },
+ "durationHourSuffix": {
+  "message": "h",
+  "description": "Suffix after a number of hours, e.g. the h in \"7h 45m\". Keep it very short."
+ },
+ "durationMinuteSuffix": {
+  "message": "m",
+  "description": "Suffix after a number of minutes, e.g. the m in \"7h 45m\". Keep it very short."
+ },
+ "sug_intentionOvercommit_lead": {
+  "message": "Three or four things you actually finish beats ten you meant to.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_intentionOvercommit_text1": {
+  "message": "Set fewer. One thing that must happen, and two that would be good, is a full day for most people.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_intentionOvercommit_text2": {
+  "message": "Make each one small enough to finish in a sitting — \"draft the email\" rather than \"sort out the application\".",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_intentionOvercommit_text3": {
+  "message": "Move the ones that keep rolling over into a single \"someday\" note, so they stop reappearing as today's failure.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_noBreaks_lead": {
+  "message": "Rest that never gets logged tends to be rest that never happens.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_noBreaks_text1": {
+  "message": "Put breaks on a timer, so stopping isn't a decision you have to make while concentrating.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_noBreaks_text2": {
+  "message": "Take the break away from the screen entirely — a walk, food, or anything that isn't another window.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_noBreaks_text3": {
+  "message": "If you're already resting but not logging it, log it. A day that reads as sixteen unbroken hours isn't the day you had.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_peakHoursUnprotected_lead": {
+  "message": "The hour you're best in is worth defending before anything else gets to claim it.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_peakHoursUnprotected_text1": {
+  "message": "Block it in whatever calendar other people can see, so the time is taken before someone else takes it.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_peakHoursUnprotected_text2": {
+  "message": "Silence everything for that hour, rather than relying on not looking.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_peakHoursUnprotected_text3": {
+  "message": "Start the hardest thing of the day in that window, not the easiest. The easy work will survive being done at a worse hour; the hard work often won't.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_peakHoursUnprotected_text4": {
+  "message": "If you can, change where you are for that hour. A different room or a library does more than most software.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_distractionTrend_lead": {
+  "message": "Rising distraction is usually a friction problem rather than a willpower one — the aim is to make the easy thing slightly harder.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_distractionTrend_text1": {
+  "message": "Block the sites that take the time, but only during the hours you actually want to work — an all-day block tends to get switched off entirely.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_distractionTrend_text2": {
+  "message": "Add a pause before the app opens, instead of blocking it. A few seconds of friction removes most of the opening-it-without-deciding-to.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_distractionTrend_text3": {
+  "message": "Make the phone boring for a while rather than forbidden.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_distractionTrend_text4": {
+  "message": "Put the phone in another room while you work. Unglamorous, free, and more reliable than anything you can install on the device you're trying to avoid.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_distractionTrend_text5": {
+  "message": "Replace rather than remove — decide what the time goes to instead, or it tends to find its way back.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_coverageDecline_lead": {
+  "message": "Logging less is usually the first sign of a stretch going badly — and the thing that makes it hard to see how badly.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_coverageDecline_text1": {
+  "message": "Log at two or three fixed points in the day rather than reconstructing it at midnight. Daily Dial's own reminders (Settings → Reminders) exist for this.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_coverageDecline_text2": {
+  "message": "Log roughly rather than not at all. An approximate day is worth far more than a blank one, and you can always sharpen it.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_coverageDecline_text3": {
+  "message": "Use \"The day, end to end\" below the dial to fill gaps in a couple of minutes — the rows are already there, they just need words.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_coverageDecline_text4": {
+  "message": "If it's stopped being worth the effort, that's worth knowing too. A tracker you resent is one you'll abandon.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_untrackedLifeArea_lead": {
+  "message": "What isn't a category can't show up in any of these numbers — and what doesn't show up is easy to let slide.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_untrackedLifeArea_text1": {
+  "message": "Rename a category you don't use to cover something that's missing — time with other people, exercise, sleep, or anything you'd want to be honest with yourself about (Settings → Categories).",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_untrackedLifeArea_text2": {
+  "message": "Give it a neutral weight rather than a productive one. The point is to see it, not to score it.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sug_untrackedLifeArea_text3": {
+  "message": "Once it's a category, the goals and History trends you already have will do the rest without any further effort.",
+  "description": "Observation advice text from suggestions.js."
+ },
+ "sugPlat_Stretchly": {
+  "message": "Windows · macOS · Linux · free, open source",
+  "description": "Platforms and price for the tool \"Stretchly\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_TimeOut": {
+  "message": "macOS · free",
+  "description": "Platforms and price for the tool \"Time Out\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_Focusmodes": {
+  "message": "macOS · iOS · built in",
+  "description": "Platforms and price for the tool \"Focus modes\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_DigitalWellbeingFocusmode": {
+  "message": "Android · built in",
+  "description": "Platforms and price for the tool \"Digital Wellbeing — Focus mode\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_SelfControl": {
+  "message": "macOS · free, open source",
+  "description": "Platforms and price for the tool \"SelfControl\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_ColdTurkey": {
+  "message": "Windows · macOS · free tier",
+  "description": "Platforms and price for the tool \"Cold Turkey\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_Freedom": {
+  "message": "Windows · macOS · iOS · Android · paid",
+  "description": "Platforms and price for the tool \"Freedom\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_onesec": {
+  "message": "iOS · Android · free tier",
+  "description": "Platforms and price for the tool \"one sec\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_AssistiveAccess": {
+  "message": "iOS 17+ · built in — reduces the phone to a few large, simple apps",
+  "description": "Platforms and price for the tool \"Assistive Access\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ },
+ "sugPlat_ScreenTimeapplimits": {
+  "message": "iOS · macOS · built in",
+  "description": "Platforms and price for the tool \"Screen Time app limits\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+ }
+}
