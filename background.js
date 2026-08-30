@@ -16,6 +16,7 @@ import {
   computeStats,
   dateKey,
   recapWeekStart,
+  dialUrlSuffix,
   nextOccurrence,
   nextWeeklyOccurrence,
   normalizeCategories,
@@ -179,7 +180,7 @@ async function openDial(hash) {
       // page itself is told to switch view instead.
       await chrome.tabs.update(existing.tabId, { active: true });
       await chrome.windows.update(existing.windowId, { focused: true });
-      if (hash === "#history") {
+      if (dialUrlSuffix(hash) === "#history") {
         await chrome.runtime.sendMessage({ type: "showHistory" }).catch(() => {});
       }
       return;
@@ -188,10 +189,13 @@ async function openDial(hash) {
     }
   }
 
-  await chrome.tabs.create({ url: chrome.runtime.getURL("dial.html") + (hash ?? "") });
+  await chrome.tabs.create({ url: chrome.runtime.getURL("dial.html") + dialUrlSuffix(hash) });
 }
 
-chrome.action.onClicked.addListener(openDial);
+// Wrapped, not passed directly: onClicked hands the listener the Tab object,
+// which openDial would take as its `hash` argument and concatenate into the
+// URL as "[object Object]" — breaking every toolbar click.
+chrome.action.onClicked.addListener(() => openDial());
 
 chrome.notifications.onClicked.addListener((id) => {
   if (!id.startsWith("dial-")) return;

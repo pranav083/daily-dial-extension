@@ -8,6 +8,19 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.18.1] — 2026-08-29
+
+### Fixed
+
+- **The extension stopped opening from the toolbar** — clicking the icon went
+  to `dial.html[object Object]`, which doesn't exist. Introduced in 1.17.0
+  when the recap notification gained a deep link: `openDial` grew an optional
+  hash argument, and `chrome.action.onClicked` hands its listener the Tab
+  object, so every toolbar click passed a Tab where a string was expected and
+  concatenated it into the URL. The listener is wrapped now, the suffix is
+  resolved through a function that only ever returns a hash it recognises,
+  and there's a test covering the exact shape that broke it.
+
 ## [1.18.0] — 2026-08-29
 
 ### Fixed

@@ -28,6 +28,7 @@ import {
   mergeDayMaps,
   mostRecentWeekStart,
   recapWeekStart,
+  dialUrlSuffix,
   nextOccurrence,
   nextWeeklyOccurrence,
   normalizeCategories,
@@ -1793,4 +1794,18 @@ test("recapWeekStart never reports a week more than 7 days stale", () => {
       assert.ok(daysStale < 7, `weekStart=${weekStart} on Aug ${day} was ${daysStale} days stale`);
     }
   }
+});
+
+/* ---------- opening the dial ---------- */
+
+test("dialUrlSuffix ignores anything that isn't a hash we recognise", () => {
+  // chrome.action.onClicked hands its listener the Tab object. Appending that
+  // to the URL produced "dial.html[object Object]", which fails to load —
+  // every toolbar click was broken by it.
+  assert.equal(dialUrlSuffix({ id: 7, url: "chrome://newtab" }), "");
+  assert.equal(dialUrlSuffix(undefined), "");
+  assert.equal(dialUrlSuffix(null), "");
+  assert.equal(dialUrlSuffix(42), "");
+  assert.equal(dialUrlSuffix("#nonsense"), "", "an unknown hash is not passed through either");
+  assert.equal(dialUrlSuffix("#history"), "#history");
 });

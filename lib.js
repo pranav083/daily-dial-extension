@@ -1544,6 +1544,20 @@ export function recapWeekStart(weekStart, now = new Date()) {
   return start;
 }
 
+/**
+ * The URL fragment to open the dial at, from whatever a caller passed.
+ *
+ * `chrome.action.onClicked` hands its listener the Tab object, so wiring it
+ * straight to a function taking an optional hash appended "[object Object]"
+ * to the extension URL and broke every toolbar click. Anything that isn't a
+ * hash string we recognise resolves to none.
+ *
+ * @returns {""|"#history"}
+ */
+export function dialUrlSuffix(hash) {
+  return hash === "#history" ? "#history" : "";
+}
+
 /* ---------- shareable snapshot ---------- */
 
 /** Fixed hex values for the "Share as image" card. Deliberately not the
