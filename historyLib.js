@@ -6,7 +6,7 @@
  * under node. Rendering lives in history.js.
  */
 
-import { SLOT_MIN, computeStats, dateKey, dayHasEntries, mostRecentWeekStart } from "./lib.js";
+import { SLOT_MIN, computeStats, dateKey, dayHasContent, dayHasEntries, mostRecentWeekStart } from "./lib.js";
 
 /** Number of days in a local-time month (month is 0-indexed, matching Date). */
 export const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
@@ -15,8 +15,11 @@ export const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate
  * One heatmap cell's worth of stats for a single day. `logged` is the
  * heatmap's load-bearing distinction: a day with `logged: false` must read
  * as visibly absent, never as a bad score of `null`.
+ * `logged` means time was painted; `written` means the day carries notes,
+ * intentions or a reflection but no painted time. They are mutually
+ * exclusive, and a cell that is neither is genuinely empty.
  * @typedef {{key:string, date:Date, day:number, inMonth:boolean, logged:boolean,
- *   score:number|null, trackedMin:number, productivePct:number}} DayCell
+ *   written:boolean, score:number|null, trackedMin:number, productivePct:number}} DayCell
  */
 
 /**
@@ -43,6 +46,11 @@ export function buildMonthGrid(year, month, days, categories, weekStart = 0) {
     const key = dateKey(cursor);
     const day = days.get(key);
     const logged = dayHasEntries(day);
+    // A day can hold notes, intentions or a reflection without any painted
+    // time — an imported journal is entirely made of those. Without this the
+    // calendar showed months of writing as blank, which reads as "I did
+    // nothing here" about days the user demonstrably wrote up.
+    const written = !logged && dayHasContent(day);
     const stats = logged ? computeStats(day.slots, categories) : null;
 
     cells.push({
@@ -51,6 +59,7 @@ export function buildMonthGrid(year, month, days, categories, weekStart = 0) {
       day: cursor.getDate(),
       inMonth: cursor.getMonth() === month,
       logged,
+      written,
       score: stats ? stats.score : null,
       trackedMin: stats ? stats.trackedMin : 0,
       productivePct: stats ? stats.productivePct : 0,

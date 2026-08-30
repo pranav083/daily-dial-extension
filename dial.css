@@ -1288,6 +1288,24 @@ select {
   border-color: var(--border);
 }
 .hist-day.logged { border-color: transparent; }
+/* Written up but nothing painted: a solid outline and a dot, so it reads as
+   "something is here" without borrowing the score colours, which mean
+   painted time. */
+.hist-day.written {
+  background: transparent;
+  border-style: solid;
+  border-color: var(--ink-muted);
+}
+.hist-day.written::after {
+  content: "";
+  position: absolute;
+  right: 5px; bottom: 5px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--ink-muted);
+}
+.hist-day { position: relative; }
+.hist-day.written .hist-day-num { background: none; color: var(--ink-2); }
 /* A translucent chip behind the number, rather than relying on the heat
    colour's contrast — a mid-intensity orange and a pale one both need the
    date to stay readable. */
@@ -1307,6 +1325,16 @@ select {
 .hist-legend-item { display: inline-flex; align-items: center; gap: 5px; }
 .hist-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
 .hist-swatch-empty { background: transparent; border: 1px dashed var(--border); }
+.hist-swatch-written { background: transparent; border: 1px solid var(--ink-muted); position: relative; }
+.hist-swatch-written::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 3px; height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: var(--ink-muted);
+}
 
 /* ---- month summary ---- */
 #hist-summary-extra { margin-top: 14px; display: flex; flex-direction: column; gap: 4px; }

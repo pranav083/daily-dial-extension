@@ -125,6 +125,12 @@ function renderHeatmap(year, month, days, categories, weekStart) {
         btn.classList.add("logged");
         btn.style.background = heatColor(cell.score);
         label = `${cell.date.toDateString()} — score ${fmtScore(cell.score)}, ${fmtDuration(cell.trackedMin)} tracked`;
+      } else if (cell.written) {
+        // Written up but no time painted. Marked rather than left blank: an
+        // imported journal is entirely days like this, and showing them as
+        // empty says "nothing happened" about days the user wrote about.
+        btn.classList.add("written");
+        label = `${cell.date.toDateString()} — written up, no time painted`;
       } else {
         btn.classList.add("empty");
         label = `${cell.date.toDateString()} — not logged`;

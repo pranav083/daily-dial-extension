@@ -8,6 +8,19 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.20.0] — 2026-08-29
+
+### Added
+
+- **The calendar marks days you wrote up but didn't paint.** A day can hold
+  notes, intentions or a reflection with no time on the dial — an imported
+  journal is made entirely of those — and the heatmap showed every one as
+  blank, which reads as "nothing happened here" about days you demonstrably
+  wrote about. They now get a solid outline and a dot, clearly different from
+  the dashed cells of a day with nothing at all, and a "Written only" entry
+  in the legend. Deliberately not given a score colour: those mean painted
+  time, and borrowing one would imply a score that doesn't exist.
+
 ## [1.19.0] — 2026-08-29
 
 ### Added

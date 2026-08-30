@@ -285,3 +285,25 @@ test("searchNotes skips days with no reflection and truncates a long match into 
   assert.ok(results[0].snippet.startsWith("…"), "truncated on the left gets an ellipsis");
   assert.ok(results[0].snippet.endsWith("…"), "truncated on the right gets an ellipsis");
 });
+
+test("buildMonthGrid marks days that are written up but have no painted time", () => {
+  // What an imported journal looks like: notes and intentions, nothing on the
+  // dial. Previously indistinguishable from a day nothing happened on.
+  const days = new Map([
+    ["2026-06-16", { ...blankDay(), notes: [{ from: 0, to: 4, text: "sleeping" }] }],
+    ["2026-06-17", dayWith(9, 11, 0)],
+    ["2026-06-18", { ...blankDay(), intents: [{ text: "leetcode", done: false }] }],
+  ]);
+  const cells = buildMonthGrid(2026, 5, days, cats).flat();
+  const at = (k) => cells.find((c) => c.key === k);
+
+  assert.equal(at("2026-06-16").written, true, "a note alone counts as written");
+  assert.equal(at("2026-06-16").logged, false);
+  assert.equal(at("2026-06-18").written, true, "an intention alone counts too");
+
+  assert.equal(at("2026-06-17").logged, true, "painted time is still 'logged'");
+  assert.equal(at("2026-06-17").written, false, "the two states are mutually exclusive");
+
+  assert.equal(at("2026-06-20").logged, false, "a genuinely empty day is neither");
+  assert.equal(at("2026-06-20").written, false);
+});
