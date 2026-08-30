@@ -2274,5 +2274,673 @@
   "breakdownNotYet": {
     "message": "Not yet",
     "description": "Shown in place of the fill dropdown on breakdown rows covering time later today."
+  },
+  "errPickDates": {
+    "message": "Pick a start and end date.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errEndDateBeforeStart": {
+    "message": "End date is before the start date.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errRangeTooLong": {
+    "message": "That's $COUNT$ days — a single fill can cover at most $MAX$.",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "errBadStartTime": {
+    "message": "Bad start time.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errBadEndTime": {
+    "message": "Bad end time.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errEndTimeBeforeStart": {
+    "message": "End time is before the start time.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errTryExample": {
+    "message": "Try something like \"9-11 deep work\".",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errUnreadableEntry": {
+    "message": "Couldn't read that. Try \"9-11 deep work\" or \"9pm-11pm study\".",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errUnreadableTime": {
+    "message": "Couldn't read the time — use 24h (13:30) or 12h (1:30pm).",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errNoCategoryGiven": {
+    "message": "Add a category, like \"9-11 deep work\".",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errNoCategoryMatch": {
+    "message": "No category matches \"$TEXT$\".",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "errCategoryAmbiguous": {
+    "message": "\"$TEXT$\" matches $MATCHES$ — be more specific.",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      },
+      "matches": {
+        "content": "$2"
+      }
+    }
+  },
+  "errFileEmpty": {
+    "message": "That file is empty.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errNotDailyDialCsv": {
+    "message": "That doesn't look like a Daily Dial CSV export.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errCsvBadDate": {
+    "message": "Row $ROW$: bad date \"$VALUE$\".",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadStartTime": {
+    "message": "Row $ROW$: bad start time \"$VALUE$\".",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadEndTime": {
+    "message": "Row $ROW$: bad end time \"$VALUE$\".",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvUnknownCategory": {
+    "message": "Row $ROW$: unknown category \"$VALUE$\".",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBlockTooShort": {
+    "message": "Row $ROW$: block is shorter than $MIN$ minutes.",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "min": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvEndNotAfterStart": {
+    "message": "Row $ROW$: end is not after start.",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      }
+    }
+  },
+  "errNotValidJson": {
+    "message": "That file isn't valid JSON.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errNotDailyDialBackup": {
+    "message": "That doesn't look like a Daily Dial backup.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errMissingSchemaVersion": {
+    "message": "Missing schema version — this doesn't look like a Daily Dial backup.",
+    "description": "Validation error surfaced by lib.js."
+  },
+  "errBackupTooNew": {
+    "message": "This backup was made by a newer version of Daily Dial (schema $VERSION$). Update the extension first.",
+    "description": "Validation error surfaced by lib.js.",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapNothingLogged": {
+    "message": "Nothing logged last week. Worth a fresh start this week?",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "recapTrackedProductive": {
+    "message": "$DURATION$ tracked, $PERCENT$% productive.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapTopCategory": {
+    "message": "Most of it went to $CATEGORY$.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapIntentions": {
+    "message": "You met $DONE$ of $SET$ intentions.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapAskAdjust": {
+    "message": "Anything to adjust this week?",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "obsOvercommitHeadline": {
+    "message": "You're setting more intentions than you finish",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "obsOvercommitDetail": {
+    "message": "$SET$ intentions set in the last $DAYS$ days, only $DONE$ finished.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "set": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "done": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsNoBreaksHeadline": {
+    "message": "No rest or neutral time has been logged in $DAYS$ days",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsNoBreaksDetail": {
+    "message": "$DURATION$ tracked over the last $DAYS$ days, none of it in a neutral category.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsDistractionHeadline": {
+    "message": "Distraction has been rising over the last $DAYS$ days",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsDistractionDetail": {
+    "message": "$CURRENT$ logged as distraction in the last $DAYS$ days, up from $PREVIOUS$ the $DAYS$ days before that.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "previous": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsCoverageHeadline": {
+    "message": "Logging has dropped off compared to the prior $DAYS$ days",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsCoverageDetail": {
+    "message": "$RECENT$/day tracked over the last $RECENTDAYS$ days, down from $PRIOR$/day over the $PRIORDAYS$ days before that.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "recent": {
+        "content": "$1"
+      },
+      "recentdays": {
+        "content": "$2"
+      },
+      "prior": {
+        "content": "$3"
+      },
+      "priordays": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourHeadline": {
+    "message": "$HOUR$ is your most productive hour, on $PROTECTED$ of $LOGGED$ logged days",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail": {
+    "message": "Over the last $DAYS$ days, $HOUR$ accumulated more productive time than any other hour, but stayed productive on only $PROTECTED$ of $LOGGED$ logged days.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline": {
+    "message": "Everything logged in the last $DAYS$ days sits in just $COUNT$ categories",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaDetail": {
+    "message": "\"$CATEGORY$\" is enabled but logged zero minutes in that window — one of your six category slots is sitting unused.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptMorning": {
+    "message": "How did your morning go? Paint it in while you still remember.",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "promptEveningUnlogged": {
+    "message": "$DURATION$ of today isn't logged yet. Close it out and add your one-line why.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptEveningComplete": {
+    "message": "Today is fully logged. Add your one-line why while it's fresh.",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "insightNothingLogged": {
+    "message": "Nothing logged yet. Pick a category and drag around the ring to paint your first block.",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "insightProductivePct": {
+    "message": "<b>$PERCENT$%</b> of your tracked time was productive.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "percent": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightMostlyDrain": {
+    "message": "<b>$DURATION$</b> went to time you marked as a drain — more than you spent moving forward.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightTopCategory": {
+    "message": "<b>$CATEGORY$</b> led the day at <b>$DURATION$</b>.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "insightFragmented": {
+    "message": "It came in short pieces though — your longest unbroken stretch was only $DURATION$.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightLongStretch": {
+    "message": "Your longest unbroken stretch was <b>$DURATION$</b>.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightStillUnlogged": {
+    "message": "$DURATION$ is still unlogged.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "scoreNoData": {
+    "message": "No data yet",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "scoreTooLittle": {
+    "message": "Too little logged to score",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "scoreLockedIn": {
+    "message": "Locked in",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "scoreSolid": {
+    "message": "Solid",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "scoreMixedBag": {
+    "message": "Mixed bag",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "scoreOffTrack": {
+    "message": "Off track",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "sampleReflectionGoodFocus": {
+    "message": "Good focus after lunch.",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "sampleReflectionDistracted": {
+    "message": "Distracted most of the evening.",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "sampleReflectionRough": {
+    "message": "Rough day, mostly scrolling.",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "shareScoreLabel": {
+    "message": "score",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "shareNothingLogged": {
+    "message": "Nothing logged yet",
+    "description": "Text produced by lib.js and shown in the UI."
+  },
+  "shareTrackedLine": {
+    "message": "$DURATION$ tracked · $PERCENT$% productive",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareLedLine": {
+    "message": "$CATEGORY$ led at $DURATION$",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareStreakLine": {
+    "message": "🔥 $COUNT$ day streak",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "durationHourSuffix": {
+    "message": "h",
+    "description": "Suffix after a number of hours, e.g. the h in \"7h 45m\". Keep it very short."
+  },
+  "durationMinuteSuffix": {
+    "message": "m",
+    "description": "Suffix after a number of minutes, e.g. the m in \"7h 45m\". Keep it very short."
+  },
+  "sug_intentionOvercommit_lead": {
+    "message": "Three or four things you actually finish beats ten you meant to.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_intentionOvercommit_text1": {
+    "message": "Set fewer. One thing that must happen, and two that would be good, is a full day for most people.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_intentionOvercommit_text2": {
+    "message": "Make each one small enough to finish in a sitting — \"draft the email\" rather than \"sort out the application\".",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_intentionOvercommit_text3": {
+    "message": "Move the ones that keep rolling over into a single \"someday\" note, so they stop reappearing as today's failure.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_noBreaks_lead": {
+    "message": "Rest that never gets logged tends to be rest that never happens.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_noBreaks_text1": {
+    "message": "Put breaks on a timer, so stopping isn't a decision you have to make while concentrating.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_noBreaks_text2": {
+    "message": "Take the break away from the screen entirely — a walk, food, or anything that isn't another window.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_noBreaks_text3": {
+    "message": "If you're already resting but not logging it, log it. A day that reads as sixteen unbroken hours isn't the day you had.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_peakHoursUnprotected_lead": {
+    "message": "The hour you're best in is worth defending before anything else gets to claim it.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_peakHoursUnprotected_text1": {
+    "message": "Block it in whatever calendar other people can see, so the time is taken before someone else takes it.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_peakHoursUnprotected_text2": {
+    "message": "Silence everything for that hour, rather than relying on not looking.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_peakHoursUnprotected_text3": {
+    "message": "Start the hardest thing of the day in that window, not the easiest. The easy work will survive being done at a worse hour; the hard work often won't.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_peakHoursUnprotected_text4": {
+    "message": "If you can, change where you are for that hour. A different room or a library does more than most software.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_distractionTrend_lead": {
+    "message": "Rising distraction is usually a friction problem rather than a willpower one — the aim is to make the easy thing slightly harder.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_distractionTrend_text1": {
+    "message": "Block the sites that take the time, but only during the hours you actually want to work — an all-day block tends to get switched off entirely.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_distractionTrend_text2": {
+    "message": "Add a pause before the app opens, instead of blocking it. A few seconds of friction removes most of the opening-it-without-deciding-to.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_distractionTrend_text3": {
+    "message": "Make the phone boring for a while rather than forbidden.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_distractionTrend_text4": {
+    "message": "Put the phone in another room while you work. Unglamorous, free, and more reliable than anything you can install on the device you're trying to avoid.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_distractionTrend_text5": {
+    "message": "Replace rather than remove — decide what the time goes to instead, or it tends to find its way back.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_coverageDecline_lead": {
+    "message": "Logging less is usually the first sign of a stretch going badly — and the thing that makes it hard to see how badly.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_coverageDecline_text1": {
+    "message": "Log at two or three fixed points in the day rather than reconstructing it at midnight. Daily Dial's own reminders (Settings → Reminders) exist for this.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_coverageDecline_text2": {
+    "message": "Log roughly rather than not at all. An approximate day is worth far more than a blank one, and you can always sharpen it.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_coverageDecline_text3": {
+    "message": "Use \"The day, end to end\" below the dial to fill gaps in a couple of minutes — the rows are already there, they just need words.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_coverageDecline_text4": {
+    "message": "If it's stopped being worth the effort, that's worth knowing too. A tracker you resent is one you'll abandon.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_untrackedLifeArea_lead": {
+    "message": "What isn't a category can't show up in any of these numbers — and what doesn't show up is easy to let slide.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_untrackedLifeArea_text1": {
+    "message": "Rename a category you don't use to cover something that's missing — time with other people, exercise, sleep, or anything you'd want to be honest with yourself about (Settings → Categories).",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_untrackedLifeArea_text2": {
+    "message": "Give it a neutral weight rather than a productive one. The point is to see it, not to score it.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_untrackedLifeArea_text3": {
+    "message": "Once it's a category, the goals and History trends you already have will do the rest without any further effort.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sugPlat_Stretchly": {
+    "message": "Windows · macOS · Linux · free, open source",
+    "description": "Platforms and price for the tool \"Stretchly\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_TimeOut": {
+    "message": "macOS · free",
+    "description": "Platforms and price for the tool \"Time Out\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_Focusmodes": {
+    "message": "macOS · iOS · built in",
+    "description": "Platforms and price for the tool \"Focus modes\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_DigitalWellbeingFocusmode": {
+    "message": "Android · built in",
+    "description": "Platforms and price for the tool \"Digital Wellbeing — Focus mode\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_SelfControl": {
+    "message": "macOS · free, open source",
+    "description": "Platforms and price for the tool \"SelfControl\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_ColdTurkey": {
+    "message": "Windows · macOS · free tier",
+    "description": "Platforms and price for the tool \"Cold Turkey\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_Freedom": {
+    "message": "Windows · macOS · iOS · Android · paid",
+    "description": "Platforms and price for the tool \"Freedom\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_onesec": {
+    "message": "iOS · Android · free tier",
+    "description": "Platforms and price for the tool \"one sec\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_AssistiveAccess": {
+    "message": "iOS 17+ · built in — reduces the phone to a few large, simple apps",
+    "description": "Platforms and price for the tool \"Assistive Access\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
+  },
+  "sugPlat_ScreenTimeapplimits": {
+    "message": "iOS · macOS · built in",
+    "description": "Platforms and price for the tool \"Screen Time app limits\". Keep OS names (Windows, macOS, iOS, Android, Linux) as they are; translate the rest (\"free\", \"paid\", \"built in\", \"open source\", \"free tier\")."
   }
 }

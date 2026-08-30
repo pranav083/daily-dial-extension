@@ -1,5 +1,34 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+
+/**
+ * The real English catalog, used to render the message descriptors lib.js
+ * now returns instead of finished sentences.
+ *
+ * Asserting on the rendered sentence rather than on the key keeps these tests
+ * about what the app actually says — and because rendering goes through the
+ * catalog, a key that was never added, or a placeholder with no matching
+ * argument, fails here rather than showing up as a blank in the UI.
+ */
+const MESSAGES = JSON.parse(readFileSync(new URL("../_locales/en/messages.json", import.meta.url), "utf8"));
+
+function render(d) {
+  if (Array.isArray(d)) return d.map(render).join(" ");
+  const entry = MESSAGES[d.key];
+  assert.ok(entry, `no such message key: ${d.key}`);
+  let out = entry.message;
+  for (const [name, def] of Object.entries(entry.placeholders ?? {})) {
+    const i = Number(String(def.content).slice(1)) - 1;
+    assert.notEqual(d.params[i], undefined, `${d.key}: nothing passed for $${name}$`);
+    out = out.replaceAll(`$${name.toUpperCase()}$`, d.params[i]);
+  }
+  assert.doesNotMatch(out, /\$[A-Z]+\$/, `${d.key}: placeholder left unsubstituted`);
+  return out;
+}
+
+/** A score bucket's English label, for tests that care about the wording. */
+const label = (bucket) => render({ key: bucket.labelKey, params: [] });
 
 import {
   DEFAULT_CATEGORIES,
@@ -375,17 +404,17 @@ test("computeStats ignores slots referencing a missing category", () => {
 
 test("scoreBucket thresholds", () => {
   assert.equal(scoreBucket(null).tone, "muted");
-  assert.equal(scoreBucket(80).label, "Locked in");
-  assert.equal(scoreBucket(20).label, "Solid");
-  assert.equal(scoreBucket(0).label, "Mixed bag");
-  assert.equal(scoreBucket(-50).label, "Off track");
+  assert.equal(label(scoreBucket(80)), "Locked in");
+  assert.equal(label(scoreBucket(20)), "Solid");
+  assert.equal(label(scoreBucket(0)), "Mixed bag");
+  assert.equal(label(scoreBucket(-50)), "Off track");
 });
 
 /* ---------- insight ---------- */
 
 test("buildInsight leads with the top category on a good day", () => {
   const slots = paint(blank(), 9, 13, 0);
-  const text = buildInsight(computeStats(slots, cats), cats);
+  const text = render(buildInsight(computeStats(slots, cats), cats));
   assert.match(text, /100%/);
   assert.match(text, /Deep Work/);
 });
@@ -393,7 +422,7 @@ test("buildInsight leads with the top category on a good day", () => {
 test("buildInsight calls out a day lost to distraction", () => {
   let slots = paint(blank(), 9, 10, 0);
   slots = paint(slots, 10, 14, 5);
-  const text = buildInsight(computeStats(slots, cats), cats);
+  const text = render(buildInsight(computeStats(slots, cats), cats));
   assert.match(text, /more than you spent moving forward/);
 });
 
@@ -403,19 +432,19 @@ test("buildInsight flags fragmented time", () => {
   for (const h of [9, 11, 13, 15]) {
     for (let i = h * 4; i < h * 4 + 2; i++) slots[i] = 0;
   }
-  const text = buildInsight(computeStats(slots, cats), cats);
+  const text = render(buildInsight(computeStats(slots, cats), cats));
   assert.match(text, /short pieces/);
 });
 
 test("buildInsight prompts when the day is empty", () => {
-  assert.match(buildInsight(computeStats(blank(), cats), cats), /Nothing logged yet/);
+  assert.match(render(buildInsight(computeStats(blank(), cats), cats)), /Nothing logged yet/);
 });
 
 test("buildInsight's 'still unlogged' nag respects the day window — no false nag about sleep", () => {
   // Fully logged waking hours (7am–11pm); only overnight is untracked.
   const slots = paint(blank(), 7, 23, 0);
-  const wholeDay = buildInsight(computeStats(slots, cats), cats);
-  const wakingOnly = buildInsight(computeStats(slots, cats, { startMin: 7 * 60, endMin: 23 * 60 }), cats);
+  const wholeDay = render(buildInsight(computeStats(slots, cats), cats));
+  const wakingOnly = render(buildInsight(computeStats(slots, cats, { startMin: 7 * 60, endMin: 23 * 60 }), cats));
   assert.match(wholeDay, /still unlogged/, "8h of 'sleep' reads as unlogged without a window");
   assert.doesNotMatch(wakingOnly, /still unlogged/, "same day, but nothing is unlogged within waking hours");
 });
@@ -501,20 +530,20 @@ test("parseCsv says why a sub-slot block can't be imported", () => {
   const result = parseCsv(csv, cats);
 
   assert.equal(result.ok, false);
-  assert.match(result.error, /shorter than 15 minutes/);
+  assert.match(render(result.error), /shorter than 15 minutes/);
 });
 
 test("parseCsv rejects a file with the wrong header", () => {
   const result = parseCsv("A,B,C\n1,2,3", cats);
   assert.equal(result.ok, false);
-  assert.match(result.error, /doesn't look like/);
+  assert.match(render(result.error), /doesn't look like/);
 });
 
 test("parseCsv rejects an unknown category", () => {
   const csv = "Date,Start,End,Duration (min),Category,Weight,Note\n2026-08-26,09:00,10:00,60,Nonexistent,productive,";
   const result = parseCsv(csv, cats);
   assert.equal(result.ok, false);
-  assert.match(result.error, /unknown category/i);
+  assert.match(render(result.error), /unknown category/i);
 });
 
 test("parseCsv rejects a malformed date or time", () => {
@@ -524,8 +553,8 @@ test("parseCsv rejects a malformed date or time", () => {
 });
 
 test("parseCsv treats an empty or whitespace-only file as empty", () => {
-  assert.match(parseCsv("", cats).error, /empty/);
-  assert.match(parseCsv("   \n  ", cats).error, /empty/);
+  assert.match(render(parseCsv("", cats).error), /empty/);
+  assert.match(render(parseCsv("   \n  ", cats).error), /empty/);
 });
 
 /* ---------- backup (JSON import/export) ---------- */
@@ -578,19 +607,19 @@ test("parseBackup round-trips a backup built by buildBackup", () => {
 test("parseBackup rejects invalid JSON", () => {
   const result = parseBackup("{not json");
   assert.equal(result.ok, false);
-  assert.match(result.error, /valid JSON/);
+  assert.match(render(result.error), /valid JSON/);
 });
 
 test("parseBackup rejects a file with no schema version", () => {
   const result = parseBackup(JSON.stringify({ days: {} }));
   assert.equal(result.ok, false);
-  assert.match(result.error, /schema version/);
+  assert.match(render(result.error), /schema version/);
 });
 
 test("parseBackup rejects a backup from a newer schema", () => {
   const result = parseBackup(JSON.stringify({ schemaVersion: SCHEMA_VERSION + 1, days: {} }));
   assert.equal(result.ok, false);
-  assert.match(result.error, /newer version/);
+  assert.match(render(result.error), /newer version/);
 });
 
 test("parseBackup never trusts the file — malformed data is normalized, not passed through", () => {
@@ -684,9 +713,9 @@ test("nextOccurrence rolls over month end", () => {
 });
 
 test("reminderMessage varies morning vs evening, and reports what's left", () => {
-  assert.match(reminderMessage(0, 999), /morning/);
-  assert.match(reminderMessage(1, 60), /1h.*isn't logged/);
-  assert.match(reminderMessage(1, 0), /fully logged/);
+  assert.match(render(reminderMessage(0, 999)), /morning/);
+  assert.match(render(reminderMessage(1, 60)), /1h.*isn't logged/);
+  assert.match(render(reminderMessage(1, 0)), /fully logged/);
 });
 
 test("nextWeeklyOccurrence finds the next matching weekday, rolling a week if today's slot passed", () => {
@@ -818,14 +847,14 @@ test("weeklyRecap handles a week with nothing logged", () => {
 
 test("weeklyRecapMessage summarizes tracked time and the top category", () => {
   const days = new Map([["2026-08-24", { slots: paint(blank(), 9, 13, 0), reflection: "" }]]);
-  const msg = weeklyRecapMessage(weeklyRecap(days, cats, new Date(2026, 7, 24)));
+  const msg = render(weeklyRecapMessage(weeklyRecap(days, cats, new Date(2026, 7, 24))));
   assert.match(msg, /4h tracked/);
   assert.match(msg, /Deep Work/);
 });
 
 test("weeklyRecapMessage reports a blank week plainly", () => {
   assert.equal(
-    weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24))),
+    render(weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24)))),
     "Nothing logged last week. Worth a fresh start this week?"
   );
 });
@@ -976,7 +1005,7 @@ test("parseTimeEntry treats an ambiguous alias the same as an ambiguous name —
   });
   const r = parseTimeEntry("9-10 chore", ambiguous); // partially matches both aliases, exactly neither
   assert.equal(r.ok, false);
-  assert.match(r.error, /be more specific/);
+  assert.match(render(r.error), /be more specific/);
 });
 
 test("parseTimeEntry crosses midnight for a short overnight range", () => {
@@ -989,13 +1018,13 @@ test("parseTimeEntry crosses midnight for a short overnight range", () => {
 test("parseTimeEntry rejects an inverted range that isn't a plausible overnight entry", () => {
   const r = parseTimeEntry("15-9 study", cats); // 3pm to 9am — an 18h "wrap", not overnight
   assert.equal(r.ok, false);
-  assert.match(r.error, /before the start/);
+  assert.match(render(r.error), /before the start/);
 });
 
 test("parseTimeEntry rejects an unknown category", () => {
   const r = parseTimeEntry("9-10 nonexistent", cats);
   assert.equal(r.ok, false);
-  assert.match(r.error, /no category matches/i);
+  assert.match(render(r.error), /no category matches/i);
 });
 
 test("parseTimeEntry rejects an ambiguous category", () => {
@@ -1005,7 +1034,7 @@ test("parseTimeEntry rejects an ambiguous category", () => {
   ];
   const r = parseTimeEntry("9-10 stu", overlapping);
   assert.equal(r.ok, false);
-  assert.match(r.error, /be more specific/);
+  assert.match(render(r.error), /be more specific/);
 });
 
 test("parseTimeEntry rejects unreadable input", () => {
@@ -1313,11 +1342,11 @@ test("weeklyRecap counts how the week's stated intentions went", () => {
 test("the weekly recap message ends by asking what to adjust", () => {
   const slots = paint(blank(), 9, 11, 0);
   const days = new Map([["2026-08-24", normalizeDay({ slots, intents: [{ text: "a", done: true }] })]]);
-  const msg = weeklyRecapMessage(weeklyRecap(days, cats, new Date(2026, 7, 24)));
+  const msg = render(weeklyRecapMessage(weeklyRecap(days, cats, new Date(2026, 7, 24))));
   assert.match(msg, /1 of 1 intentions/);
   assert.match(msg, /adjust/, "a review should prompt a decision, not just report");
 
-  const empty = weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24)));
+  const empty = render(weeklyRecapMessage(weeklyRecap(new Map(), cats, new Date(2026, 7, 24))));
   assert.match(empty, /Nothing logged/);
   assert.doesNotMatch(empty, /intentions/, "no intention count when there were none");
 });
@@ -1419,7 +1448,7 @@ test("detectPatterns fires all six detectors, in the fixed order, when every con
   );
   for (const o of observations) {
     assert.equal(o.suggestionKey, o.id, "suggestionKey mirrors id for every detector");
-    assert.ok(o.headline && o.detail, "every observation has a headline and detail");
+    assert.ok(render(o.headline) && render(o.detail), "every observation has a headline and detail");
   }
 });
 
@@ -1457,8 +1486,8 @@ test("detectIntentionOvercommit flags overcommitting on intentions within the la
   assert.ok(obs, "expected an observation");
   assert.equal(obs.id, "intentionOvercommit");
   assert.equal(obs.suggestionKey, "intentionOvercommit");
-  assert.match(obs.detail, new RegExp(`^${OVERCOMMIT_MIN_INTENTIONS} intentions set in the last ${OVERCOMMIT_WINDOW_DAYS} days`));
-  assert.match(obs.detail, /2 finished/);
+  assert.match(render(obs.detail), new RegExp(`^${OVERCOMMIT_MIN_INTENTIONS} intentions set in the last ${OVERCOMMIT_WINDOW_DAYS} days`));
+  assert.match(render(obs.detail), /2 finished/);
 });
 
 test("detectIntentionOvercommit does not flag when the done ratio sits exactly at the cutoff", () => {
@@ -1525,7 +1554,7 @@ test("detectNoBreaks flags two weeks with no neutral or rest time despite heavy 
   assert.ok(obs);
   assert.equal(obs.id, "noBreaks");
   assert.equal(obs.suggestionKey, "noBreaks");
-  assert.match(obs.detail, new RegExp(`over the last ${NO_BREAKS_WINDOW_DAYS} days`));
+  assert.match(render(obs.detail), new RegExp(`over the last ${NO_BREAKS_WINDOW_DAYS} days`));
 });
 
 test("detectNoBreaks does not flag when total tracked time falls just short of the floor", () => {
@@ -1689,7 +1718,7 @@ test("detectPeakHoursUnprotected flags a peak hour that's rarely protected", () 
   assert.ok(obs);
   assert.equal(obs.id, "peakHoursUnprotected");
   assert.equal(obs.suggestionKey, "peakHoursUnprotected");
-  assert.equal(obs.headline, "09:00 is your most productive hour, on 3 of 12 logged days");
+  assert.equal(render(obs.headline), "09:00 is your most productive hour, on 3 of 12 logged days");
   assert.ok(3 / 12 < PEAK_HOURS_MAX_PROTECTED_RATIO, "test data must fall under the protected-ratio cutoff");
 });
 
@@ -1732,7 +1761,7 @@ test("detectUntrackedLifeArea flags time concentrated in a few categories with o
   assert.ok(obs);
   assert.equal(obs.id, "untrackedLifeArea");
   assert.equal(obs.suggestionKey, "untrackedLifeArea");
-  assert.match(obs.detail, /"Admin"/, "names the first unused enabled category");
+  assert.match(render(obs.detail), /"Admin"/, "names the first unused enabled category");
 });
 
 test("detectUntrackedLifeArea does not flag once a fourth category is in the mix", () => {
@@ -1826,7 +1855,7 @@ test("scoreBucket refuses to label a day with too little logged", () => {
   // flawless twelve-hour day, and better than an honest one with a bad hour.
   const thin = scoreBucket(100, 30);
   assert.equal(thin.provisional, true);
-  assert.match(thin.label, /too little/i);
+  assert.match(label(thin), /too little/i);
   assert.equal(thin.tone, "muted", "and it must not be coloured like a good day");
 
   // A bad score is equally meaningless off nothing.
@@ -1834,16 +1863,16 @@ test("scoreBucket refuses to label a day with too little logged", () => {
 });
 
 test("scoreBucket labels normally once there's enough logged", () => {
-  assert.equal(scoreBucket(100, MIN_TRACKED_FOR_SCORE).label, "Locked in");
+  assert.equal(label(scoreBucket(100, MIN_TRACKED_FOR_SCORE)), "Locked in");
   assert.equal(scoreBucket(100, MIN_TRACKED_FOR_SCORE).provisional, undefined);
-  assert.equal(scoreBucket(-50, 600).label, "Off track");
+  assert.equal(label(scoreBucket(-50, 600)), "Off track");
 });
 
 test("scoreBucket without a tracked time behaves as it always did", () => {
   // Callers that genuinely have no minutes to hand must not start seeing
   // every day reported as unscorable.
-  assert.equal(scoreBucket(100).label, "Locked in");
-  assert.equal(scoreBucket(null).label, "No data yet");
+  assert.equal(label(scoreBucket(100)), "Locked in");
+  assert.equal(label(scoreBucket(null)), "No data yet");
 });
 
 /* ---------- day templates ---------- */
@@ -1916,7 +1945,7 @@ test("dateRangeKeys accepts a single-day range", () => {
 test("dateRangeKeys refuses an inverted range with a clear message", () => {
   const out = dateRangeKeys("2026-01-10", "2026-01-05");
   assert.equal(out.ok, false);
-  assert.match(out.error, /before/i);
+  assert.match(render(out.error), /before/i);
 });
 
 test("dateRangeKeys caps the span at MULTI_DAY_FILL_MAX_DAYS", () => {
@@ -1926,7 +1955,7 @@ test("dateRangeKeys caps the span at MULTI_DAY_FILL_MAX_DAYS", () => {
 
   const tooLong = dateRangeKeys("2026-01-01", "2026-04-03"); // 93 days
   assert.equal(tooLong.ok, false);
-  assert.match(tooLong.error, /92/);
+  assert.match(render(tooLong.error), /92/);
 });
 
 test("dateRangeKeys rejects malformed or missing dates", () => {

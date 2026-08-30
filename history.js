@@ -28,7 +28,8 @@ import {
   searchNotes,
   weekOverWeek,
 } from "./historyLib.js";
-import { getAppData, goToDay, silenceObservation, t } from "./dial.js";
+import { getAppData, goToDay, silenceObservation } from "./dial.js";
+import { t, tm } from "./i18n.js";
 import { suggestionFor } from "./suggestions.js";
 
 const $ = (id) => document.getElementById(id);
@@ -517,7 +518,7 @@ function renderLogDay(key, day, categories) {
       chip.textContent = `${stats.score > 0 ? "+" : ""}${stats.score}`;
       chip.style.color = `var(${toneVar(bucket.tone)})`;
       chip.style.background = `color-mix(in oklab, var(${toneVar(bucket.tone)}) 16%, transparent)`;
-      chip.title = bucket.label;
+      chip.title = t(bucket.labelKey);
       head.appendChild(chip);
     }
   }
@@ -639,11 +640,11 @@ function reviewItem(observation) {
 
   const headline = document.createElement("p");
   headline.className = "review-headline";
-  headline.textContent = observation.headline;
+  headline.textContent = tm(observation.headline);
 
   const detail = document.createElement("p");
   detail.className = "review-detail";
-  detail.textContent = observation.detail;
+  detail.textContent = tm(observation.detail);
 
   const actions = document.createElement("div");
   actions.className = "review-actions";
@@ -689,7 +690,7 @@ function suggestionBody(suggestion) {
 
   const lead = document.createElement("p");
   lead.className = "review-lead";
-  lead.textContent = suggestion.lead;
+  lead.textContent = t(suggestion.leadKey);
   wrap.appendChild(lead);
 
   const list = document.createElement("ul");
@@ -697,7 +698,7 @@ function suggestionBody(suggestion) {
   for (const approach of suggestion.approaches) {
     const li = document.createElement("li");
     li.className = "review-approach";
-    li.append(approach.text);
+    li.append(t(approach.textKey));
     if (approach.tools?.length) {
       const tools = document.createElement("div");
       tools.className = "review-tools";
@@ -710,7 +711,7 @@ function suggestionBody(suggestion) {
         link.append(tool.name);
         const platforms = document.createElement("span");
         platforms.className = "platforms";
-        platforms.textContent = tool.platforms;
+        platforms.textContent = t(tool.platformsKey);
         link.appendChild(platforms);
         tools.appendChild(link);
       }

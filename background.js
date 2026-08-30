@@ -6,6 +6,8 @@
  * settings are re-read from storage on every wake.
  */
 
+import { initDurationUnits, tm, tmJoin } from "./i18n.js";
+
 import {
   CATEGORIES_KEY,
   DAY_PREFIX,
@@ -34,6 +36,12 @@ import {
   weeklyRecapMessage,
 } from "./lib.js";
 import { driveConnectSilently, driveFindBackupFile, driveUploadBackup } from "./drive.js";
+
+// The service worker formats durations too (the evening reminder names how
+// much is unlogged), and it is torn down and re-evaluated constantly — so
+// this runs at module scope, where every wake-up passes through it, rather
+// than in an init function that only the first activation would reach.
+initDurationUnits();
 
 const ALARM_PREFIX = "reminder-";
 const WEEKLY_RECAP_ALARM = "weekly-recap";
@@ -214,7 +222,7 @@ async function notify(index) {
     type: "basic",
     iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
     title: index === 1 ? "Close out your day" : "Daily Dial",
-    message: reminderMessage(index, untracked),
+    message: tm(reminderMessage(index, untracked)),
     priority: 1,
   });
 }
@@ -234,7 +242,7 @@ async function notifyWeeklyRecap() {
     type: "basic",
     iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
     title: "Weekly recap",
-    message: weeklyRecapMessage(recap),
+    message: tmJoin(weeklyRecapMessage(recap)),
     priority: 1,
   });
 }

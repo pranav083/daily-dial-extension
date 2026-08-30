@@ -8,6 +8,9 @@
  * boot; reads hit that map, writes update it and persist in the background.
  */
 
+import { applyDocumentDirection, initDurationUnits, t, tm } from "./i18n.js";
+export { t };
+
 import { SILENCED_KEY } from "./suggestions.js";
 import {
   CATEGORIES_KEY,
@@ -108,28 +111,6 @@ const isToday = (d) => sameDay(d, new Date());
    capture their base aria-label at module-eval time — hence the call right
    here, rather than inside boot(). */
 
-/** Turns a message key into a readable fallback (e.g. "exportCsvLabel" ->
- *  "Export csv label"), used only if a key is ever missing from
- *  messages.json, so a gap degrades to something legible instead of a blank
- *  string or a raw key. Real translations missing for a non-English locale
- *  are handled by Chrome itself, which falls back to default_locale. */
-function humanizeKey(key) {
-  return key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/^./, (c) => c.toUpperCase());
-}
-
-/** Thin wrapper over chrome.i18n.getMessage. `substitutions` is a string or
- *  array of strings, positional against the message's own placeholders. */
-export function t(key, substitutions) {
-  try {
-    const msg = chrome.i18n?.getMessage(key, substitutions);
-    if (msg) return msg;
-  } catch {
-    // chrome.i18n unavailable — shouldn't happen in a real extension, but
-    // falls through to the readable fallback below rather than throwing.
-  }
-  return humanizeKey(key);
-}
-
 /** Fills every data-i18n(-title|-label|-placeholder) element from the static
  *  markup. Values are looked up once at load; nothing here changes at
  *  runtime, since the app has no in-page language switcher. */
@@ -139,6 +120,12 @@ function applyStaticI18n() {
   for (const el of document.querySelectorAll("[data-i18n-label]")) el.setAttribute("aria-label", t(el.dataset.i18nLabel));
   for (const el of document.querySelectorAll("[data-i18n-placeholder]")) el.placeholder = t(el.dataset.i18nPlaceholder);
 }
+// Order matters: the direction and the duration suffixes must be in place
+// before any static text is filled in or any duration is formatted, and
+// applyStaticI18n() itself has to run before the dial engines below capture
+// their base aria-label at module-eval time.
+applyDocumentDirection();
+initDurationUnits();
 applyStaticI18n();
 
 /** @type {Map<string, {slots:number[], reflection:string}>} */
@@ -1349,6 +1336,16 @@ function catBarRow(name, cls, slotCount, maxSlots, isUntracked) {
 /** The window the "still unlogged" nag applies to — null (unrestricted) if
  *  the two times are misconfigured (end at or before start), rather than
  *  silently hiding the nag entirely or producing a negative duration. */
+/**
+ * For the insight line, which is the one place the app writes HTML rather
+ * than textContent. Category names are user-typed, and before this they went
+ * into innerHTML raw — a category named with a tag would have been rendered
+ * as markup. Now the <b> comes from the message and everything substituted
+ * into it is escaped.
+ */
+const escapeHtml = (s) =>
+  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
 function dayWindowMinutes() {
   const startMin = hmToMinutes(settings.dayWindow.start);
   const endMin = hmToMinutes(settings.dayWindow.end);
@@ -1361,7 +1358,12 @@ function renderSide() {
   $("stat-tracked").textContent = fmtDuration(stats.trackedMin);
   $("stat-productive").textContent = stats.trackedMin ? `${stats.productivePct}%` : "—";
   $("stat-focus").textContent = fmtDuration(stats.longestFocusMin);
-  $("insight").innerHTML = buildInsight(stats, categories);
+  // The messages carry the <b> emphasis, so word order stays the
+  // translator's to decide; the substituted values are escaped first because
+  // one of them is a user-named category.
+  $("insight").innerHTML = buildInsight(stats, categories)
+    .map((m) => t(m.key, m.params.map(escapeHtml)))
+    .join(" ");
 
   const bucket = scoreBucket(stats.score, stats.trackedMin);
   // Provisional means the score exists but rests on too little logged time to
@@ -1370,7 +1372,7 @@ function renderSide() {
   $("score-val").textContent =
     stats.score === null || bucket.provisional ? "—" : `${stats.score > 0 ? "+" : ""}${stats.score}`;
   $("score-badge").className = `score-badge ${bucket.tone}`;
-  $("score-badge-text").textContent = bucket.label;
+  $("score-badge-text").textContent = t(bucket.labelKey);
 
   const meter = $("meter-fill");
   meter.style.width = `${stats.score === null ? 50 : Math.max(0, Math.min(100, (stats.score + 100) / 2))}%`;
@@ -1688,7 +1690,7 @@ function renderStrip() {
 
     const btn = document.createElement("button");
     btn.className = `strip-day${sameDay(d, state.viewDate) ? " active" : ""}`;
-    btn.setAttribute("aria-label", `${d.toDateString()} — ${bucket.label}`);
+    btn.setAttribute("aria-label", `${d.toDateString()} — ${t(bucket.labelKey)}`);
 
     const dow = document.createElement("span");
     dow.className = "dow";
@@ -1821,7 +1823,22 @@ async function shareAsImage() {
     weekday: "long", month: "long", day: "numeric",
   }).format(state.viewDate);
   const streak = isToday(state.viewDate) ? computeStreak(days, new Date()) : null;
-  const svgMarkup = buildShareSvgMarkup(state.slots, categories, dateLabel, streak);
+  const shareStats = computeStats(state.slots, categories, dayWindowMinutes());
+  const shareTop = categories
+    .map((c, i) => ({ name: c.name, min: shareStats.perCat[i] * SLOT_MIN }))
+    .filter((r) => r.min > 0)
+    .sort((a, b) => b.min - a.min)[0];
+  // The card is the one thing that leaves the device, so it reads in the
+  // sharer's language. buildShareSvgMarkup can't reach a message catalog,
+  // so the finished words are handed to it.
+  const svgMarkup = buildShareSvgMarkup(state.slots, categories, dateLabel, streak, {
+    score: t("shareScoreLabel"),
+    bucket: t(scoreBucket(shareStats.score, shareStats.trackedMin).labelKey),
+    nothingLogged: t("shareNothingLogged"),
+    tracked: t("shareTrackedLine", [fmtDuration(shareStats.trackedMin), String(shareStats.productivePct)]),
+    led: shareTop ? t("shareLedLine", [shareTop.name, fmtDuration(shareTop.min)]) : "",
+    streak: streak && streak.current > 0 ? t("shareStreakLine", [String(streak.current)]) : "",
+  });
 
   let blob;
   try {
@@ -1878,7 +1895,7 @@ function submitTypedEntry(evt) {
     ? typed
     : parseTimeEntry(`${raw} ${categories[Number($("typed-entry-cat").value)]?.name ?? ""}`, categories);
   if (!result.ok) {
-    toast(result.error);
+    toast(tm(result.error));
     return;
   }
   pushUndo();
@@ -2601,7 +2618,7 @@ async function handleImportFile(file) {
   const result = looksJson ? parseBackup(text) : parseCsv(text, categories);
 
   if (!result.ok) {
-    toast(result.error);
+    toast(tm(result.error));
     $("import-file").value = "";
     return;
   }
@@ -2738,7 +2755,7 @@ function renderDemoBanner() {
 function loadSampleData() {
   if (tabIsStale) return;
   if (sampleDayKeys.length > 0) return; // already on; the button is hidden, but don't trust that alone
-  const sample = buildSampleDays(new Date());
+  const sample = buildSampleDays(new Date(), t);
   const toSet = {};
   const claimed = [];
   // Real days win every collision. Demo mode is meant to illustrate, never
@@ -2830,12 +2847,12 @@ function cancelMultiFill() {
 function showMultiFillConfirm() {
   const rangeResult = dateRangeKeys($("multifill-start-input").value, $("multifill-end-input").value);
   if (!rangeResult.ok) {
-    toast(rangeResult.error);
+    toast(tm(rangeResult.error));
     return;
   }
   const slotResult = multiDayFillSlotRange($("multifill-from-time").value, $("multifill-to-time").value);
   if (!slotResult.ok) {
-    toast(slotResult.error);
+    toast(tm(slotResult.error));
     return;
   }
 
@@ -3035,7 +3052,7 @@ async function driveRestore() {
     const text = await driveDownloadBackup(token, existing.id);
     const result = parseBackup(text);
     if (!result.ok) {
-      toast(result.error);
+      toast(tm(result.error));
       return;
     }
     driveFileId = existing.id;

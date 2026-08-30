@@ -139,13 +139,51 @@ export function fmtClock(slotIdx, format = "24h") {
   return `${h12}:${pad2(m)}${suffix}`;
 }
 
+/**
+ * Hour and minute suffixes for `fmtDuration`.
+ *
+ * Module state rather than a parameter, deliberately: `fmtDuration` has
+ * thirty call sites across three files, and threading a locale through every
+ * one of them would put translation plumbing into functions that are only
+ * doing arithmetic. The UI sets this once at boot from the message catalog —
+ * it is the only layer that can reach `chrome.i18n` — and the English
+ * defaults keep this module working, and testable, entirely on its own.
+ */
+export const durationUnits = { h: "h", m: "m" };
+
+/** Called once by the UI at boot; no-op in tests, which want the defaults. */
+export function setDurationUnits(h, m) {
+  durationUnits.h = h;
+  durationUnits.m = m;
+}
+
 export function fmtDuration(min) {
   const h = Math.floor(min / 60);
   const m = min % 60;
-  if (h <= 0) return `${m}m`;
-  if (m === 0) return `${h}h`;
-  return `${h}h ${m}m`;
+  if (h <= 0) return `${m}${durationUnits.m}`;
+  if (m === 0) return `${h}${durationUnits.h}`;
+  return `${h}${durationUnits.h} ${m}${durationUnits.m}`;
 }
+
+/**
+ * A piece of text the UI will translate: a message key plus its
+ * substitutions. This module decides *what* is worth saying; only the UI can
+ * reach `chrome.i18n`, so it decides in which language — which is also why
+ * calculation here never has to know about wording.
+ *
+ * Substitutions are positional, matching `chrome.i18n.getMessage`.
+ */
+export const msg = (key, ...params) => ({ key, params });
+
+/**
+ * The same, for wording that depends on a count.
+ *
+ * English needs two forms, and a `n === 1 ? … : …` ternary encodes that
+ * assumption in a way no translation can undo: Russian needs three forms and
+ * Arabic six. The UI picks the right one with `Intl.PluralRules` and looks up
+ * `key + "_" + form`, falling back to `key + "_other"`.
+ */
+export const plural = (key, count, ...params) => ({ key, count, params });
 
 /* ---------- stored shapes ---------- */
 
@@ -269,22 +307,22 @@ export const MULTI_DAY_FILL_MAX_DAYS = 92;
 /**
  * Every calendar date from startKey to endKey inclusive, both "YYYY-MM-DD" —
  * the day-by-day plan for "I was away Monday to Friday".
- * @returns {{ok:true, keys:string[]} | {ok:false, error:string}}
+ * @returns {{ok:true, keys:string[]} | {ok:false, error:{key:string,params:string[]}}}
  */
 export function dateRangeKeys(startKey, endKey) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(startKey ?? "") || !/^\d{4}-\d{2}-\d{2}$/.test(endKey ?? "")) {
-    return { ok: false, error: "Pick a start and end date." };
+    return { ok: false, error: msg("errPickDates") };
   }
   const start = new Date(startKey + "T00:00:00");
   const end = new Date(endKey + "T00:00:00");
   if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-    return { ok: false, error: "Pick a start and end date." };
+    return { ok: false, error: msg("errPickDates") };
   }
-  if (end < start) return { ok: false, error: "End date is before the start date." };
+  if (end < start) return { ok: false, error: msg("errEndDateBeforeStart") };
 
   const count = Math.round((end - start) / 86400000) + 1;
   if (count > MULTI_DAY_FILL_MAX_DAYS) {
-    return { ok: false, error: `That's ${count} days — a single fill can cover at most ${MULTI_DAY_FILL_MAX_DAYS}.` };
+    return { ok: false, error: msg("errRangeTooLong", String(count), String(MULTI_DAY_FILL_MAX_DAYS)) };
   }
 
   const keys = [];
@@ -301,14 +339,14 @@ export function dateRangeKeys(startKey, endKey) {
  * whole day when left blank — "I was away Monday to Friday" is the common
  * case, not a partial-day one. Rounds to the nearest slot, same as
  * `parseTimeEntry`.
- * @returns {{ok:true, fromSlot:number, toSlot:number} | {ok:false, error:string}}
+ * @returns {{ok:true, fromSlot:number, toSlot:number} | {ok:false, error:{key:string,params:string[]}}}
  */
 export function multiDayFillSlotRange(fromTime, toTime) {
-  if (fromTime && !isValidTime(fromTime)) return { ok: false, error: "Bad start time." };
-  if (toTime && !isValidTime(toTime)) return { ok: false, error: "Bad end time." };
+  if (fromTime && !isValidTime(fromTime)) return { ok: false, error: msg("errBadStartTime") };
+  if (toTime && !isValidTime(toTime)) return { ok: false, error: msg("errBadEndTime") };
   const fromSlot = fromTime ? Math.round(hmToMinutes(fromTime) / SLOT_MIN) : 0;
   const toSlot = toTime ? Math.round(hmToMinutes(toTime) / SLOT_MIN) : SLOTS;
-  if (toSlot <= fromSlot) return { ok: false, error: "End time is before the start time." };
+  if (toSlot <= fromSlot) return { ok: false, error: msg("errEndTimeBeforeStart") };
   return { ok: true, fromSlot, toSlot };
 }
 
@@ -676,17 +714,17 @@ export const MIN_TRACKED_FOR_SCORE = 120;
  *   `MIN_TRACKED_FOR_SCORE` logged is reported as provisional rather than
  *   being labelled confidently. The score itself is still returned and still
  *   stored — this governs how it is presented, not what it is.
- * @returns {{label:string, tone:string, provisional?:boolean}}
+ * @returns {{labelKey:string, tone:string, provisional?:boolean}}
  */
 export function scoreBucket(score, trackedMin) {
-  if (score === null) return { label: "No data yet", tone: "muted" };
+  if (score === null) return { labelKey: "scoreNoData", tone: "muted" };
   if (trackedMin !== undefined && trackedMin < MIN_TRACKED_FOR_SCORE) {
-    return { label: "Too little logged to score", tone: "muted", provisional: true };
+    return { labelKey: "scoreTooLittle", tone: "muted", provisional: true };
   }
-  if (score >= 40) return { label: "Locked in", tone: "good" };
-  if (score >= 10) return { label: "Solid", tone: "good" };
-  if (score >= -15) return { label: "Mixed bag", tone: "warning" };
-  return { label: "Off track", tone: "critical" };
+  if (score >= 40) return { labelKey: "scoreLockedIn", tone: "good" };
+  if (score >= 10) return { labelKey: "scoreSolid", tone: "good" };
+  if (score >= -15) return { labelKey: "scoreMixedBag", tone: "warning" };
+  return { labelKey: "scoreOffTrack", tone: "critical" };
 }
 
 export const toneVar = (tone) =>
@@ -699,45 +737,48 @@ export const toneVar = (tone) =>
         : "--ink-muted";
 
 /**
- * The day in a sentence or two. Returns HTML — the only markup is <b>, and
- * every interpolated value is a number or a category name that the caller
- * escapes before rendering.
+ * The day in a sentence or two, as message descriptors for the UI to
+ * translate and join.
+ *
+ * Whole sentences, not fragments. The English version could be assembled from
+ * pieces — "X led the day", " at ", "7h 45m" — because English puts the verb
+ * in the middle. Hindi puts it last and Japanese puts it last too, so a
+ * translator handed the pieces separately cannot produce a correct sentence
+ * at any price. Each message here owns its whole sentence, including where
+ * the `<b>` emphasis falls, so word order is the translator's to decide.
+ *
+ * The messages contain `<b>`; every substituted value must be escaped by the
+ * caller before it goes in, since one of them is a user-named category.
  */
 export function buildInsight(stats, categories) {
-  if (stats.trackedMin === 0) {
-    return "Nothing logged yet. Pick a category and drag around the ring to paint your first block.";
-  }
+  if (stats.trackedMin === 0) return [msg("insightNothingLogged")];
 
   const ranked = categories
     .map((c, i) => ({ cat: c, min: stats.perCat[i] * SLOT_MIN }))
     .filter((r) => r.min > 0)
     .sort((a, b) => b.min - a.min);
 
-  const parts = [`<b>${stats.productivePct}%</b> of your tracked time was productive.`];
+  const parts = [msg("insightProductivePct", String(stats.productivePct))];
 
   if (stats.distractionMin > 0 && stats.distractionMin >= stats.productiveMin) {
-    parts.push(
-      `<b>${fmtDuration(stats.distractionMin)}</b> went to time you marked as a drain — more than you spent moving forward.`
-    );
+    parts.push(msg("insightMostlyDrain", fmtDuration(stats.distractionMin)));
   } else if (ranked[0]) {
-    parts.push(`<b>${ranked[0].cat.name}</b> led the day at <b>${fmtDuration(ranked[0].min)}</b>.`);
+    parts.push(msg("insightTopCategory", ranked[0].cat.name, fmtDuration(ranked[0].min)));
   }
 
   if (stats.productiveMin >= 60 && stats.longestFocusMin < 45) {
-    parts.push(
-      `It came in short pieces though — your longest unbroken stretch was only ${fmtDuration(stats.longestFocusMin)}.`
-    );
+    parts.push(msg("insightFragmented", fmtDuration(stats.longestFocusMin)));
   } else if (stats.longestFocusMin >= 90) {
-    parts.push(`Your longest unbroken stretch was <b>${fmtDuration(stats.longestFocusMin)}</b>.`);
+    parts.push(msg("insightLongStretch", fmtDuration(stats.longestFocusMin)));
   }
 
   // Restricted to the caller's waking-hours window (via computeStats'
   // dayWindow), so sleeping hours don't inflate this into a false nag.
   if (stats.untrackedInWindowMin >= 6 * 60) {
-    parts.push(`${fmtDuration(stats.untrackedInWindowMin)} is still unlogged.`);
+    parts.push(msg("insightStillUnlogged", fmtDuration(stats.untrackedInWindowMin)));
   }
 
-  return parts.join(" ");
+  return parts;
 }
 
 /* ---------- streaks ---------- */
@@ -882,12 +923,12 @@ export function weeklyRecap(days, categories, weekStartDate) {
  * decide whether anything needs changing, so it asks.
  */
 export function weeklyRecapMessage(recap) {
-  if (recap.trackedMin === 0) return "Nothing logged last week. Worth a fresh start this week?";
-  const parts = [`${fmtDuration(recap.trackedMin)} tracked, ${recap.productivePct}% productive.`];
-  if (recap.topCategory) parts.push(`Most of it went to ${recap.topCategory.name}.`);
-  if (recap.intentsSet > 0) parts.push(`You met ${recap.intentsDone} of ${recap.intentsSet} intentions.`);
-  parts.push("Anything to adjust this week?");
-  return parts.join(" ");
+  if (recap.trackedMin === 0) return [msg("recapNothingLogged")];
+  const parts = [msg("recapTrackedProductive", fmtDuration(recap.trackedMin), String(recap.productivePct))];
+  if (recap.topCategory) parts.push(msg("recapTopCategory", recap.topCategory.name));
+  if (recap.intentsSet > 0) parts.push(msg("recapIntentions", String(recap.intentsDone), String(recap.intentsSet)));
+  parts.push(msg("recapAskAdjust"));
+  return parts;
 }
 
 /* ---------- goals ---------- */
@@ -967,7 +1008,8 @@ export function personalBests(days, categories, now = new Date()) {
  * suggestions.js, addressed by `suggestionKey`; nothing here should ever
  * read as "you should...".
  *
- * @typedef {{id:string, headline:string, detail:string, suggestionKey:string}} Observation
+ * @typedef {{id:string, headline:{key:string,params:string[]},
+ *   detail:{key:string,params:string[]}, suggestionKey:string}} Observation
  */
 
 /** Below this much history, a detector says nothing — a good or bad run of a
@@ -1046,8 +1088,8 @@ export function detectIntentionOvercommit(days, now) {
 
   return {
     id: "intentionOvercommit",
-    headline: "You're setting more intentions than you finish",
-    detail: `${set} intentions set in the last ${OVERCOMMIT_WINDOW_DAYS} days, only ${done} finished.`,
+    headline: msg("obsOvercommitHeadline"),
+    detail: msg("obsOvercommitDetail", String(set), String(OVERCOMMIT_WINDOW_DAYS), String(done)),
     suggestionKey: "intentionOvercommit",
   };
 }
@@ -1081,8 +1123,8 @@ export function detectNoBreaks(days, categories, now) {
 
   return {
     id: "noBreaks",
-    headline: `No rest or neutral time has been logged in ${NO_BREAKS_WINDOW_DAYS} days`,
-    detail: `${fmtDuration(trackedMin)} tracked over the last ${NO_BREAKS_WINDOW_DAYS} days, none of it in a neutral category.`,
+    headline: msg("obsNoBreaksHeadline", String(NO_BREAKS_WINDOW_DAYS)),
+    detail: msg("obsNoBreaksDetail", fmtDuration(trackedMin), String(NO_BREAKS_WINDOW_DAYS)),
     suggestionKey: "noBreaks",
   };
 }
@@ -1117,8 +1159,8 @@ export function detectDistractionTrend(days, categories, now) {
 
   return {
     id: "distractionTrend",
-    headline: `Distraction has been rising over the last ${DISTRACTION_TREND_WINDOW_DAYS} days`,
-    detail: `${fmtDuration(currentMin)} logged as distraction in the last ${DISTRACTION_TREND_WINDOW_DAYS} days, up from ${fmtDuration(previousMin)} the ${DISTRACTION_TREND_WINDOW_DAYS} days before that.`,
+    headline: msg("obsDistractionHeadline", String(DISTRACTION_TREND_WINDOW_DAYS)),
+    detail: msg("obsDistractionDetail", fmtDuration(currentMin), String(DISTRACTION_TREND_WINDOW_DAYS), fmtDuration(previousMin)),
     suggestionKey: "distractionTrend",
   };
 }
@@ -1155,8 +1197,8 @@ export function detectCoverageDecline(days, settings, now) {
 
   return {
     id: "coverageDecline",
-    headline: `Logging has dropped off compared to the prior ${COVERAGE_DECLINE_PRIOR_DAYS} days`,
-    detail: `${fmtDuration(Math.round(recentAvg))}/day tracked over the last ${COVERAGE_DECLINE_RECENT_DAYS} days, down from ${fmtDuration(Math.round(priorAvg))}/day over the ${COVERAGE_DECLINE_PRIOR_DAYS} days before that.`,
+    headline: msg("obsCoverageHeadline", String(COVERAGE_DECLINE_PRIOR_DAYS)),
+    detail: msg("obsCoverageDetail", fmtDuration(Math.round(recentAvg)), String(COVERAGE_DECLINE_RECENT_DAYS), fmtDuration(Math.round(priorAvg)), String(COVERAGE_DECLINE_PRIOR_DAYS)),
     suggestionKey: "coverageDecline",
   };
 }
@@ -1208,8 +1250,8 @@ export function detectPeakHoursUnprotected(days, categories, now) {
   const hourLabel = `${pad2(peakHour)}:00`;
   return {
     id: "peakHoursUnprotected",
-    headline: `${hourLabel} is your most productive hour, on ${protectedDays} of ${loggedDays.length} logged days`,
-    detail: `Over the last ${PEAK_HOURS_WINDOW_DAYS} days, ${hourLabel} accumulated more productive time than any other hour, but stayed productive on only ${protectedDays} of ${loggedDays.length} logged days.`,
+    headline: msg("obsPeakHourHeadline", hourLabel, String(protectedDays), String(loggedDays.length)),
+    detail: msg("obsPeakHourDetail", String(PEAK_HOURS_WINDOW_DAYS), hourLabel, String(protectedDays), String(loggedDays.length)),
     suggestionKey: "peakHoursUnprotected",
   };
 }
@@ -1244,8 +1286,8 @@ export function detectUntrackedLifeArea(days, categories, now) {
 
   return {
     id: "untrackedLifeArea",
-    headline: `Everything logged in the last ${UNTRACKED_LIFE_AREA_WINDOW_DAYS} days sits in just ${usedCount} categories`,
-    detail: `"${unused.name}" is enabled but logged zero minutes in that window — one of your six category slots is sitting unused.`,
+    headline: msg("obsUntrackedAreaHeadline", String(UNTRACKED_LIFE_AREA_WINDOW_DAYS), String(usedCount)),
+    detail: msg("obsUntrackedAreaDetail", unused.name),
     suggestionKey: "untrackedLifeArea",
   };
 }
@@ -1294,26 +1336,26 @@ function parseClockToken(raw) {
  * (12h only when am/pm is present), and case-insensitive partial category
  * matching. Never touches state — the caller applies the result.
  *
- * @returns {{ok:true, startSlot:number, endSlot:number, categoryId:number} | {ok:false, error:string}}
+ * @returns {{ok:true, startSlot:number, endSlot:number, categoryId:number} | {ok:false, error:{key:string,params:string[]}}}
  */
 /** Words that clear a range instead of naming a category. */
 const ERASE_WORDS = ["erase", "clear", "untracked", "none", "empty"];
 
 export function parseTimeEntry(text, categories) {
   if (typeof text !== "string" || !text.trim()) {
-    return { ok: false, error: 'Try something like "9-11 deep work".' };
+    return { ok: false, error: msg("errTryExample") };
   }
 
   const m = text
     .trim()
     .match(/^(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s*(?:-|to)\s*(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s+(.+)$/i);
-  if (!m) return { ok: false, error: 'Couldn\'t read that. Try "9-11 deep work" or "9pm-11pm study".' };
+  if (!m) return { ok: false, error: msg("errUnreadableEntry") };
 
   const [, startTok, endTok, catText] = m;
   const startMin = parseClockToken(startTok);
   const endMin = parseClockToken(endTok);
   if (startMin === null || endMin === null) {
-    return { ok: false, error: "Couldn't read the time — use 24h (13:30) or 12h (1:30pm)." };
+    return { ok: false, error: msg("errUnreadableTime") };
   }
 
   const startSlot = Math.round(startMin / SLOT_MIN);
@@ -1323,11 +1365,11 @@ export function parseTimeEntry(text, categories) {
     // Allow a short wrap past midnight (an evening session); a long "wrap"
     // is almost always a typo'd inverted range, so reject it instead.
     if (wrapped - startSlot <= SLOTS / 2) endSlot = wrapped;
-    else return { ok: false, error: "End time is before the start time." };
+    else return { ok: false, error: msg("errEndTimeBeforeStart") };
   }
 
   const wanted = catText.trim().toLowerCase();
-  if (!wanted) return { ok: false, error: 'Add a category, like "9-11 deep work".' };
+  if (!wanted) return { ok: false, error: msg("errNoCategoryGiven") };
 
 
   // A category matches by its own name or by any of its aliases (personal
@@ -1345,11 +1387,11 @@ export function parseTimeEntry(text, categories) {
   if (matches.length === 0 && ERASE_WORDS.includes(wanted)) {
     return { ok: true, startSlot, endSlot, categoryId: UNTRACKED };
   }
-  if (matches.length === 0) return { ok: false, error: `No category matches "${catText.trim()}".` };
+  if (matches.length === 0) return { ok: false, error: msg("errNoCategoryMatch", catText.trim()) };
   if (matches.length > 1) {
     return {
       ok: false,
-      error: `"${catText.trim()}" matches ${matches.map((c) => c.name).join(", ")} — be more specific.`,
+      error: msg("errCategoryAmbiguous", catText.trim(), matches.map((c) => c.name).join(", ")),
     };
   }
 
@@ -1372,7 +1414,11 @@ export const weightLabel = (weight) =>
  * @returns {string|null} null when nothing is logged.
  */
 export function buildCsv(days, categories) {
-  const rows = [["Date", "Start", "End", "Duration (min)", "Category", "Weight", "Note"]];
+  // Deliberately never translated. This is a file format, not UI: a CSV
+  // exported on a Hindi install has to import cleanly on an English one, and
+  // `parseCsvImport` below matches these exact strings. Translating them
+  // would make every export readable only by the locale that wrote it.
+  const rows = [[...CSV_HEADER]];
 
   for (const key of [...days.keys()].sort()) {
     const day = days.get(key);
@@ -1449,17 +1495,17 @@ const hmToSlot = (hm) => {
 /**
  * Parses the exact shape `buildCsv` emits. Matches categories by exact name
  * against the caller's current category list — never trust the file.
- * @returns {{ok:true, data:Map<string,{slots:number[],reflection:string}>} | {ok:false, error:string}}
+ * @returns {{ok:true, data:Map<string,{slots:number[],reflection:string}>} | {ok:false, error:{key:string,params:string[]}}}
  */
 export function parseCsv(text, categories) {
-  if (typeof text !== "string" || !text.trim()) return { ok: false, error: "That file is empty." };
+  if (typeof text !== "string" || !text.trim()) return { ok: false, error: msg("errFileEmpty") };
 
   const rows = parseCsvRows(text.replace(/^\uFEFF/, "")).filter((r) => !(r.length === 1 && r[0] === ""));
-  if (rows.length === 0) return { ok: false, error: "That file is empty." };
+  if (rows.length === 0) return { ok: false, error: msg("errFileEmpty") };
 
   const header = rows[0].map((h) => h.trim());
   if (header.length !== CSV_HEADER.length || header.some((h, i) => h !== CSV_HEADER[i])) {
-    return { ok: false, error: "That doesn't look like a Daily Dial CSV export." };
+    return { ok: false, error: msg("errNotDailyDialCsv") };
   }
 
   const days = new Map();
@@ -1467,14 +1513,14 @@ export function parseCsv(text, categories) {
     const [dateStr, startStr, endStr, , catName, , note] = rows[r];
     if (rows[r].length === 1 && !rows[r][0]) continue; // stray blank line
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr ?? "")) return { ok: false, error: `Row ${r + 1}: bad date "${dateStr}".` };
-    if (!isValidTime(startStr)) return { ok: false, error: `Row ${r + 1}: bad start time "${startStr}".` };
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr ?? "")) return { ok: false, error: msg("errCsvBadDate", String(r + 1), String(dateStr)) };
+    if (!isValidTime(startStr)) return { ok: false, error: msg("errCsvBadStartTime", String(r + 1), String(startStr)) };
     if (!isValidTime(endStr) && endStr !== "00:00") {
-      return { ok: false, error: `Row ${r + 1}: bad end time "${endStr}".` };
+      return { ok: false, error: msg("errCsvBadEndTime", String(r + 1), String(endStr)) };
     }
 
     const cat = categories.find((c) => c.name === catName);
-    if (!cat) return { ok: false, error: `Row ${r + 1}: unknown category "${catName}".` };
+    if (!cat) return { ok: false, error: msg("errCsvUnknownCategory", String(r + 1), String(catName)) };
 
     const startSlot = hmToSlot(startStr);
     const endSlot = endStr === "00:00" ? SLOTS : hmToSlot(endStr);
@@ -1484,8 +1530,8 @@ export function parseCsv(text, categories) {
       const rawStart = hmToMinutes(startStr);
       const rawEnd = endStr === "00:00" ? SLOTS * SLOT_MIN : hmToMinutes(endStr);
       return rawEnd > rawStart
-        ? { ok: false, error: `Row ${r + 1}: block is shorter than ${SLOT_MIN} minutes.` }
-        : { ok: false, error: `Row ${r + 1}: end is not after start.` };
+        ? { ok: false, error: msg("errCsvBlockTooShort", String(r + 1), String(SLOT_MIN)) }
+        : { ok: false, error: msg("errCsvEndNotAfterStart", String(r + 1)) };
     }
 
     if (!days.has(dateStr)) days.set(dateStr, emptyDay());
@@ -1542,25 +1588,25 @@ export function buildBackup(days, categories, settings, appVersion, now = new Da
 /**
  * Validates and normalizes a backup file's text. Never trusts the contents —
  * every field routes through the same `normalize*` functions storage does.
- * @returns {{ok:true, data:{categories, settings, days:Map, exportedAt:string|null}} | {ok:false, error:string}}
+ * @returns {{ok:true, data:{categories, settings, days:Map, exportedAt:string|null}} | {ok:false, error:{key:string,params:string[]}}}
  */
 export function parseBackup(text) {
   let obj;
   try {
     obj = JSON.parse(text);
   } catch {
-    return { ok: false, error: "That file isn't valid JSON." };
+    return { ok: false, error: msg("errNotValidJson") };
   }
   if (!obj || typeof obj !== "object" || Array.isArray(obj)) {
-    return { ok: false, error: "That doesn't look like a Daily Dial backup." };
+    return { ok: false, error: msg("errNotDailyDialBackup") };
   }
   if (!Number.isInteger(obj.schemaVersion)) {
-    return { ok: false, error: "Missing schema version — this doesn't look like a Daily Dial backup." };
+    return { ok: false, error: msg("errMissingSchemaVersion") };
   }
   if (obj.schemaVersion > SCHEMA_VERSION) {
     return {
       ok: false,
-      error: `This backup was made by a newer version of Daily Dial (schema ${obj.schemaVersion}). Update the extension first.`,
+      error: msg("errBackupTooNew", String(obj.schemaVersion)),
     };
   }
 
@@ -1626,10 +1672,10 @@ export function nextOccurrence(hhmm, now = new Date()) {
 }
 
 export function reminderMessage(index, untrackedMin) {
-  if (index !== 1) return "How did your morning go? Paint it in while you still remember.";
+  if (index !== 1) return msg("promptMorning");
   return untrackedMin > 0
-    ? `${fmtDuration(untrackedMin)} of today isn't logged yet. Close it out and add your one-line why.`
-    : "Today is fully logged. Add your one-line why while it's fresh.";
+    ? msg("promptEveningUnlogged", fmtDuration(untrackedMin))
+    : msg("promptEveningComplete");
 }
 
 /** Next local occurrence of a weekday (0=Sun..6=Sat) at "HH:MM" as epoch ms;
@@ -1707,18 +1753,38 @@ const SHARE_TONE_HEX = { good: "#0ca30c", warning: "#fab219", critical: "#d03b3b
 
 const escapeXml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+/** English fallbacks for the share card's words, so this module stays
+ *  runnable and testable without a message catalog. */
+const SHARE_LABELS = {
+  score: "score",
+  bucket: "",
+  nothingLogged: "Nothing logged yet",
+  tracked: "",
+  led: "",
+  streak: "",
+};
+
 /**
  * A self-contained 1000×560 SVG string — a full day's dial plus its score,
  * for the "Share as image" button. Pure and DOM-free like the rest of this
  * file, so the whole layout is unit-testable; dial.js only has to rasterize
  * the string it gets back.
+ *
+ * The words arrive already translated and already formatted, rather than
+ * being assembled here. A shared PNG is the one output that leaves the
+ * device, so it should read in the language the sharer is using — and this
+ * function has no way to reach a message catalog.
+ *
  * @param {number[]} slots
  * @param {Array} categories
  * @param {string} dateLabel already-formatted, e.g. "Friday, August 28"
  * @param {{current:number}|null} [streak] omit to leave the streak line out
  *   entirely — e.g. when sharing a day other than today.
+ * @param {Partial<typeof SHARE_LABELS>} [labels] finished strings for the
+ *   right-hand column; English is used for anything not supplied.
  */
-export function buildShareSvgMarkup(slots, categories, dateLabel, streak = null) {
+export function buildShareSvgMarkup(slots, categories, dateLabel, streak = null, labels = {}) {
+  const L = { ...SHARE_LABELS, ...labels };
   const W = 1000;
   const H = 560;
   const stats = computeStats(slots, categories);
@@ -1768,22 +1834,22 @@ export function buildShareSvgMarkup(slots, categories, dateLabel, streak = null)
   y += 64;
   parts.push(text(rightX, 54, 700, toneHex, scoreText, "monospace"));
   parts.push(
-    `<text x="${rightX + 120}" y="${y - 22}" font-family="ui-sans-serif,system-ui,sans-serif" font-size="14" fill="#aeb6bf">score</text>`
+    `<text x="${rightX + 120}" y="${y - 22}" font-family="ui-sans-serif,system-ui,sans-serif" font-size="14" fill="#aeb6bf">${escapeXml(L.score)}</text>`
   );
   parts.push(
-    `<text x="${rightX + 120}" y="${y}" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" font-size="15" fill="${toneHex}">${escapeXml(bucket.label)}</text>`
+    `<text x="${rightX + 120}" y="${y}" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" font-size="15" fill="${toneHex}">${escapeXml(L.bucket)}</text>`
   );
   y += 46;
   if (stats.trackedMin === 0) {
-    parts.push(text(rightX, 16, 400, "#e7ebee", "Nothing logged yet"));
+    parts.push(text(rightX, 16, 400, "#e7ebee", L.nothingLogged));
   } else {
-    parts.push(text(rightX, 16, 400, "#e7ebee", `${fmtDuration(stats.trackedMin)} tracked · ${stats.productivePct}% productive`));
+    parts.push(text(rightX, 16, 400, "#e7ebee", L.tracked || `${fmtDuration(stats.trackedMin)} tracked · ${stats.productivePct}% productive`));
     y += 30;
-    parts.push(text(rightX, 16, 400, "#e7ebee", `${ranked[0].name} led at ${fmtDuration(ranked[0].min)}`));
+    parts.push(text(rightX, 16, 400, "#e7ebee", L.led || `${ranked[0].name} led at ${fmtDuration(ranked[0].min)}`));
   }
   if (streak && streak.current > 0) {
     y += 30;
-    parts.push(text(rightX, 16, 400, "#e7ebee", `🔥 ${streak.current} day streak`));
+    parts.push(text(rightX, 16, 400, "#e7ebee", L.streak || `🔥 ${streak.current} day streak`));
   }
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
@@ -1864,12 +1930,12 @@ export function driveDeleteUrl(fileId) {
 
 /** Builds one day's slot array from `[startHour, endHour, categoryId]`
  *  segments — fractional hours are fine (`15.5` = 15:30). */
-function sampleDay(segments, reflection = "") {
+function sampleDay(segments, reflectionKey = "") {
   const slots = new Array(SLOTS).fill(UNTRACKED);
   for (const [startH, endH, cat] of segments) {
     for (let i = Math.round(startH * 4); i < Math.round(endH * 4); i++) slots[i] = cat;
   }
-  return { slots, reflection };
+  return { slots, reflectionKey };
 }
 
 /**
@@ -1884,20 +1950,20 @@ function sampleDay(segments, reflection = "") {
  *
  * @returns {Map<string, {slots:number[], reflection:string}>}
  */
-export function buildSampleDays(now = new Date()) {
+export function buildSampleDays(now = new Date(), translate = (k) => k) {
   // Category ids: 0 Deep Work, 1 Applications, 2 Study, 3 Admin, 4 Break, 5 Distraction.
   // `offset` is days before today (0 = today); `null` = left unlogged on purpose.
   const plan = [
-    { offset: 0, day: sampleDay([[7, 9, 0], [9, 11, 2], [13, 15.5, 1], [16, 18, 0], [18, 19, 4]], "Good focus after lunch.") },
+    { offset: 0, day: sampleDay([[7, 9, 0], [9, 11, 2], [13, 15.5, 1], [16, 18, 0], [18, 19, 4]], "sampleReflectionGoodFocus") },
     { offset: -1, day: sampleDay([[8, 10, 2], [10, 11, 3], [13, 16, 0], [19, 20, 4]]) },
-    { offset: -2, day: sampleDay([[9, 10, 3], [14, 15, 1], [20, 22, 5]], "Distracted most of the evening.") },
+    { offset: -2, day: sampleDay([[9, 10, 3], [14, 15, 1], [20, 22, 5]], "sampleReflectionDistracted") },
     { offset: -3, day: sampleDay([[7, 9, 0], [9, 12, 2], [13, 17, 1]]) },
     { offset: -4, day: sampleDay([[10, 12, 0], [15, 16, 4], [16, 18, 2]]) },
     { offset: -5, day: sampleDay([[9, 11, 1], [11, 12, 3], [20, 21, 5]]) },
     { offset: -6, day: null },
     { offset: -7, day: sampleDay([[8, 10, 0], [10, 13, 2], [14, 16, 1]]) },
     { offset: -8, day: sampleDay([[9, 11, 0], [13, 14, 4], [14, 17, 0]]) },
-    { offset: -9, day: sampleDay([[11, 12, 3], [19, 22, 5]], "Rough day, mostly scrolling.") },
+    { offset: -9, day: sampleDay([[11, 12, 3], [19, 22, 5]], "sampleReflectionRough") },
     { offset: -10, day: sampleDay([[7, 9, 2], [9, 11, 0], [13, 16, 1]]) },
     { offset: -11, day: null },
     { offset: -12, day: sampleDay([[8, 11, 0], [11, 13, 2], [15, 17, 1]]) },
@@ -1916,7 +1982,12 @@ export function buildSampleDays(now = new Date()) {
     if (!day) continue;
     const d = new Date(now);
     d.setDate(d.getDate() + offset);
-    days.set(dateKey(d), day);
+    // The reflections are demo prose the user reads, so they get translated
+    // like anything else — but they are written into storage as finished
+    // text, because from the moment sample data lands it is an ordinary day
+    // the user can edit. `translate` defaults to identity so tests, which
+    // care about slots rather than wording, need not supply one.
+    days.set(dateKey(d), { slots: day.slots, reflection: day.reflectionKey ? translate(day.reflectionKey) : "" });
   }
   return days;
 }

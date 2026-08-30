@@ -45,7 +45,10 @@ export default [
     },
   },
   {
-    files: ["dial.js"],
+    // i18n.js runs in both: the page imports it, and so does the service
+    // worker, which has chrome.* but no document — hence the guarded
+    // document access in applyDocumentDirection's caller rather than here.
+    files: ["dial.js", "i18n.js"],
     languageOptions: { globals: browserGlobals },
   },
   {
@@ -54,7 +57,7 @@ export default [
   },
   {
     files: ["test/**/*.js"],
-    languageOptions: { globals: { console: "readonly" } },
+    languageOptions: { globals: { console: "readonly", URL: "readonly" } },
   },
   {
     files: ["scripts/**/*.mjs"],
