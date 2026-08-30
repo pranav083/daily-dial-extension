@@ -66,6 +66,37 @@ function requiredForms(locale) {
   return forms;
 }
 
+/**
+ * Keys that render inside a fixed-width control, with the character budget
+ * each one has.
+ *
+ * These are the strings a translator cannot see the consequence of. Most of
+ * the UI wraps or grows, but a placeholder inside a 64px numeric input or a
+ * label in a segmented toggle simply overflows, and it overflows only in the
+ * language nobody on the team reads. Brazilian Portuguese rendered
+ * `goalOffPlaceholder` as "desativado" — a perfectly good translation of
+ * "off" that needed 77px of a 64px box.
+ *
+ * Budgets are deliberately generous: this is a tripwire for the obviously
+ * impossible, not a style rule. Anything flagged here should be shortened,
+ * not have its budget raised.
+ */
+const TIGHT_KEYS = {
+  goalOffPlaceholder: 10, // inside a 64px minutes input
+  dialModeSingleLabel: 8, // three-way segmented toggle above the ring
+  dialModeAmpmLabel: 10,
+  dialModeToggleLabel: 10,
+  durationHourSuffix: 4, // sits directly against a number: "7h 45m"
+  durationMinuteSuffix: 4,
+  dialHalfAm: 12,
+  dialHalfPm: 12,
+  timeFormat24h: 12,
+  timeFormat12h: 12,
+  viewTabDay: 14, // nav pills
+  viewTabHistory: 16,
+  addButtonLabel: 16, // button beside a full-width input
+};
+
 const problems = [];
 const note = (loc, msg) => problems.push(`${loc}: ${msg}`);
 
@@ -101,6 +132,14 @@ for (const loc of locales) {
     if (!have.has("other")) note(loc, `"${base}" has no _other form — that is the fallback every language needs`);
     const gaps = [...needed].filter((f) => !have.has(f));
     if (gaps.length) note(loc, `"${base}" is missing the ${gaps.map((g) => `_${g}`).join(", ")} form(s) this language needs`);
+  }
+
+  // (7) strings that live in a fixed-width control.
+  for (const [key, budget] of Object.entries(TIGHT_KEYS)) {
+    const text = catalog[key]?.message;
+    if (typeof text === "string" && text.length > budget) {
+      note(loc, `"${key}" is ${text.length} chars ("${text}") — it renders in a fixed-width control with room for about ${budget}`);
+    }
   }
 
   // (3) and (4): placeholders.

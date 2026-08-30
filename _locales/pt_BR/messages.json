@@ -1,0 +1,2382 @@
+{
+  "appName": {
+    "message": "Daily Dial – Rastreador de Tempo e Foco"
+  },
+  "appDescription": {
+    "message": "Pinte seu dia em um mostrador de 24 horas e veja se o tempo foi para onde você queria."
+  },
+  "actionDefaultTitle": {
+    "message": "Abrir Daily Dial"
+  },
+  "saveFailedToast": {
+    "message": "Não foi possível salvar — sua última alteração pode ter sido perdida."
+  },
+  "wordmarkTitle": {
+    "message": "Daily Dial"
+  },
+  "wordmarkTagline": {
+    "message": "Registro de tempo e foco"
+  },
+  "streakBannerTooltip": {
+    "message": "Dias seguidos com pelo menos um bloco registrado. Um dia perdido por semana é perdoado como congelamento."
+  },
+  "streakDayLabel": {
+    "message": "dias de sequência"
+  },
+  "streakBestLabel": {
+    "message": "melhor:"
+  },
+  "streakFreezeLabel": {
+    "message": "❄ congelamento usado"
+  },
+  "streakFreezeTooltip": {
+    "message": "Você perdeu um dia esta semana, mas sua sequência sobreviveu — uma falha a cada 7 dias corridos é perdoada."
+  },
+  "streakRiskLabel": {
+    "message": "ainda não registrado hoje"
+  },
+  "streakRiskTooltip": {
+    "message": "Registre pelo menos um bloco hoje para manter a sequência viva."
+  },
+  "challengeChipTooltip": {
+    "message": "Seu desafio nomeado. Clique para mudá-lo."
+  },
+  "challengeDayProgress": {
+    "message": "dia $DAY$ / $TARGET$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDaySimple": {
+    "message": "dia $DAY$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      }
+    }
+  },
+  "viewNavLabel": {
+    "message": "Visualizações"
+  },
+  "viewTabDay": {
+    "message": "Dia"
+  },
+  "viewTabHistory": {
+    "message": "Histórico"
+  },
+  "viewTabHistoryTooltip": {
+    "message": "Seus meses em um relance, e como as categorias evoluem com o tempo"
+  },
+  "dateToday": {
+    "message": "Hoje"
+  },
+  "dateYesterday": {
+    "message": "Ontem"
+  },
+  "prevDayLabel": {
+    "message": "Dia anterior"
+  },
+  "nextDayLabel": {
+    "message": "Próximo dia"
+  },
+  "todayJumpTooltip": {
+    "message": "Voltar para hoje"
+  },
+  "settingsButtonLabel": {
+    "message": "Configurações"
+  },
+  "settingsButtonTooltip": {
+    "message": "Categorias, lembretes, metas, backup e aparência"
+  },
+  "demoBannerTitle": {
+    "message": "Modo demo"
+  },
+  "demoBannerBody": {
+    "message": "— os dias abaixo incluem dados de exemplo, não só os seus."
+  },
+  "demoBannerExitLabel": {
+    "message": "Sair da demo"
+  },
+  "demoBannerExitTooltip": {
+    "message": "Remove exatamente os dias de exemplo que foram carregados. O que você mesmo registrou fica intacto."
+  },
+  "staleBannerHeadline": {
+    "message": "Outra aba mudou $WHAT$.",
+    "placeholders": {
+      "what": {
+        "content": "$1"
+      }
+    }
+  },
+  "staleBannerBody": {
+    "message": "A edição está pausada aqui para que esta aba não sobrescreva isso. Recarregue para ver a versão mais recente."
+  },
+  "staleBannerReload": {
+    "message": "Recarregar"
+  },
+  "staleWhatViewedDay": {
+    "message": "o dia que você está vendo"
+  },
+  "staleWhatCategories": {
+    "message": "suas categorias"
+  },
+  "staleWhatSettings": {
+    "message": "suas configurações"
+  },
+  "staleWhatDemoMode": {
+    "message": "o modo demo"
+  },
+  "staleWhatTemplates": {
+    "message": "seus modelos"
+  },
+  "firstRunHint": {
+    "message": "👇 Escolha uma categoria e arraste ao redor do anel para pintar seu primeiro bloco."
+  },
+  "firstRunHintDismiss": {
+    "message": "Entendi"
+  },
+  "shareImageLabel": {
+    "message": "Compartilhar como imagem"
+  },
+  "shareImageTooltip": {
+    "message": "Salve (ou compartilhe) um PNG do mostrador e da pontuação deste dia — nada sai do seu dispositivo a menos que você escolha enviar."
+  },
+  "dialLayoutSwitchLabel": {
+    "message": "Layout do mostrador"
+  },
+  "dialModeSingleLabel": {
+    "message": "24h"
+  },
+  "dialModeSingleTooltip": {
+    "message": "Um anel de 24 horas"
+  },
+  "dialModeAmpmLabel": {
+    "message": "AM+PM"
+  },
+  "dialModeAmpmTooltip": {
+    "message": "Dois anéis de 12 horas, lado a lado"
+  },
+  "dialModeToggleLabel": {
+    "message": "AM⇄PM"
+  },
+  "dialModeToggleTooltip": {
+    "message": "Um anel de 12 horas, com alternância AM/PM"
+  },
+  "dialAriaLabelSingle": {
+    "message": "Mostrador de atividades de 24 horas. As setas movem o cursor, Shift+seta seleciona, Enter pinta, Delete apaga."
+  },
+  "dialAriaLabelAm": {
+    "message": "Mostrador de atividades AM, da meia-noite ao meio-dia. As setas movem o cursor, Shift+seta seleciona, Enter pinta, Delete apaga."
+  },
+  "dialAriaLabelPm": {
+    "message": "Mostrador de atividades PM, do meio-dia à meia-noite. As setas movem o cursor, Shift+seta seleciona, Enter pinta, Delete apaga."
+  },
+  "dialCenterPickCategory": {
+    "message": "escolha uma categoria"
+  },
+  "dialTimeLoggedTooltip": {
+    "message": "Tempo registrado nesta metade"
+  },
+  "dialCurrentTimeTooltip": {
+    "message": "Hora atual"
+  },
+  "dialHalfAm": {
+    "message": "AM"
+  },
+  "dialHalfAmRange": {
+    "message": "· 0h–12h"
+  },
+  "dialHalfPm": {
+    "message": "PM"
+  },
+  "dialHalfPmRange": {
+    "message": "· 12h–0h"
+  },
+  "toggleHalfSwitchLabel": {
+    "message": "Mostrar a metade AM ou PM"
+  },
+  "copyYesterdayLabel": {
+    "message": "Copiar ontem"
+  },
+  "copyYesterdayTooltip": {
+    "message": "Preenche hoje com os blocos de ontem — útil quando seus dias se repetem"
+  },
+  "typedEntryTimeRangeLabel": {
+    "message": "Intervalo de tempo"
+  },
+  "typedEntryPlaceholder": {
+    "message": "9-11"
+  },
+  "typedEntryTooltip": {
+    "message": "Um intervalo de tempo: \"9-11\", \"13:30-15\" ou \"9pm-11pm\". Você também pode digitar a categoria aqui."
+  },
+  "typedEntryCatTooltip": {
+    "message": "A qual categoria este bloco pertence"
+  },
+  "addButtonLabel": {
+    "message": "Adicionar"
+  },
+  "typedEntryAddTooltip": {
+    "message": "Adiciona este bloco ao mostrador"
+  },
+  "justPaintedNoteLabel": {
+    "message": "Nota para o que você acabou de pintar"
+  },
+  "justPaintedSaveLabel": {
+    "message": "Salvar"
+  },
+  "dismissLabel": {
+    "message": "Dispensar"
+  },
+  "hintPaintInstruction": {
+    "message": "Clique ou arraste ao redor do anel para pintar"
+  },
+  "hintUndo": {
+    "message": "desfazer"
+  },
+  "hintAllShortcuts": {
+    "message": "todos os atalhos"
+  },
+  "breakdownSectionLabel": {
+    "message": "O dia, de ponta a ponta"
+  },
+  "breakdownSectionTooltip": {
+    "message": "Cada trecho do dia em ordem, incluindo as partes que você ainda não registrou. Digite uma nota direto em qualquer linha; escolha uma categoria em uma linha vazia para preenchê-la."
+  },
+  "breakdownColWhen": {
+    "message": "Quando"
+  },
+  "breakdownColWhat": {
+    "message": "O quê"
+  },
+  "breakdownColFor": {
+    "message": "Duração"
+  },
+  "breakdownColNote": {
+    "message": "Nota"
+  },
+  "breakdownColClear": {
+    "message": "Limpar"
+  },
+  "todaysReadLabel": {
+    "message": "A leitura de hoje"
+  },
+  "statTrackedLabel": {
+    "message": "Rastreado"
+  },
+  "statTrackedTooltip": {
+    "message": "Tempo total que você pintou no mostrador hoje. O resto do dia conta como não rastreado."
+  },
+  "statProductiveLabel": {
+    "message": "Produtivo"
+  },
+  "statProductiveTooltip": {
+    "message": "Parte do seu tempo rastreado gasta em categorias com peso +. O tempo não rastreado é excluído."
+  },
+  "statFocusLabel": {
+    "message": "Maior foco"
+  },
+  "statFocusTooltip": {
+    "message": "Seu trecho ininterrupto mais longo de tempo produtivo. Ele continua entre categorias + diferentes e é interrompido por tempo neutro ou de distração."
+  },
+  "scoreValTooltip": {
+    "message": "(produtivo − distração) ÷ rastreado, em porcentagem. Mede a forma do seu dia, não a duração — por isso 4 horas focadas superam 10 horas dispersas."
+  },
+  "meterTooltip": {
+    "message": "Sua pontuação em uma escala de −100 a +100."
+  },
+  "whereTimeWentLabel": {
+    "message": "Para onde o tempo foi"
+  },
+  "whereTimeWentTooltip": {
+    "message": "Como o tempo rastreado de hoje se divide entre categorias, com o tempo não rastreado exibido para que as lacunas continuem visíveis."
+  },
+  "todaysGoalsLabel": {
+    "message": "Metas de hoje"
+  },
+  "todaysGoalsTooltip": {
+    "message": "Metas diárias definidas em Configurações → Metas. Um ✓ marca uma que você cumpriu."
+  },
+  "weeklyGoalsLabel": {
+    "message": "Metas desta semana"
+  },
+  "weeklyGoalsTooltip": {
+    "message": "Metas semanais definidas em Configurações → Metas, somadas ao longo da semana a partir do dia de início configurado. Um ✓ marca uma que você cumpriu."
+  },
+  "intentionsLabel": {
+    "message": "Intenções de hoje"
+  },
+  "intentionsTooltip": {
+    "message": "O que você pretendia fazer hoje. Marque conforme forem cumpridas — o registro do Histórico mostra quais você realmente fez."
+  },
+  "addIntentionLabel": {
+    "message": "Adicionar uma intenção"
+  },
+  "addIntentionPlaceholder": {
+    "message": "Leetcode, enviar e-mail ao professor…"
+  },
+  "avoidLabel": {
+    "message": "A evitar"
+  },
+  "avoidTooltip": {
+    "message": "O que evitar hoje. Fica guardado no registro do Histórico ao lado do que você realmente fez."
+  },
+  "addAvoidLabel": {
+    "message": "Adicionar algo para evitar"
+  },
+  "addAvoidPlaceholder": {
+    "message": "Rolagem infinita, 10h de série…"
+  },
+  "reflectionLabel": {
+    "message": "Por quê (uma linha basta)"
+  },
+  "reflectionTooltip": {
+    "message": "Uma linha sobre o que ajudou ou atrapalhou hoje. Incluída na sua exportação CSV."
+  },
+  "reflectionSrLabel": {
+    "message": "Reflexão"
+  },
+  "reflectionPlaceholder": {
+    "message": "O que fez hoje funcionar — ou travar?"
+  },
+  "clearDayLabel": {
+    "message": "Limpar dia"
+  },
+  "clearDayTooltip": {
+    "message": "Apaga todos os blocos deste dia. Pode ser desfeito com ⌘Z."
+  },
+  "clearDayConfirmLabel": {
+    "message": "Confirmar limpeza?"
+  },
+  "dayClearedToast": {
+    "message": "Dia limpo — ⌘Z para desfazer"
+  },
+  "settingsTitle": {
+    "message": "Configurações"
+  },
+  "settingsCloseLabel": {
+    "message": "Fechar configurações"
+  },
+  "settingsTabCategories": {
+    "message": "Categorias"
+  },
+  "settingsTabReminders": {
+    "message": "Lembretes"
+  },
+  "settingsTabGoals": {
+    "message": "Metas"
+  },
+  "settingsTabData": {
+    "message": "Dados"
+  },
+  "settingsTabAppearance": {
+    "message": "Aparência"
+  },
+  "settingsTabAbout": {
+    "message": "Sobre"
+  },
+  "categoriesLegendPositive": {
+    "message": "conta a favor da sua pontuação,"
+  },
+  "categoriesLegendNeutral": {
+    "message": "é neutro,"
+  },
+  "categoriesLegendNegative": {
+    "message": "conta contra ela."
+  },
+  "categoriesHideNote": {
+    "message": "O botão redondo oculta uma categoria que você não usa."
+  },
+  "categoriesAliasNote": {
+    "message": "O campo pequeno abaixo de cada uma é para apelidos — suas próprias palavras para a mesma categoria (por exemplo, \"leetcode\" ou \"entrevista simulada\" para Candidaturas) — para que a entrada digitada reconheça como você realmente fala sobre o seu dia, enquanto continua pintando com a única cor ponderada dessa categoria."
+  },
+  "categoryNameAriaLabel": {
+    "message": "Nome da categoria"
+  },
+  "weightPositiveLabel": {
+    "message": "Conta a favor da pontuação"
+  },
+  "weightNeutralLabel": {
+    "message": "Neutro"
+  },
+  "weightNegativeLabel": {
+    "message": "Conta contra a pontuação"
+  },
+  "hideCategoryAriaLabel": {
+    "message": "Ocultar $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "showCategoryAriaLabel": {
+    "message": "Mostrar $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasPlaceholder": {
+    "message": "outras palavras para \"$NAME$\"…",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasAriaLabel": {
+    "message": "Apelidos para $NAME$ — outras palavras que a entrada digitada reconhece",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorNote": {
+    "message": "A cor ainda reflete o peso original, não este."
+  },
+  "reminderToggleLabel": {
+    "message": "Lembrar de registrar"
+  },
+  "reminderToggleTooltip": {
+    "message": "Duas notificações por dia, nos horários abaixo. Elas só disparam enquanto o Chrome estiver em execução."
+  },
+  "middayNudgeLabel": {
+    "message": "Lembrete do meio-dia"
+  },
+  "eveningWrapupLabel": {
+    "message": "Fechamento da noite"
+  },
+  "remindersNote": {
+    "message": "As notificações só disparam enquanto o Chrome estiver em execução. A da noite informa quanto do dia ainda não foi registrado."
+  },
+  "weeklyRecapSectionLabel": {
+    "message": "Resumo semanal"
+  },
+  "weeklyRecapToggleLabel": {
+    "message": "Enviar um resumo semanal"
+  },
+  "weeklyRecapToggleTooltip": {
+    "message": "Uma notificação de resumo uma vez por semana: tempo rastreado, categoria principal, melhor dia e sequência."
+  },
+  "weeklyRecapDayLabel": {
+    "message": "Dia"
+  },
+  "weeklyRecapTimeLabel": {
+    "message": "Horário"
+  },
+  "weeklyRecapNote": {
+    "message": "Desativado por padrão. Um breve resumo da semana que passou — tempo rastreado, categoria principal, melhor dia, sequência."
+  },
+  "daySunday": {
+    "message": "Domingo"
+  },
+  "dayMonday": {
+    "message": "Segunda-feira"
+  },
+  "dayTuesday": {
+    "message": "Terça-feira"
+  },
+  "dayWednesday": {
+    "message": "Quarta-feira"
+  },
+  "dayThursday": {
+    "message": "Quinta-feira"
+  },
+  "dayFriday": {
+    "message": "Sexta-feira"
+  },
+  "daySaturday": {
+    "message": "Sábado"
+  },
+  "worthNoticingLabel": {
+    "message": "Vale notar"
+  },
+  "worthNoticingSettingsTooltip": {
+    "message": "Padrões que o Daily Dial percebe nos seus próprios dados, mostrados no topo do Histórico. Desativar isso oculta a seção inteira."
+  },
+  "observationsToggleTooltip": {
+    "message": "Mostra a seção \"Vale notar\" no topo do Histórico."
+  },
+  "observationsToggleLabel": {
+    "message": "Apontar padrões nos meus dados"
+  },
+  "observationsNote": {
+    "message": "Seis coisas, verificadas ao longo das últimas semanas — intenções que você define mas não termina, trechos sem descanso registrado, sua hora mais produtiva ficando desprotegida, e assim por diante. Cada uma afirma um fato; sugestões só aparecem se você pedir por elas. Desativado significa que a seção nunca aparece."
+  },
+  "dailyGoalsSectionLabel": {
+    "message": "Metas diárias, por categoria"
+  },
+  "dailyGoalsNote": {
+    "message": "Deixe em branco para nenhuma meta. O progresso aparece no painel lateral assim que uma meta é definida."
+  },
+  "weeklyGoalsSectionLabel": {
+    "message": "Metas semanais, por categoria"
+  },
+  "weeklyGoalsSectionTooltip": {
+    "message": "Para coisas que não acontecem todo dia — uma meta para a semana toda em vez de cada dia individual."
+  },
+  "weeklyGoalsNote": {
+    "message": "Independente das metas diárias acima — defina uma, ambas ou nenhuma por categoria."
+  },
+  "goalOffPlaceholder": {
+    "message": "nenhuma"
+  },
+  "goalAriaLabelDaily": {
+    "message": "Meta diária para $NAME$, em minutos",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "goalAriaLabelWeekly": {
+    "message": "Meta semanal para $NAME$, em minutos",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeSectionLabel": {
+    "message": "Desafio"
+  },
+  "challengeSectionTooltip": {
+    "message": "Uma corrida com nome e contador de dias próprio, como um desafio de 100 dias. Separado da sequência: conta a partir de uma data de início e não quebra se você perder um dia."
+  },
+  "challengeNameFieldLabel": {
+    "message": "Nome"
+  },
+  "challengeNamePlaceholder": {
+    "message": "#100days"
+  },
+  "challengeStartedLabel": {
+    "message": "Início"
+  },
+  "challengeLengthLabel": {
+    "message": "Duração (dias)"
+  },
+  "clearChallengeLabel": {
+    "message": "Remover desafio"
+  },
+  "challengeNote": {
+    "message": "Um contador de dias mostrado ao lado da sua sequência. Diferente da sequência, ele não quebra — apenas conta a partir da data de início. Deixe o nome em branco para não ter nenhum."
+  },
+  "templatesSectionLabel": {
+    "message": "Modelos"
+  },
+  "templatesSectionTooltip": {
+    "message": "A maioria dos dias se repete — salve o formato pintado de um deles e aplique-o a qualquer outro dia."
+  },
+  "templateNameFieldLabel": {
+    "message": "Nome do modelo"
+  },
+  "templateNamePlaceholder": {
+    "message": "Dê um nome, ex.: \"Dia útil\""
+  },
+  "saveTemplateLabel": {
+    "message": "Salvar hoje como modelo"
+  },
+  "templatesNote": {
+    "message": "Os modelos guardam apenas o tempo pintado — nunca notas, intenções, coisas a evitar ou sua reflexão. Aplicar um a um dia que já tem tempo pintado pede confirmação antes, e pode ser desfeito (⌘Z) depois."
+  },
+  "templatesEmptyNote": {
+    "message": "Nenhum modelo salvo ainda."
+  },
+  "applyLabel": {
+    "message": "Aplicar"
+  },
+  "applyConfirmLabel": {
+    "message": "Confirmar aplicação?"
+  },
+  "deleteLabel": {
+    "message": "Excluir"
+  },
+  "deleteTemplateAriaLabel": {
+    "message": "Excluir modelo: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateAppliedToast": {
+    "message": "Aplicado \"$NAME$\" — ⌘Z para desfazer",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateNameRequiredToast": {
+    "message": "Dê um nome ao modelo primeiro."
+  },
+  "templateMaxToast": {
+    "message": "Esse é o máximo de modelos que você pode salvar ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateSavedToast": {
+    "message": "\"$NAME$\" salvo",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateDeletedToast": {
+    "message": "\"$NAME$\" excluído",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "exportSectionLabel": {
+    "message": "Exportar"
+  },
+  "exportCsvLabel": {
+    "message": "Exportar CSV"
+  },
+  "exportCsvTooltip": {
+    "message": "Uma planilha com cada bloco: uma linha por bloco, pronta para tabela dinâmica. Não restaura as configurações."
+  },
+  "exportJsonLabel": {
+    "message": "Exportar backup JSON"
+  },
+  "exportJsonTooltip": {
+    "message": "Um backup completo — todos os dias, categorias e configurações. Este é o arquivo para guardar."
+  },
+  "noBackupYetStatus": {
+    "message": "Você ainda não exportou um backup."
+  },
+  "lastBackupStatus": {
+    "message": "Último backup: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "dataBackupNudgeText": {
+    "message": "Já faz um tempo desde o seu último backup."
+  },
+  "backupNudgeText": {
+    "message": "Você não faz backup há um tempo — seus dados só existem neste navegador."
+  },
+  "backupNudgeExportLabel": {
+    "message": "Exportar agora"
+  },
+  "backupNudgeExportTooltip": {
+    "message": "Salve um backup JSON que você pode restaurar depois"
+  },
+  "backupNudgeDismissTooltip": {
+    "message": "Ocultar até a próxima"
+  },
+  "dailyRemindersSectionLabel": {
+    "message": "Lembretes diários"
+  },
+  "stripHintLabel": {
+    "message": "Clique em um dia para abri-lo"
+  },
+  "stripTooltip": {
+    "message": "Os últimos sete dias. O comprimento da barra é a pontuação daquele dia; clique em um para vê-lo ou editá-lo."
+  },
+  "importSectionLabel": {
+    "message": "Importar"
+  },
+  "chooseBackupFileLabel": {
+    "message": "Escolher arquivo de backup…"
+  },
+  "chooseBackupFileTooltip": {
+    "message": "Restaurar de um backup JSON ou uma exportação CSV"
+  },
+  "mergeLabel": {
+    "message": "Mesclar"
+  },
+  "mergeTooltip": {
+    "message": "Adiciona dias do arquivo que você ainda não tem. Os dias existentes ficam intactos."
+  },
+  "replaceEverythingLabel": {
+    "message": "Substituir tudo"
+  },
+  "replaceEverythingTooltip": {
+    "message": "Apaga todo o histórico atual e restaura exatamente o que está no arquivo. Não pode ser desfeito."
+  },
+  "replaceArmedLabel": {
+    "message": "Clique novamente para apagar os dias existentes"
+  },
+  "cancelLabel": {
+    "message": "Cancelar"
+  },
+  "importNote": {
+    "message": "Backups em JSON mantêm tudo (dias, categorias, configurações). Arquivos CSV restauram apenas blocos de tempo, combinados com suas categorias atuais pelo nome. Mesclar adiciona os dias que faltam e deixa os existentes intactos; Substituir apaga seu histórico e restaura exatamente o que está no arquivo."
+  },
+  "fileReadErrorToast": {
+    "message": "Não foi possível ler esse arquivo."
+  },
+  "importSummarySentence1_one": {
+    "message": "$COUNT$ dia no arquivo, $OVERLAP$ sobrepondo seus $EXISTING$ existentes.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_other": {
+    "message": "$COUNT$ dias no arquivo, $OVERLAP$ sobrepondo seus $EXISTING$ existentes.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence2_one": {
+    "message": "Mesclar adiciona $COUNT$ dia novo.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_other": {
+    "message": "Mesclar adiciona $COUNT$ dias novos.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_one": {
+    "message": "Substituir apaga o $COUNT$ dia existente e restaura exatamente o que está no arquivo.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_other": {
+    "message": "Substituir apaga todos os $COUNT$ dias existentes e restaura exatamente o que está no arquivo.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummaryDemoClearSentence": {
+    "message": "Os dados de demonstração serão apagados primeiro."
+  },
+  "backupRestoredToast": {
+    "message": "Backup restaurado"
+  },
+  "backupMergedToast": {
+    "message": "Backup mesclado"
+  },
+  "multifillSectionLabel": {
+    "message": "Preencher vários dias"
+  },
+  "multifillSectionTooltip": {
+    "message": "Uma ação só, em vez de clicar em cada dia — por exemplo, \"eu estive fora de segunda a sexta\"."
+  },
+  "multifillFromDateLabel": {
+    "message": "Data inicial"
+  },
+  "multifillToDateLabel": {
+    "message": "Data final"
+  },
+  "multifillCategoryLabel": {
+    "message": "Categoria"
+  },
+  "multifillFromTimeLabel": {
+    "message": "Hora inicial"
+  },
+  "multifillToTimeLabel": {
+    "message": "Hora final"
+  },
+  "eraseOptionLabel": {
+    "message": "Apagar (marcar como não rastreado)"
+  },
+  "multifillNoteBefore": {
+    "message": "Preenche a categoria escolhida (ou apaga) em todos os dias da data inicial até a data final, inclusive. Deixe os campos de hora em branco para preencher o dia todo. Limitado a"
+  },
+  "multifillNoteAfter": {
+    "message": "dias por preenchimento; cada dia afetado é salvo e pode ser desfeito individualmente, um de cada vez, a partir da visualização daquele dia."
+  },
+  "confirmFillLabel": {
+    "message": "Confirmar preenchimento"
+  },
+  "multifillArmedLabel": {
+    "message": "Clique novamente para preencher"
+  },
+  "multifillActionErase": {
+    "message": "apagado"
+  },
+  "multifillActionSetTo": {
+    "message": "definido como $CATEGORY$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillWindowWholeDay": {
+    "message": "para o dia todo"
+  },
+  "multifillUnknownCategory": {
+    "message": "essa categoria"
+  },
+  "multifillWindowRange": {
+    "message": "de $FROM$ a $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "multifillSummary_one": {
+    "message": "$COUNT$ dia ($FROM$ a $TO$) será $ACTION$ $WINDOW$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_other": {
+    "message": "$COUNT$ dias ($FROM$ a $TO$) serão $ACTION$ $WINDOW$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillPainted_one": {
+    "message": "$COUNT$ deles já tem algo pintado ali e será sobrescrito.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_other": {
+    "message": "$COUNT$ deles já têm algo pintado ali e serão sobrescritos.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillNonePainted": {
+    "message": "Nenhum desses dias tem algo pintado ali ainda."
+  },
+  "filledDays_one": {
+    "message": "$COUNT$ dia preenchido",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_other": {
+    "message": "$COUNT$ dias preenchidos",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveSectionLabel": {
+    "message": "Backup do Google Drive"
+  },
+  "driveBackupLabel": {
+    "message": "Fazer backup no Google Drive"
+  },
+  "driveBackupTooltip": {
+    "message": "Faz login com sua conta Google e salva um backup em uma pasta privada, exclusiva do app, no seu próprio Drive — invisível no seu Drive normal, e vista só por você."
+  },
+  "driveRestoreLabel": {
+    "message": "Restaurar do Google Drive"
+  },
+  "driveRestoreTooltip": {
+    "message": "Baixa seu backup mais recente do Google Drive e abre a mesma confirmação de mesclar/substituir de uma importação de arquivo."
+  },
+  "autoBackupToggleLabel": {
+    "message": "Fazer backup automaticamente"
+  },
+  "autoBackupToggleTooltip": {
+    "message": "Faz backup no mesmo arquivo do Drive cerca de uma vez por dia, em segundo plano. Só funciona depois que você conectar o Drive por conta própria — nunca vai abrir uma janela de login sozinho."
+  },
+  "autoBackupNote": {
+    "message": "Praticamente todo dia, em silêncio, no mesmo arquivo. Ele só atualiza um backup que você já fez manualmente — não consegue fazer login sozinho, então não faz nada até você conectar o Drive pelo menos uma vez."
+  },
+  "driveConnectedAsStatus": {
+    "message": "Conectado como $EMAIL$",
+    "placeholders": {
+      "email": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveNotBackedUpStatus": {
+    "message": "Ainda sem backup no Google Drive."
+  },
+  "driveConnectedNoUploadStatus": {
+    "message": "Conectado ao Google Drive. Restaurado de um backup; nada foi enviado daqui ainda."
+  },
+  "driveLastSyncStatus": {
+    "message": "Última sincronização com o Google Drive: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveDisconnectLabel": {
+    "message": "Desconectar Google Drive"
+  },
+  "driveDisconnectTooltip": {
+    "message": "Desconecta essa conta do Daily Dial. Seu arquivo de backup continua no seu Drive; nada é apagado."
+  },
+  "driveDeleteLabel": {
+    "message": "Excluir backup do Drive"
+  },
+  "driveDeleteTooltip": {
+    "message": "Exclui permanentemente o arquivo de backup do seu Google Drive. Não pode ser desfeito. Seus dados locais neste dispositivo ficam intactos."
+  },
+  "driveDeleteArmedLabel": {
+    "message": "Clique novamente para excluir permanentemente"
+  },
+  "driveNoteBefore": {
+    "message": "Opcional, e desativado a menos que você o use. Usa o"
+  },
+  "driveNoteAfter": {
+    "message": "do Google — um espaço de armazenamento privado desta extensão, que não aparece no seu Drive normal e que nenhum outro app pode ler. Esse é o único recurso do Daily Dial que envia dados para algum lugar; tudo o mais fica neste dispositivo. Veja"
+  },
+  "driveNoteFor": {
+    "message": "para mais detalhes."
+  },
+  "privacyLinkLabel": {
+    "message": "Privacidade"
+  },
+  "nothingToExportToast": {
+    "message": "Nada registrado ainda para exportar."
+  },
+  "onlyDemoExportToast": {
+    "message": "Só há dados de demonstração carregados — ainda não há nada seu para exportar."
+  },
+  "exportedCsvToast": {
+    "message": "CSV exportado"
+  },
+  "exportedJsonToast": {
+    "message": "Backup JSON exportado"
+  },
+  "nothingToBackupToast": {
+    "message": "Nada registrado ainda para fazer backup."
+  },
+  "onlyDemoBackupToast": {
+    "message": "Só há dados de demonstração carregados — ainda não há nada seu para fazer backup."
+  },
+  "driveConnectingToast": {
+    "message": "Conectando ao Google Drive…"
+  },
+  "driveBackedUpToast": {
+    "message": "Backup feito no Google Drive"
+  },
+  "driveBackupErrorToast": {
+    "message": "Não foi possível fazer backup no Google Drive."
+  },
+  "driveCheckingToast": {
+    "message": "Verificando o Google Drive…"
+  },
+  "driveNoBackupFoundToast": {
+    "message": "Nenhum backup do Daily Dial encontrado nessa conta Google."
+  },
+  "driveUnreachableToast": {
+    "message": "Não foi possível acessar o Google Drive."
+  },
+  "driveDisconnectedToast": {
+    "message": "Desconectado do Google Drive"
+  },
+  "driveDeletingToast": {
+    "message": "Excluindo do Google Drive…"
+  },
+  "driveDeletedToast": {
+    "message": "Backup do Google Drive excluído"
+  },
+  "driveDeleteErrorToast": {
+    "message": "Não foi possível excluir do Google Drive."
+  },
+  "themeLabel": {
+    "message": "Tema"
+  },
+  "themeSystem": {
+    "message": "Sistema"
+  },
+  "themeLight": {
+    "message": "Claro"
+  },
+  "themeDark": {
+    "message": "Escuro"
+  },
+  "timeFormatLabel": {
+    "message": "Formato de hora"
+  },
+  "timeFormat24h": {
+    "message": "24 horas"
+  },
+  "timeFormat12h": {
+    "message": "12 horas"
+  },
+  "dialModeLabel": {
+    "message": "Layout do mostrador"
+  },
+  "dialModeLabelTooltip": {
+    "message": "Um anel cobrindo as 24 horas, ou dois anéis menores — um para AM, outro para PM."
+  },
+  "weekStartLabel": {
+    "message": "A semana começa em"
+  },
+  "weekStartTooltip": {
+    "message": "Qual dia inicia uma semana, usado pelo resumo semanal."
+  },
+  "wakingHoursSectionLabel": {
+    "message": "Horas acordado"
+  },
+  "wakingHoursTooltip": {
+    "message": "O insight do dia só considera o tempo não rastreado dentro dessa janela como \"ainda não registrado\" — assim as horas de sono não são marcadas como uma lacuna de registro."
+  },
+  "dayStartsLabel": {
+    "message": "O dia começa"
+  },
+  "dayEndsLabel": {
+    "message": "O dia termina"
+  },
+  "appearanceUpdatedToast": {
+    "message": "Aparência atualizada"
+  },
+  "remindersSetToast": {
+    "message": "Lembretes definidos para $T1$ e $T2$",
+    "placeholders": {
+      "t1": {
+        "content": "$1"
+      },
+      "t2": {
+        "content": "$2"
+      }
+    }
+  },
+  "remindersOffToast": {
+    "message": "Lembretes desativados"
+  },
+  "autoBackupOnToast": {
+    "message": "Backup automático ativado"
+  },
+  "autoBackupOffToast": {
+    "message": "Backup automático desativado"
+  },
+  "aboutDailyDialName": {
+    "message": "Daily Dial"
+  },
+  "githubLinkLabel": {
+    "message": "GitHub"
+  },
+  "gettingStartedLinkLabel": {
+    "message": "Primeiros passos"
+  },
+  "demoAndTourLabel": {
+    "message": "Demonstração e tour"
+  },
+  "replayOnboardingLabel": {
+    "message": "Repetir tour de boas-vindas"
+  },
+  "replayOnboardingTooltip": {
+    "message": "Mostra a mesma tela de boas-vindas de três cartões que você viu (ou teria visto) na primeira vez que abriu"
+  },
+  "loadSampleDataLabel": {
+    "message": "Carregar dados de exemplo"
+  },
+  "loadSampleDataTooltip": {
+    "message": "Preenche três semanas de dias realistas (fictícios) nas datas que você ainda não registrou, para que Histórico, sequências e metas tenham algo para mostrar."
+  },
+  "clearSampleDataLabel": {
+    "message": "Sair do modo demo"
+  },
+  "clearSampleDataTooltip": {
+    "message": "Remove exatamente os dias de exemplo que foram carregados. O que você mesmo registrou fica intacto."
+  },
+  "demoModeOffNote": {
+    "message": "Veja como Histórico, sequências e metas ficam com três semanas de dias variados (fictícios). Seus próprios dias ficam como estão."
+  },
+  "demoModeOnNote": {
+    "message": "O modo demo está ativado. Os dias de exemplo preenchem apenas as datas que você não tinha registrado — sair remove exatamente esses, e nada seu."
+  },
+  "demoModeOnToast": {
+    "message": "Modo demo ativado — dias de exemplo adicionados ao redor dos seus"
+  },
+  "demoModeNothingToAddToast": {
+    "message": "Todos os dias do período de exemplo já são seus — nada para adicionar"
+  },
+  "demoModeOffToast": {
+    "message": "Modo demo desativado — seus próprios dias ficam intactos"
+  },
+  "personalBestsLabel": {
+    "message": "Recordes pessoais"
+  },
+  "bestsStreakLabel": {
+    "message": "Maior sequência"
+  },
+  "bestsScoreLabel": {
+    "message": "Melhor pontuação do dia"
+  },
+  "bestsDayLabel": {
+    "message": "Dia mais produtivo"
+  },
+  "bestsStreakDays_one": {
+    "message": "$COUNT$ dia",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_other": {
+    "message": "$COUNT$ dias",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "keyboardShortcutsLabel": {
+    "message": "Atalhos de teclado"
+  },
+  "shortcutSelectPen": {
+    "message": "Selecionar uma caneta de categoria"
+  },
+  "shortcutSelectEraser": {
+    "message": "Selecionar a borracha"
+  },
+  "shortcutUndo": {
+    "message": "Desfazer"
+  },
+  "shortcutRedo": {
+    "message": "Refazer"
+  },
+  "shortcutCloseSettings": {
+    "message": "Fechar este painel"
+  },
+  "onboardingTitle": {
+    "message": "Bem-vindo ao Daily Dial"
+  },
+  "onboardingSubtitle": {
+    "message": "Três coisas para saber antes de pintar seu primeiro dia."
+  },
+  "onboardingStep1Title": {
+    "message": "Pinte seu dia"
+  },
+  "onboardingStep1TextBefore": {
+    "message": "Escolha uma categoria abaixo do mostrador e arraste ao redor do anel. Prefere digitar?"
+  },
+  "onboardingStep1TextAfter": {
+    "message": "também funciona."
+  },
+  "onboardingStep2Title": {
+    "message": "Veja como tudo se soma"
+  },
+  "onboardingStep2Text": {
+    "message": "Sua pontuação, % produtivo e maior sequência de foco se atualizam conforme você pinta. A linha abaixo lê seu dia em linguagem simples."
+  },
+  "onboardingStep3Title": {
+    "message": "Deixe do seu jeito"
+  },
+  "onboardingStep3TextBefore": {
+    "message": "Renomeie categorias, defina lembretes e metas, ou faça backup no Google Drive — tudo atrás de"
+  },
+  "onboardingStep3TextAfter": {
+    "message": "no canto superior direito. Tudo além de pintar é opcional."
+  },
+  "onboardingAltBefore": {
+    "message": "Prefere ver com números reais primeiro?"
+  },
+  "loadSampleDataInsteadLabel": {
+    "message": "Carregar dados de exemplo em vez disso"
+  },
+  "skipLabel": {
+    "message": "Pular"
+  },
+  "letsStartLabel": {
+    "message": "Vamos começar"
+  },
+  "onboardingNudgePaintToast": {
+    "message": "Escolha uma categoria abaixo e arraste ao redor do anel para pintar"
+  },
+  "onboardingNudgeSettingsToast": {
+    "message": "Tudo pronto — as Configurações (☰, canto superior direito) têm categorias, lembretes, metas e backup"
+  },
+  "futureDayToast": {
+    "message": "Isso é amanhã — ainda não há nada para registrar"
+  },
+  "dayRolledOverToast": {
+    "message": "É um novo dia — o mostrador foi reiniciado"
+  },
+  "undoDone": {
+    "message": "Desfeito"
+  },
+  "undoEmpty": {
+    "message": "Nada para desfazer"
+  },
+  "redoDone": {
+    "message": "Refeito"
+  },
+  "redoEmpty": {
+    "message": "Nada para refazer"
+  },
+  "copyYesterdayEmptyToast": {
+    "message": "Ontem não tem nada para copiar."
+  },
+  "copyYesterdayConfirm": {
+    "message": "Hoje já tem entradas — sobrescrevê-las com as de ontem?"
+  },
+  "copyYesterdaySuccessToast": {
+    "message": "Ontem copiado — ⌘Z para desfazer"
+  },
+  "shareImageErrorToast": {
+    "message": "Não foi possível criar a imagem."
+  },
+  "shareImageSavedToast": {
+    "message": "Imagem salva"
+  },
+  "typedEntryAddedToast": {
+    "message": "Adicionado"
+  },
+  "typedEntryOverflowToast": {
+    "message": "Adicionado — a parte depois da meia-noite foi para o dia seguinte"
+  },
+  "noteSavedAnnounce": {
+    "message": "Nota salva para $FROM$ a $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "removeIntentionAriaLabel": {
+    "message": "Remover intenção: $TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeAvoidAriaLabel": {
+    "message": "Remover: $TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeNoteAriaLabel": {
+    "message": "Remover nota de $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "unloggedOptionLabel": {
+    "message": "Não registrado"
+  },
+  "breakdownGapPlaceholder": {
+    "message": "Nada registrado ainda"
+  },
+  "fillSpanAriaLabel": {
+    "message": "Preencher $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "noteForAriaLabel": {
+    "message": "Nota para $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanTooltip": {
+    "message": "Limpar $WHEN$ — o tempo volta a ser não registrado",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanAriaLabel": {
+    "message": "Limpar $CATEGORY$, $WHEN$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "when": {
+        "content": "$2"
+      }
+    }
+  },
+  "maxNotesToast": {
+    "message": "Esse é o máximo de notas que um dia pode ter ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxAvoidToast": {
+    "message": "Esse é o máximo que um dia pode ter ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxIntentsToast": {
+    "message": "Esse é o máximo de intenções que um dia pode ter ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownSummary_one": {
+    "message": "$COUNT$ trecho · $LOGGED$ registrado, $UNLOGGED$ não registrado",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_other": {
+    "message": "$COUNT$ trechos · $LOGGED$ registrado, $UNLOGGED$ não registrado",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "clearedAnnounce": {
+    "message": "Limpo de $FROM$ a $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "caretCommitAnnounce": {
+    "message": "$CATEGORY$ definido para $FROM$ a $TO$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretAnnounce": {
+    "message": "$FROM$ a $TO$, $WHAT$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "what": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretMixedLabel": {
+    "message": "misto"
+  },
+  "untrackedLower": {
+    "message": "não rastreado"
+  },
+  "untrackedCapitalized": {
+    "message": "Não rastreado"
+  },
+  "penEraserLabel": {
+    "message": "Borracha"
+  },
+  "dialEraserLabel": {
+    "message": "borracha"
+  },
+  "dialPenLabel": {
+    "message": "caneta: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "edgeRangeLabel": {
+    "message": "$FROM$–$TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "edgeGoneLabel": {
+    "message": "$CATEGORY$ desaparece",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "dialAriaNothingLoggedSuffix": {
+    "message": "Nada registrado ainda."
+  },
+  "dialAriaRangePart": {
+    "message": "$FROM$ a $TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "histHeatmapAriaLabel": {
+    "message": "Calendário do mês. As setas movem entre os dias, Enter abre um."
+  },
+  "heatmapLoggedLabel": {
+    "message": "$DATE$ — pontuação $SCORE$, $DURATION$ rastreado",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      },
+      "duration": {
+        "content": "$3"
+      }
+    }
+  },
+  "heatmapWrittenLabel": {
+    "message": "$DATE$ — anotado, sem tempo pintado",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "heatmapEmptyLabel": {
+    "message": "$DATE$ — não registrado",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "legendNotLoggedLabel": {
+    "message": "Não registrado"
+  },
+  "legendWrittenLabel": {
+    "message": "Só anotado"
+  },
+  "legendWrittenTooltip": {
+    "message": "Notas, intenções ou uma reflexão, mas sem tempo pintado no mostrador."
+  },
+  "legendOffTrackLabel": {
+    "message": "Fora do rumo"
+  },
+  "legendMixedLabel": {
+    "message": "Misto"
+  },
+  "legendSolidLabel": {
+    "message": "Sólido+"
+  },
+  "prevMonthLabel": {
+    "message": "Mês anterior"
+  },
+  "nextMonthLabel": {
+    "message": "Próximo mês"
+  },
+  "thisMonthLabel": {
+    "message": "Este mês"
+  },
+  "thisMonthTooltip": {
+    "message": "Voltar para o mês atual"
+  },
+  "monthSummaryLabel": {
+    "message": "Resumo do mês"
+  },
+  "monthSummaryTooltip": {
+    "message": "As médias contam só os dias que você registrou — um dia não registrado não puxa sua média para baixo."
+  },
+  "statDaysLoggedLabel": {
+    "message": "Dias registrados"
+  },
+  "statAvgScoreLabel": {
+    "message": "Pontuação média"
+  },
+  "statAvgProductiveLabel": {
+    "message": "Produtividade média"
+  },
+  "bestDayLabel": {
+    "message": "Melhor dia: $KEY$ ($SCORE$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      }
+    }
+  },
+  "bestDayEmptyLabel": {
+    "message": "Melhor dia: — nada pontuado ainda este mês."
+  },
+  "monthStreakLabel": {
+    "message": "Sequência este mês: $CURRENT$ atual · $LONGEST$ mais longa",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "longest": {
+        "content": "$2"
+      }
+    }
+  },
+  "monthStreakTooltip": {
+    "message": "Dias registrados consecutivos, contados só dentro deste mês — não pega emprestado do mês anterior ou seguinte."
+  },
+  "writtenDaysNote_one": {
+    "message": "$COUNT$ dia está anotado este mês, mas sem tempo pintado no mostrador, então não conta para nada acima. Ele está no registro abaixo.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_other": {
+    "message": "$COUNT$ dias estão anotados este mês, mas sem tempo pintado no mostrador, então não contam para nada acima. Eles estão todos no registro abaixo.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryTrendsLabel": {
+    "message": "Tendências por categoria"
+  },
+  "categoryTrendsTooltip": {
+    "message": "Minutos por categoria, uma barra por semana do calendário no mês visível. A seta compara a primeira semana mostrada com a última."
+  },
+  "trendsEmptyNote": {
+    "message": "Nada registrado este mês ainda — as tendências vão se preencher conforme você pinta os dias no mostrador."
+  },
+  "trendWeekTooltip": {
+    "message": "Semana de $WEEK$: $DURATION$",
+    "placeholders": {
+      "week": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "trendDirectionTooltip": {
+    "message": "Primeira semana comparada com a última mostrada, para que uma única queda no meio não inverta a leitura."
+  },
+  "weekOverWeekLabel": {
+    "message": "Semana a semana"
+  },
+  "weekOverWeekTooltip": {
+    "message": "Esta semana comparada com a semana passada, ambas começando no dia de início de semana configurado."
+  },
+  "wowTrackedLabel": {
+    "message": "Rastreado"
+  },
+  "wowProductiveLabel": {
+    "message": "Produtivo"
+  },
+  "wowAvgScoreLabel": {
+    "message": "Pontuação média"
+  },
+  "wowNoPreviousTooltip": {
+    "message": "Nada registrado na semana passada para comparar."
+  },
+  "wowPreviousTooltip": {
+    "message": "Semana passada: $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "wowDeltaPoints": {
+    "message": "$N$pt",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchNotesLabel": {
+    "message": "Buscar notas"
+  },
+  "searchPlaceholder": {
+    "message": "Buscar suas reflexões…"
+  },
+  "searchAriaLabel": {
+    "message": "Buscar suas reflexões"
+  },
+  "searchTooltip": {
+    "message": "Corresponde às notas de uma linha que você deixa na visão Dia."
+  },
+  "searchPromptNote": {
+    "message": "Digite para buscar suas reflexões."
+  },
+  "searchNoMatchNote": {
+    "message": "Nenhuma nota corresponde a \"$QUERY$\".",
+    "placeholders": {
+      "query": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchResultTooltip": {
+    "message": "Ir para este dia"
+  },
+  "theLogLabel": {
+    "message": "O registro"
+  },
+  "logRangeGroupLabel": {
+    "message": "Quanto do registro mostrar"
+  },
+  "logRangeWeekLabel": {
+    "message": "Esta semana"
+  },
+  "logRangeMonthLabel": {
+    "message": "Este mês"
+  },
+  "logRangeAllLabel": {
+    "message": "Tudo"
+  },
+  "logEmptyNote": {
+    "message": "Nada escrito neste período ainda. Notas e intenções da visão Dia aparecem aqui."
+  },
+  "openDayTooltip": {
+    "message": "Abrir este dia"
+  },
+  "logMeantToLabel": {
+    "message": "Pretendia"
+  },
+  "logWhatHappenedLabel": {
+    "message": "O que aconteceu"
+  },
+  "logMeantToAvoidLabel": {
+    "message": "Pretendia evitar"
+  },
+  "worthNoticingHistoryTooltip": {
+    "message": "Padrões nos seus próprios dados das últimas semanas. Nada aqui é conselho, a menos que você peça."
+  },
+  "worthNoticingSubnote": {
+    "message": "das últimas semanas"
+  },
+  "suggestionShowLabel": {
+    "message": "O que as pessoas fazem sobre isso"
+  },
+  "suggestionHideLabel": {
+    "message": "Ocultar"
+  },
+  "silenceObservationLabel": {
+    "message": "Não mostrar isso de novo"
+  },
+  "silenceObservationTooltip": {
+    "message": "Permanentemente, não só por agora."
+  },
+  "suggestionDisclaimer": {
+    "message": "Estes são exemplos de abordagem, não recomendações — nenhum tem relação com o Daily Dial."
+  },
+  "historyEmptyBefore": {
+    "message": "Ainda sem histórico. Registre alguns dias na visão Dia — depois de uma ou duas semanas, essa aba vira um panorama mês a mês: um mapa de calor, tendências por categoria e comparações semana a semana. Quer ver como fica agora mesmo?"
+  },
+  "historyEmptyAfter": {
+    "message": "preenche três semanas na hora."
+  },
+  "futureNotLogged": {
+    "message": "Isso ainda não aconteceu — você só pode registrar tempo até agora."
+  },
+  "copyYesterdayUpToNowToast": {
+    "message": "Ontem copiado até agora — o resto do dia ainda não aconteceu"
+  },
+  "templateAppliedUpToNowToast": {
+    "message": "Aplicado \"$NAME$\" até agora — o resto do dia ainda não aconteceu",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow": {
+    "message": "$COUNT$ dias preenchidos, parando em agora",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownNotYet": {
+    "message": "Ainda não"
+  },
+  "errPickDates": {
+    "message": "Escolha uma data inicial e uma final."
+  },
+  "errEndDateBeforeStart": {
+    "message": "A data final é anterior à data inicial."
+  },
+  "errRangeTooLong": {
+    "message": "São $COUNT$ dias — um único preenchimento pode cobrir no máximo $MAX$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "errBadStartTime": {
+    "message": "Hora inicial inválida."
+  },
+  "errBadEndTime": {
+    "message": "Hora final inválida."
+  },
+  "errEndTimeBeforeStart": {
+    "message": "A hora final é anterior à hora inicial."
+  },
+  "errTryExample": {
+    "message": "Tente algo como \"9-11 deep work\"."
+  },
+  "errUnreadableEntry": {
+    "message": "Não foi possível entender isso. Tente \"9-11 deep work\" ou \"9pm-11pm study\"."
+  },
+  "errUnreadableTime": {
+    "message": "Não foi possível entender a hora — use 24h (13:30) ou 12h (1:30pm)."
+  },
+  "errNoCategoryGiven": {
+    "message": "Adicione uma categoria, como \"9-11 deep work\"."
+  },
+  "errNoCategoryMatch": {
+    "message": "Nenhuma categoria corresponde a \"$TEXT$\".",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "errCategoryAmbiguous": {
+    "message": "\"$TEXT$\" corresponde a $MATCHES$ — seja mais específico.",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      },
+      "matches": {
+        "content": "$2"
+      }
+    }
+  },
+  "errFileEmpty": {
+    "message": "Esse arquivo está vazio."
+  },
+  "errNotDailyDialCsv": {
+    "message": "Isso não parece ser uma exportação CSV do Daily Dial."
+  },
+  "errCsvBadDate": {
+    "message": "Linha $ROW$: data inválida \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadStartTime": {
+    "message": "Linha $ROW$: hora inicial inválida \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadEndTime": {
+    "message": "Linha $ROW$: hora final inválida \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvUnknownCategory": {
+    "message": "Linha $ROW$: categoria desconhecida \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBlockTooShort": {
+    "message": "Linha $ROW$: o bloco é menor que $MIN$ minutos.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "min": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvEndNotAfterStart": {
+    "message": "Linha $ROW$: o fim não é depois do início.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      }
+    }
+  },
+  "errNotValidJson": {
+    "message": "Esse arquivo não é um JSON válido."
+  },
+  "errNotDailyDialBackup": {
+    "message": "Isso não parece ser um backup do Daily Dial."
+  },
+  "errMissingSchemaVersion": {
+    "message": "Versão do esquema ausente — isso não parece ser um backup do Daily Dial."
+  },
+  "errBackupTooNew": {
+    "message": "Este backup foi feito por uma versão mais nova do Daily Dial (esquema $VERSION$). Atualize a extensão primeiro.",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapNothingLogged": {
+    "message": "Nada registrado na semana passada. Vale um novo começo esta semana?"
+  },
+  "recapTrackedProductive": {
+    "message": "$DURATION$ rastreado, $PERCENT$% produtivo.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapTopCategory": {
+    "message": "A maior parte foi para $CATEGORY$.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapIntentions": {
+    "message": "Você cumpriu $DONE$ de $SET$ intenções.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapAskAdjust": {
+    "message": "Algo para ajustar esta semana?"
+  },
+  "obsOvercommitHeadline": {
+    "message": "Você está definindo mais intenções do que consegue terminar"
+  },
+  "obsOvercommitDetail": {
+    "message": "$SET$ intenções definidas nos últimos $DAYS$ dias, apenas $DONE$ concluídas.",
+    "placeholders": {
+      "set": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "done": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsNoBreaksHeadline": {
+    "message": "Nenhum descanso ou tempo neutro foi registrado em $DAYS$ dias",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsNoBreaksDetail": {
+    "message": "$DURATION$ rastreado nos últimos $DAYS$ dias, nada disso em uma categoria neutra.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsDistractionHeadline": {
+    "message": "A distração vem aumentando nos últimos $DAYS$ dias",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsDistractionDetail": {
+    "message": "$CURRENT$ registrado como distração nos últimos $DAYS$ dias, subindo de $PREVIOUS$ nos $DAYS$ dias anteriores a esses.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "previous": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsCoverageHeadline": {
+    "message": "O registro caiu em comparação com os $DAYS$ dias anteriores",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsCoverageDetail": {
+    "message": "$RECENT$/dia rastreado nos últimos $RECENTDAYS$ dias, caindo de $PRIOR$/dia nos $PRIORDAYS$ dias anteriores a esses.",
+    "placeholders": {
+      "recent": {
+        "content": "$1"
+      },
+      "recentdays": {
+        "content": "$2"
+      },
+      "prior": {
+        "content": "$3"
+      },
+      "priordays": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourHeadline": {
+    "message": "$HOUR$ é sua hora mais produtiva, em $PROTECTED$ de $LOGGED$ dias registrados",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail": {
+    "message": "Nos últimos $DAYS$ dias, $HOUR$ acumulou mais tempo produtivo que qualquer outra hora, mas continuou produtiva em apenas $PROTECTED$ de $LOGGED$ dias registrados.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline": {
+    "message": "Tudo o que foi registrado nos últimos $DAYS$ dias está em apenas $COUNT$ categorias",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaDetail": {
+    "message": "\"$CATEGORY$\" está ativada, mas registrou zero minutos nesse período — um dos seus seis espaços de categoria está sem uso.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptMorning": {
+    "message": "Como foi sua manhã? Pinte enquanto ainda se lembra."
+  },
+  "promptEveningUnlogged": {
+    "message": "$DURATION$ do dia de hoje ainda não foi registrado. Feche o dia e adicione seu porquê em uma linha.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptEveningComplete": {
+    "message": "Hoje está totalmente registrado. Adicione seu porquê em uma linha enquanto está fresco."
+  },
+  "insightNothingLogged": {
+    "message": "Nada registrado ainda. Escolha uma categoria e arraste ao redor do anel para pintar seu primeiro bloco."
+  },
+  "insightProductivePct": {
+    "message": "<b>$PERCENT$%</b> do seu tempo rastreado foi produtivo.",
+    "placeholders": {
+      "percent": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightMostlyDrain": {
+    "message": "<b>$DURATION$</b> foi para tempo que você marcou como desgaste — mais do que você gastou avançando.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightTopCategory": {
+    "message": "<b>$CATEGORY$</b> liderou o dia com <b>$DURATION$</b>.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "insightFragmented": {
+    "message": "Mas veio em pedaços curtos — seu trecho ininterrupto mais longo foi de apenas $DURATION$.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightLongStretch": {
+    "message": "Seu trecho ininterrupto mais longo foi de <b>$DURATION$</b>.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightStillUnlogged": {
+    "message": "$DURATION$ ainda não foi registrado.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "scoreNoData": {
+    "message": "Sem dados ainda"
+  },
+  "scoreTooLittle": {
+    "message": "Pouco registrado para pontuar"
+  },
+  "scoreLockedIn": {
+    "message": "Totalmente focado"
+  },
+  "scoreSolid": {
+    "message": "Sólido"
+  },
+  "scoreMixedBag": {
+    "message": "Resultado misto"
+  },
+  "scoreOffTrack": {
+    "message": "Fora do rumo"
+  },
+  "sampleReflectionGoodFocus": {
+    "message": "Bom foco depois do almoço."
+  },
+  "sampleReflectionDistracted": {
+    "message": "Distraído a maior parte da noite."
+  },
+  "sampleReflectionRough": {
+    "message": "Dia difícil, principalmente rolando a tela."
+  },
+  "shareScoreLabel": {
+    "message": "pontuação"
+  },
+  "shareNothingLogged": {
+    "message": "Nada registrado ainda"
+  },
+  "shareTrackedLine": {
+    "message": "$DURATION$ rastreado · $PERCENT$% produtivo",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareLedLine": {
+    "message": "$CATEGORY$ liderou com $DURATION$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareStreakLine": {
+    "message": "🔥 sequência de $COUNT$ dias",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "durationHourSuffix": {
+    "message": "h"
+  },
+  "durationMinuteSuffix": {
+    "message": "min"
+  },
+  "sug_intentionOvercommit_lead": {
+    "message": "Três ou quatro coisas que você realmente termina valem mais que dez que você pretendia fazer."
+  },
+  "sug_intentionOvercommit_text1": {
+    "message": "Defina menos. Uma coisa que precisa acontecer, e duas que seriam boas, já é um dia cheio para a maioria das pessoas."
+  },
+  "sug_intentionOvercommit_text2": {
+    "message": "Torne cada uma pequena o bastante para terminar de uma vez — \"rascunhar o e-mail\" em vez de \"resolver a inscrição\"."
+  },
+  "sug_intentionOvercommit_text3": {
+    "message": "Mova as que ficam se repetindo para uma única nota de \"algum dia\", para que parem de reaparecer como o fracasso de hoje."
+  },
+  "sug_noBreaks_lead": {
+    "message": "Descanso que nunca é registrado tende a ser descanso que nunca acontece."
+  },
+  "sug_noBreaks_text1": {
+    "message": "Coloque as pausas em um timer, para que parar não seja uma decisão que você precisa tomar enquanto está concentrado."
+  },
+  "sug_noBreaks_text2": {
+    "message": "Tire a pausa completamente longe da tela — uma caminhada, comida, ou qualquer coisa que não seja outra janela."
+  },
+  "sug_noBreaks_text3": {
+    "message": "Se você já está descansando mas não registrando, registre. Um dia que parece dezesseis horas ininterruptas não é o dia que você realmente teve."
+  },
+  "sug_peakHoursUnprotected_lead": {
+    "message": "A hora em que você é melhor merece ser defendida antes que qualquer outra coisa a reivindique."
+  },
+  "sug_peakHoursUnprotected_text1": {
+    "message": "Bloqueie no calendário que outras pessoas conseguem ver, para que o horário já esteja reservado antes que alguém o tome."
+  },
+  "sug_peakHoursUnprotected_text2": {
+    "message": "Silencie tudo durante essa hora, em vez de contar com a força de vontade de não olhar."
+  },
+  "sug_peakHoursUnprotected_text3": {
+    "message": "Comece a coisa mais difícil do dia nessa janela, não a mais fácil. O trabalho fácil sobrevive a um horário pior; o difícil, muitas vezes não."
+  },
+  "sug_peakHoursUnprotected_text4": {
+    "message": "Se puder, mude de lugar durante essa hora. Um cômodo diferente ou uma biblioteca fazem mais do que a maioria dos aplicativos."
+  },
+  "sug_distractionTrend_lead": {
+    "message": "O aumento da distração costuma ser um problema de atrito, não de força de vontade — o objetivo é tornar a coisa fácil um pouco mais difícil."
+  },
+  "sug_distractionTrend_text1": {
+    "message": "Bloqueie os sites que consomem seu tempo, mas só durante as horas em que você realmente quer trabalhar — um bloqueio o dia todo costuma acabar sendo desligado por completo."
+  },
+  "sug_distractionTrend_text2": {
+    "message": "Adicione uma pausa antes de o app abrir, em vez de bloqueá-lo. Alguns segundos de atrito eliminam a maior parte do hábito de abrir sem decidir."
+  },
+  "sug_distractionTrend_text3": {
+    "message": "Torne o celular chato por um tempo, em vez de proibido."
+  },
+  "sug_distractionTrend_text4": {
+    "message": "Deixe o celular em outro cômodo enquanto trabalha. Nada glamoroso, gratuito, e mais confiável do que qualquer coisa que você possa instalar no próprio aparelho que está tentando evitar."
+  },
+  "sug_distractionTrend_text5": {
+    "message": "Substitua em vez de remover — decida para onde o tempo vai em vez disso, ou ele tende a encontrar o caminho de volta."
+  },
+  "sug_coverageDecline_lead": {
+    "message": "Registrar menos costuma ser o primeiro sinal de que um período está indo mal — e o que dificulta perceber o quão mal."
+  },
+  "sug_coverageDecline_text1": {
+    "message": "Registre em dois ou três momentos fixos do dia, em vez de reconstruir tudo à meia-noite. Os próprios lembretes do Daily Dial (Configurações → Lembretes) existem para isso."
+  },
+  "sug_coverageDecline_text2": {
+    "message": "Registre por alto em vez de não registrar nada. Um dia aproximado vale muito mais que um em branco, e você sempre pode refinar depois."
+  },
+  "sug_coverageDecline_text3": {
+    "message": "Use \"O dia, de ponta a ponta\" abaixo do mostrador para preencher lacunas em poucos minutos — as linhas já estão lá, só precisam de palavras."
+  },
+  "sug_coverageDecline_text4": {
+    "message": "Se deixou de valer o esforço, isso também vale saber. Um rastreador do qual você se ressente é um que você vai abandonar."
+  },
+  "sug_untrackedLifeArea_lead": {
+    "message": "O que não é uma categoria não pode aparecer em nenhum desses números — e o que não aparece é fácil de deixar de lado."
+  },
+  "sug_untrackedLifeArea_text1": {
+    "message": "Renomeie uma categoria que você não usa para cobrir algo que está faltando — tempo com outras pessoas, exercício, sono, ou qualquer coisa sobre a qual você gostaria de ser honesto consigo mesmo (Configurações → Categorias)."
+  },
+  "sug_untrackedLifeArea_text2": {
+    "message": "Dê a ela um peso neutro em vez de produtivo. O objetivo é ver, não pontuar."
+  },
+  "sug_untrackedLifeArea_text3": {
+    "message": "Depois que virar uma categoria, as metas e as tendências do Histórico que você já tem farão o resto sem esforço adicional."
+  },
+  "sugPlat_Stretchly": {
+    "message": "Windows · macOS · Linux · grátis, código aberto"
+  },
+  "sugPlat_TimeOut": {
+    "message": "macOS · grátis"
+  },
+  "sugPlat_Focusmodes": {
+    "message": "macOS · iOS · integrado"
+  },
+  "sugPlat_DigitalWellbeingFocusmode": {
+    "message": "Android · integrado"
+  },
+  "sugPlat_SelfControl": {
+    "message": "macOS · grátis, código aberto"
+  },
+  "sugPlat_ColdTurkey": {
+    "message": "Windows · macOS · versão gratuita"
+  },
+  "sugPlat_Freedom": {
+    "message": "Windows · macOS · iOS · Android · pago"
+  },
+  "sugPlat_onesec": {
+    "message": "iOS · Android · versão gratuita"
+  },
+  "sugPlat_AssistiveAccess": {
+    "message": "iOS 17+ · integrado — reduz o celular a alguns poucos apps grandes e simples"
+  },
+  "sugPlat_ScreenTimeapplimits": {
+    "message": "iOS · macOS · integrado"
+  }
+}

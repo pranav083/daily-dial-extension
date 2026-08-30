@@ -527,7 +527,7 @@
     "message": "Independiente de los objetivos diarios de arriba — fija uno, ambos o ninguno por categoría."
   },
   "goalOffPlaceholder": {
-    "message": "desactivado"
+    "message": "ninguna"
   },
   "goalAriaLabelDaily": {
     "message": "Objetivo diario para $NAME$, en minutos",

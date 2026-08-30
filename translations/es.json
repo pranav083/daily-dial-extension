@@ -162,7 +162,7 @@
  "weeklyGoalsSectionLabel": "Objetivos semanales, por categoría",
  "weeklyGoalsSectionTooltip": "Para lo que no ocurre todos los días — un objetivo para la semana entera en vez de cada día individual.",
  "weeklyGoalsNote": "Independiente de los objetivos diarios de arriba — fija uno, ambos o ninguno por categoría.",
- "goalOffPlaceholder": "desactivado",
+ "goalOffPlaceholder": "ninguna",
  "goalAriaLabelDaily": "Objetivo diario para $NAME$, en minutos",
  "goalAriaLabelWeekly": "Objetivo semanal para $NAME$, en minutos",
  "challengeSectionLabel": "Reto",

@@ -45,7 +45,7 @@
  "dialLayoutSwitchLabel": "डायल का लेआउट",
  "dialModeSingleLabel": "24घं",
  "dialModeSingleTooltip": "एक 24-घंटे का घेरा",
- "dialModeAmpmLabel": "पूर्वाह्न+अपराह्न",
+ "dialModeAmpmLabel": "पू+अप",
  "dialModeAmpmTooltip": "दो 12-घंटे के घेरे, अगल-बगल",
  "dialModeToggleLabel": "पू⇄अप",
  "dialModeToggleTooltip": "एक 12-घंटे का घेरा, पूर्वाह्न/अपराह्न स्विच के साथ",
