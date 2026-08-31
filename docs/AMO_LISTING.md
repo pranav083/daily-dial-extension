@@ -40,6 +40,18 @@ plausible-looking URI that Google will reject.
 redirect URIs is a list; this is an addition, not a replacement. Console:
 <https://console.cloud.google.com/apis/credentials>
 
+**Status: registered and verified** on client
+`752491211125-e7flupmel0jlpds3cdvo78rjfldrdr9n` (the one hardcoded in
+`drive.js` — Google validates the URI against that specific client, so it had
+to be that one and not the other client in the same project).
+
+To re-check it later without a browser, request the auth URL and follow the
+redirects. Note that Google **defers** redirect validation past the sign-in
+hop, so a naive request returns 302 for anything at all — including a URI that
+was never registered. Follow redirects, and always test a deliberately bogus
+URI alongside the real one: if the bogus one does not report
+`redirect_uri_mismatch`, the test is not discriminating and proves nothing.
+
 > This is the reason the add-on id is pinned in `scripts/build-firefox.mjs`.
 > Firefox derives the subdomain from the id, so an unpinned id produces a new
 > redirect URI on every temporary install and no registration can ever match.
@@ -87,14 +99,94 @@ Paint your day on a 24-hour dial and see where the time really went. One drag lo
 
 ### Description
 
-Use the Chrome detailed description from `STORE_LISTING.md`, with three edits:
+Paste this as-is. It is the Chrome description with the three edits AMO needs
+already applied: every "Chrome" is now "Firefox", the per-bullet emoji are
+gone (they read as native on the Web Store and as noise here), and it is plain
+text — AMO renders no Markdown, only a small HTML subset (`<b> <i> <a> <ul>
+<li> <br>`), so blank lines between paragraphs is the safe form.
 
-1. **Replace every "Chrome" with "Firefox"** — including "Reminders only fire
-   while Chrome is running" and the host-permissions line.
-2. **Cut the emoji down.** They read as native on the Web Store and as noise
-   on AMO. Keep the section headings, drop the per-bullet ones.
-3. AMO renders a **small subset of HTML** (`<b> <i> <a> <ul> <li> <br>`) and
-   no Markdown. Plain text with blank lines between paragraphs is safest.
+```
+Paint your day on a 24-hour dial. Pick a category, drag across the hours — a full day logged in about 10 seconds.
+
+WHY ANOTHER TIME TRACKER
+
+Forms are slow. A category, a date, a start, an end, eight times a day. Nobody keeps that up.
+
+Auto-trackers miss real life. No interview, no textbook, no conversation — just window titles. They can tell you that you had Firefox open. They cannot tell you what you were doing.
+
+Daily Dial asks for one drag. Fast enough to do every day, honest enough to catch everything.
+
+HOW IT WORKS
+
+• Drag around the ring to paint — or press 1-6 for a pen, 0 or E for the eraser
+• Type it instead: "9-11 deep work" or "9pm-11pm study"
+• Ctrl+Z / Cmd+Z undoes one stroke at a time, 30 deep — Ctrl+Shift+Z redoes
+• Ctrl+Shift+D / Cmd+Shift+D opens the dial from anywhere
+• Copy yesterday into today in one click
+• A live needle always marks "now"
+• Jump days with the arrows, or click any bar in the 7-day strip
+
+WAS TODAY ACTUALLY PRODUCTIVE?
+
+• A daily score, weighted by your own categories
+• The share of tracked time that was productive
+• Your longest unbroken focus streak
+• A plain-language read: what led, what dragged, blocks or fragments
+• Untracked time is shown, never hidden — no quietly flattered numbers
+
+STAY WITH IT
+
+• A streak counter that forgives one missed day a week, so one slip doesn't cost you a month
+• Optional daily goals per category, with a progress bar
+• An optional weekly recap: time tracked, top category, best day, streak
+
+MADE YOUR OWN
+
+Six category slots — rename them, reweight them, hide the ones you don't use.
+Defaults: Deep Work, Applications, Study, Admin, Break, Distraction.
+
+Renaming is safe. Days store the slot, never the name, so your history never rewrites itself behind you.
+
+IN YOUR LANGUAGE
+
+English, العربية, 中文, Français, Deutsch, हिन्दी, 日本語, Português (BR), Русский, Español.
+
+It follows your browser's language, or you can pick one yourself in Settings. Arabic reads right to left, layout and all. Only the app is translated — your own notes and category names stay exactly as you wrote them.
+
+GENTLE REMINDERS
+
+Two optional daily nudges at times you choose, and an optional weekly recap. All of it is off until you turn it on.
+
+YOUR DATA STAYS YOURS
+
+• No account with us, and no sign-in required
+• No server of ours — by default there is nowhere for your data to go
+• No analytics, no telemetry, no tracking
+• No host permissions, so Firefox itself will not let it contact websites even if the code tried
+• No content scripts — it never touches your other tabs
+• No third-party code, and no "tabs" permission (that one reads as "read your browsing history", and a time logger has no business asking)
+• Export to CSV for Excel or Sheets, or a full JSON backup, restored by merge or replace
+• "Share as image" renders your day as a PNG, built entirely on your own device
+
+OPTIONAL: BACK UP TO YOUR OWN GOOGLE DRIVE
+
+The one exception to "nothing leaves your device", and it is off until you switch it on.
+
+Sign in with Google and the backup goes to a private, app-only folder in your own Drive. It is invisible in your regular Drive and unreachable by any other app, because the add-on can only ever see files it created itself. Disconnect at any time to revoke access, or delete the file permanently with one more click. Nothing syncs in the background — every backup and every restore is a click you make.
+
+OPEN SOURCE
+
+MIT licensed. A few small files of plain, unminified JavaScript — readable in an afternoon.
+
+https://github.com/pranav083/daily-dial-extension
+
+WORTH KNOWING
+
+• Reminders only fire while Firefox is running
+• There is no automatic cross-device sync; Google Drive backup covers manual restore instead
+• Blocks round to the nearest 15 minutes
+• It is manual on purpose. You have to remember to log. That is the trade, and it is the reason the data is worth anything.
+```
 
 ### Categories
 
