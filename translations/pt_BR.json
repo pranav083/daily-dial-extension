@@ -588,5 +588,11 @@
  "themeToggleLabel": "Tema: $CURRENT$. Clique para $NEXT$.",
  "themeSwitchedToast": "Tema: $NAME$",
  "reportIssueLabel": "Relatar um erro ou sugerir algo",
- "reportIssueNote": " — abre o GitHub. Nada do seu dia é anexado; só o que você escrever."
+ "reportIssueNote": " — abre o GitHub. Nada do seu dia é anexado; só o que você escrever.",
+ "llmImportLabel": "Trazer dados de outro lugar",
+ "llmImportTooltip": "Copia um prompt que descreve o formato CSV deste app, incluindo os nomes das suas categorias. Cole em qualquer assistente de IA junto com seus registros antigos.",
+ "copyImportPromptLabel": "Copiar prompt para um assistente de IA",
+ "llmImportNote": "Cole em qualquer assistente, acrescente seus registros antigos abaixo e importe o CSV devolvido. O prompt contém o formato e os nomes das suas categorias — nada sobre seu tempo registrado, e esta extensão não envia nada a lugar nenhum.",
+ "importPromptCopiedToast": "Prompt copiado — cole em um assistente junto com seus registros antigos",
+ "copyFailedToast": "Não foi possível copiar para a área de transferência."
 }

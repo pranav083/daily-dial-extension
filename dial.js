@@ -46,6 +46,7 @@ import {
   WEIGHT_GLYPH,
   angleAt,
   buildBackup,
+  buildImportPrompt,
   excludeDays,
   buildCsv,
   buildInsight,
@@ -3665,6 +3666,15 @@ function wireEvents() {
   // `settings`, so it never travels in a backup to someone else's device.
   $("language-select").addEventListener("change", onLanguageChange);
   $("theme-toggle").addEventListener("click", cycleTheme);
+
+  $("copy-import-prompt").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(buildImportPrompt(categories));
+      toast(t("importPromptCopiedToast"));
+    } catch {
+      toast(t("copyFailedToast"));
+    }
+  });
 
   // ---- data: export/import ----
   $("export-csv").addEventListener("click", exportCsv);

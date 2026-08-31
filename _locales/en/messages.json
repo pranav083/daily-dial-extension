@@ -956,6 +956,30 @@
     "message": "JSON backups keep everything (days, categories, settings). CSV files only restore blocks of time, matched against your current categories by name. Merge adds missing days and leaves existing ones untouched; Replace wipes your history and restores exactly what's in the file.",
     "description": "Note explaining the difference between JSON and CSV import."
   },
+  "llmImportLabel": {
+    "message": "Bringing data from somewhere else",
+    "description": "Heading in Settings → Data for the AI-assistant import helper."
+  },
+  "llmImportTooltip": {
+    "message": "Copies a prompt describing this app's CSV format, including your category names. Paste it into any AI assistant along with your old records.",
+    "description": "Tooltip on that heading."
+  },
+  "copyImportPromptLabel": {
+    "message": "Copy prompt for an AI assistant",
+    "description": "Button that copies the import prompt to the clipboard."
+  },
+  "llmImportNote": {
+    "message": "Paste it into any assistant, add your old records underneath, and import the CSV it gives back. The prompt contains the format and your category names — nothing about your logged time, and nothing is sent anywhere by this extension.",
+    "description": "Note under the button."
+  },
+  "importPromptCopiedToast": {
+    "message": "Prompt copied — paste it into an assistant with your old records",
+    "description": "Toast after the prompt is copied."
+  },
+  "copyFailedToast": {
+    "message": "Couldn't copy to the clipboard.",
+    "description": "Toast when a clipboard write fails."
+  },
   "fileReadErrorToast": {
     "message": "Couldn't read that file.",
     "description": "Toast shown when a chosen import file can't be read."

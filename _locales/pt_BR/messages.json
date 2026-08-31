@@ -2549,5 +2549,23 @@
   },
   "reportIssueNote": {
     "message": " — abre o GitHub. Nada do seu dia é anexado; só o que você escrever."
+  },
+  "llmImportLabel": {
+    "message": "Trazer dados de outro lugar"
+  },
+  "llmImportTooltip": {
+    "message": "Copia um prompt que descreve o formato CSV deste app, incluindo os nomes das suas categorias. Cole em qualquer assistente de IA junto com seus registros antigos."
+  },
+  "copyImportPromptLabel": {
+    "message": "Copiar prompt para um assistente de IA"
+  },
+  "llmImportNote": {
+    "message": "Cole em qualquer assistente, acrescente seus registros antigos abaixo e importe o CSV devolvido. O prompt contém o formato e os nomes das suas categorias — nada sobre seu tempo registrado, e esta extensão não envia nada a lugar nenhum."
+  },
+  "importPromptCopiedToast": {
+    "message": "Prompt copiado — cole em um assistente junto com seus registros antigos"
+  },
+  "copyFailedToast": {
+    "message": "Não foi possível copiar para a área de transferência."
   }
 }

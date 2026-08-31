@@ -1453,6 +1453,55 @@ export function buildCsv(days, categories) {
 
 const CSV_HEADER = ["Date", "Start", "End", "Duration (min)", "Category", "Weight", "Note"];
 
+/**
+ * A prompt someone can paste into any assistant, along with whatever their
+ * old records look like, to get a file this importer will accept.
+ *
+ * Built here rather than written as a fixed string in the UI because it has
+ * to name *this* user's categories: the importer matches them by exact name,
+ * so a prompt listing the defaults would produce a file that fails for
+ * anyone who renamed one. Generating it also means it cannot drift from the
+ * parser — both read CSV_HEADER, and a test asserts a prompt-shaped example
+ * survives a round trip through parseCsv.
+ *
+ * Deliberately not a network feature. It copies text to the clipboard; where
+ * that text goes next is the user's business, and nothing about their day is
+ * in it — only the format and their category names.
+ */
+export function buildImportPrompt(categories) {
+  const names = categories.filter((c) => c.enabled).map((c) => c.name);
+  return [
+    "I have some records of how I spent my time. Convert them into a CSV file",
+    "for a time-tracking app, following these rules exactly.",
+    "",
+    "Output the header line first, exactly this and nothing else:",
+    CSV_HEADER.join(","),
+    "",
+    "Then one row per block of time. Rules:",
+    "",
+    `- Date: YYYY-MM-DD, e.g. ${dateKey(new Date())}`,
+    "- Start and End: 24-hour HH:MM, e.g. 09:00 and 11:30",
+    `- Start and End must fall on ${SLOT_MIN}-minute boundaries (:00, :15, :30, :45)`,
+    `- Each block must be at least ${SLOT_MIN} minutes long; End must be after Start`,
+    "- A block ending at midnight is written as 00:00",
+    "- Blocks on the same date must not overlap each other",
+    "- Category: must be exactly one of these, copied character for character:",
+    ...names.map((n) => `    ${n}`),
+    "- If something does not fit a category, choose the closest one rather than inventing a new name",
+    '- "Duration (min)" and "Weight": leave both empty. They are ignored on import.',
+    "- Note: optional. It becomes that day's single one-line reflection, so use it",
+    "  on at most one row per date — a second note for the same date replaces the first.",
+    "  If it contains a comma, wrap it in double quotes.",
+    "",
+    "Output only the CSV. No explanation, no code fence, no extra columns,",
+    "no blank rows between records. If a record is too vague to place, leave",
+    "it out rather than guessing at a time.",
+    "",
+    "Here are my records:",
+    "",
+  ].join("\n");
+}
+
 /** RFC-4180-ish parse: quoted fields, "" escaping, embedded commas/newlines. */
 function parseCsvRows(text) {
   const rows = [];

@@ -2384,5 +2384,23 @@
   },
   "reportIssueNote": {
     "message": " — GitHub が開きます。あなたの記録は一切添付されず、書いた内容だけが送られます。"
+  },
+  "llmImportLabel": {
+    "message": "他から記録を持ち込む"
+  },
+  "llmImportTooltip": {
+    "message": "このアプリのCSV形式と、あなたのカテゴリ名を含むプロンプトをコピーします。過去の記録と一緒に任意のAIアシスタントに貼り付けてください。"
+  },
+  "copyImportPromptLabel": {
+    "message": "AIアシスタント用のプロンプトをコピー"
+  },
+  "llmImportNote": {
+    "message": "任意のアシスタントに貼り付け、その下に過去の記録を足して、返ってきたCSVを取り込んでください。プロンプトに含まれるのは形式とカテゴリ名だけで、記録した時間の内容は含まれません。この拡張機能はどこにも送信しません。"
+  },
+  "importPromptCopiedToast": {
+    "message": "プロンプトをコピーしました — 過去の記録と一緒にアシスタントへ貼り付けてください"
+  },
+  "copyFailedToast": {
+    "message": "クリップボードにコピーできませんでした。"
   }
 }

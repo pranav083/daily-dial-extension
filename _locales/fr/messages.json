@@ -2549,5 +2549,23 @@
   },
   "reportIssueNote": {
     "message": " — ouvre GitHub. Rien de ta journée n’est joint ; seul ce que tu écris part."
+  },
+  "llmImportLabel": {
+    "message": "Importer des données d’ailleurs"
+  },
+  "llmImportTooltip": {
+    "message": "Copie un prompt décrivant le format CSV de cette app, avec le nom de tes catégories. Colle-le dans n’importe quel assistant IA avec tes anciens relevés."
+  },
+  "copyImportPromptLabel": {
+    "message": "Copier le prompt pour un assistant IA"
+  },
+  "llmImportNote": {
+    "message": "Colle-le dans un assistant, ajoute tes anciens relevés en dessous, puis importe le CSV obtenu. Le prompt contient le format et le nom de tes catégories — rien sur ton temps enregistré, et cette extension n’envoie rien nulle part."
+  },
+  "importPromptCopiedToast": {
+    "message": "Prompt copié — colle-le dans un assistant avec tes anciens relevés"
+  },
+  "copyFailedToast": {
+    "message": "Impossible de copier dans le presse-papiers."
   }
 }

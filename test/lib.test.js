@@ -42,6 +42,7 @@ import {
   SLOT_MIN,
   UNTRACKED,
   buildBackup,
+  buildImportPrompt,
   excludeDays,
   buildCsv,
   buildInsight,
@@ -2021,4 +2022,47 @@ test("summarizeMultiDayFill counts days in range and how many already have paint
   const summary = summarizeMultiDayFill(days, keys, 36, 68); // 09:00-17:00
   assert.equal(summary.dayCount, 4);
   assert.equal(summary.paintedCount, 1);
+});
+
+/* ---------- the AI import prompt ---------- */
+
+test("buildImportPrompt names the user's own categories, not the defaults", () => {
+  const mine = [
+    { id: 0, name: "Thesis", weight: 1, enabled: true, cls: "cat-0", aliases: [] },
+    { id: 1, name: "Job hunt", weight: 1, enabled: true, cls: "cat-1", aliases: [] },
+    { id: 2, name: "Hidden", weight: 0, enabled: false, cls: "cat-2", aliases: [] },
+  ];
+  const prompt = buildImportPrompt(mine);
+  assert.match(prompt, /Thesis/);
+  assert.match(prompt, /Job hunt/);
+  assert.doesNotMatch(prompt, /Deep Work/, "the defaults would produce a file that fails to import");
+  assert.doesNotMatch(prompt, /Hidden/, "a hidden category is not a valid target");
+});
+
+test("buildImportPrompt states the exact header parseCsv demands", () => {
+  const prompt = buildImportPrompt(cats);
+  // If the header ever changes, this fails rather than the prompt quietly
+  // describing a format the parser has moved on from.
+  assert.match(prompt, /^Date,Start,End,Duration \(min\),Category,Weight,Note$/m);
+});
+
+test("a file following the prompt's rules actually imports", () => {
+  // The point of the prompt is a file parseCsv accepts. Build one obeying
+  // exactly what it says — empty Duration and Weight, 15-minute boundaries,
+  // midnight as 00:00 — and put it through the real parser.
+  const csv = [
+    "Date,Start,End,Duration (min),Category,Weight,Note",
+    "2026-08-29,09:00,11:30,,Deep Work,,",
+    "2026-08-29,13:00,14:15,,Study,,\"Notes, with a comma\"",
+    "2026-08-29,22:00,00:00,,Break,,",
+  ].join("\n");
+  const out = parseCsv(csv, cats);
+  assert.ok(out.ok, `expected the prompt's own format to import, got: ${out.ok ? "" : render(out.error)}`);
+  const day = out.data.get("2026-08-29");
+  assert.equal(day.slots[36], 0, "09:00 is Deep Work");
+  assert.equal(day.slots[52], 2, "13:00 is Study");
+  assert.equal(day.slots[95], 4, "the block ending 00:00 runs to the end of the day");
+  // The Note column becomes the day's one-line reflection, not a per-block
+  // note — which is why the prompt says to use it on at most one row per date.
+  assert.equal(day.reflection, "Notes, with a comma", "the quoted note survived its comma");
 });

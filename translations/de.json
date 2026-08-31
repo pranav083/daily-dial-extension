@@ -588,5 +588,11 @@
  "themeToggleLabel": "Design: $CURRENT$. Klicken für $NEXT$.",
  "themeSwitchedToast": "Design: $NAME$",
  "reportIssueLabel": "Fehler melden oder etwas vorschlagen",
- "reportIssueNote": " — öffnet GitHub. Nichts aus deinem Tag wird angehängt; nur was du schreibst."
+ "reportIssueNote": " — öffnet GitHub. Nichts aus deinem Tag wird angehängt; nur was du schreibst.",
+ "llmImportLabel": "Daten von woanders übernehmen",
+ "llmImportTooltip": "Kopiert einen Prompt mit dem CSV-Format dieser App und deinen Kategorienamen. Füg ihn in einen KI-Assistenten ein, zusammen mit deinen alten Aufzeichnungen.",
+ "copyImportPromptLabel": "Prompt für einen KI-Assistenten kopieren",
+ "llmImportNote": "Füg ihn in einen Assistenten ein, häng deine alten Aufzeichnungen darunter und importiere das zurückgegebene CSV. Der Prompt enthält das Format und deine Kategorienamen — nichts über deine erfasste Zeit, und diese Erweiterung sendet nichts irgendwohin.",
+ "importPromptCopiedToast": "Prompt kopiert — füg ihn mit deinen alten Aufzeichnungen in einen Assistenten ein",
+ "copyFailedToast": "Kopieren in die Zwischenablage fehlgeschlagen."
 }

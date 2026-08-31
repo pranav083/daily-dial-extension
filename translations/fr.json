@@ -588,5 +588,11 @@
  "themeToggleLabel": "Thème : $CURRENT$. Clique pour $NEXT$.",
  "themeSwitchedToast": "Thème : $NAME$",
  "reportIssueLabel": "Signaler un bug ou proposer une idée",
- "reportIssueNote": " — ouvre GitHub. Rien de ta journée n’est joint ; seul ce que tu écris part."
+ "reportIssueNote": " — ouvre GitHub. Rien de ta journée n’est joint ; seul ce que tu écris part.",
+ "llmImportLabel": "Importer des données d’ailleurs",
+ "llmImportTooltip": "Copie un prompt décrivant le format CSV de cette app, avec le nom de tes catégories. Colle-le dans n’importe quel assistant IA avec tes anciens relevés.",
+ "copyImportPromptLabel": "Copier le prompt pour un assistant IA",
+ "llmImportNote": "Colle-le dans un assistant, ajoute tes anciens relevés en dessous, puis importe le CSV obtenu. Le prompt contient le format et le nom de tes catégories — rien sur ton temps enregistré, et cette extension n’envoie rien nulle part.",
+ "importPromptCopiedToast": "Prompt copié — colle-le dans un assistant avec tes anciens relevés",
+ "copyFailedToast": "Impossible de copier dans le presse-papiers."
 }

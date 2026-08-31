@@ -2549,5 +2549,23 @@
   },
   "reportIssueNote": {
     "message": " — öffnet GitHub. Nichts aus deinem Tag wird angehängt; nur was du schreibst."
+  },
+  "llmImportLabel": {
+    "message": "Daten von woanders übernehmen"
+  },
+  "llmImportTooltip": {
+    "message": "Kopiert einen Prompt mit dem CSV-Format dieser App und deinen Kategorienamen. Füg ihn in einen KI-Assistenten ein, zusammen mit deinen alten Aufzeichnungen."
+  },
+  "copyImportPromptLabel": {
+    "message": "Prompt für einen KI-Assistenten kopieren"
+  },
+  "llmImportNote": {
+    "message": "Füg ihn in einen Assistenten ein, häng deine alten Aufzeichnungen darunter und importiere das zurückgegebene CSV. Der Prompt enthält das Format und deine Kategorienamen — nichts über deine erfasste Zeit, und diese Erweiterung sendet nichts irgendwohin."
+  },
+  "importPromptCopiedToast": {
+    "message": "Prompt kopiert — füg ihn mit deinen alten Aufzeichnungen in einen Assistenten ein"
+  },
+  "copyFailedToast": {
+    "message": "Kopieren in die Zwischenablage fehlgeschlagen."
   }
 }

@@ -573,5 +573,11 @@
  "themeToggleLabel": "主题：$CURRENT$。点击切换为$NEXT$。",
  "themeSwitchedToast": "主题：$NAME$",
  "reportIssueLabel": "报告问题或提出建议",
- "reportIssueNote": " — 打开 GitHub。不会附带你的任何记录，只有你写的内容会提交。"
+ "reportIssueNote": " — 打开 GitHub。不会附带你的任何记录，只有你写的内容会提交。",
+ "llmImportLabel": "从别处导入数据",
+ "llmImportTooltip": "复制一段说明本应用 CSV 格式的提示词，其中包含你的分类名称。把它和你的旧记录一起粘贴给任意 AI 助手。",
+ "copyImportPromptLabel": "复制给 AI 助手的提示词",
+ "llmImportNote": "粘贴给任意助手，在下面附上你的旧记录，然后导入它返回的 CSV。提示词只包含格式和你的分类名称——不含任何已记录的时间，本扩展也不会向任何地方发送数据。",
+ "importPromptCopiedToast": "提示词已复制——连同你的旧记录一起粘贴给助手",
+ "copyFailedToast": "无法复制到剪贴板。"
 }
