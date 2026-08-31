@@ -8,6 +8,16 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.31.1] — 2026-08-31
+
+### Fixed
+
+- **The page had no viewport tag**, so on a phone it rendered at 980px and
+  zoomed out — the responsive layout never engaged. Invisible inside the
+  extension, which opens in a desktop tab, and very visible in the playable
+  demo on the website, which is the same file and is exactly what someone
+  taps when a link reaches them on a phone.
+
 ## [1.31.0] — 2026-08-31
 
 ### Changed

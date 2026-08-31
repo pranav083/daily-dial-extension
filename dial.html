@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <!-- Barely matters inside the extension, which opens in a desktop tab.
+       It matters a great deal for the playable demo on the website, which is
+       this same file: without it a phone renders the page at 980px and zooms
+       out, so the responsive layout below never engages and everything is
+       tiny. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Daily Dial</title>
   <link rel="stylesheet" href="dial.css">
 </head>
