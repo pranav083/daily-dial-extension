@@ -13,17 +13,23 @@
  *     Chrome warning about the one it does not use.
  *  2. Firefox requires an extension id under `browser_specific_settings`
  *     before it will sign or install a build.
- *  3. `chrome.runtime.getContexts` does not exist there. That one is handled
- *     in background.js itself, which falls back to `extension.getViews` — no
- *     transform needed, and Chrome keeps using getContexts.
+ *  3. AMO requires `data_collection_permissions`, which in turn sets the
+ *     version floor. See the manifest block below for both.
  *
  * Google Drive backup works: it uses `identity.launchWebAuthFlow`, which
  * Firefox supports, and deliberately never used Chrome-only `getAuthToken`.
+ * Its redirect URI differs from Chrome's and must be registered separately —
+ * `npm run firefox:redirect` prints it.
  *
- * `web-ext lint` reports getContexts as unsupported. That is expected and
- * handled — background.js checks for it before calling it — but the linter
- * cannot see a runtime guard, so the warning stays. Zero errors is the bar
- * that matters for submission.
+ * A warning about local linting: `addons-linter` reports a missing
+ * `data_collection_permissions` as a *warning*, while AMO rejects the upload
+ * over it with an *error*. Only AMO knows an extension is new, so this
+ * particular failure cannot be reproduced here at any linter version. A clean
+ * `web-ext lint` is necessary and not sufficient; the upload is the real test.
+ *
+ * What remains after this build is two `innerHTML` warnings, both on strings
+ * whose every substitution goes through escapeHtml() first. They are answered
+ * in the reviewer note rather than silenced.
  */
 
 import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync } from "node:fs";
@@ -49,18 +55,48 @@ const manifest = JSON.parse(readFileSync(join(root, "manifest.json"), "utf8"));
 // (1) event page, not service worker
 manifest.background = { scripts: ["background.js"], type: "module" };
 
-// (2) an id Firefox will accept
+// (2) an id Firefox will accept, and the data-consent declaration AMO requires
 manifest.browser_specific_settings = {
   gecko: {
     id: "daily-dial@pranav083.github.io",
-    strict_min_version: "121.0", // MV3 with module background is stable from here
-    // Not declaring `data_collection_permissions` here on purpose. The key
-    // needs a newer Firefox than this build targets, so adding it trades one
-    // lint warning for two and narrows compatibility for no gain. AMO asks
-    // the same question in the submission form, where the answer is "none":
-    // the add-on collects nothing, and Drive backup sends the user's own data
-    // to the user's own Drive on their explicit action.
+
+    // 140, not the 121 this originally targeted. `data_collection_permissions`
+    // below needs 140 on desktop and 142 on Android, and AMO rejects a new
+    // extension that omits it. Raising the floor turned out to cost nothing
+    // and pay for itself: `runtime.getContexts` ships in 140, so four
+    // compatibility warnings disappeared along with the error.
+    strict_min_version: "140.0",
+
+    // "none" is a claim about what this add-on does on its own, and it is
+    // true: there is no server of ours, no analytics, and no host permissions,
+    // so the browser would refuse an outbound request even if the code made
+    // one.
+    //
+    // Google Drive backup is the case worth thinking about, since it plainly
+    // moves data off the device. It is off until switched on, it goes to the
+    // user's own Drive rather than anywhere of ours, and every transfer is one
+    // deliberate click — which is Mozilla's own description of implicit
+    // consent. Declaring it as `required` would show every installer a
+    // data-collection warning for a feature most will never enable, which
+    // misleads far more people than it informs.
+    //
+    // Declaring it under `optional` was the other candidate and is rejected on
+    // purpose. Firefox renders an optional data permission as a toggle in
+    // about:addons, and nothing in this code reads that toggle — so denying it
+    // would leave Drive backup working exactly as before. A control that does
+    // not control anything is worse than no control. If it is ever declared,
+    // it gets declared together with a real `permissions.request()` check.
+    //
+    // The reviewer note in docs/AMO_LISTING.md states all of this plainly
+    // rather than leaving a reviewer to find the `identity` permission and
+    // wonder.
+    data_collection_permissions: { required: ["none"] },
   },
+
+  // Stated explicitly so the version floor is right on Android too, where the
+  // key landed in 142 rather than 140. Without this the linter assumes the
+  // desktop minimum applies and warns.
+  gecko_android: { strict_min_version: "142.0" },
 };
 
 writeFileSync(join(out, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");

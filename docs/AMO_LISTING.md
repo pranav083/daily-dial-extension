@@ -64,7 +64,7 @@ URI alongside the real one: if the bogus one does not report
 ```bash
 npm run check           # never upload something that hasn't passed
 npm run build:firefox   # build/firefox/
-npx web-ext lint  --source-dir build/firefox      # must be 0 errors
+npx web-ext lint  --source-dir build/firefox      # 0 errors, 2 warnings
 npx web-ext build --source-dir build/firefox --artifacts-dir build/firefox-dist
 ```
 
@@ -251,21 +251,52 @@ unchanged.
 
 ## 3. Data collection
 
-AMO asks this directly in the submission form, as a set of checkboxes.
+**Answer: no data collected.** Every box in the form stays unchecked, matching
+`data_collection_permissions: { required: ["none"] }` in the manifest.
 
-**Answer: no data collected.** Every box stays unchecked.
+### This is a hard requirement, and a clean local lint will not catch it
 
-The one thing worth being ready to explain, if a reviewer asks: Google Drive
-backup is not collection. It is the user sending their own data to their own
-Drive, into an app-private folder (`appDataFolder`), on an explicit click,
-with the feature off until they turn it on. Nothing reaches any server of
-ours — there is no server of ours.
+AMO **rejects** a new extension that omits `data_collection_permissions`:
 
-> The manifest deliberately does **not** declare
-> `data_collection_permissions`. That key needs a newer Firefox than the
-> `strict_min_version: "121.0"` this build targets, so declaring it trades one
-> lint warning for two and narrows compatibility for nothing. The form is the
-> right place to answer, and the answer is "none".
+> Error: The "/browser_specific_settings/gecko/data_collection_permissions"
+> property is required for all new Firefox extensions
+
+`addons-linter` reports the same condition as a **warning**, at every version —
+10.10.0 included. Only AMO knows an extension is new, so this failure cannot
+be reproduced locally at all. **A clean `web-ext lint` is necessary, not
+sufficient.** The upload is the real test.
+
+Declaring the key sets the version floor: Firefox **140** on desktop, **142**
+on Android, both stated in `build-firefox.mjs`. That floor pays for itself —
+`runtime.getContexts` ships in 140, so four compatibility warnings disappeared
+with it. The build now lints at **0 errors, 2 warnings** (both `innerHTML`,
+answered in the reviewer note).
+
+### Why "none" is the honest answer
+
+The add-on has no server, no analytics, and no host permissions — the browser
+would refuse an outbound request even if the code made one.
+
+Google Drive backup is the case that deserves the thought, since it plainly
+moves data off the device. It is off until switched on, it goes to the user's
+own Drive rather than anywhere of ours, and every transfer is one deliberate
+click — which is Mozilla's own description of implicit consent. Declaring it as
+`required` would show every installer a data-collection warning for a feature
+most will never enable, misleading far more people than it informs.
+
+`optional` was the other candidate, and is rejected on purpose: Firefox renders
+an optional data permission as a toggle in `about:addons`, and nothing in this
+code reads that toggle, so denying it would leave Drive backup working exactly
+as before. A control that controls nothing is worse than no control. If it is
+ever declared, it ships with a real `permissions.request()` check.
+
+> **This is the one judgment call in the submission with a rejection risk.**
+> Mozilla's documentation defines transmission broadly enough to arguably
+> cover Drive, but gives no guidance on syncing to a user's own account and
+> shows `"none"` only in isolation. The reviewer note states the reasoning
+> outright rather than hoping nobody looks. If a reviewer disagrees, the fix
+> is to declare `optional` **and** implement the permission check — not to
+> declare it alone.
 
 ---
 
@@ -283,28 +314,28 @@ scripts/build-firefox.mjs rewrites to swap the service worker for an event
 page and to add browser_specific_settings. Nothing is minified, bundled, or
 transpiled. There is no remote code and there are no runtime dependencies.
 
-On the three lint warnings:
+The build lints at 0 errors and 2 warnings. Both are assignments to innerHTML
+(the insight line and the streak banner in dial.js). Every substituted value
+passes through escapeHtml() before interpolation, and the only variable parts
+are the user's own category names and integers computed locally.
 
-- runtime.getContexts is called only after checking it exists, with a
-  fallback to extension.getViews. The linter cannot see a runtime guard.
-  Both APIs return only this extension's own pages, so neither needs the
-  "tabs" permission — a time logger has no business asking to read browsing
-  history.
+On data collection, declared as "none": the add-on has no server, no
+analytics, and no host permissions, so the browser would refuse an outbound
+request even if the code made one.
 
-- Two innerHTML assignments (the insight line in dial.js and the streak
-  banner) escape every substituted value through escapeHtml() before
-  interpolation. The only variable parts are the user's own category names
-  and integers computed locally.
+The one case worth raising ourselves, rather than leaving you to find it: the
+"identity" permission drives an optional, off-by-default Google Drive backup.
+It uses launchWebAuthFlow into the appDataFolder scope, so the add-on can only
+ever see files it created itself. Data goes to the user's own Drive, never to
+us, only on a deliberate click, and only after the user turns the feature on.
 
-- data_collection_permissions is omitted deliberately; it requires a newer
-  Firefox than strict_min_version 121.0. The add-on collects nothing, which
-  is answered in the submission form.
-
-The "identity" permission is used for one optional, off-by-default feature:
-backing up to the user's own Google Drive, via launchWebAuthFlow into the
-appDataFolder scope. It is scoped so the add-on can only see files it
-created itself. No other network access exists — there are no host
-permissions, so the browser would refuse one anyway.
+We read that as implicit consent under the policy rather than as collection.
+Declaring it "required" would warn every installer about a feature most will
+never enable. Declaring it "optional" would render a toggle in about:addons
+that this code does not read — denying it would leave backup working, which
+is a worse outcome than not offering the control. If you would rather see it
+declared, we will add the optional declaration together with a real
+permissions.request() check, so the toggle actually does something.
 
 An unmodified copy of this UI runs at
 https://pranav083.github.io/daily-dial-extension/demo/ if it is useful to

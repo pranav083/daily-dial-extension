@@ -12,6 +12,21 @@ The version here always matches `manifest.json`.
 
 - **A Firefox build.** `npm run build:firefox` produces one from the same
   sources; not yet submitted to addons.mozilla.org.
+- `npm run firefox:redirect` prints the Google OAuth redirect URI Firefox
+  uses. It is derived from the add-on id and differs from Chrome's, so Drive
+  backup fails on Firefox alone until it is registered.
+
+### Changed
+
+- The Firefox build declares `data_collection_permissions: ["none"]` and
+  raises its floor to Firefox 140 (142 on Android), which that key requires.
+  AMO rejects a new extension without it, as an *error* — where
+  `addons-linter` reports only a *warning*, at every version, since only AMO
+  knows an extension is new. That failure therefore cannot be reproduced
+  locally at all: a clean lint is necessary and not sufficient.
+- The higher floor turned out to cost nothing and pay for itself:
+  `runtime.getContexts` ships in Firefox 140, so four compatibility warnings
+  went with it. The build now lints at 0 errors, 2 warnings.
 
 ## [1.33.0] — 2026-08-31
 

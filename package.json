@@ -35,7 +35,9 @@
     "local-first"
   ],
   "devDependencies": {
-    "eslint": "^9.15.0"
+    "addons-linter": "^10.10.0",
+    "eslint": "^9.15.0",
+    "web-ext": "^10.6.0"
   },
   "engines": {
     "node": ">=20"
