@@ -16,7 +16,8 @@
     "build:demo": "node scripts/build-demo.mjs",
     "check:demo": "node scripts/check-demo.mjs",
     "build:firefox": "node scripts/build-firefox.mjs",
-    "lint:firefox": "npm run build:firefox && web-ext lint --source-dir build/firefox"
+    "lint:firefox": "npm run build:firefox && web-ext lint --source-dir build/firefox",
+    "firefox:redirect": "node scripts/firefox-redirect-uri.mjs"
   },
   "repository": {
     "type": "git",
