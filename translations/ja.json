@@ -579,5 +579,9 @@
  "copyImportPromptLabel": "AIアシスタント用のプロンプトをコピー",
  "llmImportNote": "任意のアシスタントに貼り付け、その下に過去の記録を足して、返ってきたCSVを取り込んでください。プロンプトに含まれるのは形式とカテゴリ名だけで、記録した時間の内容は含まれません。この拡張機能はどこにも送信しません。",
  "importPromptCopiedToast": "プロンプトをコピーしました — 過去の記録と一緒にアシスタントへ貼り付けてください",
- "copyFailedToast": "クリップボードにコピーできませんでした。"
+ "copyFailedToast": "クリップボードにコピーできませんでした。",
+ "reviewNudgeText": "役に立ちましたか？短いレビューが他の人の助けになります。",
+ "reviewNudgeGoLabel": "レビューを書く",
+ "reviewNudgeDismissTooltip": "今回は見送る",
+ "rateLinkLabel": "この拡張機能を評価する"
 }

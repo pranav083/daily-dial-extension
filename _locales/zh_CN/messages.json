@@ -2402,5 +2402,17 @@
   },
   "copyFailedToast": {
     "message": "无法复制到剪贴板。"
+  },
+  "reviewNudgeText": {
+    "message": "用着还顺手吗？一条简短的评价能帮别人找到它。"
+  },
+  "reviewNudgeGoLabel": {
+    "message": "写一条评价"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "暂不需要"
+  },
+  "rateLinkLabel": {
+    "message": "为这个扩展评分"
   }
 }

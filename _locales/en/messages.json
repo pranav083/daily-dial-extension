@@ -904,6 +904,22 @@
     "message": "Hide until next time",
     "description": "Tooltip on the Day-view backup-nudge bar's dismiss button."
   },
+  "reviewNudgeText": {
+    "message": "Been useful? A short review helps other people find it.",
+    "description": "Text of the occasional review request. Asked at most twice ever."
+  },
+  "reviewNudgeGoLabel": {
+    "message": "Write a review",
+    "description": "Button opening the Chrome Web Store review page."
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "No thanks",
+    "description": "Tooltip on dismissing the review request."
+  },
+  "rateLinkLabel": {
+    "message": "Rate this extension",
+    "description": "Permanent link in Settings → About to the Web Store review page."
+  },
   "dailyRemindersSectionLabel": {
     "message": "Daily reminders",
     "description": "Section heading over the daily reminder time fields in Settings → Reminders."

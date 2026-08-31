@@ -941,6 +941,47 @@ export function weeklyRecapMessage(recap) {
   return parts;
 }
 
+/* ---------- asking for a review ---------- */
+
+/** Storage key for what has been asked and answered. Its own key rather than
+ *  a setting: it is a record of two events, not a preference, and it has no
+ *  business travelling in a backup to another device. */
+export const REVIEW_ASK_KEY = "reviewAsk";
+
+export const REVIEW_FIRST_ASK_DAYS = 7;
+export const REVIEW_SECOND_ASK_GAP = 60;
+export const REVIEW_MAX_ASKS = 2;
+
+/**
+ * Whether to ask for a review, given what has been asked before.
+ *
+ * Two asks, ever, and the second only after another two months of actual
+ * use. The first waits a week of logged days rather than a week of calendar
+ * time, so it lands on someone who has used the thing rather than someone
+ * who installed it and forgot. Following the link — or a second dismissal —
+ * ends it permanently.
+ *
+ * `state` is `{ asks, lastAskAtDays, done }`, all optional.
+ */
+export function shouldAskForReview(state, loggedDays) {
+  const asks = Number.isInteger(state?.asks) ? state.asks : 0;
+  const lastAt = Number.isInteger(state?.lastAskAtDays) ? state.lastAskAtDays : 0;
+  if (state?.done || asks >= REVIEW_MAX_ASKS) return false;
+  if (asks === 0) return loggedDays >= REVIEW_FIRST_ASK_DAYS;
+  return loggedDays >= lastAt + REVIEW_SECOND_ASK_GAP;
+}
+
+/** The state to store once an ask has been shown. */
+export const noteReviewAsked = (state, loggedDays) => ({
+  asks: (Number.isInteger(state?.asks) ? state.asks : 0) + 1,
+  lastAskAtDays: loggedDays,
+  done: false,
+});
+
+/** The state to store once it should never ask again — the link was followed,
+ *  or the last permitted ask was dismissed. */
+export const noteReviewDone = (state) => ({ ...(state ?? {}), done: true });
+
 /* ---------- goals ---------- */
 
 /**

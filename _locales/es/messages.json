@@ -2567,5 +2567,17 @@
   },
   "copyFailedToast": {
     "message": "No se pudo copiar al portapapeles."
+  },
+  "reviewNudgeText": {
+    "message": "¿Te ha servido? Una reseña breve ayuda a que otras personas lo encuentren."
+  },
+  "reviewNudgeGoLabel": {
+    "message": "Escribir una reseña"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "No, gracias"
+  },
+  "rateLinkLabel": {
+    "message": "Valorar esta extensión"
   }
 }

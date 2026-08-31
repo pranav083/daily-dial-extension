@@ -2567,5 +2567,17 @@
   },
   "copyFailedToast": {
     "message": "Não foi possível copiar para a área de transferência."
+  },
+  "reviewNudgeText": {
+    "message": "Foi útil? Uma avaliação curta ajuda outras pessoas a encontrar."
+  },
+  "reviewNudgeGoLabel": {
+    "message": "Escrever uma avaliação"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "Não, obrigado"
+  },
+  "rateLinkLabel": {
+    "message": "Avaliar esta extensão"
   }
 }

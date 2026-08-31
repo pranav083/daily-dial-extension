@@ -2897,5 +2897,17 @@
   },
   "copyFailedToast": {
     "message": "Не удалось скопировать в буфер обмена."
+  },
+  "reviewNudgeText": {
+    "message": "Пригодилось? Короткий отзыв поможет другим его найти."
+  },
+  "reviewNudgeGoLabel": {
+    "message": "Написать отзыв"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "Нет, спасибо"
+  },
+  "rateLinkLabel": {
+    "message": "Оценить расширение"
   }
 }

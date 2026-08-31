@@ -46,6 +46,8 @@ import {
   WEIGHT_GLYPH,
   angleAt,
   buildBackup,
+  REVIEW_ASK_KEY,
+  REVIEW_MAX_ASKS,
   buildImportPrompt,
   excludeDays,
   buildCsv,
@@ -80,6 +82,8 @@ import {
   multiDayFillSlotRange,
   normalizeAliases,
   normalizeCategories,
+  noteReviewAsked,
+  noteReviewDone,
   normalizeDay,
   normalizeSettings,
   normalizeTemplates,
@@ -92,6 +96,7 @@ import {
   runAt,
   sameDay,
   scoreBucket,
+  shouldAskForReview,
   shouldNudgeBackup,
   slotFromAngle,
   summarizeImport,
@@ -191,6 +196,7 @@ async function loadAll() {
   driveBackupSizeBytes = Number.isFinite(all[DRIVE_BACKUP_SIZE_KEY]) ? all[DRIVE_BACKUP_SIZE_KEY] : null;
   driveAccountEmail = typeof all[DRIVE_ACCOUNT_EMAIL_KEY] === "string" ? all[DRIVE_ACCOUNT_EMAIL_KEY] : null;
   silencedObservations = Array.isArray(all[SILENCED_KEY]) ? all[SILENCED_KEY].filter((v) => typeof v === "string") : [];
+  reviewAsk = all[REVIEW_ASK_KEY] ?? null;
   // Anyone with logged history already predates this feature entirely —
   // never show a first-run "welcome" to someone mid-way through real use,
   // even though the flag itself was never explicitly set for them.
@@ -611,6 +617,7 @@ function onStrokeEnd() {
   renderStrip();
   renderStreak();
   renderBackupStatus();
+  renderReviewNudge();
   // The breakdown is a view of the slots just painted and sits directly
   // below the dial, so leaving it until the next full redraw meant painting
   // a block and watching the table under it not change.
@@ -1328,6 +1335,7 @@ function checkDayRollover() {
   renderStrip();
   renderStreak();
   renderBackupStatus();
+  renderReviewNudge();
 }
 
 /** In "ampm-toggle" mode, shows only state.toggleHalf and hides the other —
@@ -1819,15 +1827,45 @@ function renderBackupStatus() {
   $("data-backup-nudge").hidden = !due;
 }
 
+/* ---------- the occasional review ask ---------- */
+
+let reviewAsk = null;
+
+/** Shown at most twice ever. Deciding is pure (`shouldAskForReview`); this
+ *  only records that an ask happened, so the second one is spaced by real
+ *  use rather than by however often the page happens to render. */
+function renderReviewNudge() {
+  const bar = $("review-nudge");
+  if (!bar) return;
+  const due = shouldAskForReview(reviewAsk, loggedDayCount());
+  if (due && bar.hidden) {
+    reviewAsk = noteReviewAsked(reviewAsk, loggedDayCount());
+    saveLocal({ [REVIEW_ASK_KEY]: reviewAsk }).catch(reportStorageFailure);
+  }
+  bar.hidden = !due;
+}
+
+/** Both answers end this ask; only the second dismissal, or following the
+ *  link, ends it for good. */
+function closeReviewNudge(followed) {
+  $("review-nudge").hidden = true;
+  if (followed || (reviewAsk?.asks ?? 0) >= REVIEW_MAX_ASKS) {
+    reviewAsk = noteReviewDone(reviewAsk);
+    saveLocal({ [REVIEW_ASK_KEY]: reviewAsk }).catch(reportStorageFailure);
+  }
+}
+
 function dismissNudge() {
   nudgeDismissed = true;
   renderBackupStatus();
+  renderReviewNudge();
 }
 
 function markExported() {
   settings = { ...settings, lastExportAt: Date.now() };
   persistSettings();
   renderBackupStatus();
+  renderReviewNudge();
 }
 
 /* ---------- 7-day strip ---------- */
@@ -2936,6 +2974,7 @@ function applyImport(mode) {
   renderCategoryEditor();
   renderGoalsEditor();
   renderBackupStatus();
+  renderReviewNudge();
   renderSampleDataUI();
   renderAboutBests();
   renderDriveStatus();
@@ -3508,6 +3547,7 @@ function renderAll() {
   renderStrip();
   renderStreak();
   renderBackupStatus();
+  renderReviewNudge();
   // The breakdown is a view of the same slots the dial draws, so it has to
   // move with them — painting a block changes which stretches exist.
   renderBreakdown();
@@ -3666,6 +3706,9 @@ function wireEvents() {
   // `settings`, so it never travels in a backup to someone else's device.
   $("language-select").addEventListener("change", onLanguageChange);
   $("theme-toggle").addEventListener("click", cycleTheme);
+
+  $("review-nudge-dismiss").addEventListener("click", () => closeReviewNudge(false));
+  $("review-nudge-go").addEventListener("click", () => closeReviewNudge(true));
 
   $("copy-import-prompt").addEventListener("click", async () => {
     try {

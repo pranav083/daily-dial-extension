@@ -594,5 +594,9 @@
  "copyImportPromptLabel": "Copier le prompt pour un assistant IA",
  "llmImportNote": "Colle-le dans un assistant, ajoute tes anciens relevés en dessous, puis importe le CSV obtenu. Le prompt contient le format et le nom de tes catégories — rien sur ton temps enregistré, et cette extension n’envoie rien nulle part.",
  "importPromptCopiedToast": "Prompt copié — colle-le dans un assistant avec tes anciens relevés",
- "copyFailedToast": "Impossible de copier dans le presse-papiers."
+ "copyFailedToast": "Impossible de copier dans le presse-papiers.",
+ "reviewNudgeText": "Utile ? Un court avis aide d’autres personnes à le trouver.",
+ "reviewNudgeGoLabel": "Écrire un avis",
+ "reviewNudgeDismissTooltip": "Non merci",
+ "rateLinkLabel": "Noter cette extension"
 }

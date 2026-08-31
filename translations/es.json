@@ -594,5 +594,9 @@
  "copyImportPromptLabel": "Copiar prompt para un asistente de IA",
  "llmImportNote": "Pégalo en cualquier asistente, añade debajo tus registros antiguos e importa el CSV que devuelva. El prompt contiene el formato y los nombres de tus categorías — nada sobre tu tiempo registrado, y esta extensión no envía nada a ningún sitio.",
  "importPromptCopiedToast": "Prompt copiado — pégalo en un asistente junto a tus registros antiguos",
- "copyFailedToast": "No se pudo copiar al portapapeles."
+ "copyFailedToast": "No se pudo copiar al portapapeles.",
+ "reviewNudgeText": "¿Te ha servido? Una reseña breve ayuda a que otras personas lo encuentren.",
+ "reviewNudgeGoLabel": "Escribir una reseña",
+ "reviewNudgeDismissTooltip": "No, gracias",
+ "rateLinkLabel": "Valorar esta extensión"
 }

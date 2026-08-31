@@ -2402,5 +2402,17 @@
   },
   "copyFailedToast": {
     "message": "クリップボードにコピーできませんでした。"
+  },
+  "reviewNudgeText": {
+    "message": "役に立ちましたか？短いレビューが他の人の助けになります。"
+  },
+  "reviewNudgeGoLabel": {
+    "message": "レビューを書く"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "今回は見送る"
+  },
+  "rateLinkLabel": {
+    "message": "この拡張機能を評価する"
   }
 }

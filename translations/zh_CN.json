@@ -579,5 +579,9 @@
  "copyImportPromptLabel": "复制给 AI 助手的提示词",
  "llmImportNote": "粘贴给任意助手，在下面附上你的旧记录，然后导入它返回的 CSV。提示词只包含格式和你的分类名称——不含任何已记录的时间，本扩展也不会向任何地方发送数据。",
  "importPromptCopiedToast": "提示词已复制——连同你的旧记录一起粘贴给助手",
- "copyFailedToast": "无法复制到剪贴板。"
+ "copyFailedToast": "无法复制到剪贴板。",
+ "reviewNudgeText": "用着还顺手吗？一条简短的评价能帮别人找到它。",
+ "reviewNudgeGoLabel": "写一条评价",
+ "reviewNudgeDismissTooltip": "暂不需要",
+ "rateLinkLabel": "为这个扩展评分"
 }

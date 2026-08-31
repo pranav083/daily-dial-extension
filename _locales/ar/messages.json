@@ -3227,5 +3227,17 @@
   },
   "copyFailedToast": {
     "message": "تعذّر النسخ إلى الحافظة."
+  },
+  "reviewNudgeText": {
+    "message": "هل كان مفيدًا؟ مراجعة قصيرة تساعد غيرك على العثور عليه."
+  },
+  "reviewNudgeGoLabel": {
+    "message": "اكتب مراجعة"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "لا، شكرًا"
+  },
+  "rateLinkLabel": {
+    "message": "قيّم هذا الامتداد"
   }
 }

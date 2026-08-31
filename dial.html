@@ -97,6 +97,18 @@
       <button class="icon-btn" id="backup-nudge-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss" data-i18n-title="backupNudgeDismissTooltip" title="Hide until next time">✕</button>
     </div>
 
+    <!-- Asked at most twice, ever, and only after a week of actual use.
+         Same bar as the backup nudge, deliberately: it is the same kind of
+         interruption and should not look more important than one. -->
+    <div class="nudge-bar" id="review-nudge" hidden>
+      <span data-i18n="reviewNudgeText">Been useful? A short review helps other people find it.</span>
+      <a class="ghost-btn" id="review-nudge-go" target="_blank" rel="noopener"
+         href="https://chromewebstore.google.com/detail/mgcjgngceajnmfhkifccaoeccbmfikhn/reviews"
+         data-i18n="reviewNudgeGoLabel">Write a review</a>
+      <button class="icon-btn" id="review-nudge-dismiss" data-i18n-label="dismissLabel" aria-label="Dismiss"
+              data-i18n-title="reviewNudgeDismissTooltip" title="No thanks">✕</button>
+    </div>
+
     <!-- The strip showed bare day numbers with nothing to say which month
          they belonged to, which is ambiguous at every month boundary. -->
 
@@ -744,6 +756,8 @@
             <a href="https://github.com/pranav083/daily-dial-extension/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noopener" data-i18n="gettingStartedLinkLabel">Getting started</a>
             ·
             <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md" target="_blank" rel="noopener" data-i18n="privacyLinkLabel">Privacy</a>
+            ·
+            <a href="https://chromewebstore.google.com/detail/mgcjgngceajnmfhkifccaoeccbmfikhn/reviews" target="_blank" rel="noopener" data-i18n="rateLinkLabel">Rate this extension</a>
           </p>
           <!-- href is filled in by renderAboutVersion(): the bug template asks
                for the extension version, and someone reporting a bug should

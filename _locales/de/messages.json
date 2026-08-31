@@ -2567,5 +2567,17 @@
   },
   "copyFailedToast": {
     "message": "Kopieren in die Zwischenablage fehlgeschlagen."
+  },
+  "reviewNudgeText": {
+    "message": "Nützlich gewesen? Eine kurze Bewertung hilft anderen, es zu finden."
+  },
+  "reviewNudgeGoLabel": {
+    "message": "Bewertung schreiben"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "Nein danke"
+  },
+  "rateLinkLabel": {
+    "message": "Diese Erweiterung bewerten"
   }
 }

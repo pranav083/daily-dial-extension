@@ -43,6 +43,9 @@ import {
   UNTRACKED,
   buildBackup,
   buildImportPrompt,
+  noteReviewAsked,
+  noteReviewDone,
+  shouldAskForReview,
   excludeDays,
   buildCsv,
   buildInsight,
@@ -2065,4 +2068,35 @@ test("a file following the prompt's rules actually imports", () => {
   // The Note column becomes the day's one-line reflection, not a per-block
   // note — which is why the prompt says to use it on at most one row per date.
   assert.equal(day.reflection, "Notes, with a comma", "the quoted note survived its comma");
+});
+
+/* ---------- asking for a review ---------- */
+
+test("the review ask waits for a week of real use, then asks once", () => {
+  assert.equal(shouldAskForReview(undefined, 0), false);
+  assert.equal(shouldAskForReview(undefined, 6), false, "six logged days is not a week of use");
+  assert.equal(shouldAskForReview(undefined, 7), true);
+});
+
+test("a second ask needs another two months of use, and there is never a third", () => {
+  const afterFirst = noteReviewAsked(undefined, 7);
+  assert.equal(afterFirst.asks, 1);
+  assert.equal(shouldAskForReview(afterFirst, 8), false, "not the very next day");
+  assert.equal(shouldAskForReview(afterFirst, 66), false);
+  assert.equal(shouldAskForReview(afterFirst, 67), true, "7 + 60 days of use");
+
+  const afterSecond = noteReviewAsked(afterFirst, 67);
+  assert.equal(afterSecond.asks, 2);
+  assert.equal(shouldAskForReview(afterSecond, 500), false, "two asks is the limit, forever");
+});
+
+test("following the link ends it permanently", () => {
+  const done = noteReviewDone(noteReviewAsked(undefined, 7));
+  assert.equal(shouldAskForReview(done, 10_000), false);
+});
+
+test("shouldAskForReview survives garbage in storage", () => {
+  for (const junk of [null, {}, { asks: "two" }, { asks: -5 }, { lastAskAtDays: NaN }, "nonsense"]) {
+    assert.doesNotThrow(() => shouldAskForReview(junk, 30), `threw on ${JSON.stringify(junk)}`);
+  }
 });

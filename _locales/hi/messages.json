@@ -2567,5 +2567,17 @@
   },
   "copyFailedToast": {
     "message": "क्लिपबोर्ड पर कॉपी नहीं हो सका।"
+  },
+  "reviewNudgeText": {
+    "message": "क्या यह काम आया? एक छोटी समीक्षा दूसरों को इसे ढूँढने में मदद करती है।"
+  },
+  "reviewNudgeGoLabel": {
+    "message": "समीक्षा लिखें"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "अभी नहीं"
+  },
+  "rateLinkLabel": {
+    "message": "इस एक्सटेंशन को रेट करें"
   }
 }
