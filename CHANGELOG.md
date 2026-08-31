@@ -8,6 +8,11 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+### Added
+
+- **A Firefox build.** `npm run build:firefox` produces one from the same
+  sources; not yet submitted to addons.mozilla.org.
+
 ## [1.33.0] — 2026-08-31
 
 ### Added

@@ -266,19 +266,43 @@ async function notifyWeeklyRecap() {
  * "read your browsing history", far more than this needs. It also removes
  * the double-click race the old bookkeeping had.
  */
+/**
+ * The already-open dial tab, if there is one.
+ *
+ * `getContexts` is the right answer and Chrome-only. Firefox has no
+ * equivalent, so it falls back to `extension.getViews`, which likewise
+ * returns only this extension's own pages and likewise needs no "tabs"
+ * permission — the constraint that ruled out `tabs.query` in the first place,
+ * since that permission reads to a user as "read your browsing history".
+ */
+async function findOpenDial() {
+  if (chrome.runtime.getContexts) {
+    const [existing] = await chrome.runtime.getContexts({
+      contextTypes: ["TAB"],
+      documentUrls: [chrome.runtime.getURL("dial.html")],
+    });
+    return existing ?? null;
+  }
+  const views = chrome.extension?.getViews?.({ type: "tab" }) ?? [];
+  const view = views.find((v) => v.location?.pathname?.endsWith("dial.html"));
+  // No tab id from this route, so the caller focuses the page itself.
+  return view ? { view } : null;
+}
+
 async function openDial(hash) {
-  const [existing] = await chrome.runtime.getContexts({
-    contextTypes: ["TAB"],
-    documentUrls: [chrome.runtime.getURL("dial.html")],
-  });
+  const existing = await findOpenDial();
 
   if (existing) {
     try {
       // Re-navigating an already-open tab would throw away unsaved edits, so
       // an existing dial is only ever focused — never reloaded — and the
       // page itself is told to switch view instead.
-      await chrome.tabs.update(existing.tabId, { active: true });
-      await chrome.windows.update(existing.windowId, { focused: true });
+      if (existing.view) {
+        existing.view.focus();
+      } else {
+        await chrome.tabs.update(existing.tabId, { active: true });
+        await chrome.windows.update(existing.windowId, { focused: true });
+      }
       if (dialUrlSuffix(hash) === "#history") {
         await chrome.runtime.sendMessage({ type: "showHistory" }).catch(() => {});
       }

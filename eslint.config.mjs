@@ -33,7 +33,7 @@ const browserGlobals = {
 export default [
   // docs/demo/ is a generated copy of the files above; linting it would
   // report every finding twice.
-  { ignores: ["fonts/**", "icons/**", "*.zip", "docs/demo/**"] },
+  { ignores: ["fonts/**", "icons/**", "*.zip", "docs/demo/**", "build/**"] },
   js.configs.recommended,
   {
     files: ["**/*.js"],
