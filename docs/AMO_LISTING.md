@@ -207,9 +207,28 @@ the kind of small dishonesty the whole listing is arguing against.*
 AMO tags are free text, up to 10. Suggested:
 
 ```
-time-tracking, productivity, focus, deep-work, time-management,
-privacy, local-first, no-tracking, study, pomodoro-alternative
+Leave empty — none of them apply.
+
+AMO tags are **not** free text. They are a fixed list of 42, which you can
+read from the API:
+
+```bash
+curl -s https://addons.mozilla.org/api/v5/addons/tags/ | python3 -m json.tool
 ```
+
+The whole list is aimed at content blockers, downloaders, and site-specific
+tools: ad blocker, anti malware, anti tracker, antivirus, chat, container,
+content blocker, coupon, dailymotion, dark mode, dndbeyond, download,
+facebook, google, image search, mp3, music, password manager, pinterest,
+pixiv, privacy, reddit, roblox, scholar, search, security, shopping, social
+media, streaming, torrent, translate, twitch, twitter, user scripts, video
+converter, video downloader, vpn, wayback machine, whatsapp, word counter,
+youtube, zoom.
+
+There is no productivity, time tracking, or focus tag. `privacy` is the only
+arguable one and is the same trap as the category: someone browsing that tag
+wants a tracker blocker, and a time logger wastes their click. Tags are
+optional, so none is the right answer.
 
 ### Support site
 ```
