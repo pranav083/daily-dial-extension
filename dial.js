@@ -639,6 +639,20 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   const centerTimeEl = $(centerTimeId);
   const centerSubEl = $(centerSubId);
   const minutesInView = slotsInView * SLOT_MIN;
+  /**
+   * The part of today that has not happened yet.
+   *
+   * Painting it is refused, and until now nothing said so in advance: the
+   * ring looked uniformly available, you dragged into the evening, and got a
+   * message explaining why nothing happened. A refusal you could not see
+   * coming reads as a broken control rather than a rule.
+   *
+   * Inserted before the segments so anything painted still draws on top, and
+   * it never takes pointer events — the refusal message still belongs to the
+   * paint path, which knows why.
+   */
+  const futureLayer = svgEl("g", { class: "future-layer" });
+  svgNode.insertBefore(futureLayer, segLayer);
   // Added last so the seam handle draws above the wedges and the needle.
   const handleLayer = svgEl("g", { class: "edge-layer" });
   svgNode.appendChild(handleLayer);
@@ -877,6 +891,21 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     }
   });
 
+  /** Shades from "now" to the end of the view, on today only. Past days are
+   *  wholly paintable, so shading anything there would be a lie. */
+  function renderFuture() {
+    futureLayer.replaceChildren();
+    const firstFuture = firstUnpaintableSlot() - slotOffset;
+    if (firstFuture >= slotsInView) return; // nothing ahead in this view
+    const from = Math.max(0, firstFuture);
+    futureLayer.appendChild(
+      svgEl("path", {
+        class: "future-arc",
+        d: wedgePath(R_IN, R_OUT, from * (360 / slotsInView), slotsInView * (360 / slotsInView)),
+      })
+    );
+  }
+
   function renderSegments() {
     segLayer.replaceChildren();
     for (const run of computeRuns(localSlice())) {
@@ -945,6 +974,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   }
 
   function render() {
+    renderFuture();
     renderSegments();
     renderNoteMarks();
     renderNeedle();

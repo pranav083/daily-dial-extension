@@ -8,6 +8,17 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.31.0] — 2026-08-31
+
+### Changed
+
+- **The hours that haven't happened yet are now shaded on the dial.** Painting
+  them was already refused, but nothing said so until you tried: the ring
+  looked available all the way round, you dragged into the evening, and got a
+  message explaining why nothing happened. A refusal you can't see coming
+  reads as a broken control rather than a rule. The needle now sits on the
+  boundary between the two, which is what it was always marking.
+
 ## [1.30.1] — 2026-08-31
 
 ### Fixed

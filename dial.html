@@ -163,6 +163,13 @@
             <svg class="dial-svg" id="dial" viewBox="0 0 460 460" role="application" tabindex="0"
                  data-i18n-label="dialAriaLabelSingle"
                  aria-label="24-hour activity dial. Arrow keys move the cursor, Shift+arrow selects, Enter paints, Delete erases.">
+              <!-- Defined once; SVG pattern ids are document-wide, so the AM
+                   and PM dials below reference this same one. -->
+              <defs>
+                <pattern id="future-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="6" stroke="var(--ink-muted)" stroke-width="1.5" opacity="0.35"></line>
+                </pattern>
+              </defs>
               <circle cx="230" cy="230" r="154" fill="none" stroke="var(--ring-track)" stroke-width="72"></circle>
               <g id="segments"></g>
               <g id="ticks"></g>

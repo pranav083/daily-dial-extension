@@ -316,6 +316,13 @@ body {
 .dial-wrap { position: relative; width: 100%; max-width: 460px; margin: 0 auto; touch-action: none; }
 .dial-svg { width: 100%; height: auto; display: block; user-select: none; }
 
+/* The hours that have not happened yet. Hatched rather than merely dimmed:
+   on a ring that is already dark, "slightly darker" reads as a rendering
+   artefact, while a texture reads as deliberate. Faint enough that a painted
+   block over it is still unmistakably the block. */
+.future-layer { pointer-events: none; }
+.future-arc { fill: url(#future-hatch); opacity: 0.55; }
+
 .dial-wrap-twin {
   display: flex;
   justify-content: center;
