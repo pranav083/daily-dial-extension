@@ -72,8 +72,11 @@ directly and doesn't depend on that client type at all.)
    feature narrowly sandboxed to files this extension creates itself.
 5. **Test users** step: add your own Google account email (and anyone
    else's you want able to use Drive backup right away). Save.
-6. Leave **Publishing status** as **Testing**. See the note at the end for
-   what this means and when (if ever) you'd need to change it.
+6. **Publishing status.** Testing is fine while you are still setting up —
+   but if the extension is published anywhere, set this to **In production**
+   before shipping. Testing is a 100-user allowlist, so Drive backup fails
+   for everyone who is not on it. Both scopes here are non-sensitive, so
+   publishing needs no review. See the section at the end.
 
 ## 4. Create the OAuth Client ID
 
@@ -114,10 +117,15 @@ Dial's card, or re-upload if you're testing from the Web Store draft).
 ## 6. Test it
 
 Open Daily Dial → Settings → Data → **Back up to Google Drive**. The first
-click opens Google's standard consent screen (it'll say "unverified" while
-in Testing status — that's expected and fine for an app only you and your
-test users use; click **Advanced → Go to Daily Dial (unsafe)** to proceed,
-same as any app in Testing). Approve, and it should back up immediately.
+click opens Google's standard consent screen. While the app is in Testing
+it warns that the app is unverified — click **Advanced → Go to Daily Dial
+(unsafe)** to proceed. Approve, and it should back up immediately.
+
+**That warning is a reminder, not a pass.** Testing only works for accounts
+on the test-user list, so this step succeeding proves nothing about anyone
+else. Verifying the feature really works for users means publishing the app
+(see the last section) — you cannot test your way to it from your own
+account.
 **Restore from Google Drive** and **Delete Drive backup** use the same
 connection.
 
@@ -128,18 +136,48 @@ redirect URI: it must match `https://<extension-id>.chromiumapp.org/`
 *exactly*, including the trailing slash, for whichever extension ID Chrome
 is actually running with right now.
 
-## Do you ever need to leave "Testing" and get verified?
+## You must leave "Testing" before anyone else can use Drive backup
 
-Only if you want people beyond the test users you've manually added (Google
-caps this at 100) to be able to use Drive backup. Since `drive.appdata` is
-classified as a **sensitive** (not **restricted**) scope, moving to
-"In production" typically requires Google's standard OAuth verification
-review rather than the longer restricted-scope security assessment — but
-requirements and turnaround change on Google's side independently of this
-doc, so check the current requirements in the Cloud Console when you get
-there rather than trusting a specific timeline here.
+**If the extension is published anywhere, Publishing status must be "In
+production". Testing is not a milder setting — it is a hard allowlist.**
 
-For personal use, or sharing with a small number of people you know, staying
-in **Testing** indefinitely is the simplest option and needs no review at
-all — the "unverified app" screen is just one extra click for your test
-users, forever.
+Google caps Testing at **100 manually-added test users**. Everyone else is
+refused at the consent screen. So an extension that is live in a store while
+its OAuth app sits in Testing has a Drive backup that works for the developer
+and fails for every real user — and fails at Google's screen, which looks
+like a broken extension rather than a setting in a console the user cannot
+see.
+
+This is easy to miss because *you* are always a test user. It cannot be
+caught by testing the feature yourself. It shows up only when someone else
+tries.
+
+### Publishing it
+
+Both scopes this extension requests are **non-sensitive**:
+
+| Scope | Classification |
+|---|---|
+| `https://www.googleapis.com/auth/drive.appdata` | non-sensitive |
+| `https://www.googleapis.com/auth/userinfo.email` | non-sensitive |
+
+Apps requesting **only** non-sensitive scopes do not need OAuth verification.
+So this is one button and takes effect immediately:
+
+> Cloud Console → APIs & Services → **OAuth consent screen** → **PUBLISH APP**
+
+No security assessment, no review queue. That burden falls on *restricted*
+Drive scopes — `drive`, `drive.readonly`, `drive.metadata` and friends — which
+this extension deliberately never asked for. `appdata` can only see files the
+app itself created, which was chosen for the user's privacy and turns out to
+also be the reason publishing is free.
+
+The one thing that can still ask for review is **brand verification**, and only
+if you want a custom app name and logo on the consent screen. Functionality
+does not depend on it.
+
+> An earlier version of this document said `drive.appdata` was a *sensitive*
+> scope requiring verification review, and suggested staying in Testing
+> indefinitely as the simplest option. Both were wrong: the scope is
+> non-sensitive, and "simplest" stopped being true the moment the extension
+> was published to a store rather than shared with a handful of people.
