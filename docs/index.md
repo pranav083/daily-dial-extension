@@ -13,7 +13,10 @@ Free, open source, and no account. By default it makes no network requests at
 all: your data stays in your browser.
 
 [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn){: .cta}
-[About the extension](about.html){: .cta}
+[Try it here first](demo/index.html){: .cta}
+
+No install needed to try it — the demo below is the real extension, running in
+this page, keeping its data in your browser and nowhere else.
 
 ![Painting a day on the dial, typing a block in, and watching the score update live](demo.gif)
 
@@ -39,6 +42,18 @@ Daily Dial, and nothing is sponsored.
   productive hour in your own data, then defending it.
 - [**Rest that actually happens**](guides/rest.html) — break timers, and the
   difference between rest you intended and rest you took.
+
+---
+
+## More
+
+- [**Try it in your browser**](demo/index.html) — the real thing, no install
+- [**A look inside**](tour.html) — what the app actually looks like
+- [**Why it works this way**](method.html) — a dial instead of a form, and what that costs
+- [**FAQ**](faq.html) — the score, missed days, offline use, what it refuses to do
+- [**Privacy**](privacy.html) — what it stores, and the one thing that ever leaves your device
+- [**Languages**](languages.html) — ten of them, and none of your own words touched
+- [**What's new**](changelog.html) — every release
 
 ---
 

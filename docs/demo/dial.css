@@ -1,0 +1,1794 @@
+@font-face {
+  font-family: "Manrope";
+  src: url("fonts/manrope.woff2") format("woff2");
+  font-weight: 400 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  --surface: #eef1f0;
+  --panel: #ffffff;
+  --panel-2: #f4f6f5;
+  --ink: #171b20;
+  --ink-2: #454c53;
+  --ink-muted: #5f666e;
+  --border: rgba(23, 27, 32, 0.12);
+  --border-soft: rgba(23, 27, 32, 0.07);
+  --accent: #a8661a;
+  --accent-fill: #d99a48;
+  --accent-ink: #171208;
+  --ring-track: rgba(23, 27, 32, 0.08);
+
+  --status-good: #0ca30c;
+  --status-warning: #b3790a;
+  --status-critical: #d03b3b;
+  /* Status colours bright enough to fill a shape are too light to read as
+     text on a light panel; these are the same hues taken darker, used
+     wherever the colour carries a word rather than an area. */
+  --status-good-text: #0a7d0a;
+  --status-warning-text: #8a5a00;
+  --status-critical-text: #c02626;
+  /* The filled accent is only 2.42:1 on white — below the 3:1 a focus
+     indicator needs — so light mode rings with the darker accent. */
+  --focus-ring: #a8661a;
+
+  /* Two constraints, both learned the hard way.
+     1. No two confusable under deuteranopia or protanopia (worst pair sits
+        at dE 18), and every one clears 3:1 against the panel.
+     2. Categories on opposite sides of the score must not share a hue
+        family. Distraction was green while Study was green — numerically
+        far apart, semantically the worst possible pairing, since one counts
+        for you and the other against. Distraction is red now. Weights are
+        user-editable, so this can only ever be true of the defaults, but
+        the defaults are what almost everyone keeps. */
+  --cat-0: #2a78d6;
+  --cat-1: #ec6836;
+  --cat-2: #18a972;
+  --cat-3: #ac9400;
+  --cat-4: #df70a5;
+  --cat-5: #af2427;
+
+  --font-ui: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+/* Dark palette, applied when the system prefers dark and the user hasn't
+   explicitly chosen light, OR the user explicitly chose dark regardless of
+   the system setting. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface: #0e1116;
+    --panel: #171c24;
+    --panel-2: #1d232c;
+    --ink: #e7ebee;
+    --ink-2: #aeb6bf;
+    --ink-muted: #949dab;
+    --border: rgba(231, 235, 238, 0.12);
+    --border-soft: rgba(231, 235, 238, 0.07);
+    --accent: #e8ab5c;
+    --accent-fill: #e0a458;
+    --accent-ink: #1a1206;
+    --ring-track: rgba(231, 235, 238, 0.08);
+    --status-warning: #fab219;
+    --status-good-text: var(--status-good);
+    --status-warning-text: var(--status-warning);
+    --status-critical-text: #e86a6a;
+    --focus-ring: #e0a458;
+
+    --cat-0: #3987e5;
+    --cat-1: #e56432;
+    --cat-2: #32a16e;
+    --cat-3: #d59105;
+    --cat-4: #d24c83;
+    --cat-5: #bc3a3f;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #0e1116;
+  --panel: #171c24;
+  --panel-2: #1d232c;
+  --ink: #e7ebee;
+  --ink-2: #aeb6bf;
+  --ink-muted: #949dab;
+  --border: rgba(231, 235, 238, 0.12);
+  --border-soft: rgba(231, 235, 238, 0.07);
+  --accent: #e8ab5c;
+  --accent-fill: #e0a458;
+  --accent-ink: #1a1206;
+  --ring-track: rgba(231, 235, 238, 0.08);
+  --status-warning: #fab219;
+  --status-good-text: var(--status-good);
+  --status-warning-text: var(--status-warning);
+  --status-critical-text: #e86a6a;
+  --focus-ring: #e0a458;
+
+  --cat-0: #3987e5;
+  --cat-1: #e56432;
+  --cat-2: #32a16e;
+  --cat-3: #d59105;
+  --cat-4: #d24c83;
+  --cat-5: #bc3a3f;
+}
+
+* { box-sizing: border-box; }
+
+/* Author rules setting display:flex on these elements would otherwise beat
+   the UA [hidden] rule, since author styles always win over user-agent ones
+   regardless of specificity. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ---- top bar ---- */
+.topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+.wordmark { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.01em; }
+.wordmark span {
+  color: var(--ink-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: 8px;
+}
+.datenav { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); }
+.datenav button {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.datenav button:hover:not(:disabled) { border-color: var(--accent); }
+.datenav button:disabled { opacity: 0.35; cursor: default; }
+.datenav .label {
+  min-width: 148px;
+  text-align: center;
+  font-size: 0.86rem;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.datenav .today-jump {
+  width: auto;
+  padding: 0 10px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ---- 7-day strip ----
+   A column beside the ring rather than a band above it. Days run top to
+   bottom and each bar runs left to right, which is what lets seven of them
+   fit in something narrower than it is tall — and that is what keeps the
+   ring, the note field and the pens together on one screen. */
+.strip-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 0 0 138px;
+  min-width: 0;
+}
+.strip-header { display: flex; align-items: baseline; gap: 8px; padding: 0 2px; }
+.strip-month { font-size: 0.74rem; font-weight: 700; color: var(--ink-2); }
+.strip-hint { font-size: 0.68rem; color: var(--ink-muted); padding: 0 2px; }
+/* A grid, so the weekday column sizes itself to the longest name and every
+   row still lines up. A fixed width cannot do both: 28px fitted "Sun" and
+   "мар" but clipped six of Arabic's seven ("الأحد" needs 44px), and any
+   number large enough for Arabic wastes the bar's width everywhere else. */
+.strip {
+  display: grid;
+  grid-template-columns: auto minmax(40px, 1fr) auto;
+  gap: 2px 7px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+}
+.strip-day {
+  /* subgrid, so each row borrows the strip's three columns rather than
+     measuring its own — that is what keeps the bars aligned down the
+     column once the labels are content-sized. */
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  align-items: center;
+  padding: 4px 5px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  text-align: left;
+}
+.strip-day:hover { background: var(--panel); }
+.strip-day.active { border-color: var(--accent); background: var(--panel); }
+/* Wide enough for the longest short weekday name Intl produces across the
+   shipped languages ("Wed", "mié", "मंगल" — 21px at this size). Fixed rather
+   than auto so the bars stay aligned down the column; the ellipsis is a
+   guard for a language none of us checked. */
+.strip-day .dow {
+  font-size: 0.66rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.strip-day .bar-track {
+  min-width: 0;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--ring-track);
+  display: flex;
+  overflow: hidden;
+}
+.strip-day .bar-fill { height: 100%; width: var(--fill, 6%); border-radius: 4px; }
+.strip-day .num {
+  font-size: 0.64rem;
+  color: var(--ink-muted);
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- dial + left rail ---- */
+.dial-row { display: flex; gap: 18px; align-items: flex-start; }
+.dial-stack { flex: 1; min-width: 0; }
+/* Wide enough for the longest category name plus its swatch and weight
+   glyph; the week strip inside it simply takes the same width. */
+.dial-rail { display: flex; flex-direction: column; gap: 14px; flex: 0 0 168px; min-width: 0; }
+.dial-rail .strip-wrap { flex: 0 0 auto; width: 100%; margin-top: auto; }
+/* A container query on the card, for the same reason the twin dials use one:
+   once the card itself is narrow, the strip goes back above the ring rather
+   than squeezing both into a width neither can use. */
+@container (max-width: 520px) {
+  .dial-row { flex-direction: column; }
+  .dial-rail { flex: 0 0 auto; width: 100%; }
+  /* Ring first when everything stacks: the rail is a set of controls *for*
+     the dial, and reading three of them before seeing what they act on
+     makes no sense. */
+  .dial-stack { order: -1; }
+  .strip-wrap { flex: 0 0 auto; width: 100%; margin-top: 0; }
+  .strip { display: flex; flex-direction: row; gap: 6px; }
+  .strip-day { display: flex; flex: 1; flex-direction: column; gap: 5px; padding: 6px 2px; text-align: center; }
+  .strip-day .dow, .strip-day .num { text-align: center; }
+  .strip-day .bar-track { width: 100%; height: 30px; align-items: flex-end; }
+  .strip-day .bar-fill { width: 100%; height: var(--fill, 6%); border-radius: 4px 4px 0 0; }
+}
+
+/* ---- main grid ---- */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.dial-card, .side-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+/* A container query, not a viewport media query: the grid switches between
+   one and two columns at its own breakpoint, so the card's *available*
+   width doesn't track viewport width in a straight line — it drops sharply
+   right where the side panel appears. The twin dials need to react to the
+   card's real width, not the window's. */
+.dial-card { padding: 22px; container-type: inline-size; }
+.dial-wrap { position: relative; width: 100%; max-width: 460px; margin: 0 auto; touch-action: none; }
+.dial-svg { width: 100%; height: auto; display: block; user-select: none; }
+
+.dial-wrap-twin {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(10px, 3vw, 28px);
+  touch-action: none;
+}
+.dial-half {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.dial-half-label {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--ink-2);
+}
+.dial-half-label .muted { color: var(--ink-muted); font-weight: 400; }
+@container (max-width: 640px) {
+  .dial-wrap-twin { flex-direction: column; align-items: center; }
+  .dial-half { max-width: 340px; width: 100%; }
+}
+
+/* "ampm-toggle" layout: only one .dial-half is visible at a time (the other
+   gets [hidden]), so it may as well use the same generous cap the single
+   24-hour dial gets, rather than the twin layout's shared-space cap. */
+.dial-wrap-twin.toggle-mode { justify-content: center; }
+.dial-wrap-twin.toggle-mode .dial-half { max-width: 460px; }
+
+/* No auto-centring and no bottom margin any more: this sits in the header
+   row beside the layout switch, where showing and hiding it cannot move the
+   ring underneath. */
+.ampm-toggle-switch {
+  display: flex;
+  width: fit-content;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.dial-head-switches { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* The theme button carries an emoji rather than a glyph in the UI font, so
+   it needs its own size and a little optical nudge — at the icon-btn's
+   default it sat a shade high next to the ☰. */
+.theme-btn { font-size: 0.95rem; line-height: 1; }
+.theme-btn span { display: block; transform: translateY(0.5px); }
+/* The AM/PM pair keeps its space when it is not in use, rather than leaving
+   the flow. Moving it into the header stopped it pushing the dial down at
+   full width, but on a narrower card its appearance still wrapped the header
+   onto a second line — the same jump, one breakpoint later.
+   `visibility` holds the width while still taking the control out of the tab
+   order and the accessibility tree, which `opacity` would not. A class
+   rather than the `hidden` attribute, because the global rule above is
+   `!important` and deliberately so; overriding it here would undermine it
+   everywhere. */
+.ampm-toggle-switch.inactive { visibility: hidden; }
+.ampm-toggle-switch button {
+  padding: 6px 22px;
+  border: none;
+  background: var(--panel-2);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.ampm-toggle-switch button + button { border-left: 1px solid var(--border); }
+.ampm-toggle-switch button.active { background: var(--accent-fill); color: var(--accent-ink); }
+.ampm-toggle-switch button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+
+/* Quick layout switcher, top-right of the dial card — the same three modes
+   as Settings → Appearance → Dial layout, one click away instead of four. */
+.dial-layout-switch {
+  display: flex;
+  width: fit-content;
+  margin: 0 0 14px auto;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.dial-layout-switch button {
+  padding: 5px 12px;
+  border: none;
+  background: var(--panel-2);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+.dial-layout-switch button + button { border-left: 1px solid var(--border); }
+.dial-layout-switch button.active { background: var(--accent-fill); color: var(--accent-ink); }
+.dial-layout-switch button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+
+.seg { cursor: pointer; }
+.cat-0 { fill: var(--cat-0); }
+.cat-1 { fill: var(--cat-1); }
+.cat-2 { fill: var(--cat-2); }
+.cat-3 { fill: var(--cat-3); }
+.cat-4 { fill: var(--cat-4); }
+.cat-5 { fill: var(--cat-5); }
+.tick-line { stroke: var(--ink-muted); opacity: 0.5; }
+.tick-label { fill: var(--ink-muted); font-family: var(--font-mono); font-size: 11px; }
+.needle-line { stroke: var(--accent-fill); stroke-width: 2; }
+
+/* The seam between two blocks, shown only while it's grabbable, so the dial
+   stays clean until the cursor is actually somewhere the drag would work. */
+.edge-layer { pointer-events: none; }
+.edge-handle {
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+svg.edge-grab { cursor: ew-resize; }
+.needle-dot { fill: var(--accent-fill); }
+.center-time { fill: var(--ink); font-family: var(--font-mono); font-weight: 700; font-size: 30px; }
+.center-sub {
+  fill: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hint { text-align: center; color: var(--ink-muted); font-size: 0.8rem; margin-top: 4px; }
+.hint kbd {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: var(--panel-2);
+}
+
+/* ---- pen palette ---- */
+/* A column in the left rail rather than a row under the dial. Stacked, the
+   pens read as a list you pick from — and they stop competing with the ring
+   for the width they were both wrapping to. */
+.pens { display: flex; flex-direction: column; gap: 6px; }
+.pens-eraser {
+  display: flex;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-soft);
+}
+.pens .pen, .pens-eraser .pen { width: 100%; }
+
+/* The stacked fallback for the rail's pens. This has to live *after* the
+   base .pens rule above: a container query carries no extra specificity, so
+   declared earlier in the file it silently lost every tie. */
+@container (max-width: 520px) {
+  .pens { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .pens .pen, .pens-eraser .pen { width: auto; }
+  .pens-eraser { justify-content: center; margin-top: 0; padding-top: 0; border-top: none; }
+}
+.pen {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px 7px 9px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pen .swatch { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+.pen .wt { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-muted); }
+.pen:hover { border-color: var(--ink-muted); }
+.pen.active { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 14%, var(--panel-2)); }
+.pen.eraser .swatch { background: repeating-linear-gradient(45deg, var(--ink-muted) 0 2px, transparent 2px 4px); }
+.pen:focus-visible,
+.datenav button:focus-visible,
+.strip-day:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+input[type="time"]:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- side card ---- */
+.side-card { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin: 0 0 10px;
+}
+/* Inside a journal block the flex `gap` already separates the label from
+   what follows; the margin was being added on top of it, which is half the
+   reason those three fields sat so far apart. */
+.journal-block > .section-label { margin-bottom: 0; }
+
+.stat-row { display: flex; gap: 14px; }
+.stat { flex: 1; background: var(--panel-2); border-radius: 10px; padding: 10px 12px; }
+.stat .v { font-family: var(--font-mono); font-weight: 700; font-size: 1.15rem; }
+.stat .l { font-size: 0.72rem; color: var(--ink-muted); margin-top: 2px; }
+
+.score-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.score-val { font-family: var(--font-mono); font-weight: 700; font-size: 1.4rem; }
+.score-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.score-badge .dot { width: 7px; height: 7px; border-radius: 50%; }
+.score-badge.good { color: var(--status-good-text); background: color-mix(in oklab, var(--status-good) 16%, transparent); }
+.score-badge.warning { color: var(--status-warning-text); background: color-mix(in oklab, var(--status-warning) 20%, transparent); }
+.score-badge.critical { color: var(--status-critical-text); background: color-mix(in oklab, var(--status-critical) 16%, transparent); }
+.score-badge.muted { color: var(--ink-muted); background: var(--panel-2); }
+.meter { height: 7px; border-radius: 999px; background: var(--ring-track); overflow: hidden; }
+.meter-fill { height: 100%; border-radius: 999px; transition: width 0.25s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .meter-fill { transition: none; }
+  .toast { transition: none; }
+}
+
+.insight {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  background: var(--panel-2);
+  border-left: 3px solid var(--accent-fill);
+  border-radius: 0 8px 8px 0;
+  padding: 9px 12px;
+  margin: 0;
+}
+.insight b { color: var(--ink); font-weight: 700; }
+
+.cat-bars { display: flex; flex-direction: column; gap: 9px; }
+.cat-bar-row { display: flex; align-items: center; gap: 9px; }
+.cat-bar-row .name { flex: none; width: 92px; font-size: 0.78rem; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+.cat-bar-row .name .sw { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.cat-bar-row .track { flex: 1; height: 8px; border-radius: 999px; background: var(--ring-track); overflow: hidden; }
+/* display:block matters: the fill is a <span>, and an inline element ignores
+   width and height, so every bar rendered 0px wide however it was styled. */
+.cat-bar-row .fill { display: block; height: 100%; border-radius: 999px; }
+.cat-bar-row .dur { flex: none; width: 54px; text-align: right; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
+.cat-bar-row.untracked .fill { background: var(--ink-muted); opacity: 0.45; }
+
+textarea#reflection {
+  width: 100%;
+  min-height: 74px;
+  resize: vertical;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  padding: 10px 11px;
+}
+textarea#reflection::placeholder { color: var(--ink-muted); }
+
+.footer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.ghost-btn {
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.ghost-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
+.ghost-btn.danger:hover { border-color: var(--status-critical-text); color: var(--status-critical-text); }
+.ghost-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* ---- editors ---- */
+.editor {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 14px;
+}
+.editor.open { display: flex; }
+.cat-edit-item { display: flex; flex-direction: column; gap: 4px; }
+.cat-edit-row { display: flex; align-items: center; gap: 8px; }
+.cat-alias-row { padding-left: 18px; }
+.cat-alias-row input[type="text"] {
+  width: 100%;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: var(--ink-2);
+  border-radius: 7px;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+.cat-alias-row input[type="text"]::placeholder { color: var(--ink-muted); }
+.cat-alias-row input[type="text"]:disabled { opacity: 0.45; }
+.cat-alias-row input[type="text"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.cat-edit-row .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.cat-edit-row input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 7px;
+  padding: 5px 8px;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.cat-edit-row input[type="text"]:disabled { opacity: 0.45; }
+.cat-edit-row input[type="text"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.weight-seg { display: flex; flex: none; border: 1px solid var(--border); border-radius: 7px; overflow: hidden; }
+.weight-seg button {
+  width: 26px; height: 26px;
+  border: none;
+  background: var(--panel-2);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+.weight-seg button + button { border-left: 1px solid var(--border); }
+.weight-seg button[aria-pressed="true"] { background: var(--accent-fill); color: var(--accent-ink); }
+.weight-seg button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+.cat-edit-row .toggle {
+  flex: none;
+  width: 26px; height: 26px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--panel-2);
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0;
+}
+.cat-edit-row .toggle[aria-pressed="false"] { opacity: 0.5; }
+.cat-edit-row .toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.editor-note { font-size: 0.72rem; color: var(--ink-muted); margin: 0; }
+
+.reminder-row { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--ink-2); }
+.reminder-row label { flex: 1; }
+.reminder-row input[type="time"] {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 7px;
+  padding: 5px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.reminder-row input[type="checkbox"] { accent-color: var(--accent-fill); width: 16px; height: 16px; }
+
+/* ---- tooltip + toast ---- */
+#tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--ink);
+  color: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 5px 9px;
+  border-radius: 7px;
+  opacity: 0;
+  transform: translate(-50%, -130%);
+  white-space: nowrap;
+  z-index: 20;
+  transition: opacity 0.1s ease;
+}
+#tooltip.show { opacity: 1; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 9px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+  z-index: 30;
+}
+.toast.show { opacity: 1; }
+
+/* ---- icon button (shared: settings ✕, nudge dismiss) ---- */
+.icon-btn {
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--ink-muted);
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  line-height: 1;
+  flex: none;
+}
+.icon-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
+.icon-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* Settings lives top-right, where people look for it — not buried beside the
+   destructive "Clear day" button in the side panel footer. */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.settings-btn {
+  width: 30px;
+  height: 30px;
+  font-size: 0.95rem;
+  background: var(--panel);
+}
+.settings-btn:hover { border-color: var(--accent); color: var(--ink); }
+
+/* ---- streak ---- */
+/* Sits inline in the top bar rather than as its own band: the dial is the
+   product, and three stacked full-width bars pushed it below the fold. */
+.streak-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px 5px 10px;
+  font-size: 0.82rem;
+  cursor: default;
+}
+.streak-icon { font-size: 1rem; }
+.streak-text b { font-family: var(--font-mono); font-size: 1rem; }
+.streak-text .muted { color: var(--ink-muted); font-size: 0.8rem; }
+.streak-freeze {
+  font-size: 0.72rem;
+  color: var(--status-warning-text);
+  background: color-mix(in oklab, var(--status-warning) 16%, transparent);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.streak-risk {
+  font-size: 0.72rem;
+  color: var(--status-critical-text);
+  background: color-mix(in oklab, var(--status-critical) 14%, transparent);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+/* ---- backup nudge bar ---- */
+.nudge-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--status-warning);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.nudge-bar .ghost-btn { margin-left: auto; }
+.nudge-bar.inline { margin: 8px 0; }
+
+/* ---- quick entry (copy yesterday + typed entry) ---- */
+/* Inside .dial-stack, so this row is centred under the ring rather than
+   across the whole card — where half of it sat beneath the rail. */
+.quick-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 14px;
+}
+.typed-entry { display: flex; gap: 6px; flex: 1; min-width: 220px; max-width: 320px; }
+.typed-entry input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+}
+.typed-entry input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.typed-entry button {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.typed-entry button:hover { border-color: var(--accent); }
+
+/* ---- goal progress rows (side panel) ---- */
+.goal-rows { display: flex; flex-direction: column; gap: 9px; }
+.goal-row { display: flex; align-items: center; gap: 9px; }
+.goal-row .name { flex: none; width: 92px; font-size: 0.78rem; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+.goal-row .name .sw { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.goal-row .track { flex: 1; height: 8px; border-radius: 999px; background: var(--ring-track); overflow: hidden; }
+.goal-row .fill { display: block; height: 100%; border-radius: 999px; }
+.goal-row .amount { flex: none; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted); white-space: nowrap; }
+.goal-row .met { color: var(--status-good-text); font-weight: 700; }
+
+/* ---- goals editor (settings) ---- */
+.goal-edit-row { display: flex; align-items: center; gap: 8px; }
+.goal-edit-row .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.goal-edit-row .goal-name { flex: 1; font-size: 0.82rem; color: var(--ink); }
+.goal-edit-row input[type="number"] {
+  width: 64px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 7px;
+  padding: 5px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.goal-edit-row input[type="number"]:disabled { opacity: 0.45; }
+
+/* ---- settings modal ---- */
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 12, 15, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 40;
+}
+.settings-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  /* A fixed height, not a max: the tabs hold very different amounts of
+     content, and sizing to each one made the dialog jump every time you
+     switched. It stays put and the body scrolls instead. */
+  height: min(680px, 90vh);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.settings-panel:focus-visible,
+.settings-panel:focus { outline: none; }
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 10px;
+}
+.settings-header h2 { margin: 0; font-size: 1.05rem; font-weight: 800; }
+.settings-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border-soft);
+  overflow-x: auto;
+}
+.settings-tabs .tab {
+  border: none;
+  background: none;
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 9px 10px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.settings-tabs .tab:hover { color: var(--ink); }
+.settings-tabs .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.settings-tabs .tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+.settings-body { padding: 16px 18px 20px; overflow-y: auto; flex: 1; }
+.settings-section { display: none; flex-direction: column; gap: 8px; }
+.settings-section.active { display: flex; }
+
+.shortcut-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.shortcut-list li { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--ink-2); }
+.shortcut-list kbd {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: var(--panel-2);
+  flex: none;
+  min-width: 60px;
+  text-align: center;
+}
+
+.import-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--panel-2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 8px 0;
+}
+
+select {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 7px;
+  padding: 5px 8px;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  .streak-risk { margin-left: 0; }
+}
+
+/* A button that reads as a link — used for the "all shortcuts" hint. */
+.link-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.link-btn:hover { color: var(--ink); }
+.link-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 3px; }
+
+/* The top bar carries the wordmark, streak, and date nav on one line; it wraps
+   to stacked rows on narrow windows rather than overflowing. */
+@media (max-width: 720px) {
+  .topbar { align-items: flex-start; }
+  .streak-banner { order: 3; }
+}
+
+/* Visible to screen readers only. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- challenge chip ---- */
+.challenge-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--ink-2);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.challenge-chip[hidden] { display: none; }
+.challenge-chip:hover { border-color: var(--accent); }
+.challenge-chip:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.challenge-day { font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-muted); font-weight: 400; }
+
+.challenge-fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 12px;
+  align-items: center;
+}
+.challenge-fields label { font-size: 0.83rem; color: var(--ink-2); }
+.challenge-fields input {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.83rem;
+  min-width: 0;
+}
+.challenge-fields input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+/* ---- day templates ---- */
+.template-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.template-row { display: flex; align-items: center; gap: 8px; }
+.template-row .template-name { flex: 1; font-size: 0.82rem; color: var(--ink); overflow-wrap: anywhere; }
+
+/* ---- journal: intentions and ranged notes ---- */
+.avoid-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.avoid-row { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; }
+.avoid-row .bullet { flex: none; color: var(--status-critical-text); padding-top: 1px; }
+.avoid-row .text { flex: 1; color: var(--ink-2); overflow-wrap: anywhere; }
+.avoid-row .drop {
+  flex: none; border: none; background: none; color: var(--ink-muted);
+  cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 2px 4px; border-radius: 5px;
+}
+.avoid-row .drop:hover { color: var(--status-critical-text); background: var(--panel-2); }
+.avoid-row .drop:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+.journal-block { display: flex; flex-direction: column; gap: 6px; }
+/* An empty list renders at zero height but still claims a `gap` on each
+   side, so a day with no intentions yet paid for a list that wasn't there.
+   Three blocks × two phantom gaps was most of the space between the
+   headings and their input rows. */
+.journal-block > ul:empty { display: none; }
+
+.intent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.intent-row { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; }
+.intent-row input[type="checkbox"] { margin: 3px 0 0; flex: none; accent-color: var(--accent); }
+.intent-row .text { flex: 1; color: var(--ink-2); overflow-wrap: anywhere; }
+/* Struck through rather than removed: the value of the list is seeing later
+   what you meant to do, including what you didn't. */
+.intent-row.done .text { text-decoration: line-through; color: var(--ink-muted); }
+
+.intent-row .drop {
+  flex: none;
+  border: none;
+  background: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 5px;
+}
+.intent-row .drop:hover { color: var(--status-critical-text); background: var(--panel); }
+.intent-row .drop:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+.journal-form { display: flex; gap: 6px; }
+.journal-form input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.83rem;
+}
+.journal-form input::placeholder { color: var(--ink-muted); }
+.journal-form input:disabled { opacity: 0.6; cursor: not-allowed; }
+.journal-form input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+/* ---- keyboard cursor on the dial ---- */
+.caret-layer { pointer-events: none; }
+.note-layer { pointer-events: none; }
+/* A written stretch gets a tick outside the ring, so the day shows at a
+   glance where the notes are, not just where the time went. */
+.note-mark { fill: var(--ink-muted); }
+.caret-band {
+  fill: none;
+  stroke: var(--focus-ring);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+/* The ring itself takes focus, so it needs a ring of its own. */
+.dial-svg:focus { outline: none; }
+.dial-svg:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: 12px; }
+
+/* ---- stale tab banner ---- */
+/* Critical tone rather than warning: unlike demo mode this is not a state
+   the user chose, and ignoring it costs them work. */
+.stale-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in oklab, var(--status-critical) 16%, var(--panel));
+  border: 1px solid color-mix(in oklab, var(--status-critical) 50%, transparent);
+  border-radius: 12px;
+  padding: 9px 14px;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+.stale-banner[hidden] { display: none; }
+.stale-banner-mark { font-size: 1rem; line-height: 1; flex: none; }
+.stale-banner-text { flex: 1; color: var(--ink-2); }
+.stale-banner-text b { color: var(--ink); }
+.stale-banner-reload {
+  flex: none;
+  border: 1px solid color-mix(in oklab, var(--status-critical) 60%, transparent);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.stale-banner-reload:hover { background: color-mix(in oklab, var(--status-critical) 22%, transparent); }
+.stale-banner-reload:focus-visible { outline: 2px solid var(--status-critical); outline-offset: 2px; }
+
+/* Everything that writes is inert once this tab is stale. */
+.is-stale .dial-wrap,
+.is-stale .pens,
+.is-stale .quick-entry,
+.is-stale #reflection { opacity: 0.5; pointer-events: none; }
+
+/* ---- demo mode banner ---- */
+/* Deliberately not the accent colour: this is a state warning, not a
+   feature highlight, and it has to stay legible above every view. */
+.demo-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in oklab, var(--status-warning) 14%, var(--panel));
+  border: 1px solid color-mix(in oklab, var(--status-warning) 45%, transparent);
+  border-radius: 12px;
+  padding: 9px 14px;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+.demo-banner[hidden] { display: none; }
+.demo-banner-mark { font-size: 1rem; line-height: 1; flex: none; }
+.demo-banner-text { flex: 1; color: var(--ink-2); }
+.demo-banner-text b { color: var(--ink); }
+.demo-banner-exit {
+  flex: none;
+  border: 1px solid color-mix(in oklab, var(--status-warning) 55%, transparent);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.demo-banner-exit:hover { background: color-mix(in oklab, var(--status-warning) 22%, transparent); }
+.demo-banner-exit:focus-visible { outline: 2px solid var(--status-warning); outline-offset: 2px; }
+
+/* ---- first-run hint ---- */
+/* Sits directly above the pens, because the pens are the thing the hint
+   is pointing at — a line in the stats column opposite them was too far
+   from the action to read as an instruction. */
+.first-run-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 0 10px;
+  padding: 8px 14px;
+  border: 1px dashed var(--accent);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+.first-run-hint[hidden] { display: none; }
+
+/* ---- onboarding (first run) ---- */
+.onboarding-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 640px;
+  max-height: min(700px, 90vh);
+  overflow-y: auto;
+  padding: 26px 26px 18px;
+}
+.onboarding-header { text-align: center; margin-bottom: 20px; }
+.onboarding-mark { font-size: 2rem; line-height: 1; margin-bottom: 6px; }
+.onboarding-header h2 { margin: 0 0 4px; font-size: 1.2rem; font-weight: 800; }
+.onboarding-sub { margin: 0; color: var(--ink-muted); font-size: 0.85rem; }
+
+.onboarding-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+@media (max-width: 560px) {
+  .onboarding-steps { grid-template-columns: 1fr; }
+}
+.onboarding-step {
+  background: var(--panel-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 16px 14px;
+  text-align: center;
+}
+.onboarding-icon { font-size: 1.6rem; margin-bottom: 8px; }
+.onboarding-step h3 { margin: 0 0 6px; font-size: 0.85rem; font-weight: 800; }
+.onboarding-step p { margin: 0; font-size: 0.78rem; color: var(--ink-2); line-height: 1.5; }
+.onboarding-step code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.onboarding-alt {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin: 0 0 14px;
+}
+/* Sticky, not static: .onboarding-panel scrolls internally on short
+   viewports, and a static footer could scroll out of view — leaving
+   "Let's start" unreachable and clicks landing on the backdrop instead,
+   which silently closes the dialog with no visible effect. */
+.onboarding-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  position: sticky;
+  bottom: -18px;
+  margin: 0 -26px -18px;
+  padding: 12px 26px 18px;
+  background: var(--panel);
+  border-top: 1px solid var(--border-soft);
+}
+.primary-btn {
+  border: none;
+  background: var(--accent-fill);
+  color: var(--accent-ink);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.primary-btn:hover { filter: brightness(1.08); }
+.primary-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* ---- view switcher ---- */
+/* Three top-level views share the top bar; the date nav only applies to Day. */
+.view-nav { display: flex; gap: 4px; }
+.view-tab {
+  border: 1px solid transparent;
+  background: none;
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.view-tab:hover { color: var(--ink); background: var(--panel-2); }
+.view-tab.active { color: var(--ink); background: var(--panel); border-color: var(--border); }
+.view-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+.view { display: flex; flex-direction: column; gap: 22px; }
+.view[hidden] { display: none; }
+
+.view-placeholder {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 22px;
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+}
+
+/* ---- history view ---- */
+
+#history-content { display: flex; flex-direction: column; gap: 22px; }
+
+.hist-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.hist-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .hist-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Month nav mirrors .datenav so switching between Day and History feels
+   like the same control, not two different widgets. */
+.hist-month-nav { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); margin-bottom: 14px; }
+.hist-month-nav button {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.hist-month-nav button:hover { border-color: var(--accent); }
+.hist-month-nav button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.hist-month-nav .label {
+  min-width: 140px;
+  text-align: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.hist-month-nav #hist-this-month { width: auto; padding: 0 10px; font-family: var(--font-ui); }
+
+/* ---- heatmap ---- */
+/* Square cells across seven full-width columns made a month over 1000px tall,
+   pushing the summary below the fold. Capping the calendar's width keeps cells
+   near 64px — a conventional month grid — and leaves the card room to breathe. */
+.hist-heatmap { display: flex; flex-direction: column; gap: 5px; max-width: 500px; }
+.hist-heatmap-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.hist-dow {
+  text-align: center;
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  padding-bottom: 2px;
+}
+
+.hist-day {
+  aspect-ratio: 1;
+  border-radius: 7px;
+  border: 1px solid var(--border-soft);
+  background: var(--panel-2);
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 4px 0 0 6px;
+  font-family: var(--font-mono);
+}
+.hist-day.out { opacity: 0.4; }
+.hist-day.today { border-color: var(--accent); border-width: 2px; }
+/* A day with nothing painted reads as visibly absent — a dotted outline on
+   the plain panel colour — rather than a bad score. Colour is reserved for
+   days that were actually logged. */
+.hist-day.empty {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--border);
+}
+.hist-day.logged { border-color: transparent; }
+/* Written up but nothing painted: a solid outline and a dot, so it reads as
+   "something is here" without borrowing the score colours, which mean
+   painted time. */
+.hist-day.written {
+  background: transparent;
+  border-style: solid;
+  border-color: var(--ink-muted);
+}
+.hist-day.written::after {
+  content: "";
+  position: absolute;
+  right: 5px; bottom: 5px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--ink-muted);
+}
+.hist-day { position: relative; }
+.hist-day.written .hist-day-num { background: none; color: var(--ink-2); }
+/* A translucent chip behind the number, rather than relying on the heat
+   colour's contrast — a mid-intensity orange and a pale one both need the
+   date to stay readable. */
+.hist-day-num {
+  font-size: 0.68rem;
+  color: var(--ink);
+  background: color-mix(in oklab, var(--panel) 65%, transparent);
+  border-radius: 4px;
+  padding: 0 3px;
+  line-height: 1.4;
+}
+.hist-day.empty .hist-day-num { background: none; color: var(--ink-muted); }
+.hist-day:hover { border-color: var(--accent); }
+.hist-day:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+.hist-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-size: 0.72rem; color: var(--ink-muted); }
+.hist-legend-item { display: inline-flex; align-items: center; gap: 5px; }
+.hist-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.hist-swatch-empty { background: transparent; border: 1px dashed var(--border); }
+.hist-swatch-written { background: transparent; border: 1px solid var(--ink-muted); position: relative; }
+.hist-swatch-written::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 3px; height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: var(--ink-muted);
+}
+
+/* ---- month summary ---- */
+#hist-summary-extra { margin-top: 14px; display: flex; flex-direction: column; gap: 4px; }
+.hist-extra-line { margin: 0; font-size: 0.8rem; color: var(--ink-2); }
+
+/* ---- week over week ---- */
+.hist-wow { display: flex; flex-direction: column; gap: 10px; }
+.hist-wow-row { display: flex; align-items: center; gap: 10px; font-size: 0.84rem; }
+.hist-wow-label { flex: 1; color: var(--ink-2); }
+.hist-wow-val { font-family: var(--font-mono); font-weight: 700; color: var(--ink); }
+/* Direction is spelled out with a glyph, not just colour, so the comparison
+   still reads for anyone who can't rely on the good/bad colour cue. */
+.hist-wow-delta {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.hist-wow-delta.up { color: var(--status-good-text); background: color-mix(in oklab, var(--status-good) 16%, transparent); }
+.hist-wow-delta.down { color: var(--status-critical-text); background: color-mix(in oklab, var(--status-critical) 16%, transparent); }
+.hist-wow-delta.flat { color: var(--ink-muted); background: var(--panel-2); }
+
+/* ---- category trends ---- */
+.hist-trends { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+.hist-trend { display: flex; flex-direction: column; gap: 6px; }
+.hist-trend-head { display: flex; align-items: center; gap: 6px; }
+.hist-trend-head .sw { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.hist-trend-name { font-size: 0.76rem; font-weight: 600; color: var(--ink-2); flex: 1; }
+.hist-trend-dir { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; }
+.hist-trend-dir.up { color: var(--status-good-text); }
+.hist-trend-dir.down { color: var(--status-critical-text); }
+.hist-trend-dir.flat { color: var(--ink-muted); }
+.hist-trend-svg { width: 100%; height: 52px; display: block; }
+.hist-trend-svg rect.cat-0 { fill: var(--cat-0); }
+.hist-trend-svg rect.cat-1 { fill: var(--cat-1); }
+.hist-trend-svg rect.cat-2 { fill: var(--cat-2); }
+.hist-trend-svg rect.cat-3 { fill: var(--cat-3); }
+.hist-trend-svg rect.cat-4 { fill: var(--cat-4); }
+.hist-trend-svg rect.cat-5 { fill: var(--cat-5); }
+
+/* ---- note search ---- */
+.hist-search-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 8px 11px;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+.hist-search-input::placeholder { color: var(--ink-muted); }
+.hist-search-input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+.hist-search-results { display: flex; flex-direction: column; gap: 6px; }
+.hist-search-result {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border-soft);
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.hist-search-result:hover { border-color: var(--accent); }
+.hist-search-result:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.hist-search-date { flex: none; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
+.hist-search-snippet { font-size: 0.82rem; color: var(--ink-2); overflow-wrap: anywhere; }
+
+/* The calendar is capped at 500px, so it shares its card with the month
+   summary rather than leaving half the width empty. */
+.hist-month-split { display: flex; gap: 26px; align-items: flex-start; flex-wrap: wrap; }
+.hist-month-main { flex: none; }
+.hist-month-side { flex: 1; min-width: 240px; }
+.hist-month-side .stat-row { flex-wrap: wrap; }
+@media (max-width: 900px) {
+  .hist-month-split { flex-direction: column; }
+  .hist-month-side { width: 100%; }
+}
+
+
+/* ---- history: the written log ---- */
+.log-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.log-head .section-label { margin: 0; }
+.log-range { display: flex; gap: 4px; }
+.log-range button {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.log-range button[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); background: var(--panel); }
+.log-range button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* Capped so the log scrolls inside its card rather than pushing every other
+   panel off the page once there are a few hundred days. */
+.log-entries { display: flex; flex-direction: column; gap: 18px; max-height: 620px; overflow-y: auto; }
+.log-day { display: flex; flex-direction: column; gap: 7px; }
+.log-day-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.log-date { font-weight: 800; font-size: 0.88rem; color: var(--ink); }
+.log-meta { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
+.log-score { font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+.log-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-muted); margin: 2px 0 0; }
+.log-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.log-list li { display: flex; gap: 8px; font-size: 0.83rem; color: var(--ink-2); }
+.log-list .tick { flex: none; font-family: var(--font-mono); color: var(--ink-muted); }
+.log-list li.done .body { color: var(--ink-muted); text-decoration: line-through; }
+.log-when { flex: none; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); min-width: 88px; }
+.log-body { flex: 1; overflow-wrap: anywhere; }
+.log-reflection {
+  margin: 2px 0 0;
+  font-size: 0.83rem;
+  color: var(--ink-2);
+  border-left: 2px solid var(--border);
+  padding-left: 10px;
+  overflow-wrap: anywhere;
+}
+
+
+/* ---- dial card header ---- */
+.dial-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* ---- the day, end to end ---- */
+/* Deliberately uncapped: the point is seeing the whole 24 hours at once,
+   including the parts you'd rather not look at. A scroll box would hide
+   exactly the gaps this is meant to surface. */
+.breakdown { margin-top: 22px; border-top: 1px solid var(--border); padding-top: 16px; }
+.breakdown-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.breakdown-head .section-label { margin-bottom: 10px; }
+.breakdown-sum { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-muted); }
+
+/* Fixed layout: with auto layout the nowrap time and category cells set
+   their own widths and pushed the note column past the card's edge. */
+.breakdown-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.breakdown-table th {
+  text-align: left;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: 0 8px 7px 0;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.breakdown-table th:nth-child(1) { width: 104px; }
+.breakdown-table th:nth-child(2) { width: 132px; }
+.breakdown-table th:nth-child(3) { width: 62px; }
+.breakdown-table th.note-col { width: auto; }
+.breakdown-table th:nth-child(5) { width: 30px; }
+.breakdown-table td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
+.breakdown-table tr:last-child td { border-bottom: none; }
+
+.bd-when { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-2); white-space: nowrap; }
+.bd-what { display: flex; align-items: center; gap: 7px; font-size: 0.82rem; font-weight: 700; min-width: 0; }
+.bd-what > span:last-child, .bd-what { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bd-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.bd-dur { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted); white-space: nowrap; }
+
+/* The note field reads as text until touched — a row of visible input boxes
+   would turn a day's summary into a form. */
+.bd-note {
+  width: 100%;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--ink-2);
+  border-radius: 6px;
+  padding: 4px 7px;
+  font-family: var(--font-ui);
+  font-size: 0.81rem;
+}
+.bd-note::placeholder { color: color-mix(in oklab, var(--ink-muted) 55%, transparent); }
+.bd-note:hover { border-color: var(--border); background: var(--panel-2); }
+.bd-note:focus { outline: none; border-color: var(--accent); background: var(--panel-2); color: var(--ink); }
+
+.bd-clear-cell { text-align: right; }
+.bd-clear {
+  border: none;
+  background: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 5px;
+  opacity: 0;
+}
+/* Hidden until the row is hovered or the button focused: a column of crosses
+   turns a day's summary into a list of things to delete. */
+.bd-row:hover .bd-clear, .bd-clear:focus-visible { opacity: 1; }
+.bd-clear:hover { color: var(--status-critical-text); background: var(--panel-2); }
+.bd-clear:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+/* A gap is a row like any other, just visibly hollow — present enough to
+   act on, quiet enough not to shout on a half-logged day. */
+.bd-row.gap td { background: color-mix(in oklab, var(--ink) 2%, transparent); }
+.bd-row.gap .bd-what { color: var(--ink-muted); font-weight: 600; }
+.bd-row.gap .bd-dot { background: none; border: 1px dashed var(--ink-muted); }
+
+/* Hours later today: the row stays, because the day does continue — it just
+   doesn't offer a control that painting rules would refuse. */
+.bd-row.future td { opacity: 0.55; }
+.bd-not-yet { font-size: 0.78rem; font-style: italic; color: var(--ink-muted); }
+
+.bd-fill {
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink-2);
+  border-radius: 7px;
+  padding: 2px 6px;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  max-width: 132px;
+}
+.bd-fill:hover { border-color: var(--accent); color: var(--ink); }
+.bd-fill:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+/* Extra notes whose range doesn't line up with a stretch any more, after the
+   blocks around them were repainted. Shown rather than silently dropped. */
+.bd-extra { display: flex; align-items: baseline; gap: 6px; padding: 2px 7px 4px; }
+.bd-extra .when { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-muted); flex: none; }
+.bd-extra .text { font-size: 0.78rem; color: var(--ink-muted); overflow-wrap: anywhere; }
+.bd-extra .drop {
+  border: none; background: none; color: var(--ink-muted);
+  cursor: pointer; font-size: 0.8rem; line-height: 1; padding: 1px 4px; border-radius: 5px;
+}
+.bd-extra .drop:hover { color: var(--status-critical-text); background: var(--panel-2); }
+
+@media (max-width: 560px) {
+  .breakdown-table th:nth-child(1) { width: 88px; }
+  .breakdown-table th:nth-child(2) { width: 104px; }
+  .breakdown-table th:nth-child(3) { width: 54px; }
+  .bd-when, .bd-dur { font-size: 0.7rem; }
+}
+
+/* The typed-entry category dropdown sits beside its time field. */
+.typed-entry select {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-family: var(--font-ui);
+  font-size: 0.83rem;
+  cursor: pointer;
+}
+.typed-entry select:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+
+/* ---- weekly review: patterns worth noticing ---- */
+.review-card[hidden] { display: none; }
+.review-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.review-head .section-label { margin-bottom: 12px; }
+.review-note { font-size: 0.74rem; color: var(--ink-muted); }
+
+.review-list { display: flex; flex-direction: column; gap: 12px; }
+.review-item { border-left: 2px solid var(--accent); padding-left: 12px; }
+.review-headline { margin: 0; font-size: 0.9rem; font-weight: 700; color: var(--ink); }
+.review-detail { margin: 3px 0 0; font-size: 0.83rem; color: var(--ink-2); }
+.review-actions { display: flex; align-items: center; gap: 10px; margin-top: 7px; flex-wrap: wrap; }
+
+/* Collapsed by default and opened only on request — the whole point is that
+   the advice is asked for rather than delivered. */
+.review-suggest { margin-top: 9px; }
+.review-suggest[hidden] { display: none; }
+.review-lead { margin: 0 0 7px; font-size: 0.82rem; color: var(--ink-2); font-style: italic; }
+.review-approaches { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.review-approach { font-size: 0.82rem; color: var(--ink-2); }
+.review-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+.review-tool {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.76rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.review-tool:hover { border-color: var(--accent); }
+.review-tool:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.review-tool .platforms { color: var(--ink-muted); font-size: 0.7rem; }
+.review-disclaimer { margin: 9px 0 0; font-size: 0.72rem; color: var(--ink-muted); }
+
+
+/* ---- note for the stretch just painted ---- */
+.just-painted {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+}
+.just-painted[hidden] { display: none; }
+.jp-what {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.just-painted input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+}
+.just-painted input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+@media (max-width: 560px) {
+  .just-painted { flex-wrap: wrap; }
+  .jp-what { width: 100%; }
+}

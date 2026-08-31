@@ -1,0 +1,3246 @@
+{
+  "appName": {
+    "message": "Daily Dial – متعقب الوقت والتركيز"
+  },
+  "appDescription": {
+    "message": "لوّن يومك على قرص مدته 24 ساعة، ثم تحقق مما إذا كان الوقت قد ذهب إلى حيث أردت."
+  },
+  "actionDefaultTitle": {
+    "message": "فتح Daily Dial"
+  },
+  "saveFailedToast": {
+    "message": "تعذّر الحفظ — قد يُفقد آخر تغيير أجريته."
+  },
+  "wordmarkTitle": {
+    "message": "Daily Dial"
+  },
+  "wordmarkTagline": {
+    "message": "سجلّ الوقت والتركيز"
+  },
+  "streakBannerTooltip": {
+    "message": "عدد الأيام المتتالية التي سُجِّلت فيها فترة واحدة على الأقل. يُغتفر تفويت يوم واحد في الأسبوع ويُحتسب تجميدًا."
+  },
+  "streakBanner_zero": {
+    "message": "سلسلة <b>$COUNT$</b> يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_one": {
+    "message": "سلسلة <b>$COUNT$</b> يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_two": {
+    "message": "سلسلة <b>$COUNT$</b> يومين",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_few": {
+    "message": "سلسلة <b>$COUNT$</b> أيام",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_many": {
+    "message": "سلسلة <b>$COUNT$</b> يومًا",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "سلسلة <b>$COUNT$</b> يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· الأفضل: $BEST$",
+    "placeholders": {
+      "best": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakFreezeLabel": {
+    "message": "❄ استُخدم التجميد"
+  },
+  "streakFreezeTooltip": {
+    "message": "فاتك يوم هذا الأسبوع، لكن سلسلتك استمرت — يُغتفر تفويت واحد كل 7 أيام متجددة."
+  },
+  "streakRiskLabel": {
+    "message": "لم يُسجَّل شيء اليوم بعد"
+  },
+  "streakRiskTooltip": {
+    "message": "سجّل فترة واحدة على الأقل اليوم لتبقى السلسلة مستمرة."
+  },
+  "challengeChipTooltip": {
+    "message": "تحدّيك المُسمّى. انقر لتغييره."
+  },
+  "challengeDayProgress": {
+    "message": "اليوم $DAY$ / $TARGET$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDaySimple": {
+    "message": "اليوم $DAY$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      }
+    }
+  },
+  "viewNavLabel": {
+    "message": "طرق العرض"
+  },
+  "viewTabDay": {
+    "message": "اليوم"
+  },
+  "viewTabHistory": {
+    "message": "السجل"
+  },
+  "viewTabHistoryTooltip": {
+    "message": "أشهرك في لمحة واحدة، وكيف تتغيّر الفئات بمرور الوقت."
+  },
+  "dateToday": {
+    "message": "اليوم"
+  },
+  "dateYesterday": {
+    "message": "أمس"
+  },
+  "prevDayLabel": {
+    "message": "اليوم السابق"
+  },
+  "nextDayLabel": {
+    "message": "اليوم التالي"
+  },
+  "todayJumpTooltip": {
+    "message": "العودة إلى اليوم"
+  },
+  "settingsButtonLabel": {
+    "message": "الإعدادات"
+  },
+  "settingsButtonTooltip": {
+    "message": "الفئات، التذكيرات، الأهداف، النسخ الاحتياطي، والمظهر"
+  },
+  "demoBannerTitle": {
+    "message": "الوضع التجريبي"
+  },
+  "demoBannerBody": {
+    "message": "— الأيام أدناه تتضمن بيانات نموذجية، وليست بياناتك فقط."
+  },
+  "demoBannerExitLabel": {
+    "message": "إنهاء التجربة"
+  },
+  "demoBannerExitTooltip": {
+    "message": "يزيل بالضبط الأيام النموذجية التي أُضيفت. أي شيء سجّلته بنفسك يبقى كما هو."
+  },
+  "staleBannerHeadline": {
+    "message": "غيّر تبويب آخر $WHAT$.",
+    "placeholders": {
+      "what": {
+        "content": "$1"
+      }
+    }
+  },
+  "staleBannerBody": {
+    "message": "التحرير متوقف هنا حتى لا يستبدله هذا التبويب. أعد التحميل للحصول على النسخة الأحدث."
+  },
+  "staleBannerReload": {
+    "message": "إعادة التحميل"
+  },
+  "staleWhatViewedDay": {
+    "message": "اليوم الذي تعرضه الآن"
+  },
+  "staleWhatCategories": {
+    "message": "فئاتك"
+  },
+  "staleWhatSettings": {
+    "message": "إعداداتك"
+  },
+  "staleWhatDemoMode": {
+    "message": "الوضع التجريبي"
+  },
+  "staleWhatTemplates": {
+    "message": "قوالبك"
+  },
+  "firstRunHint": {
+    "message": "👉 اختر فئة، ثم اسحب حول الحلقة لتلوين أول فترة لك."
+  },
+  "firstRunHintDismiss": {
+    "message": "فهمت"
+  },
+  "shareImageLabel": {
+    "message": "مشاركة كصورة"
+  },
+  "shareImageTooltip": {
+    "message": "احفظ (أو شارك) صورة PNG لقرص هذا اليوم ونتيجته — لا يغادر جهازك شيء إلا إذا اخترت إرساله."
+  },
+  "dialLayoutSwitchLabel": {
+    "message": "تخطيط القرص"
+  },
+  "dialModeSingleLabel": {
+    "message": "24س"
+  },
+  "dialModeSingleTooltip": {
+    "message": "حلقة واحدة مدتها 24 ساعة"
+  },
+  "dialModeAmpmLabel": {
+    "message": "ص+م"
+  },
+  "dialModeAmpmTooltip": {
+    "message": "حلقتان مدة كل منهما 12 ساعة، جنبًا إلى جنب"
+  },
+  "dialModeToggleLabel": {
+    "message": "ص⇄م"
+  },
+  "dialModeToggleTooltip": {
+    "message": "حلقة واحدة مدتها 12 ساعة، مع مفتاح للتبديل بين ص/م"
+  },
+  "dialAriaLabelSingle": {
+    "message": "قرص نشاط لمدة 24 ساعة. مفاتيح الأسهم تحرّك المؤشر، Shift+سهم يحدد، Enter يلوّن، Delete يمسح."
+  },
+  "dialAriaLabelAm": {
+    "message": "قرص نشاط الفترة الصباحية، من منتصف الليل إلى الظهر. مفاتيح الأسهم تحرّك المؤشر، Shift+سهم يحدد، Enter يلوّن، Delete يمسح."
+  },
+  "dialAriaLabelPm": {
+    "message": "قرص نشاط الفترة المسائية، من الظهر إلى منتصف الليل. مفاتيح الأسهم تحرّك المؤشر، Shift+سهم يحدد، Enter يلوّن، Delete يمسح."
+  },
+  "dialCenterPickCategory": {
+    "message": "اختر فئة"
+  },
+  "dialTimeLoggedTooltip": {
+    "message": "الوقت المسجَّل في هذا النصف"
+  },
+  "dialCurrentTimeTooltip": {
+    "message": "الوقت الحالي"
+  },
+  "dialHalfAm": {
+    "message": "ص"
+  },
+  "dialHalfAmRange": {
+    "message": "· 12ص–12م"
+  },
+  "dialHalfPm": {
+    "message": "م"
+  },
+  "dialHalfPmRange": {
+    "message": "· 12م–12ص"
+  },
+  "toggleHalfSwitchLabel": {
+    "message": "إظهار الفترة الصباحية أو المسائية"
+  },
+  "copyYesterdayLabel": {
+    "message": "نسخ الأمس"
+  },
+  "copyYesterdayTooltip": {
+    "message": "املأ اليوم بفترات الأمس — مفيد عندما تتشابه أيامك"
+  },
+  "typedEntryTimeRangeLabel": {
+    "message": "النطاق الزمني"
+  },
+  "typedEntryPlaceholder": {
+    "message": "9-11"
+  },
+  "typedEntryTooltip": {
+    "message": "نطاق زمني: \"9-11\"، \"13:30-15\"، أو \"9pm-11pm\". يمكنك أيضًا كتابة الفئة هنا."
+  },
+  "typedEntryCatTooltip": {
+    "message": "الفئة التي تنتمي إليها هذه الفترة"
+  },
+  "addButtonLabel": {
+    "message": "إضافة"
+  },
+  "typedEntryAddTooltip": {
+    "message": "إضافة هذه الفترة إلى القرص"
+  },
+  "justPaintedNoteLabel": {
+    "message": "ملاحظة لما لوّنته للتو"
+  },
+  "justPaintedSaveLabel": {
+    "message": "حفظ"
+  },
+  "dismissLabel": {
+    "message": "تجاهل"
+  },
+  "hintPaintInstruction": {
+    "message": "انقر أو اسحب حول الحلقة للتلوين"
+  },
+  "hintUndo": {
+    "message": "تراجع"
+  },
+  "hintAllShortcuts": {
+    "message": "كل الاختصارات"
+  },
+  "breakdownSectionLabel": {
+    "message": "اليوم، من البداية إلى النهاية"
+  },
+  "breakdownSectionTooltip": {
+    "message": "كل فترات اليوم بالترتيب، بما في ذلك الأجزاء التي لم تسجّلها بعد. اكتب ملاحظة مباشرة في أي صف؛ واختر فئة في صف فارغ لملئه."
+  },
+  "breakdownColWhen": {
+    "message": "متى"
+  },
+  "breakdownColWhat": {
+    "message": "ماذا"
+  },
+  "breakdownColFor": {
+    "message": "المدة"
+  },
+  "breakdownColNote": {
+    "message": "ملاحظة"
+  },
+  "breakdownColClear": {
+    "message": "مسح"
+  },
+  "todaysReadLabel": {
+    "message": "قراءة اليوم"
+  },
+  "statTrackedLabel": {
+    "message": "مسجَّل"
+  },
+  "statTrackedTooltip": {
+    "message": "إجمالي الوقت الذي لوّنته على القرص اليوم. باقي اليوم يُحتسب غير مسجَّل."
+  },
+  "statProductiveLabel": {
+    "message": "الإنتاجية"
+  },
+  "statProductiveTooltip": {
+    "message": "نسبة وقتك المسجَّل الذي أمضيته في فئات موزونة بـ +. الوقت غير المسجَّل مستبعد."
+  },
+  "statFocusLabel": {
+    "message": "أطول تركيز"
+  },
+  "statFocusTooltip": {
+    "message": "أطول فترة متواصلة من الوقت الإنتاجي لديك. تستمر عبر فئات + المختلفة، وتنقطع عند الوقت المحايد أو المشتِّت."
+  },
+  "scoreValTooltip": {
+    "message": "(الإنتاجي − المشتِّت) ÷ المسجَّل، كنسبة مئوية. يقيس شكل يومك لا طوله، فأربع ساعات مركّزة تتفوق على عشر ساعات متناثرة."
+  },
+  "meterTooltip": {
+    "message": "نتيجتك على مقياس من −100 إلى +100."
+  },
+  "whereTimeWentLabel": {
+    "message": "أين ذهب الوقت"
+  },
+  "whereTimeWentTooltip": {
+    "message": "كيف يتوزّع وقت اليوم المسجَّل على الفئات، مع إظهار الوقت غير المسجَّل حتى تبقى الفجوات واضحة."
+  },
+  "todaysGoalsLabel": {
+    "message": "أهداف اليوم"
+  },
+  "todaysGoalsTooltip": {
+    "message": "الأهداف اليومية التي حدّدتها في الإعدادات ← الأهداف. علامة ✓ تشير إلى هدف تحقّق."
+  },
+  "weeklyGoalsLabel": {
+    "message": "أهداف هذا الأسبوع"
+  },
+  "weeklyGoalsTooltip": {
+    "message": "الأهداف الأسبوعية التي حدّدتها في الإعدادات ← الأهداف، مجمّعة على مدار الأسبوع بدءًا من يوم بداية الأسبوع الذي حدّدته. علامة ✓ تشير إلى هدف تحقّق."
+  },
+  "intentionsLabel": {
+    "message": "نوايا اليوم"
+  },
+  "intentionsTooltip": {
+    "message": "ما نويت فعله اليوم. ضع علامة عليها عند إنجازها — سجل التاريخ يُظهر ما أنجزته فعلًا."
+  },
+  "addIntentionLabel": {
+    "message": "إضافة نية"
+  },
+  "addIntentionPlaceholder": {
+    "message": "حل مسائل Leetcode، مراسلة الأستاذ…"
+  },
+  "avoidLabel": {
+    "message": "للتجنّب"
+  },
+  "avoidTooltip": {
+    "message": "ما يجب الابتعاد عنه اليوم. يُحفظ في سجل التاريخ إلى جانب ما فعلته فعلًا."
+  },
+  "addAvoidLabel": {
+    "message": "إضافة شيء لتجنّبه"
+  },
+  "addAvoidPlaceholder": {
+    "message": "التمرير بلا هدف، 10 ساعات من المسلسلات…"
+  },
+  "reflectionLabel": {
+    "message": "لماذا (سطر واحد يكفي)"
+  },
+  "reflectionTooltip": {
+    "message": "سطر واحد عمّا ساعدك أو أثّر عليك سلبًا اليوم. يُدرج في تصدير CSV."
+  },
+  "reflectionSrLabel": {
+    "message": "تأمّل"
+  },
+  "reflectionPlaceholder": {
+    "message": "ما الذي جعل يومك ناجحًا — أو ثقيلًا؟"
+  },
+  "clearDayLabel": {
+    "message": "مسح اليوم"
+  },
+  "clearDayTooltip": {
+    "message": "يمسح كل فترة في هذا اليوم. يمكن التراجع عنه بـ ⌘Z."
+  },
+  "clearDayConfirmLabel": {
+    "message": "تأكيد المسح؟"
+  },
+  "dayClearedToast": {
+    "message": "تم مسح اليوم — ⌘Z للتراجع"
+  },
+  "settingsTitle": {
+    "message": "الإعدادات"
+  },
+  "settingsCloseLabel": {
+    "message": "إغلاق الإعدادات"
+  },
+  "settingsTabCategories": {
+    "message": "الفئات"
+  },
+  "settingsTabReminders": {
+    "message": "التذكيرات"
+  },
+  "settingsTabGoals": {
+    "message": "الأهداف"
+  },
+  "settingsTabData": {
+    "message": "البيانات"
+  },
+  "settingsTabAppearance": {
+    "message": "المظهر"
+  },
+  "settingsTabAbout": {
+    "message": "حول"
+  },
+  "categoriesLegendPositive": {
+    "message": "يُحتسب لصالح نتيجتك،"
+  },
+  "categoriesLegendNeutral": {
+    "message": "محايد،"
+  },
+  "categoriesLegendNegative": {
+    "message": "يُحتسب ضدها."
+  },
+  "categoriesHideNote": {
+    "message": "زر الدائرة يخفي فئة لا تستخدمها."
+  },
+  "categoriesAliasNote": {
+    "message": "الحقل الصغير أسفل كل فئة مخصص للأسماء البديلة — كلماتك الخاصة لنفس الفئة (مثل \"leetcode\" أو \"مقابلة تجريبية\" لفئة التقديمات) — بحيث يتعرّف مربع الإدخال المكتوب على الطريقة التي تصف بها يومك فعلًا، بينما يظل التلوين بلون الفئة الموزون نفسه."
+  },
+  "categoryNameAriaLabel": {
+    "message": "اسم الفئة"
+  },
+  "weightPositiveLabel": {
+    "message": "يُحتسب لصالح النتيجة"
+  },
+  "weightNeutralLabel": {
+    "message": "محايد"
+  },
+  "weightNegativeLabel": {
+    "message": "يُحتسب ضد النتيجة"
+  },
+  "hideCategoryAriaLabel": {
+    "message": "إخفاء $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "showCategoryAriaLabel": {
+    "message": "إظهار $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasPlaceholder": {
+    "message": "كلمات أخرى لـ\"$NAME$\"…",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasAriaLabel": {
+    "message": "أسماء بديلة لـ$NAME$ — كلمات أخرى يتعرّف عليها مربع الإدخال المكتوب",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorNote": {
+    "message": "لا يزال لونها يعكس الوزن الأصلي، وليس هذا الوزن."
+  },
+  "reminderToggleLabel": {
+    "message": "ذكّرني بالتسجيل"
+  },
+  "reminderToggleTooltip": {
+    "message": "إشعاران في اليوم في الأوقات أدناه. تعملان فقط أثناء تشغيل Chrome."
+  },
+  "middayNudgeLabel": {
+    "message": "تذكير منتصف اليوم"
+  },
+  "eveningWrapupLabel": {
+    "message": "ملخّص المساء"
+  },
+  "remindersNote": {
+    "message": "تعمل الإشعارات فقط أثناء تشغيل Chrome. يخبرك إشعار المساء بمقدار اليوم الذي لم يُسجَّل بعد."
+  },
+  "weeklyRecapSectionLabel": {
+    "message": "ملخّص أسبوعي"
+  },
+  "weeklyRecapToggleLabel": {
+    "message": "إرسال ملخّص أسبوعي"
+  },
+  "weeklyRecapToggleTooltip": {
+    "message": "إشعار ملخّص مرة في الأسبوع: الوقت المسجَّل، الفئة الأبرز، أفضل يوم، والسلسلة."
+  },
+  "weeklyRecapDayLabel": {
+    "message": "اليوم"
+  },
+  "weeklyRecapTimeLabel": {
+    "message": "الوقت"
+  },
+  "weeklyRecapNote": {
+    "message": "مُعطَّل افتراضيًا. ملخّص قصير للأسبوع الذي مضى — الوقت المسجَّل، الفئة الأبرز، أفضل يوم، والسلسلة."
+  },
+  "daySunday": {
+    "message": "الأحد"
+  },
+  "dayMonday": {
+    "message": "الاثنين"
+  },
+  "dayTuesday": {
+    "message": "الثلاثاء"
+  },
+  "dayWednesday": {
+    "message": "الأربعاء"
+  },
+  "dayThursday": {
+    "message": "الخميس"
+  },
+  "dayFriday": {
+    "message": "الجمعة"
+  },
+  "daySaturday": {
+    "message": "السبت"
+  },
+  "worthNoticingLabel": {
+    "message": "جدير بالملاحظة"
+  },
+  "worthNoticingSettingsTooltip": {
+    "message": "أنماط يلاحظها Daily Dial في بياناتك الخاصة، تُعرض أعلى صفحة التاريخ. تعطيل هذا يخفي القسم بالكامل."
+  },
+  "observationsToggleTooltip": {
+    "message": "يعرض قسم \"جدير بالملاحظة\" أعلى صفحة التاريخ."
+  },
+  "observationsToggleLabel": {
+    "message": "أشِر إلى الأنماط في بياناتي"
+  },
+  "observationsNote": {
+    "message": "ستة أشياء تُفحص على مدى الأسابيع القليلة الماضية — نوايا حدّدتها ولم تُنجزها، فترات لم يُسجَّل فيها راحة، ساعتك الأكثر إنتاجية دون حماية، وما شابه. كل ملاحظة تذكر حقيقة؛ ولا تظهر الاقتراحات إلا إذا طلبتها. التعطيل يعني ألا يظهر القسم إطلاقًا."
+  },
+  "dailyGoalsSectionLabel": {
+    "message": "الأهداف اليومية، لكل فئة"
+  },
+  "dailyGoalsNote": {
+    "message": "اترك الحقل فارغًا لعدم تحديد هدف. يظهر التقدم في اللوحة الجانبية بمجرد تحديد هدف."
+  },
+  "weeklyGoalsSectionLabel": {
+    "message": "الأهداف الأسبوعية، لكل فئة"
+  },
+  "weeklyGoalsSectionTooltip": {
+    "message": "للأمور التي لا تحدث كل يوم — هدف للأسبوع ككل بدلًا من كل يوم على حدة."
+  },
+  "weeklyGoalsNote": {
+    "message": "مستقل عن الأهداف اليومية أعلاه — حدّد أحدهما أو كليهما أو لا شيء لكل فئة."
+  },
+  "goalOffPlaceholder": {
+    "message": "إيقاف"
+  },
+  "goalAriaLabelDaily": {
+    "message": "الهدف اليومي لـ$NAME$، بالدقائق",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "goalAriaLabelWeekly": {
+    "message": "الهدف الأسبوعي لـ$NAME$، بالدقائق",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeSectionLabel": {
+    "message": "التحدي"
+  },
+  "challengeSectionTooltip": {
+    "message": "مسار مُسمّى له عدّاد أيام خاص به، مثل تحدي المئة يوم. منفصل عن السلسلة: يُحتسب من تاريخ بداية ولا ينقطع إذا فاتك يوم."
+  },
+  "challengeNameFieldLabel": {
+    "message": "الاسم"
+  },
+  "challengeNamePlaceholder": {
+    "message": "#100days"
+  },
+  "challengeStartedLabel": {
+    "message": "البداية"
+  },
+  "challengeLengthLabel": {
+    "message": "المدة (أيام)"
+  },
+  "clearChallengeLabel": {
+    "message": "مسح التحدي"
+  },
+  "challengeNote": {
+    "message": "عدّاد أيام يظهر بجانب سلسلتك. على عكس السلسلة، لا ينقطع — فهو يُحتسب فقط من تاريخ البداية. اترك الاسم فارغًا لعدم وجود تحدٍّ."
+  },
+  "templatesSectionLabel": {
+    "message": "القوالب"
+  },
+  "templatesSectionTooltip": {
+    "message": "معظم الأيام تتشابه — احفظ شكل يوم مُلوَّن واستخدمه في أي يوم آخر."
+  },
+  "templateNameFieldLabel": {
+    "message": "اسم القالب"
+  },
+  "templateNamePlaceholder": {
+    "message": "سمِّه، مثل \"يوم عمل\""
+  },
+  "saveTemplateLabel": {
+    "message": "حفظ اليوم كقالب"
+  },
+  "templatesNote": {
+    "message": "تحتوي القوالب على الوقت المُلوَّن فقط — لا الملاحظات ولا النوايا ولا ما يجب تجنّبه ولا تأمّلك. تطبيق قالب على يوم يحتوي بالفعل على وقت مُلوَّن يطلب تأكيدًا أولًا، ويمكن التراجع عنه (⌘Z) بعد ذلك."
+  },
+  "templatesEmptyNote": {
+    "message": "لا توجد قوالب محفوظة بعد."
+  },
+  "applyLabel": {
+    "message": "تطبيق"
+  },
+  "applyConfirmLabel": {
+    "message": "تأكيد التطبيق؟"
+  },
+  "deleteLabel": {
+    "message": "حذف"
+  },
+  "deleteTemplateAriaLabel": {
+    "message": "حذف القالب: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateAppliedToast": {
+    "message": "تم تطبيق \"$NAME$\" — ⌘Z للتراجع",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateNameRequiredToast": {
+    "message": "سمِّ القالب أولًا."
+  },
+  "templateMaxToast": {
+    "message": "هذا أقصى عدد من القوالب يمكنك حفظه ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateSavedToast": {
+    "message": "تم حفظ \"$NAME$\"",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateDeletedToast": {
+    "message": "تم حذف \"$NAME$\"",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "exportSectionLabel": {
+    "message": "التصدير"
+  },
+  "exportCsvLabel": {
+    "message": "تصدير CSV"
+  },
+  "exportCsvTooltip": {
+    "message": "جدول بيانات لكل فترة: صف واحد لكل فترة، جاهز للتحليل. لا يستعيد الإعدادات."
+  },
+  "exportJsonLabel": {
+    "message": "تصدير نسخة احتياطية JSON"
+  },
+  "exportJsonTooltip": {
+    "message": "نسخة احتياطية كاملة — كل يوم وفئة وإعداد. هذا هو الملف الذي يجب الاحتفاظ به."
+  },
+  "noBackupYetStatus": {
+    "message": "لم تُصدِّر نسخة احتياطية بعد."
+  },
+  "lastBackupStatus": {
+    "message": "آخر نسخة احتياطية: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "dataBackupNudgeText": {
+    "message": "مضى وقت منذ آخر نسخة احتياطية لك."
+  },
+  "backupNudgeText": {
+    "message": "لم تُنشئ نسخة احتياطية منذ فترة — بياناتك موجودة فقط في هذا المتصفح."
+  },
+  "backupNudgeExportLabel": {
+    "message": "تصدير الآن"
+  },
+  "backupNudgeExportTooltip": {
+    "message": "احفظ نسخة احتياطية JSON يمكنك استعادتها لاحقًا"
+  },
+  "backupNudgeDismissTooltip": {
+    "message": "إخفاء حتى المرة القادمة"
+  },
+  "dailyRemindersSectionLabel": {
+    "message": "التذكيرات اليومية"
+  },
+  "stripHintLabel": {
+    "message": "انقر على يوم لفتحه"
+  },
+  "stripTooltip": {
+    "message": "الأيام السبعة الأخيرة. طول الشريط يمثل نتيجة ذلك اليوم؛ انقر على واحد لعرضه أو تعديله."
+  },
+  "importSectionLabel": {
+    "message": "الاستيراد"
+  },
+  "chooseBackupFileLabel": {
+    "message": "اختيار ملف النسخة الاحتياطية…"
+  },
+  "chooseBackupFileTooltip": {
+    "message": "استعادة من نسخة احتياطية JSON أو تصدير CSV"
+  },
+  "mergeLabel": {
+    "message": "دمج"
+  },
+  "mergeTooltip": {
+    "message": "إضافة الأيام الموجودة في الملف وغير الموجودة لديك. الأيام الحالية تبقى دون تغيير."
+  },
+  "replaceEverythingLabel": {
+    "message": "استبدال الكل"
+  },
+  "replaceEverythingTooltip": {
+    "message": "يمحو كل السجل الحالي ويستعيد بالضبط ما في الملف. لا يمكن التراجع عن هذا."
+  },
+  "replaceArmedLabel": {
+    "message": "انقر مرة أخرى لمحو الأيام الحالية"
+  },
+  "cancelLabel": {
+    "message": "إلغاء"
+  },
+  "importNote": {
+    "message": "تحتفظ النسخ الاحتياطية بصيغة JSON بكل شيء (الأيام، الفئات، الإعدادات). أما ملفات CSV فتستعيد فترات الوقت فقط، مطابَقة مع فئاتك الحالية حسب الاسم. الدمج يضيف الأيام الناقصة ويترك الموجودة دون تغيير؛ والاستبدال يمحو سجلك ويستعيد بالضبط ما في الملف."
+  },
+  "fileReadErrorToast": {
+    "message": "تعذّرت قراءة هذا الملف."
+  },
+  "importSummarySentence1_zero": {
+    "message": "$COUNT$ يوم في الملف، يتداخل منها $OVERLAP$ مع $EXISTING$ من أيامك الحالية.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_one": {
+    "message": "$COUNT$ يوم في الملف، يتداخل منها $OVERLAP$ مع $EXISTING$ من أيامك الحالية.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_two": {
+    "message": "$COUNT$ يومان في الملف، يتداخل منهما $OVERLAP$ مع $EXISTING$ من أيامك الحالية.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_few": {
+    "message": "$COUNT$ أيام في الملف، يتداخل منها $OVERLAP$ مع $EXISTING$ من أيامك الحالية.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_many": {
+    "message": "$COUNT$ يومًا في الملف، يتداخل منها $OVERLAP$ مع $EXISTING$ من أيامك الحالية.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence1_other": {
+    "message": "$COUNT$ يوم في الملف، يتداخل منها $OVERLAP$ مع $EXISTING$ من أيامك الحالية.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence2_zero": {
+    "message": "يضيف الدمج $COUNT$ يوم جديد.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_one": {
+    "message": "يضيف الدمج $COUNT$ يوم جديد.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_two": {
+    "message": "يضيف الدمج $COUNT$ يومين جديدين.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_few": {
+    "message": "يضيف الدمج $COUNT$ أيام جديدة.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_many": {
+    "message": "يضيف الدمج $COUNT$ يومًا جديدًا.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence2_other": {
+    "message": "يضيف الدمج $COUNT$ يوم جديد.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_zero": {
+    "message": "يمحو الاستبدال كل $COUNT$ يوم موجود ويستعيد بالضبط ما في الملف.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_one": {
+    "message": "يمحو الاستبدال كل $COUNT$ يوم موجود ويستعيد بالضبط ما في الملف.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_two": {
+    "message": "يمحو الاستبدال كل $COUNT$ يومين موجودين ويستعيد بالضبط ما في الملف.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_few": {
+    "message": "يمحو الاستبدال كل $COUNT$ أيام موجودة ويستعيد بالضبط ما في الملف.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_many": {
+    "message": "يمحو الاستبدال كل $COUNT$ يومًا موجودًا ويستعيد بالضبط ما في الملف.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_other": {
+    "message": "يمحو الاستبدال كل $COUNT$ يوم موجود ويستعيد بالضبط ما في الملف.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummaryDemoClearSentence": {
+    "message": "سيتم مسح البيانات التجريبية أولًا."
+  },
+  "backupRestoredToast": {
+    "message": "تمت استعادة النسخة الاحتياطية"
+  },
+  "backupMergedToast": {
+    "message": "تم دمج النسخة الاحتياطية"
+  },
+  "multifillSectionLabel": {
+    "message": "تعبئة عدة أيام"
+  },
+  "multifillSectionTooltip": {
+    "message": "إجراء واحد بدلًا من النقر على كل يوم على حدة — مثل \"كنت غائبًا من الاثنين إلى الجمعة\"."
+  },
+  "multifillFromDateLabel": {
+    "message": "من تاريخ"
+  },
+  "multifillToDateLabel": {
+    "message": "إلى تاريخ"
+  },
+  "multifillCategoryLabel": {
+    "message": "الفئة"
+  },
+  "multifillFromTimeLabel": {
+    "message": "من وقت"
+  },
+  "multifillToTimeLabel": {
+    "message": "إلى وقت"
+  },
+  "eraseOptionLabel": {
+    "message": "مسح (وضع علامة كغير مسجَّل)"
+  },
+  "multifillNoteBefore": {
+    "message": "يملأ الفئة المختارة (أو يمسح) في كل يوم من تاريخ البداية إلى تاريخ النهاية، شاملًا. اترك حقلي الوقت فارغين لملء اليوم كاملًا. الحد الأقصى"
+  },
+  "multifillNoteAfter": {
+    "message": "أيام لكل تعبئة؛ يُحفظ كل يوم متأثر بشكل منفصل ويمكن التراجع عنه بمفرده، واحدًا تلو الآخر، من عرض ذلك اليوم."
+  },
+  "confirmFillLabel": {
+    "message": "تأكيد التعبئة"
+  },
+  "multifillArmedLabel": {
+    "message": "انقر مرة أخرى للتعبئة"
+  },
+  "multifillActionErase": {
+    "message": "ممسوحًا"
+  },
+  "multifillActionSetTo": {
+    "message": "معيَّنًا إلى $CATEGORY$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillWindowWholeDay": {
+    "message": "طوال اليوم"
+  },
+  "multifillUnknownCategory": {
+    "message": "تلك الفئة"
+  },
+  "multifillWindowRange": {
+    "message": "من $FROM$ إلى $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "multifillSummary_zero": {
+    "message": "في $COUNT$ يوم ($FROM$ إلى $TO$)، سيكون الوقت $WINDOW$ $ACTION$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_one": {
+    "message": "في $COUNT$ يوم ($FROM$ إلى $TO$)، سيكون الوقت $WINDOW$ $ACTION$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_two": {
+    "message": "في $COUNT$ يومين ($FROM$ إلى $TO$)، سيكون الوقت $WINDOW$ $ACTION$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_few": {
+    "message": "في $COUNT$ أيام ($FROM$ إلى $TO$)، سيكون الوقت $WINDOW$ $ACTION$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_many": {
+    "message": "في $COUNT$ يومًا ($FROM$ إلى $TO$)، سيكون الوقت $WINDOW$ $ACTION$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillSummary_other": {
+    "message": "في $COUNT$ يوم ($FROM$ إلى $TO$)، سيكون الوقت $WINDOW$ $ACTION$.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillPainted_zero": {
+    "message": "لدى $COUNT$ من بينها بالفعل شيء مرسوم سيُستبدل.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_one": {
+    "message": "لدى $COUNT$ من بينها بالفعل شيء مرسوم سيُستبدل.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_two": {
+    "message": "لدى $COUNT$ من بينهما بالفعل شيء مرسوم سيُستبدل.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_few": {
+    "message": "لدى $COUNT$ من بينها بالفعل شيء مرسوم سيُستبدل.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_many": {
+    "message": "لدى $COUNT$ من بينها بالفعل شيء مرسوم سيُستبدل.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillPainted_other": {
+    "message": "لدى $COUNT$ من بينها بالفعل شيء مرسوم سيُستبدل.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillNonePainted": {
+    "message": "لا يحتوي أي من تلك الأيام على شيء مرسوم بعد."
+  },
+  "filledDays_zero": {
+    "message": "تمت تعبئة $COUNT$ يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_one": {
+    "message": "تمت تعبئة $COUNT$ يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_two": {
+    "message": "تمت تعبئة $COUNT$ يومين",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_few": {
+    "message": "تمت تعبئة $COUNT$ أيام",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_many": {
+    "message": "تمت تعبئة $COUNT$ يومًا",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDays_other": {
+    "message": "تمت تعبئة $COUNT$ يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveSectionLabel": {
+    "message": "النسخ الاحتياطي على Google Drive"
+  },
+  "driveBackupLabel": {
+    "message": "نسخ احتياطي إلى Google Drive"
+  },
+  "driveBackupTooltip": {
+    "message": "يسجّل دخولك عبر Google ويحفظ نسخة احتياطية في مجلد خاص بالتطبيق ضمن Drive الخاص بك — غير مرئي في Drive العادي، ولا يراه أحد سواك."
+  },
+  "driveRestoreLabel": {
+    "message": "استعادة من Google Drive"
+  },
+  "driveRestoreTooltip": {
+    "message": "يُنزّل أحدث نسخة احتياطية من Google Drive ويفتح نفس تأكيد الدمج/الاستبدال المستخدم عند استيراد ملف."
+  },
+  "autoBackupToggleLabel": {
+    "message": "نسخ احتياطي تلقائي"
+  },
+  "autoBackupToggleTooltip": {
+    "message": "ينسخ احتياطيًا إلى نفس ملف Drive مرة تقريبًا كل يوم، في الخلفية. يعمل فقط بعد ربط Drive بنفسك — لن يظهر نافذة تسجيل دخول من تلقاء نفسه."
+  },
+  "autoBackupNote": {
+    "message": "يوميًا تقريبًا، وبهدوء، إلى نفس الملف. لا يفعل سوى تحديث نسخة احتياطية أنشأتها بنفسك مسبقًا — لا يمكنه تسجيل دخولك، لذا لا يفعل شيئًا حتى تربط Drive مرة واحدة على الأقل."
+  },
+  "driveConnectedAsStatus": {
+    "message": "متصل باسم $EMAIL$",
+    "placeholders": {
+      "email": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveNotBackedUpStatus": {
+    "message": "لم يتم النسخ الاحتياطي إلى Google Drive بعد."
+  },
+  "driveConnectedNoUploadStatus": {
+    "message": "متصل بـ Google Drive. تمت الاستعادة من نسخة احتياطية؛ لم يُرفع شيء من هنا بعد."
+  },
+  "driveLastSyncStatus": {
+    "message": "آخر مزامنة مع Google Drive: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveDisconnectLabel": {
+    "message": "قطع الاتصال بـ Google Drive"
+  },
+  "driveDisconnectTooltip": {
+    "message": "يسجّل خروج هذا الحساب من Daily Dial. يبقى ملف النسخة الاحتياطية في Drive الخاص بك؛ لا يُحذف شيء."
+  },
+  "driveDeleteLabel": {
+    "message": "حذف النسخة الاحتياطية من Drive"
+  },
+  "driveDeleteTooltip": {
+    "message": "يحذف ملف النسخة الاحتياطية نهائيًا من Google Drive الخاص بك. لا يمكن التراجع عن هذا. بياناتك المحلية على هذا الجهاز تبقى كما هي."
+  },
+  "driveDeleteArmedLabel": {
+    "message": "انقر مرة أخرى للحذف النهائي"
+  },
+  "driveNoteBefore": {
+    "message": "اختياري، ومُعطَّل ما لم تستخدمه. يستخدم"
+  },
+  "driveNoteAfter": {
+    "message": "— وهي مساحة تخزين خاصة بهذا الإضافة لا تظهر في Drive العادي الخاص بك ولا يمكن لأي تطبيق آخر قراءتها. هذه هي الميزة الوحيدة في Daily Dial التي ترسل بيانات إلى أي مكان؛ كل شيء آخر يبقى على هذا الجهاز. راجع"
+  },
+  "driveNoteFor": {
+    "message": "لمزيد من التفاصيل."
+  },
+  "privacyLinkLabel": {
+    "message": "الخصوصية"
+  },
+  "nothingToExportToast": {
+    "message": "لا يوجد شيء مسجَّل بعد للتصدير."
+  },
+  "onlyDemoExportToast": {
+    "message": "البيانات التجريبية فقط محمّلة — لا يوجد شيء خاص بك للتصدير بعد."
+  },
+  "exportedCsvToast": {
+    "message": "تم تصدير CSV"
+  },
+  "exportedJsonToast": {
+    "message": "تم تصدير النسخة الاحتياطية JSON"
+  },
+  "nothingToBackupToast": {
+    "message": "لا يوجد شيء مسجَّل بعد للنسخ الاحتياطي."
+  },
+  "onlyDemoBackupToast": {
+    "message": "البيانات التجريبية فقط محمّلة — لا يوجد شيء خاص بك للنسخ الاحتياطي بعد."
+  },
+  "driveConnectingToast": {
+    "message": "جارٍ الاتصال بـ Google Drive…"
+  },
+  "driveBackedUpToast": {
+    "message": "تم النسخ الاحتياطي إلى Google Drive"
+  },
+  "driveBackupErrorToast": {
+    "message": "تعذّر النسخ الاحتياطي إلى Google Drive."
+  },
+  "driveCheckingToast": {
+    "message": "جارٍ التحقق من Google Drive…"
+  },
+  "driveNoBackupFoundToast": {
+    "message": "لم يُعثر على نسخة احتياطية لـ Daily Dial في حساب Google هذا."
+  },
+  "driveUnreachableToast": {
+    "message": "تعذّر الوصول إلى Google Drive."
+  },
+  "driveDisconnectedToast": {
+    "message": "تم قطع الاتصال بـ Google Drive"
+  },
+  "driveDeletingToast": {
+    "message": "جارٍ الحذف من Google Drive…"
+  },
+  "driveDeletedToast": {
+    "message": "تم حذف نسختك الاحتياطية من Google Drive"
+  },
+  "driveDeleteErrorToast": {
+    "message": "تعذّر الحذف من Google Drive."
+  },
+  "themeLabel": {
+    "message": "السمة"
+  },
+  "themeSystem": {
+    "message": "النظام"
+  },
+  "themeLight": {
+    "message": "فاتح"
+  },
+  "themeDark": {
+    "message": "داكن"
+  },
+  "timeFormatLabel": {
+    "message": "تنسيق الوقت"
+  },
+  "timeFormat24h": {
+    "message": "24 ساعة"
+  },
+  "timeFormat12h": {
+    "message": "12 ساعة"
+  },
+  "dialModeLabel": {
+    "message": "تخطيط القرص"
+  },
+  "dialModeLabelTooltip": {
+    "message": "حلقة واحدة تغطي 24 ساعة، أو حلقتان أصغر — واحدة للفترة الصباحية وأخرى للفترة المسائية."
+  },
+  "weekStartLabel": {
+    "message": "يبدأ الأسبوع في"
+  },
+  "weekStartTooltip": {
+    "message": "اليوم الذي يبدأ به الأسبوع، يُستخدم في الملخص الأسبوعي."
+  },
+  "wakingHoursSectionLabel": {
+    "message": "ساعات اليقظة"
+  },
+  "wakingHoursTooltip": {
+    "message": "تحسب رؤية اليوم الوقت غير المسجَّل ضمن هذا النطاق فقط باعتباره \"لم يُسجَّل بعد\" — حتى لا تُعتبر ساعات النوم فجوة في التسجيل."
+  },
+  "dayStartsLabel": {
+    "message": "يبدأ اليوم"
+  },
+  "dayEndsLabel": {
+    "message": "ينتهي اليوم"
+  },
+  "appearanceUpdatedToast": {
+    "message": "تم تحديث المظهر"
+  },
+  "remindersSetToast": {
+    "message": "تم ضبط التذكيرات لـ $T1$ و $T2$",
+    "placeholders": {
+      "t1": {
+        "content": "$1"
+      },
+      "t2": {
+        "content": "$2"
+      }
+    }
+  },
+  "remindersOffToast": {
+    "message": "التذكيرات متوقفة"
+  },
+  "autoBackupOnToast": {
+    "message": "النسخ الاحتياطي التلقائي مفعّل"
+  },
+  "autoBackupOffToast": {
+    "message": "النسخ الاحتياطي التلقائي متوقف"
+  },
+  "aboutDailyDialName": {
+    "message": "Daily Dial"
+  },
+  "githubLinkLabel": {
+    "message": "GitHub"
+  },
+  "gettingStartedLinkLabel": {
+    "message": "دليل البدء"
+  },
+  "demoAndTourLabel": {
+    "message": "العرض التجريبي والجولة"
+  },
+  "replayOnboardingLabel": {
+    "message": "إعادة جولة الترحيب"
+  },
+  "replayOnboardingTooltip": {
+    "message": "يعرض نفس شاشة الترحيب ذات البطاقات الثلاث التي رأيتها (أو كنت سترها) عند أول فتح"
+  },
+  "loadSampleDataLabel": {
+    "message": "تحميل بيانات نموذجية"
+  },
+  "loadSampleDataTooltip": {
+    "message": "يملأ ثلاثة أسابيع من أيام واقعية (وهمية) في التواريخ التي لم تسجّلها، حتى يكون لدى التاريخ والسلاسل والأهداف ما تعرضه."
+  },
+  "clearSampleDataLabel": {
+    "message": "إنهاء الوضع التجريبي"
+  },
+  "clearSampleDataTooltip": {
+    "message": "يزيل بالضبط الأيام النموذجية التي أُضيفت. أي شيء سجّلته بنفسك يبقى كما هو."
+  },
+  "demoModeOffNote": {
+    "message": "شاهد كيف يبدو التاريخ والسلاسل والأهداف مع ثلاثة أسابيع من أيام متنوعة (وهمية). أيامك الخاصة تبقى كما هي."
+  },
+  "demoModeOnNote": {
+    "message": "الوضع التجريبي مفعّل. الأيام النموذجية تملأ فقط التواريخ التي لم تسجّلها — وإيقافه يزيل تلك الأيام بالضبط، ولا شيء من أيامك."
+  },
+  "demoModeOnToast": {
+    "message": "الوضع التجريبي مفعّل — أُضيفت أيام نموذجية حول أيامك"
+  },
+  "demoModeNothingToAddToast": {
+    "message": "كل يوم ضمن النطاق النموذجي هو يومك بالفعل — لا شيء لإضافته"
+  },
+  "demoModeOffToast": {
+    "message": "الوضع التجريبي متوقف — أيامك الخاصة لم تتأثر"
+  },
+  "personalBestsLabel": {
+    "message": "أفضل الإنجازات الشخصية"
+  },
+  "bestsStreakLabel": {
+    "message": "أطول سلسلة"
+  },
+  "bestsScoreLabel": {
+    "message": "أفضل نتيجة يوم"
+  },
+  "bestsDayLabel": {
+    "message": "أكثر يوم إنتاجية"
+  },
+  "bestsStreakDays_zero": {
+    "message": "$COUNT$ يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_one": {
+    "message": "$COUNT$ يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_two": {
+    "message": "$COUNT$ يومان",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_few": {
+    "message": "$COUNT$ أيام",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_many": {
+    "message": "$COUNT$ يومًا",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "bestsStreakDays_other": {
+    "message": "$COUNT$ يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "keyboardShortcutsLabel": {
+    "message": "اختصارات لوحة المفاتيح"
+  },
+  "shortcutSelectPen": {
+    "message": "اختيار قلم فئة"
+  },
+  "shortcutSelectEraser": {
+    "message": "اختيار الممحاة"
+  },
+  "shortcutUndo": {
+    "message": "تراجع"
+  },
+  "shortcutRedo": {
+    "message": "إعادة"
+  },
+  "shortcutCloseSettings": {
+    "message": "إغلاق هذه اللوحة"
+  },
+  "onboardingTitle": {
+    "message": "مرحبًا بك في Daily Dial"
+  },
+  "onboardingSubtitle": {
+    "message": "ثلاثة أشياء يجب معرفتها قبل تلوين يومك الأول."
+  },
+  "onboardingStep1Title": {
+    "message": "لوّن يومك"
+  },
+  "onboardingStep1TextBefore": {
+    "message": "اختر فئة بجانب القرص، ثم اسحب حول الحلقة. تفضّل الكتابة؟"
+  },
+  "onboardingStep1TextAfter": {
+    "message": "يعمل أيضًا."
+  },
+  "onboardingStep2Title": {
+    "message": "شاهد كيف يتراكم"
+  },
+  "onboardingStep2Text": {
+    "message": "يتم تحديث نتيجتك ونسبة إنتاجيتك وأطول سلسلة تركيز أثناء تلوينك. يصف السطر الذي أسفلها يومك بلغة بسيطة."
+  },
+  "onboardingStep3Title": {
+    "message": "اجعله خاصًا بك"
+  },
+  "onboardingStep3TextBefore": {
+    "message": "غيّر أسماء الفئات، واختر لغتك، واضبط التذكيرات والأهداف، أو انسخ نسخة احتياطية إلى Google Drive — كل ذلك خلف"
+  },
+  "onboardingStep3TextAfter": {
+    "message": "في الأعلى. كل شيء عدا التلوين اختياري."
+  },
+  "onboardingAltBefore": {
+    "message": "تفضّل رؤيته بأرقام حقيقية أولًا؟"
+  },
+  "loadSampleDataInsteadLabel": {
+    "message": "تحميل بيانات نموذجية بدلًا من ذلك"
+  },
+  "skipLabel": {
+    "message": "تخطي"
+  },
+  "letsStartLabel": {
+    "message": "لنبدأ"
+  },
+  "onboardingNudgePaintToast": {
+    "message": "اختر فئة من اليمين، ثم اسحب حول الحلقة للتلوين"
+  },
+  "onboardingNudgeSettingsToast": {
+    "message": "أنت جاهز — الإعدادات (☰) تضم الفئات والتذكيرات والأهداف والنسخ الاحتياطي"
+  },
+  "futureDayToast": {
+    "message": "هذا هو الغد — لا يوجد شيء لتسجيله بعد"
+  },
+  "dayRolledOverToast": {
+    "message": "لقد بدأ يوم جديد — تم تحديث القرص"
+  },
+  "undoDone": {
+    "message": "تم التراجع"
+  },
+  "undoEmpty": {
+    "message": "لا يوجد ما يمكن التراجع عنه"
+  },
+  "redoDone": {
+    "message": "تمت الإعادة"
+  },
+  "redoEmpty": {
+    "message": "لا يوجد ما يمكن إعادته"
+  },
+  "copyYesterdayEmptyToast": {
+    "message": "لا يوجد شيء لنسخه من الأمس."
+  },
+  "copyYesterdayConfirm": {
+    "message": "يحتوي اليوم بالفعل على إدخالات — هل تريد استبدالها بإدخالات الأمس؟"
+  },
+  "copyYesterdaySuccessToast": {
+    "message": "تم نسخ الأمس — ⌘Z للتراجع"
+  },
+  "shareImageErrorToast": {
+    "message": "تعذّر إنشاء الصورة."
+  },
+  "shareImageSavedToast": {
+    "message": "تم حفظ الصورة"
+  },
+  "typedEntryAddedToast": {
+    "message": "تمت الإضافة"
+  },
+  "typedEntryOverflowToast": {
+    "message": "تمت الإضافة — الجزء الذي تجاوز منتصف الليل ذهب إلى اليوم التالي"
+  },
+  "noteSavedAnnounce": {
+    "message": "تم حفظ الملاحظة من $FROM$ إلى $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "removeIntentionAriaLabel": {
+    "message": "إزالة النية: $TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeAvoidAriaLabel": {
+    "message": "إزالة: $TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeNoteAriaLabel": {
+    "message": "إزالة الملاحظة عن $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "unloggedOptionLabel": {
+    "message": "غير مسجَّل"
+  },
+  "breakdownGapPlaceholder": {
+    "message": "لا يوجد شيء مسجَّل بعد"
+  },
+  "fillSpanAriaLabel": {
+    "message": "تعبئة $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "noteForAriaLabel": {
+    "message": "ملاحظة عن $WHEN$",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanTooltip": {
+    "message": "مسح $WHEN$ — يعود الوقت إلى غير مسجَّل",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanAriaLabel": {
+    "message": "مسح $CATEGORY$، $WHEN$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "when": {
+        "content": "$2"
+      }
+    }
+  },
+  "maxNotesToast": {
+    "message": "هذا أقصى عدد من الملاحظات يمكن أن يحتويه اليوم ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxAvoidToast": {
+    "message": "هذا أقصى عدد يمكن أن يحتويه اليوم ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxIntentsToast": {
+    "message": "هذا أقصى عدد من النوايا يمكن أن يحتويه اليوم ($MAX$).",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownSummary_zero": {
+    "message": "$COUNT$ مقطع · $LOGGED$ مسجَّل، $UNLOGGED$ غير مسجَّل",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_one": {
+    "message": "$COUNT$ مقطع · $LOGGED$ مسجَّل، $UNLOGGED$ غير مسجَّل",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_two": {
+    "message": "$COUNT$ مقطعان · $LOGGED$ مسجَّل، $UNLOGGED$ غير مسجَّل",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_few": {
+    "message": "$COUNT$ مقاطع · $LOGGED$ مسجَّل، $UNLOGGED$ غير مسجَّل",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_many": {
+    "message": "$COUNT$ مقطعًا · $LOGGED$ مسجَّل، $UNLOGGED$ غير مسجَّل",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "breakdownSummary_other": {
+    "message": "$COUNT$ مقطع · $LOGGED$ مسجَّل، $UNLOGGED$ غير مسجَّل",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "clearedAnnounce": {
+    "message": "تم المسح من $FROM$ إلى $TO$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "caretCommitAnnounce": {
+    "message": "تم تعيين $CATEGORY$ من $FROM$ إلى $TO$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretAnnounce": {
+    "message": "$FROM$ إلى $TO$، $WHAT$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "what": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretMixedLabel": {
+    "message": "مختلط"
+  },
+  "untrackedLower": {
+    "message": "غير مسجَّل"
+  },
+  "untrackedCapitalized": {
+    "message": "غير مسجَّل"
+  },
+  "penEraserLabel": {
+    "message": "الممحاة"
+  },
+  "dialEraserLabel": {
+    "message": "ممحاة"
+  },
+  "dialPenLabel": {
+    "message": "القلم: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "edgeRangeLabel": {
+    "message": "$FROM$–$TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "edgeGoneLabel": {
+    "message": "تمت إزالة $CATEGORY$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "dialAriaNothingLoggedSuffix": {
+    "message": "لا يوجد شيء مسجَّل بعد."
+  },
+  "dialAriaRangePart": {
+    "message": "$FROM$ إلى $TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "histHeatmapAriaLabel": {
+    "message": "تقويم الشهر. مفاتيح الأسهم تنتقل بين الأيام، Enter يفتح يومًا."
+  },
+  "heatmapLoggedLabel": {
+    "message": "$DATE$ — النتيجة $SCORE$، $DURATION$ مسجَّل",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      },
+      "duration": {
+        "content": "$3"
+      }
+    }
+  },
+  "heatmapWrittenLabel": {
+    "message": "$DATE$ — مُدوَّن، بلا وقت مُلوَّن",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "heatmapEmptyLabel": {
+    "message": "$DATE$ — غير مسجَّل",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "legendNotLoggedLabel": {
+    "message": "غير مسجَّل"
+  },
+  "legendWrittenLabel": {
+    "message": "مُدوَّن فقط"
+  },
+  "legendWrittenTooltip": {
+    "message": "ملاحظات أو نوايا أو تأمّل، لكن بلا وقت مُلوَّن على القرص."
+  },
+  "legendOffTrackLabel": {
+    "message": "خارج المسار"
+  },
+  "legendMixedLabel": {
+    "message": "مختلط"
+  },
+  "legendSolidLabel": {
+    "message": "ثابت+"
+  },
+  "prevMonthLabel": {
+    "message": "الشهر السابق"
+  },
+  "nextMonthLabel": {
+    "message": "الشهر التالي"
+  },
+  "thisMonthLabel": {
+    "message": "هذا الشهر"
+  },
+  "thisMonthTooltip": {
+    "message": "العودة إلى الشهر الحالي"
+  },
+  "monthSummaryLabel": {
+    "message": "ملخص الشهر"
+  },
+  "monthSummaryTooltip": {
+    "message": "تحسب المتوسطات الأيام التي سجّلتها فقط — اليوم غير المسجَّل لا يخفض متوسطك."
+  },
+  "statDaysLoggedLabel": {
+    "message": "الأيام المسجَّلة"
+  },
+  "statAvgScoreLabel": {
+    "message": "متوسط النتيجة"
+  },
+  "statAvgProductiveLabel": {
+    "message": "متوسط الإنتاجية"
+  },
+  "bestDayLabel": {
+    "message": "أفضل يوم: $KEY$ ($SCORE$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      }
+    }
+  },
+  "bestDayEmptyLabel": {
+    "message": "أفضل يوم: — لا توجد نتيجة بعد هذا الشهر."
+  },
+  "monthStreakLabel": {
+    "message": "سلسلة هذا الشهر: $CURRENT$ حاليًا · $LONGEST$ الأطول",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "longest": {
+        "content": "$2"
+      }
+    }
+  },
+  "monthStreakTooltip": {
+    "message": "الأيام المسجَّلة المتتالية، تُحسب ضمن هذا الشهر فقط — لا تُقترض من الشهر السابق أو التالي."
+  },
+  "writtenDaysNote_zero": {
+    "message": "$COUNT$ يوم مُدوَّن هذا الشهر لكن لم يُلوَّن فيه أي وقت على القرص، لذا لا يُحتسب ضمن أي شيء أعلاه. يظهر في السجل أدناه.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_one": {
+    "message": "$COUNT$ يوم مُدوَّن هذا الشهر لكن لم يُلوَّن فيه أي وقت على القرص، لذا لا يُحتسب ضمن أي شيء أعلاه. يظهر في السجل أدناه.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_two": {
+    "message": "$COUNT$ يومان مُدوَّنان هذا الشهر لكن لم يُلوَّن فيهما أي وقت على القرص، لذا لا يُحتسبان ضمن أي شيء أعلاه. يظهران في السجل أدناه.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_few": {
+    "message": "$COUNT$ أيام مُدوَّنة هذا الشهر لكن لم يُلوَّن فيها أي وقت على القرص، لذا لا تُحتسب ضمن أي شيء أعلاه. تظهر في السجل أدناه.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_many": {
+    "message": "$COUNT$ يومًا مُدوَّنًا هذا الشهر لكن لم يُلوَّن فيه أي وقت على القرص، لذا لا يُحتسب ضمن أي شيء أعلاه. يظهر في السجل أدناه.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "writtenDaysNote_other": {
+    "message": "$COUNT$ يوم مُدوَّن هذا الشهر لكن لم يُلوَّن فيه أي وقت على القرص، لذا لا يُحتسب ضمن أي شيء أعلاه. يظهر في السجل أدناه.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryTrendsLabel": {
+    "message": "اتجاهات الفئات"
+  },
+  "categoryTrendsTooltip": {
+    "message": "الدقائق لكل فئة، شريط واحد لكل أسبوع تقويمي في الشهر المعروض. السهم يقارن الأسبوع الأول المعروض بالأخير."
+  },
+  "trendsEmptyNote": {
+    "message": "لا يوجد شيء مسجَّل هذا الشهر بعد — تظهر الاتجاهات مع تلوينك للأيام على القرص."
+  },
+  "trendWeekTooltip": {
+    "message": "أسبوع $WEEK$: $DURATION$",
+    "placeholders": {
+      "week": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "trendDirectionTooltip": {
+    "message": "الأسبوع الأول مقابل الأسبوع الأخير المعروض، حتى لا يقلب انخفاض مؤقت في المنتصف القراءة."
+  },
+  "weekOverWeekLabel": {
+    "message": "أسبوع مقابل أسبوع"
+  },
+  "weekOverWeekTooltip": {
+    "message": "هذا الأسبوع مقابل الأسبوع الماضي، يبدأ كلاهما في يوم بداية الأسبوع الذي حدّدته."
+  },
+  "wowTrackedLabel": {
+    "message": "مسجَّل"
+  },
+  "wowProductiveLabel": {
+    "message": "الإنتاجية"
+  },
+  "wowAvgScoreLabel": {
+    "message": "متوسط النتيجة"
+  },
+  "wowNoPreviousTooltip": {
+    "message": "لا يوجد شيء مسجَّل الأسبوع الماضي للمقارنة به."
+  },
+  "wowPreviousTooltip": {
+    "message": "الأسبوع الماضي: $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "wowDeltaPoints": {
+    "message": "$N$ن",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchNotesLabel": {
+    "message": "البحث في الملاحظات"
+  },
+  "searchPlaceholder": {
+    "message": "ابحث في تأمّلاتك…"
+  },
+  "searchAriaLabel": {
+    "message": "البحث في تأمّلاتك"
+  },
+  "searchTooltip": {
+    "message": "يطابق الملاحظات المكوّنة من سطر واحد التي تتركها في عرض اليوم."
+  },
+  "searchPromptNote": {
+    "message": "اكتب للبحث في تأمّلاتك."
+  },
+  "searchNoMatchNote": {
+    "message": "لا توجد ملاحظات تطابق \"$QUERY$\".",
+    "placeholders": {
+      "query": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchResultTooltip": {
+    "message": "الانتقال إلى هذا اليوم"
+  },
+  "theLogLabel": {
+    "message": "السجل"
+  },
+  "logRangeGroupLabel": {
+    "message": "مقدار السجل المطلوب عرضه"
+  },
+  "logRangeWeekLabel": {
+    "message": "هذا الأسبوع"
+  },
+  "logRangeMonthLabel": {
+    "message": "هذا الشهر"
+  },
+  "logRangeAllLabel": {
+    "message": "الكل"
+  },
+  "logEmptyNote": {
+    "message": "لا يوجد شيء مكتوب في هذا النطاق بعد. تظهر هنا الملاحظات والنوايا من عرض اليوم."
+  },
+  "openDayTooltip": {
+    "message": "فتح هذا اليوم"
+  },
+  "logMeantToLabel": {
+    "message": "كانت النية"
+  },
+  "logWhatHappenedLabel": {
+    "message": "ما حدث"
+  },
+  "logMeantToAvoidLabel": {
+    "message": "كان يجب تجنّبه"
+  },
+  "worthNoticingHistoryTooltip": {
+    "message": "أنماط في بياناتك الخاصة على مدى الأسابيع القليلة الماضية. لا شيء هنا نصيحة إلا إذا طلبتها."
+  },
+  "worthNoticingSubnote": {
+    "message": "من الأسابيع القليلة الماضية"
+  },
+  "suggestionShowLabel": {
+    "message": "ما يفعله الناس حيال ذلك"
+  },
+  "suggestionHideLabel": {
+    "message": "إخفاء"
+  },
+  "silenceObservationLabel": {
+    "message": "عدم إظهار هذا مرة أخرى"
+  },
+  "silenceObservationTooltip": {
+    "message": "بشكل دائم، وليس لهذه المرة فقط."
+  },
+  "suggestionDisclaimer": {
+    "message": "هذه أمثلة لطريقة تعامل، وليست توصيات — لا شيء منها منتسب إلى Daily Dial."
+  },
+  "historyEmptyBefore": {
+    "message": "لا يوجد سجل بعد. سجّل بضعة أيام في عرض اليوم — وبمجرد أن يصبح لديك أسبوع أو أسبوعان، يتحول هذا التبويب إلى صورة شهرًا بشهر: خريطة حرارية، واتجاهات الفئات، ومقارنات أسبوع مقابل أسبوع. تريد أن ترى كيف يبدو ذلك الآن؟"
+  },
+  "historyEmptyAfter": {
+    "message": "يملأ ثلاثة أسابيع فورًا."
+  },
+  "futureNotLogged": {
+    "message": "هذا لم يحدث بعد — يمكنك تسجيل الوقت حتى الآن فقط."
+  },
+  "copyYesterdayUpToNowToast": {
+    "message": "تم نسخ الأمس حتى الآن — باقي اليوم لم يحدث بعد"
+  },
+  "templateAppliedUpToNowToast": {
+    "message": "تم تطبيق \"$NAME$\" حتى الآن — باقي اليوم لم يحدث بعد",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_zero": {
+    "message": "تمت تعبئة $COUNT$ يوم حتى الآن",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_one": {
+    "message": "تمت تعبئة $COUNT$ يوم حتى الآن",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_two": {
+    "message": "تمت تعبئة $COUNT$ يومين حتى الآن",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_few": {
+    "message": "تمت تعبئة $COUNT$ أيام حتى الآن",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_many": {
+    "message": "تمت تعبئة $COUNT$ يومًا حتى الآن",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "filledDaysUpToNow_other": {
+    "message": "تمت تعبئة $COUNT$ يوم حتى الآن",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownNotYet": {
+    "message": "ليس بعد"
+  },
+  "errPickDates": {
+    "message": "اختر تاريخ بداية ونهاية."
+  },
+  "errEndDateBeforeStart": {
+    "message": "تاريخ النهاية قبل تاريخ البداية."
+  },
+  "errRangeTooLong": {
+    "message": "هذا $COUNT$ يوم — يمكن للتعبئة الواحدة أن تغطي $MAX$ كحد أقصى.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "errBadStartTime": {
+    "message": "وقت بداية غير صحيح."
+  },
+  "errBadEndTime": {
+    "message": "وقت نهاية غير صحيح."
+  },
+  "errEndTimeBeforeStart": {
+    "message": "وقت النهاية قبل وقت البداية."
+  },
+  "errTryExample": {
+    "message": "جرّب شيئًا مثل \"9-11 deep work\"."
+  },
+  "errUnreadableEntry": {
+    "message": "تعذّرت قراءة ذلك. جرّب \"9-11 deep work\" أو \"9pm-11pm study\"."
+  },
+  "errUnreadableTime": {
+    "message": "تعذّرت قراءة الوقت — استخدم صيغة 24 ساعة (13:30) أو 12 ساعة (1:30pm)."
+  },
+  "errNoCategoryGiven": {
+    "message": "أضف فئة، مثل \"9-11 deep work\"."
+  },
+  "errNoCategoryMatch": {
+    "message": "لا توجد فئة تطابق \"$TEXT$\".",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "errCategoryAmbiguous": {
+    "message": "\"$TEXT$\" يطابق $MATCHES$ — كن أكثر تحديدًا.",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      },
+      "matches": {
+        "content": "$2"
+      }
+    }
+  },
+  "errFileEmpty": {
+    "message": "هذا الملف فارغ."
+  },
+  "errNotDailyDialCsv": {
+    "message": "هذا لا يبدو تصدير CSV من Daily Dial."
+  },
+  "errCsvBadDate": {
+    "message": "الصف $ROW$: تاريخ غير صحيح \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadStartTime": {
+    "message": "الصف $ROW$: وقت بداية غير صحيح \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadEndTime": {
+    "message": "الصف $ROW$: وقت نهاية غير صحيح \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvUnknownCategory": {
+    "message": "الصف $ROW$: فئة غير معروفة \"$VALUE$\".",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBlockTooShort": {
+    "message": "الصف $ROW$: الفترة أقصر من $MIN$ دقيقة.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "min": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvEndNotAfterStart": {
+    "message": "الصف $ROW$: النهاية ليست بعد البداية.",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      }
+    }
+  },
+  "errNotValidJson": {
+    "message": "هذا الملف ليس JSON صالحًا."
+  },
+  "errNotDailyDialBackup": {
+    "message": "هذا لا يبدو نسخة احتياطية من Daily Dial."
+  },
+  "errMissingSchemaVersion": {
+    "message": "إصدار المخطط مفقود — هذا لا يبدو نسخة احتياطية من Daily Dial."
+  },
+  "errBackupTooNew": {
+    "message": "تم إنشاء هذه النسخة الاحتياطية بواسطة إصدار أحدث من Daily Dial (المخطط $VERSION$). حدِّث الإضافة أولًا.",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapNothingLogged": {
+    "message": "لا يوجد شيء مسجَّل الأسبوع الماضي. أليس الأمر جديرًا ببداية جديدة هذا الأسبوع؟"
+  },
+  "recapTrackedProductive": {
+    "message": "$DURATION$ مسجَّل، $PERCENT$٪ إنتاجي.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapTopCategory": {
+    "message": "ذهب معظمه إلى $CATEGORY$.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapIntentions_zero": {
+    "message": "حقّقت $DONE$ من $SET$ نية.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_one": {
+    "message": "حقّقت $DONE$ من $SET$ نية.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_two": {
+    "message": "حقّقت $DONE$ من $SET$ نيتين.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_few": {
+    "message": "حقّقت $DONE$ من $SET$ نوايا.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_many": {
+    "message": "حقّقت $DONE$ من $SET$ نيةً.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapIntentions_other": {
+    "message": "حقّقت $DONE$ من $SET$ نية.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapAskAdjust": {
+    "message": "هل هناك ما تريد تعديله هذا الأسبوع؟"
+  },
+  "obsOvercommitHeadline": {
+    "message": "تضع نوايا أكثر مما تُنجز"
+  },
+  "obsOvercommitDetail": {
+    "message": "$SET$ نية محدَّدة خلال آخر $DAYS$ يوم، أُنجز منها $DONE$ فقط.",
+    "placeholders": {
+      "set": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "done": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsNoBreaksHeadline": {
+    "message": "لم يُسجَّل أي وقت راحة أو محايد خلال $DAYS$ يوم",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsNoBreaksDetail": {
+    "message": "$DURATION$ مسجَّل خلال آخر $DAYS$ يوم، لا شيء منه في فئة محايدة.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsDistractionHeadline": {
+    "message": "التشتت في ازدياد خلال آخر $DAYS$ يوم",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsDistractionDetail": {
+    "message": "$CURRENT$ سُجِّل كتشتت خلال آخر $DAYS$ يوم، ارتفاعًا من $PREVIOUS$ في الأيام الـ$DAYS$ التي قبلها.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "previous": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsCoverageHeadline": {
+    "message": "انخفض التسجيل مقارنة بالأيام الـ$DAYS$ السابقة",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsCoverageDetail": {
+    "message": "$RECENT$/يوم مسجَّل خلال آخر $RECENTDAYS$ يوم، انخفاضًا من $PRIOR$/يوم خلال الأيام الـ$PRIORDAYS$ التي قبلها.",
+    "placeholders": {
+      "recent": {
+        "content": "$1"
+      },
+      "recentdays": {
+        "content": "$2"
+      },
+      "prior": {
+        "content": "$3"
+      },
+      "priordays": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourHeadline_zero": {
+    "message": "$HOUR$ هي ساعتك الأكثر إنتاجية، وذلك في $PROTECTED$ من $LOGGED$ يوم مسجَّل",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_one": {
+    "message": "$HOUR$ هي ساعتك الأكثر إنتاجية، وذلك في $PROTECTED$ من $LOGGED$ يوم مسجَّل",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_two": {
+    "message": "$HOUR$ هي ساعتك الأكثر إنتاجية، وذلك في $PROTECTED$ من $LOGGED$ يومين مسجَّلين",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_few": {
+    "message": "$HOUR$ هي ساعتك الأكثر إنتاجية، وذلك في $PROTECTED$ من $LOGGED$ أيام مسجَّلة",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_many": {
+    "message": "$HOUR$ هي ساعتك الأكثر إنتاجية، وذلك في $PROTECTED$ من $LOGGED$ يومًا مسجَّلًا",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourHeadline_other": {
+    "message": "$HOUR$ هي ساعتك الأكثر إنتاجية، وذلك في $PROTECTED$ من $LOGGED$ يوم مسجَّل",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail_zero": {
+    "message": "خلال آخر $DAYS$ يوم، تراكم في $HOUR$ وقت إنتاجي أكثر من أي ساعة أخرى، لكنها ظلت إنتاجية في $PROTECTED$ فقط من $LOGGED$ يوم مسجَّل.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_one": {
+    "message": "خلال آخر $DAYS$ يوم، تراكم في $HOUR$ وقت إنتاجي أكثر من أي ساعة أخرى، لكنها ظلت إنتاجية في $PROTECTED$ فقط من $LOGGED$ يوم مسجَّل.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_two": {
+    "message": "خلال آخر $DAYS$ يوم، تراكم في $HOUR$ وقت إنتاجي أكثر من أي ساعة أخرى، لكنها ظلت إنتاجية في $PROTECTED$ فقط من $LOGGED$ يومين مسجَّلين.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_few": {
+    "message": "خلال آخر $DAYS$ يوم، تراكم في $HOUR$ وقت إنتاجي أكثر من أي ساعة أخرى، لكنها ظلت إنتاجية في $PROTECTED$ فقط من $LOGGED$ أيام مسجَّلة.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_many": {
+    "message": "خلال آخر $DAYS$ يوم، تراكم في $HOUR$ وقت إنتاجي أكثر من أي ساعة أخرى، لكنها ظلت إنتاجية في $PROTECTED$ فقط من $LOGGED$ يومًا مسجَّلًا.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsPeakHourDetail_other": {
+    "message": "خلال آخر $DAYS$ يوم، تراكم في $HOUR$ وقت إنتاجي أكثر من أي ساعة أخرى، لكنها ظلت إنتاجية في $PROTECTED$ فقط من $LOGGED$ يوم مسجَّل.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_zero": {
+    "message": "كل ما سُجِّل خلال آخر $DAYS$ يوم يقع في $COUNT$ فئة فقط",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_one": {
+    "message": "كل ما سُجِّل خلال آخر $DAYS$ يوم يقع في $COUNT$ فئة فقط",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_two": {
+    "message": "كل ما سُجِّل خلال آخر $DAYS$ يوم يقع في $COUNT$ فئتين فقط",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_few": {
+    "message": "كل ما سُجِّل خلال آخر $DAYS$ يوم يقع في $COUNT$ فئات فقط",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_many": {
+    "message": "كل ما سُجِّل خلال آخر $DAYS$ يوم يقع في $COUNT$ فئةً فقط",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_other": {
+    "message": "كل ما سُجِّل خلال آخر $DAYS$ يوم يقع في $COUNT$ فئة فقط",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsUntrackedAreaDetail": {
+    "message": "\"$CATEGORY$\" مفعّلة لكنها سجّلت صفر دقائق خلال هذا النطاق — إحدى خانات فئاتك الست غير مستخدمة.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptMorning": {
+    "message": "كيف كان صباحك؟ لوّنه بينما لا تزال تتذكره."
+  },
+  "promptEveningUnlogged": {
+    "message": "$DURATION$ من اليوم لم تُسجَّل بعد. أنهِ يومك وأضف سطر \"لماذا\" الخاص بك.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptEveningComplete": {
+    "message": "اليوم مسجَّل بالكامل. أضف سطر \"لماذا\" الخاص بك بينما لا يزال جديدًا."
+  },
+  "insightNothingLogged": {
+    "message": "لا يوجد شيء مسجَّل بعد. اختر فئة واسحب حول الحلقة لتلوين أول فترة لك."
+  },
+  "insightProductivePct": {
+    "message": "<b>$PERCENT$٪</b> من وقتك المسجَّل كان إنتاجيًا.",
+    "placeholders": {
+      "percent": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightMostlyDrain": {
+    "message": "<b>$DURATION$</b> ذهب إلى وقت وضعت عليه علامة استنزاف — أكثر مما أمضيته في التقدم.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightTopCategory": {
+    "message": "تصدّرت <b>$CATEGORY$</b> اليوم بـ<b>$DURATION$</b>.",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "insightFragmented": {
+    "message": "لكنه جاء في أجزاء قصيرة — أطول فترة متواصلة لديك كانت $DURATION$ فقط.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightLongStretch": {
+    "message": "أطول فترة متواصلة لديك كانت <b>$DURATION$</b>.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightStillUnlogged": {
+    "message": "$DURATION$ لا يزال غير مسجَّل.",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "scoreNoData": {
+    "message": "لا توجد بيانات بعد"
+  },
+  "scoreTooLittle": {
+    "message": "المسجَّل قليل جدًا لاحتساب نتيجة"
+  },
+  "scoreLockedIn": {
+    "message": "مُركَّز"
+  },
+  "scoreSolid": {
+    "message": "جيد"
+  },
+  "scoreMixedBag": {
+    "message": "متفاوت"
+  },
+  "scoreOffTrack": {
+    "message": "خارج المسار"
+  },
+  "sampleReflectionGoodFocus": {
+    "message": "تركيز جيد بعد الغداء."
+  },
+  "sampleReflectionDistracted": {
+    "message": "تشتت معظم المساء."
+  },
+  "sampleReflectionRough": {
+    "message": "يوم صعب، معظمه تمرير بلا هدف."
+  },
+  "shareScoreLabel": {
+    "message": "النتيجة"
+  },
+  "shareNothingLogged": {
+    "message": "لا يوجد شيء مسجَّل بعد"
+  },
+  "shareTrackedLine": {
+    "message": "$DURATION$ مسجَّل · $PERCENT$٪ إنتاجي",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareLedLine": {
+    "message": "$CATEGORY$ تصدّرت بـ$DURATION$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareStreakLine": {
+    "message": "🔥 سلسلة $COUNT$ يوم",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "durationHourSuffix": {
+    "message": "س"
+  },
+  "durationMinuteSuffix": {
+    "message": "د"
+  },
+  "sug_intentionOvercommit_lead": {
+    "message": "ثلاثة أو أربعة أشياء تُنجزها فعلًا أفضل من عشرة كنت تنوي فعلها."
+  },
+  "sug_intentionOvercommit_text1": {
+    "message": "حدِّد عددًا أقل. شيء واحد يجب أن يحدث، وشيئان يكون وجودهما جيدًا، يشكّلان يومًا كاملًا لمعظم الناس."
+  },
+  "sug_intentionOvercommit_text2": {
+    "message": "اجعل كل نية صغيرة بما يكفي لإنجازها في جلسة واحدة — \"صياغة البريد الإلكتروني\" بدلًا من \"إنهاء التقديم\"."
+  },
+  "sug_intentionOvercommit_text3": {
+    "message": "انقل ما يتكرر تأجيله إلى ملاحظة واحدة بعنوان \"يومًا ما\"، حتى يتوقف عن الظهور كفشل يومي."
+  },
+  "sug_noBreaks_lead": {
+    "message": "الراحة التي لا تُسجَّل أبدًا غالبًا ما تكون راحة لا تحدث أبدًا."
+  },
+  "sug_noBreaks_text1": {
+    "message": "اضبط الاستراحات على مؤقّت، حتى لا يكون التوقف قرارًا عليك اتخاذه أثناء التركيز."
+  },
+  "sug_noBreaks_text2": {
+    "message": "خذ استراحتك بعيدًا عن الشاشة تمامًا — نزهة، طعام، أو أي شيء ليس نافذة أخرى."
+  },
+  "sug_noBreaks_text3": {
+    "message": "إذا كنت تستريح بالفعل لكن دون تسجيل ذلك، سجّله. اليوم الذي يبدو وكأنه ست عشرة ساعة متواصلة ليس اليوم الذي عشته فعلًا."
+  },
+  "sug_peakHoursUnprotected_lead": {
+    "message": "الساعة التي تكون فيها في أفضل حالاتك تستحق الحماية قبل أن يستحوذ عليها أي شيء آخر."
+  },
+  "sug_peakHoursUnprotected_text1": {
+    "message": "احجزها في أي تقويم يراه الآخرون، حتى يُحجز الوقت قبل أن يأخذه أحد غيرك."
+  },
+  "sug_peakHoursUnprotected_text2": {
+    "message": "أسكِت كل شيء خلال تلك الساعة، بدلًا من الاعتماد على عدم النظر إليه."
+  },
+  "sug_peakHoursUnprotected_text3": {
+    "message": "ابدأ بأصعب مهمة في يومك خلال تلك الفترة، لا بأسهلها. العمل السهل يمكن أن يُنجز في ساعة أقل ملاءمة؛ أما الصعب فغالبًا لا."
+  },
+  "sug_peakHoursUnprotected_text4": {
+    "message": "إن استطعت، غيّر مكانك خلال تلك الساعة. غرفة مختلفة أو مكتبة تفعل أكثر مما يفعله معظم البرامج."
+  },
+  "sug_distractionTrend_lead": {
+    "message": "التشتت المتزايد غالبًا ما يكون مشكلة احتكاك لا مشكلة إرادة — الهدف هو جعل الأمر السهل أصعب قليلًا."
+  },
+  "sug_distractionTrend_text1": {
+    "message": "احجب المواقع التي تستهلك وقتك، لكن فقط خلال الساعات التي تريد فيها العمل فعلًا — الحجب طوال اليوم غالبًا ما يُعطَّل بالكامل."
+  },
+  "sug_distractionTrend_text2": {
+    "message": "أضف توقفًا مؤقتًا قبل فتح التطبيق، بدلًا من حجبه. بضع ثوانٍ من الاحتكاك تزيل معظم حالات فتحه دون قرار واعٍ."
+  },
+  "sug_distractionTrend_text3": {
+    "message": "اجعل الهاتف مملًا لفترة بدلًا من ممنوع."
+  },
+  "sug_distractionTrend_text4": {
+    "message": "ضع الهاتف في غرفة أخرى أثناء عملك. غير برّاق، مجاني، وأكثر موثوقية من أي شيء يمكنك تثبيته على الجهاز الذي تحاول تجنّبه."
+  },
+  "sug_distractionTrend_text5": {
+    "message": "استبدل بدلًا من أن تزيل — قرّر إلى أين يذهب الوقت بدلًا من ذلك، وإلا فسيجد طريقه للعودة غالبًا."
+  },
+  "sug_coverageDecline_lead": {
+    "message": "قلّة التسجيل غالبًا ما تكون أول علامة على أن فترة ما تسير بشكل سيئ — وهي أيضًا ما يجعل رؤية مدى سوئها صعبة."
+  },
+  "sug_coverageDecline_text1": {
+    "message": "سجّل في نقطتين أو ثلاث ثابتة خلال اليوم بدلًا من إعادة بنائه عند منتصف الليل. تذكيرات Daily Dial (الإعدادات ← التذكيرات) موجودة لهذا الغرض."
+  },
+  "sug_coverageDecline_text2": {
+    "message": "سجّل بشكل تقريبي بدلًا من عدم التسجيل إطلاقًا. اليوم التقريبي يساوي أكثر بكثير من يوم فارغ، ويمكنك دائمًا تدقيقه لاحقًا."
+  },
+  "sug_coverageDecline_text3": {
+    "message": "استخدم \"اليوم، من البداية إلى النهاية\" أسفل القرص لملء الفجوات في دقيقتين — الصفوف موجودة بالفعل، تحتاج فقط إلى كلمات."
+  },
+  "sug_coverageDecline_text4": {
+    "message": "إذا لم يعد الأمر يستحق الجهد، فهذا أيضًا جدير بمعرفته. أداة تتبّع تشعر تجاهها بالاستياء هي أداة ستتخلى عنها."
+  },
+  "sug_untrackedLifeArea_lead": {
+    "message": "ما ليس فئة لا يمكن أن يظهر في أي من هذه الأرقام — وما لا يظهر يسهل إهماله."
+  },
+  "sug_untrackedLifeArea_text1": {
+    "message": "أعد تسمية فئة لا تستخدمها لتغطية شيء ناقص — الوقت مع الآخرين، الرياضة، النوم، أو أي شيء تريد أن تكون صادقًا مع نفسك بشأنه (الإعدادات ← الفئات)."
+  },
+  "sug_untrackedLifeArea_text2": {
+    "message": "أعطها وزنًا محايدًا بدلًا من وزن إنتاجي. الهدف هو رؤيتها، لا تقييمها."
+  },
+  "sug_untrackedLifeArea_text3": {
+    "message": "بمجرد أن تصبح فئة، ستتولى الأهداف واتجاهات التاريخ الموجودة لديك بالفعل بقية العمل دون أي جهد إضافي."
+  },
+  "sugPlat_Stretchly": {
+    "message": "Windows · macOS · Linux · مجاني، مفتوح المصدر"
+  },
+  "sugPlat_TimeOut": {
+    "message": "macOS · مجاني"
+  },
+  "sugPlat_Focusmodes": {
+    "message": "macOS · iOS · مدمج"
+  },
+  "sugPlat_DigitalWellbeingFocusmode": {
+    "message": "Android · مدمج"
+  },
+  "sugPlat_SelfControl": {
+    "message": "macOS · مجاني، مفتوح المصدر"
+  },
+  "sugPlat_ColdTurkey": {
+    "message": "Windows · macOS · فئة مجانية"
+  },
+  "sugPlat_Freedom": {
+    "message": "Windows · macOS · iOS · Android · مدفوع"
+  },
+  "sugPlat_onesec": {
+    "message": "iOS · Android · فئة مجانية"
+  },
+  "sugPlat_AssistiveAccess": {
+    "message": "iOS 17+ · مدمج — يقلّص الهاتف إلى بضعة تطبيقات كبيرة وبسيطة"
+  },
+  "sugPlat_ScreenTimeapplimits": {
+    "message": "iOS · macOS · مدمج"
+  },
+  "defaultCategory0": {
+    "message": "العمل العميق"
+  },
+  "defaultCategory1": {
+    "message": "التقديمات"
+  },
+  "defaultCategory2": {
+    "message": "الدراسة"
+  },
+  "defaultCategory3": {
+    "message": "الإدارة"
+  },
+  "defaultCategory4": {
+    "message": "استراحة"
+  },
+  "defaultCategory5": {
+    "message": "التشتت"
+  },
+  "languageLabel": {
+    "message": "اللغة"
+  },
+  "languageTooltip": {
+    "message": "«تلقائي» يتبع لغة متصفحك. التغيير يعيد تحميل الصفحة، ولا يمسّ أي شيء كتبته."
+  },
+  "languageNote": {
+    "message": "تتغيّر كلمات التطبيق نفسه فقط — ملاحظاتك ونواياك وأسماء فئاتك تبقى كما كتبتها تمامًا."
+  },
+  "languageAutomatic": {
+    "message": "تلقائي"
+  },
+  "alreadyLoggedHint": {
+    "message": "مسجَّل بالفعل كـ$CATEGORY$ — انقر مرتين للاستبدال",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "تم استبدال $FROM$ بـ$TO$، $START$–$END$ — ⌘Z للتراجع",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "انقر مرتين للاستبدال"
+  },
+  "notifyEveningTitle": {
+    "message": "أنهِ يومك"
+  },
+  "notifyRecapTitle": {
+    "message": "ملخّص الأسبوع"
+  },
+  "appNameShort": {
+    "message": "Daily Dial"
+  },
+  "themeToggleLabel": {
+    "message": "المظهر: $CURRENT$. انقر للانتقال إلى $NEXT$.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      }
+    }
+  },
+  "themeSwitchedToast": {
+    "message": "المظهر: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "reportIssueLabel": {
+    "message": "أبلغ عن خلل أو اقترح شيئًا"
+  },
+  "reportIssueNote": {
+    "message": " — يفتح GitHub. لا يُرفق أي شيء من يومك؛ يُرسل ما تكتبه فقط."
+  },
+  "llmImportLabel": {
+    "message": "جلب بيانات من مكان آخر"
+  },
+  "llmImportTooltip": {
+    "message": "ينسخ نصًا يشرح صيغة CSV لهذا التطبيق، ومعه أسماء فئاتك. الصقه في أي مساعد ذكاء اصطناعي مع سجلاتك القديمة."
+  },
+  "copyImportPromptLabel": {
+    "message": "نسخ النص لمساعد ذكاء اصطناعي"
+  },
+  "llmImportNote": {
+    "message": "الصقه في أي مساعد، وأضف سجلاتك القديمة تحته، ثم استورد ملف CSV الناتج. النص يحتوي على الصيغة وأسماء فئاتك فقط — لا شيء عن وقتك المسجَّل، وهذا الامتداد لا يرسل شيئًا إلى أي مكان."
+  },
+  "importPromptCopiedToast": {
+    "message": "تم نسخ النص — الصقه في مساعد مع سجلاتك القديمة"
+  },
+  "copyFailedToast": {
+    "message": "تعذّر النسخ إلى الحافظة."
+  },
+  "reviewNudgeText": {
+    "message": "هل كان مفيدًا؟ مراجعة قصيرة تساعد غيرك على العثور عليه."
+  },
+  "reviewNudgeGoLabel": {
+    "message": "اكتب مراجعة"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "لا، شكرًا"
+  },
+  "rateLinkLabel": {
+    "message": "قيّم هذا الامتداد"
+  },
+  "readTheGuideLabel": {
+    "message": "اقرأ الدليل الكامل مع خطوات الإعداد ←"
+  }
+}

@@ -1,0 +1,2421 @@
+{
+  "appName": {
+    "message": "Daily Dial – 時間と集中のトラッカー"
+  },
+  "appDescription": {
+    "message": "1日を24時間ダイヤルに描き、思った通りに時間を使えたかを確認します。"
+  },
+  "actionDefaultTitle": {
+    "message": "Daily Dial を開く"
+  },
+  "saveFailedToast": {
+    "message": "保存できませんでした。直前の変更が失われている可能性があります。"
+  },
+  "wordmarkTitle": {
+    "message": "Daily Dial"
+  },
+  "wordmarkTagline": {
+    "message": "時間と集中の記録"
+  },
+  "streakBannerTooltip": {
+    "message": "1つ以上のブロックを記録した日が連続している日数です。週に1日の未記録は凍結として許容されます。"
+  },
+  "streakFreezeLabel": {
+    "message": "❄ 凍結使用"
+  },
+  "streakFreezeTooltip": {
+    "message": "今週1日記録がありませんでしたが、連続記録は途切れていません。直近7日間で1回の未記録は許容されます。"
+  },
+  "streakRiskLabel": {
+    "message": "今日はまだ記録がありません"
+  },
+  "streakRiskTooltip": {
+    "message": "連続記録を保つには、今日1つ以上のブロックを記録してください。"
+  },
+  "challengeChipTooltip": {
+    "message": "名前を付けたチャレンジです。クリックすると変更できます。"
+  },
+  "challengeDayProgress": {
+    "message": "$DAY$ / $TARGET$ 日目",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDaySimple": {
+    "message": "$DAY$ 日目",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      }
+    }
+  },
+  "viewNavLabel": {
+    "message": "表示"
+  },
+  "viewTabDay": {
+    "message": "日"
+  },
+  "viewTabHistory": {
+    "message": "履歴"
+  },
+  "viewTabHistoryTooltip": {
+    "message": "月ごとの概要と、カテゴリの推移を確認できます。"
+  },
+  "dateToday": {
+    "message": "今日"
+  },
+  "dateYesterday": {
+    "message": "昨日"
+  },
+  "prevDayLabel": {
+    "message": "前日"
+  },
+  "nextDayLabel": {
+    "message": "翌日"
+  },
+  "todayJumpTooltip": {
+    "message": "今日に戻る"
+  },
+  "settingsButtonLabel": {
+    "message": "設定"
+  },
+  "settingsButtonTooltip": {
+    "message": "カテゴリ、リマインダー、目標、バックアップ、外観"
+  },
+  "demoBannerTitle": {
+    "message": "デモモード"
+  },
+  "demoBannerBody": {
+    "message": "— 以下の日にはサンプルデータも含まれています。"
+  },
+  "demoBannerExitLabel": {
+    "message": "デモを終了"
+  },
+  "demoBannerExitTooltip": {
+    "message": "読み込まれたサンプルの日だけを削除します。自分で記録した内容はそのまま残ります。"
+  },
+  "staleBannerHeadline": {
+    "message": "他のタブが$WHAT$を変更しました。",
+    "placeholders": {
+      "what": {
+        "content": "$1"
+      }
+    }
+  },
+  "staleBannerBody": {
+    "message": "このタブで上書きしないよう、編集は一時停止しています。最新の内容を読み込むには再読み込みしてください。"
+  },
+  "staleBannerReload": {
+    "message": "再読み込み"
+  },
+  "staleWhatViewedDay": {
+    "message": "表示中の日"
+  },
+  "staleWhatCategories": {
+    "message": "カテゴリ"
+  },
+  "staleWhatSettings": {
+    "message": "設定"
+  },
+  "staleWhatDemoMode": {
+    "message": "デモモード"
+  },
+  "staleWhatTemplates": {
+    "message": "テンプレート"
+  },
+  "firstRunHint": {
+    "message": "👈 カテゴリを選び、リングをドラッグして最初のブロックを塗ってください。"
+  },
+  "firstRunHintDismiss": {
+    "message": "わかりました"
+  },
+  "shareImageLabel": {
+    "message": "画像として共有"
+  },
+  "shareImageTooltip": {
+    "message": "この日のダイヤルとスコアをPNGとして保存または共有します。送信を選ばない限り、データが端末の外に出ることはありません。"
+  },
+  "dialLayoutSwitchLabel": {
+    "message": "ダイヤルレイアウト"
+  },
+  "dialModeSingleLabel": {
+    "message": "24時間"
+  },
+  "dialModeSingleTooltip": {
+    "message": "24時間のリング1つ"
+  },
+  "dialModeAmpmLabel": {
+    "message": "午前+午後"
+  },
+  "dialModeAmpmTooltip": {
+    "message": "12時間のリングを2つ並べて表示"
+  },
+  "dialModeToggleLabel": {
+    "message": "午前⇄午後"
+  },
+  "dialModeToggleTooltip": {
+    "message": "12時間のリング1つと、午前/午後の切り替え"
+  },
+  "dialAriaLabelSingle": {
+    "message": "24時間の活動ダイヤルです。矢印キーでカーソルを移動、Shift+矢印で選択、Enterで描画、Deleteで消去します。"
+  },
+  "dialAriaLabelAm": {
+    "message": "午前の活動ダイヤルです(0時から正午まで)。矢印キーでカーソルを移動、Shift+矢印で選択、Enterで描画、Deleteで消去します。"
+  },
+  "dialAriaLabelPm": {
+    "message": "午後の活動ダイヤルです(正午から24時まで)。矢印キーでカーソルを移動、Shift+矢印で選択、Enterで描画、Deleteで消去します。"
+  },
+  "dialCenterPickCategory": {
+    "message": "カテゴリを選択"
+  },
+  "dialTimeLoggedTooltip": {
+    "message": "この半分に記録された時間"
+  },
+  "dialCurrentTimeTooltip": {
+    "message": "現在時刻"
+  },
+  "dialHalfAm": {
+    "message": "午前"
+  },
+  "dialHalfAmRange": {
+    "message": "・0:00–12:00"
+  },
+  "dialHalfPm": {
+    "message": "午後"
+  },
+  "dialHalfPmRange": {
+    "message": "・12:00–24:00"
+  },
+  "toggleHalfSwitchLabel": {
+    "message": "午前または午後を表示"
+  },
+  "copyYesterdayLabel": {
+    "message": "昨日をコピー"
+  },
+  "copyYesterdayTooltip": {
+    "message": "昨日のブロックで今日を埋めます。似たような日を過ごすときに便利です。"
+  },
+  "typedEntryTimeRangeLabel": {
+    "message": "時間範囲"
+  },
+  "typedEntryPlaceholder": {
+    "message": "9-11"
+  },
+  "typedEntryTooltip": {
+    "message": "時間範囲の例: \"9-11\"、\"13:30-15\"、\"9pm-11pm\"。ここにカテゴリも一緒に入力できます。"
+  },
+  "typedEntryCatTooltip": {
+    "message": "このブロックのカテゴリ"
+  },
+  "addButtonLabel": {
+    "message": "追加"
+  },
+  "typedEntryAddTooltip": {
+    "message": "このブロックをダイヤルに追加"
+  },
+  "justPaintedNoteLabel": {
+    "message": "今描いた内容のメモ"
+  },
+  "justPaintedSaveLabel": {
+    "message": "保存"
+  },
+  "dismissLabel": {
+    "message": "閉じる"
+  },
+  "hintPaintInstruction": {
+    "message": "リングをクリックまたはドラッグして描画"
+  },
+  "hintUndo": {
+    "message": "取り消し"
+  },
+  "hintAllShortcuts": {
+    "message": "すべてのショートカット"
+  },
+  "breakdownSectionLabel": {
+    "message": "1日の流れ"
+  },
+  "breakdownSectionTooltip": {
+    "message": "記録していない部分も含め、1日のすべての区間を順番に表示します。どの行にもメモを直接入力でき、空白の行にはカテゴリを選んで埋められます。"
+  },
+  "breakdownColWhen": {
+    "message": "時間"
+  },
+  "breakdownColWhat": {
+    "message": "内容"
+  },
+  "breakdownColFor": {
+    "message": "長さ"
+  },
+  "breakdownColNote": {
+    "message": "メモ"
+  },
+  "breakdownColClear": {
+    "message": "クリア"
+  },
+  "todaysReadLabel": {
+    "message": "今日の状況"
+  },
+  "statTrackedLabel": {
+    "message": "記録時間"
+  },
+  "statTrackedTooltip": {
+    "message": "今日ダイヤルに描いた時間の合計です。残りの時間は未記録として扱われます。"
+  },
+  "statProductiveLabel": {
+    "message": "生産的"
+  },
+  "statProductiveTooltip": {
+    "message": "記録時間のうち、+の重みが付いたカテゴリに使った割合です。未記録の時間は含まれません。"
+  },
+  "statFocusLabel": {
+    "message": "最長集中時間"
+  },
+  "statFocusTooltip": {
+    "message": "生産的な時間が途切れずに続いた最長の長さです。異なる+カテゴリ間では継続しますが、中立または妨げの時間で途切れます。"
+  },
+  "scoreValTooltip": {
+    "message": "(生産的 − 妨げ) ÷ 記録時間を百分率で表したものです。1日の長さではなく質を測るため、集中した4時間は散漫な10時間より高く評価されます。"
+  },
+  "meterTooltip": {
+    "message": "スコアは−100から+100の範囲で表されます。"
+  },
+  "whereTimeWentLabel": {
+    "message": "時間の内訳"
+  },
+  "whereTimeWentTooltip": {
+    "message": "今日の記録時間がカテゴリごとにどう分かれているかを示します。未記録の時間も表示され、抜けが分かるようになっています。"
+  },
+  "todaysGoalsLabel": {
+    "message": "今日の目標"
+  },
+  "todaysGoalsTooltip": {
+    "message": "設定→目標で設定した1日の目標です。達成した項目には✓が付きます。"
+  },
+  "weeklyGoalsLabel": {
+    "message": "今週の目標"
+  },
+  "weeklyGoalsTooltip": {
+    "message": "設定→目標で設定した週の目標です。設定した週の開始曜日から1週間分を合計します。達成した項目には✓が付きます。"
+  },
+  "intentionsLabel": {
+    "message": "今日の予定"
+  },
+  "intentionsTooltip": {
+    "message": "今日やろうと思っていたことです。実行したらチェックを付けてください。履歴の記録には実際に行ったものが表示されます。"
+  },
+  "addIntentionLabel": {
+    "message": "予定を追加"
+  },
+  "addIntentionPlaceholder": {
+    "message": "Leetcodeを解く、教授にメールする…"
+  },
+  "avoidLabel": {
+    "message": "避けたいこと"
+  },
+  "avoidTooltip": {
+    "message": "今日避けたいことです。履歴には実際に行ったこととあわせて記録されます。"
+  },
+  "addAvoidLabel": {
+    "message": "避けたいことを追加"
+  },
+  "addAvoidPlaceholder": {
+    "message": "SNSの見過ぎ、ドラマの一気見…"
+  },
+  "reflectionLabel": {
+    "message": "理由(一言で十分です)"
+  },
+  "reflectionTooltip": {
+    "message": "今日良かったこと・悪かったことを一言で。CSVのエクスポートに含まれます。"
+  },
+  "reflectionSrLabel": {
+    "message": "振り返り"
+  },
+  "reflectionPlaceholder": {
+    "message": "今日がうまくいった、あるいはうまくいかなかった理由は?"
+  },
+  "clearDayLabel": {
+    "message": "1日をクリア"
+  },
+  "clearDayTooltip": {
+    "message": "この日のすべてのブロックを消去します。⌘Zで元に戻せます。"
+  },
+  "clearDayConfirmLabel": {
+    "message": "本当にクリアしますか"
+  },
+  "dayClearedToast": {
+    "message": "1日をクリアしました — ⌘Zで元に戻せます"
+  },
+  "settingsTitle": {
+    "message": "設定"
+  },
+  "settingsCloseLabel": {
+    "message": "設定を閉じる"
+  },
+  "settingsTabCategories": {
+    "message": "カテゴリ"
+  },
+  "settingsTabReminders": {
+    "message": "リマインダー"
+  },
+  "settingsTabGoals": {
+    "message": "目標"
+  },
+  "settingsTabData": {
+    "message": "データ"
+  },
+  "settingsTabAppearance": {
+    "message": "外観"
+  },
+  "settingsTabAbout": {
+    "message": "このアプリについて"
+  },
+  "categoriesLegendPositive": {
+    "message": "はスコアに加算され、"
+  },
+  "categoriesLegendNeutral": {
+    "message": "は中立で、"
+  },
+  "categoriesLegendNegative": {
+    "message": "はスコアから減算されます。"
+  },
+  "categoriesHideNote": {
+    "message": "丸いボタンで使わないカテゴリを非表示にできます。"
+  },
+  "categoriesAliasNote": {
+    "message": "各カテゴリの下にある小さな入力欄はエイリアス用です。同じカテゴリを表す自分なりの言葉(例:「Applications」に対して「leetcode」や「mock interview」など)を登録しておくと、入力欄がその表現を認識できるようになります。色はそのカテゴリ本来の重みの色のまま変わりません。"
+  },
+  "categoryNameAriaLabel": {
+    "message": "カテゴリ名"
+  },
+  "weightPositiveLabel": {
+    "message": "スコアに加算"
+  },
+  "weightNeutralLabel": {
+    "message": "中立"
+  },
+  "weightNegativeLabel": {
+    "message": "スコアから減算"
+  },
+  "hideCategoryAriaLabel": {
+    "message": "$NAME$を非表示",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "showCategoryAriaLabel": {
+    "message": "$NAME$を表示",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasPlaceholder": {
+    "message": "「$NAME$」の別の呼び方…",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "aliasAriaLabel": {
+    "message": "$NAME$のエイリアス — 入力欄が認識する別の言い方",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorNote": {
+    "message": "色は現在の重みではなく、元の重みのままです。"
+  },
+  "reminderToggleLabel": {
+    "message": "記録をリマインドする"
+  },
+  "reminderToggleTooltip": {
+    "message": "以下の時刻に1日2回通知します。Chromeが起動している間のみ届きます。"
+  },
+  "middayNudgeLabel": {
+    "message": "昼のリマインド"
+  },
+  "eveningWrapupLabel": {
+    "message": "夜のまとめ"
+  },
+  "remindersNote": {
+    "message": "通知はChromeが起動している間のみ届きます。夜の通知では、その日にまだ記録していない時間の長さをお知らせします。"
+  },
+  "weeklyRecapSectionLabel": {
+    "message": "週次まとめ"
+  },
+  "weeklyRecapToggleLabel": {
+    "message": "週次まとめを送る"
+  },
+  "weeklyRecapToggleTooltip": {
+    "message": "週に1回届く要約通知です。記録時間、最も多いカテゴリ、ベストな日、連続記録が含まれます。"
+  },
+  "weeklyRecapDayLabel": {
+    "message": "曜日"
+  },
+  "weeklyRecapTimeLabel": {
+    "message": "時刻"
+  },
+  "weeklyRecapNote": {
+    "message": "初期設定ではオフです。直前の1週間を短くまとめたもので、記録時間、最も多いカテゴリ、ベストな日、連続記録を含みます。"
+  },
+  "daySunday": {
+    "message": "日曜日"
+  },
+  "dayMonday": {
+    "message": "月曜日"
+  },
+  "dayTuesday": {
+    "message": "火曜日"
+  },
+  "dayWednesday": {
+    "message": "水曜日"
+  },
+  "dayThursday": {
+    "message": "木曜日"
+  },
+  "dayFriday": {
+    "message": "金曜日"
+  },
+  "daySaturday": {
+    "message": "土曜日"
+  },
+  "worthNoticingLabel": {
+    "message": "気づき"
+  },
+  "worthNoticingSettingsTooltip": {
+    "message": "Daily Dialが自分のデータから見つけたパターンで、履歴の上部に表示されます。オフにするとこのセクション全体が非表示になります。"
+  },
+  "observationsToggleTooltip": {
+    "message": "履歴の上部に「気づき」セクションを表示します。"
+  },
+  "observationsToggleLabel": {
+    "message": "自分のデータのパターンを知らせる"
+  },
+  "observationsNote": {
+    "message": "直近数週間を対象に、6つの項目を確認します。設定したのに終えられなかった予定、休憩が記録されていない区間、守られていない最も生産的な時間帯などです。それぞれは事実を述べるだけで、提案は求めた場合にのみ表示されます。オフにすると、このセクションは一切表示されません。"
+  },
+  "dailyGoalsSectionLabel": {
+    "message": "カテゴリごとの1日の目標"
+  },
+  "dailyGoalsNote": {
+    "message": "目標を設定しない場合は空欄のままにしてください。目標を設定すると、サイドパネルに進捗が表示されます。"
+  },
+  "weeklyGoalsSectionLabel": {
+    "message": "カテゴリごとの週の目標"
+  },
+  "weeklyGoalsSectionTooltip": {
+    "message": "毎日は行わないことのために、1日ごとではなく1週間全体での目標を設定できます。"
+  },
+  "weeklyGoalsNote": {
+    "message": "上の1日の目標とは独立しています。カテゴリごとにどちらか、両方、またはどちらも設定しないことができます。"
+  },
+  "goalOffPlaceholder": {
+    "message": "オフ"
+  },
+  "goalAriaLabelDaily": {
+    "message": "$NAME$の1日の目標(分)",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "goalAriaLabelWeekly": {
+    "message": "$NAME$の週の目標(分)",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeSectionLabel": {
+    "message": "チャレンジ"
+  },
+  "challengeSectionTooltip": {
+    "message": "100日チャレンジのように、独自の日数カウンターを持つ名前付きの取り組みです。連続記録とは別で、開始日から数え、途中で記録がなくても途切れません。"
+  },
+  "challengeNameFieldLabel": {
+    "message": "名前"
+  },
+  "challengeNamePlaceholder": {
+    "message": "#100days"
+  },
+  "challengeStartedLabel": {
+    "message": "開始日"
+  },
+  "challengeLengthLabel": {
+    "message": "期間(日数)"
+  },
+  "clearChallengeLabel": {
+    "message": "チャレンジを削除"
+  },
+  "challengeNote": {
+    "message": "連続記録の横に表示される日数カウンターです。連続記録とは異なり途切れることはなく、開始日から数えるだけです。設定しない場合は名前を空欄にしてください。"
+  },
+  "templatesSectionLabel": {
+    "message": "テンプレート"
+  },
+  "templatesSectionTooltip": {
+    "message": "多くの日は似たパターンになります。描いた形を保存して、他の日にそのまま適用できます。"
+  },
+  "templateNameFieldLabel": {
+    "message": "テンプレート名"
+  },
+  "templateNamePlaceholder": {
+    "message": "名前を付ける(例:「平日」)"
+  },
+  "saveTemplateLabel": {
+    "message": "今日をテンプレートとして保存"
+  },
+  "templatesNote": {
+    "message": "テンプレートには描いた時間のみが含まれ、メモ、予定、避けたいこと、振り返りは含まれません。すでに時間が記録されている日に適用する場合は確認を求められ、適用後は⌘Zで元に戻せます。"
+  },
+  "templatesEmptyNote": {
+    "message": "保存されたテンプレートはまだありません。"
+  },
+  "applyLabel": {
+    "message": "適用"
+  },
+  "applyConfirmLabel": {
+    "message": "本当に適用しますか"
+  },
+  "deleteLabel": {
+    "message": "削除"
+  },
+  "deleteTemplateAriaLabel": {
+    "message": "テンプレート「$NAME$」を削除",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateAppliedToast": {
+    "message": "「$NAME$」を適用しました — ⌘Zで元に戻せます",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateNameRequiredToast": {
+    "message": "先にテンプレート名を入力してください。"
+  },
+  "templateMaxToast": {
+    "message": "保存できるテンプレートは最大$MAX$個です。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateSavedToast": {
+    "message": "「$NAME$」を保存しました",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "templateDeletedToast": {
+    "message": "「$NAME$」を削除しました",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "exportSectionLabel": {
+    "message": "エクスポート"
+  },
+  "exportCsvLabel": {
+    "message": "CSVをエクスポート"
+  },
+  "exportCsvTooltip": {
+    "message": "すべてのブロックを1行ずつまとめた表です。集計にそのまま使えますが、設定は復元されません。"
+  },
+  "exportJsonLabel": {
+    "message": "JSONバックアップをエクスポート"
+  },
+  "exportJsonTooltip": {
+    "message": "すべての日、カテゴリ、設定を含む完全なバックアップです。保管しておくべきファイルです。"
+  },
+  "noBackupYetStatus": {
+    "message": "まだバックアップをエクスポートしていません。"
+  },
+  "lastBackupStatus": {
+    "message": "前回のバックアップ: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "dataBackupNudgeText": {
+    "message": "前回のバックアップからしばらく経っています。"
+  },
+  "backupNudgeText": {
+    "message": "しばらくバックアップを取っていません。データはこのブラウザにのみ保存されています。"
+  },
+  "backupNudgeExportLabel": {
+    "message": "今すぐエクスポート"
+  },
+  "backupNudgeExportTooltip": {
+    "message": "後で復元できるJSONバックアップを保存します"
+  },
+  "backupNudgeDismissTooltip": {
+    "message": "次回まで非表示にする"
+  },
+  "dailyRemindersSectionLabel": {
+    "message": "毎日のリマインダー"
+  },
+  "stripHintLabel": {
+    "message": "日をクリックして開く"
+  },
+  "stripTooltip": {
+    "message": "直近7日間です。バーの長さはその日のスコアを表し、クリックすると表示・編集できます。"
+  },
+  "importSectionLabel": {
+    "message": "インポート"
+  },
+  "chooseBackupFileLabel": {
+    "message": "バックアップファイルを選択…"
+  },
+  "chooseBackupFileTooltip": {
+    "message": "JSONバックアップまたはCSVエクスポートから復元します"
+  },
+  "mergeLabel": {
+    "message": "マージ"
+  },
+  "mergeTooltip": {
+    "message": "ファイル内の、まだ登録されていない日を追加します。既存の日はそのまま残ります。"
+  },
+  "replaceEverythingLabel": {
+    "message": "すべて置き換え"
+  },
+  "replaceEverythingTooltip": {
+    "message": "現在の履歴をすべて消去し、ファイルの内容そのままに復元します。元に戻すことはできません。"
+  },
+  "replaceArmedLabel": {
+    "message": "もう一度クリックすると既存の日を消去します"
+  },
+  "cancelLabel": {
+    "message": "キャンセル"
+  },
+  "importNote": {
+    "message": "JSONバックアップにはすべて(日、カテゴリ、設定)が含まれます。CSVファイルは時間のブロックのみを復元し、現在のカテゴリ名と照合されます。マージは不足している日を追加し、既存の日はそのまま残します。置き換えは履歴をすべて消去し、ファイルの内容どおりに復元します。"
+  },
+  "fileReadErrorToast": {
+    "message": "そのファイルを読み込めませんでした。"
+  },
+  "importSummarySentence1_other": {
+    "message": "ファイル内に$COUNT$日分、うち$OVERLAP$日が既存の$EXISTING$日と重複しています。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "overlap": {
+        "content": "$2"
+      },
+      "existing": {
+        "content": "$3"
+      }
+    }
+  },
+  "importSummarySentence2_other": {
+    "message": "マージすると$COUNT$日分が新たに追加されます。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummarySentence3_other": {
+    "message": "置き換えると既存の$COUNT$日分がすべて消去され、ファイルの内容どおりに復元されます。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "importSummaryDemoClearSentence": {
+    "message": "先にデモデータが削除されます。"
+  },
+  "backupRestoredToast": {
+    "message": "バックアップを復元しました"
+  },
+  "backupMergedToast": {
+    "message": "バックアップをマージしました"
+  },
+  "multifillSectionLabel": {
+    "message": "複数日をまとめて記録"
+  },
+  "multifillSectionTooltip": {
+    "message": "1回の操作で済ませられます(例:「月曜から金曜まで不在だった」)。"
+  },
+  "multifillFromDateLabel": {
+    "message": "開始日"
+  },
+  "multifillToDateLabel": {
+    "message": "終了日"
+  },
+  "multifillCategoryLabel": {
+    "message": "カテゴリ"
+  },
+  "multifillFromTimeLabel": {
+    "message": "開始時刻"
+  },
+  "multifillToTimeLabel": {
+    "message": "終了時刻"
+  },
+  "eraseOptionLabel": {
+    "message": "消去(未記録にする)"
+  },
+  "multifillNoteBefore": {
+    "message": "開始日から終了日まで(両端含む)、選択したカテゴリで記録するか、消去します。時間欄を空にすると1日全体が対象になります。上限は"
+  },
+  "multifillNoteAfter": {
+    "message": "日までです。対象となった各日は個別に保存され、その日の表示から1日ずつ元に戻せます。"
+  },
+  "confirmFillLabel": {
+    "message": "記録を確定"
+  },
+  "multifillArmedLabel": {
+    "message": "もう一度クリックすると記録します"
+  },
+  "multifillActionErase": {
+    "message": "消去"
+  },
+  "multifillActionSetTo": {
+    "message": "$CATEGORY$に設定",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillWindowWholeDay": {
+    "message": "1日全体"
+  },
+  "multifillUnknownCategory": {
+    "message": "そのカテゴリ"
+  },
+  "multifillWindowRange": {
+    "message": "$FROM$から$TO$まで",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "multifillSummary_other": {
+    "message": "$COUNT$日間($FROM$〜$TO$)は$WINDOW$、$ACTION$されます。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      },
+      "action": {
+        "content": "$4"
+      },
+      "window": {
+        "content": "$5"
+      }
+    }
+  },
+  "multifillPainted_other": {
+    "message": "そのうち$COUNT$日にはすでに何か記録されており、上書きされます。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "multifillNonePainted": {
+    "message": "それらの日にはまだ何も記録されていません。"
+  },
+  "filledDays_other": {
+    "message": "$COUNT$日分を記録しました",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveSectionLabel": {
+    "message": "Google Driveバックアップ"
+  },
+  "driveBackupLabel": {
+    "message": "Google Driveにバックアップ"
+  },
+  "driveBackupTooltip": {
+    "message": "Googleでサインインし、自分のDrive内にあるこのアプリ専用の非公開フォルダにバックアップを保存します。通常のDriveには表示されず、本人以外は見ることができません。"
+  },
+  "driveRestoreLabel": {
+    "message": "Google Driveから復元"
+  },
+  "driveRestoreTooltip": {
+    "message": "最新のGoogle Driveバックアップをダウンロードし、ファイルインポートと同じマージ/置き換えの確認画面を表示します。"
+  },
+  "autoBackupToggleLabel": {
+    "message": "自動的にバックアップする"
+  },
+  "autoBackupToggleTooltip": {
+    "message": "バックグラウンドで1日に1回程度、同じDriveファイルにバックアップします。自分でDriveに接続した後にのみ機能し、自動でサインイン画面が表示されることはありません。"
+  },
+  "autoBackupNote": {
+    "message": "ほぼ毎日、静かに同じファイルへ更新します。すでに手動で作成したバックアップを更新するだけで、サインインはできないため、一度Driveに接続するまでは何も行いません。"
+  },
+  "driveConnectedAsStatus": {
+    "message": "$EMAIL$として接続中",
+    "placeholders": {
+      "email": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveNotBackedUpStatus": {
+    "message": "まだGoogle Driveにバックアップされていません。"
+  },
+  "driveConnectedNoUploadStatus": {
+    "message": "Google Driveに接続済みです。バックアップから復元済みですが、この端末からはまだアップロードされていません。"
+  },
+  "driveLastSyncStatus": {
+    "message": "Google Driveへの前回同期: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "driveDisconnectLabel": {
+    "message": "Google Driveの接続を解除"
+  },
+  "driveDisconnectTooltip": {
+    "message": "このアカウントをDaily Dialからサインアウトします。バックアップファイルはDriveに残り、削除されません。"
+  },
+  "driveDeleteLabel": {
+    "message": "Driveバックアップを削除"
+  },
+  "driveDeleteTooltip": {
+    "message": "Google Drive上のバックアップファイルを完全に削除します。元に戻すことはできません。この端末のローカルデータには影響しません。"
+  },
+  "driveDeleteArmedLabel": {
+    "message": "もう一度クリックすると完全に削除します"
+  },
+  "driveNoteBefore": {
+    "message": "任意の機能で、使用しない限りオフのままです。Googleの"
+  },
+  "driveNoteAfter": {
+    "message": "を使用します。これは通常のDriveには表示されず、他のアプリからも読み取れない、この拡張機能専用の保存領域です。Daily Dialでデータをどこかに送信する機能はこれだけで、それ以外はすべてこの端末内にとどまります。詳しくは"
+  },
+  "driveNoteFor": {
+    "message": "をご覧ください。"
+  },
+  "privacyLinkLabel": {
+    "message": "プライバシー"
+  },
+  "nothingToExportToast": {
+    "message": "エクスポートできる記録がまだありません。"
+  },
+  "onlyDemoExportToast": {
+    "message": "デモデータのみが読み込まれています。エクスポートできる自分のデータはまだありません。"
+  },
+  "exportedCsvToast": {
+    "message": "CSVをエクスポートしました"
+  },
+  "exportedJsonToast": {
+    "message": "JSONバックアップをエクスポートしました"
+  },
+  "nothingToBackupToast": {
+    "message": "バックアップできる記録がまだありません。"
+  },
+  "onlyDemoBackupToast": {
+    "message": "デモデータのみが読み込まれています。バックアップできる自分のデータはまだありません。"
+  },
+  "driveConnectingToast": {
+    "message": "Google Driveに接続しています…"
+  },
+  "driveBackedUpToast": {
+    "message": "Google Driveにバックアップしました"
+  },
+  "driveBackupErrorToast": {
+    "message": "Google Driveへのバックアップに失敗しました。"
+  },
+  "driveCheckingToast": {
+    "message": "Google Driveを確認しています…"
+  },
+  "driveNoBackupFoundToast": {
+    "message": "このGoogleアカウントにDaily Dialのバックアップが見つかりません。"
+  },
+  "driveUnreachableToast": {
+    "message": "Google Driveに接続できませんでした。"
+  },
+  "driveDisconnectedToast": {
+    "message": "Google Driveとの接続を解除しました"
+  },
+  "driveDeletingToast": {
+    "message": "Google Driveから削除しています…"
+  },
+  "driveDeletedToast": {
+    "message": "Google Driveのバックアップを削除しました"
+  },
+  "driveDeleteErrorToast": {
+    "message": "Google Driveからの削除に失敗しました。"
+  },
+  "themeLabel": {
+    "message": "テーマ"
+  },
+  "themeSystem": {
+    "message": "システム"
+  },
+  "themeLight": {
+    "message": "ライト"
+  },
+  "themeDark": {
+    "message": "ダーク"
+  },
+  "timeFormatLabel": {
+    "message": "時刻表示"
+  },
+  "timeFormat24h": {
+    "message": "24時間制"
+  },
+  "timeFormat12h": {
+    "message": "12時間制"
+  },
+  "dialModeLabel": {
+    "message": "ダイヤルレイアウト"
+  },
+  "dialModeLabelTooltip": {
+    "message": "24時間すべてを1つのリングで表すか、午前用・午後用の小さな2つのリングに分けるかを選べます。"
+  },
+  "weekStartLabel": {
+    "message": "週の開始曜日"
+  },
+  "weekStartTooltip": {
+    "message": "週次まとめで使用する、週の開始曜日です。"
+  },
+  "wakingHoursSectionLabel": {
+    "message": "起きている時間帯"
+  },
+  "wakingHoursTooltip": {
+    "message": "この時間帯内の未記録時間のみが「まだ記録されていない」として扱われます。これにより、睡眠時間が記録漏れとして表示されることはありません。"
+  },
+  "dayStartsLabel": {
+    "message": "開始時刻"
+  },
+  "dayEndsLabel": {
+    "message": "終了時刻"
+  },
+  "appearanceUpdatedToast": {
+    "message": "外観を更新しました"
+  },
+  "remindersSetToast": {
+    "message": "$T1$と$T2$にリマインダーを設定しました",
+    "placeholders": {
+      "t1": {
+        "content": "$1"
+      },
+      "t2": {
+        "content": "$2"
+      }
+    }
+  },
+  "remindersOffToast": {
+    "message": "リマインダーをオフにしました"
+  },
+  "autoBackupOnToast": {
+    "message": "自動バックアップをオンにしました"
+  },
+  "autoBackupOffToast": {
+    "message": "自動バックアップをオフにしました"
+  },
+  "aboutDailyDialName": {
+    "message": "Daily Dial"
+  },
+  "githubLinkLabel": {
+    "message": "GitHub"
+  },
+  "gettingStartedLinkLabel": {
+    "message": "はじめに"
+  },
+  "demoAndTourLabel": {
+    "message": "デモとツアー"
+  },
+  "replayOnboardingLabel": {
+    "message": "ようこそツアーをもう一度見る"
+  },
+  "replayOnboardingTooltip": {
+    "message": "初回起動時に表示される、3枚のカードによるようこそ画面を再度表示します"
+  },
+  "loadSampleDataLabel": {
+    "message": "サンプルデータを読み込む"
+  },
+  "loadSampleDataTooltip": {
+    "message": "記録していない日付に3週間分のリアルな(架空の)データを追加し、履歴・連続記録・目標に表示する内容を用意します。"
+  },
+  "clearSampleDataLabel": {
+    "message": "デモモードを終了"
+  },
+  "clearSampleDataTooltip": {
+    "message": "読み込まれたサンプルの日だけを削除します。自分で記録した内容はそのまま残ります。"
+  },
+  "demoModeOffNote": {
+    "message": "3週間分のさまざまな(架空の)日を使って、履歴・連続記録・目標の見え方を確認できます。自分の記録はそのまま残ります。"
+  },
+  "demoModeOnNote": {
+    "message": "デモモードがオンです。サンプルの日は記録していなかった日付にのみ追加され、終了するとそれらだけが削除されます。自分の記録には影響しません。"
+  },
+  "demoModeOnToast": {
+    "message": "デモモードをオンにしました — 自分の記録の周りにサンプルの日を追加しました"
+  },
+  "demoModeNothingToAddToast": {
+    "message": "サンプル期間の日はすでにすべて自分の記録です — 追加するものはありません"
+  },
+  "demoModeOffToast": {
+    "message": "デモモードをオフにしました — 自分の記録には影響ありません"
+  },
+  "personalBestsLabel": {
+    "message": "自己ベスト"
+  },
+  "bestsStreakLabel": {
+    "message": "最長連続記録"
+  },
+  "bestsScoreLabel": {
+    "message": "最高スコアの日"
+  },
+  "bestsDayLabel": {
+    "message": "最も生産的だった日"
+  },
+  "bestsStreakDays_other": {
+    "message": "$COUNT$日",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "keyboardShortcutsLabel": {
+    "message": "キーボードショートカット"
+  },
+  "shortcutSelectPen": {
+    "message": "カテゴリペンを選択"
+  },
+  "shortcutSelectEraser": {
+    "message": "消しゴムを選択"
+  },
+  "shortcutUndo": {
+    "message": "元に戻す"
+  },
+  "shortcutRedo": {
+    "message": "やり直す"
+  },
+  "shortcutCloseSettings": {
+    "message": "このパネルを閉じる"
+  },
+  "onboardingTitle": {
+    "message": "Daily Dialへようこそ"
+  },
+  "onboardingSubtitle": {
+    "message": "最初の1日を記録する前に知っておきたい3つのことです。"
+  },
+  "onboardingStep1Title": {
+    "message": "1日を描く"
+  },
+  "onboardingStep1TextBefore": {
+    "message": "ダイヤルの横でカテゴリを選び、リングをドラッグします。入力の方がよいですか？"
+  },
+  "onboardingStep1TextAfter": {
+    "message": "でも入力できます。"
+  },
+  "onboardingStep2Title": {
+    "message": "積み上がる様子を見る"
+  },
+  "onboardingStep2Text": {
+    "message": "描くたびに、スコア・生産的な割合・最長集中時間が更新されます。その下の一文は、今日の様子を分かりやすい言葉で伝えます。"
+  },
+  "onboardingStep3Title": {
+    "message": "自分仕様にする"
+  },
+  "onboardingStep3TextBefore": {
+    "message": "カテゴリ名の変更、言語の選択、リマインダーや目標の設定、Google Drive へのバックアップ — すべて右上の"
+  },
+  "onboardingStep3TextAfter": {
+    "message": "の中にあります(右上)。描くこと以外はすべて任意です。"
+  },
+  "onboardingAltBefore": {
+    "message": "先に実際の数字で見てみたいですか。"
+  },
+  "loadSampleDataInsteadLabel": {
+    "message": "代わりにサンプルデータを読み込む"
+  },
+  "skipLabel": {
+    "message": "スキップ"
+  },
+  "letsStartLabel": {
+    "message": "はじめる"
+  },
+  "onboardingNudgePaintToast": {
+    "message": "左でカテゴリを選び、リングをドラッグして塗ってください"
+  },
+  "onboardingNudgeSettingsToast": {
+    "message": "準備はできています — 設定(右上の☰)にカテゴリ、リマインダー、目標、バックアップがあります"
+  },
+  "futureDayToast": {
+    "message": "それは明日です — まだ記録するものがありません"
+  },
+  "dayRolledOverToast": {
+    "message": "日付が変わりました — ダイヤルが切り替わりました"
+  },
+  "undoDone": {
+    "message": "元に戻しました"
+  },
+  "undoEmpty": {
+    "message": "元に戻せる操作がありません"
+  },
+  "redoDone": {
+    "message": "やり直しました"
+  },
+  "redoEmpty": {
+    "message": "やり直せる操作がありません"
+  },
+  "copyYesterdayEmptyToast": {
+    "message": "昨日にはコピーできる内容がありません。"
+  },
+  "copyYesterdayConfirm": {
+    "message": "今日にはすでに記録があります。昨日の内容で上書きしますか。"
+  },
+  "copyYesterdaySuccessToast": {
+    "message": "昨日の内容をコピーしました — ⌘Zで元に戻せます"
+  },
+  "shareImageErrorToast": {
+    "message": "画像を作成できませんでした。"
+  },
+  "shareImageSavedToast": {
+    "message": "画像を保存しました"
+  },
+  "typedEntryAddedToast": {
+    "message": "追加しました"
+  },
+  "typedEntryOverflowToast": {
+    "message": "追加しました — 深夜0時を過ぎた部分は翌日に記録されます"
+  },
+  "noteSavedAnnounce": {
+    "message": "$FROM$から$TO$のメモを保存しました",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "removeIntentionAriaLabel": {
+    "message": "予定を削除: $TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeAvoidAriaLabel": {
+    "message": "削除: $TEXT$",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "removeNoteAriaLabel": {
+    "message": "$WHEN$のメモを削除",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "unloggedOptionLabel": {
+    "message": "未記録"
+  },
+  "breakdownGapPlaceholder": {
+    "message": "まだ記録がありません"
+  },
+  "fillSpanAriaLabel": {
+    "message": "$WHEN$を記録",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "noteForAriaLabel": {
+    "message": "$WHEN$のメモ",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanTooltip": {
+    "message": "$WHEN$をクリア — 未記録の状態に戻ります",
+    "placeholders": {
+      "when": {
+        "content": "$1"
+      }
+    }
+  },
+  "clearSpanAriaLabel": {
+    "message": "$CATEGORY$を消去、$WHEN$",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "when": {
+        "content": "$2"
+      }
+    }
+  },
+  "maxNotesToast": {
+    "message": "1日に保存できるメモは最大$MAX$件です。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxAvoidToast": {
+    "message": "1日に保存できる件数は最大$MAX$件です。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "maxIntentsToast": {
+    "message": "1日に保存できる予定は最大$MAX$件です。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownSummary_other": {
+    "message": "$COUNT$区間 · 記録済み$LOGGED$、未記録$UNLOGGED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "logged": {
+        "content": "$2"
+      },
+      "unlogged": {
+        "content": "$3"
+      }
+    }
+  },
+  "clearedAnnounce": {
+    "message": "$FROM$から$TO$をクリアしました",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      }
+    }
+  },
+  "caretCommitAnnounce": {
+    "message": "$FROM$から$TO$を$CATEGORY$に設定しました",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "from": {
+        "content": "$2"
+      },
+      "to": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretAnnounce": {
+    "message": "$FROM$から$TO$、$WHAT$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "what": {
+        "content": "$3"
+      }
+    }
+  },
+  "caretMixedLabel": {
+    "message": "複数カテゴリ"
+  },
+  "untrackedLower": {
+    "message": "未記録"
+  },
+  "untrackedCapitalized": {
+    "message": "未記録"
+  },
+  "penEraserLabel": {
+    "message": "消しゴム"
+  },
+  "dialEraserLabel": {
+    "message": "消しゴム"
+  },
+  "dialPenLabel": {
+    "message": "ペン: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "edgeRangeLabel": {
+    "message": "$FROM$–$TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "edgeGoneLabel": {
+    "message": "$CATEGORY$が消えます",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "dialAriaNothingLoggedSuffix": {
+    "message": "まだ何も記録されていません。"
+  },
+  "dialAriaRangePart": {
+    "message": "$FROM$から$TO$ $CATEGORY$",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "category": {
+        "content": "$3"
+      }
+    }
+  },
+  "histHeatmapAriaLabel": {
+    "message": "月間カレンダーです。矢印キーで日を移動、Enterで開きます。"
+  },
+  "heatmapLoggedLabel": {
+    "message": "$DATE$ — スコア$SCORE$、記録時間$DURATION$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      },
+      "duration": {
+        "content": "$3"
+      }
+    }
+  },
+  "heatmapWrittenLabel": {
+    "message": "$DATE$ — 記述のみ、時間の記録なし",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "heatmapEmptyLabel": {
+    "message": "$DATE$ — 未記録",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "legendNotLoggedLabel": {
+    "message": "未記録"
+  },
+  "legendWrittenLabel": {
+    "message": "記述のみ"
+  },
+  "legendWrittenTooltip": {
+    "message": "メモ、予定、振り返りはあるものの、ダイヤルに時間は記録されていません。"
+  },
+  "legendOffTrackLabel": {
+    "message": "低調"
+  },
+  "legendMixedLabel": {
+    "message": "普通"
+  },
+  "legendSolidLabel": {
+    "message": "好調+"
+  },
+  "prevMonthLabel": {
+    "message": "前月"
+  },
+  "nextMonthLabel": {
+    "message": "翌月"
+  },
+  "thisMonthLabel": {
+    "message": "今月"
+  },
+  "thisMonthTooltip": {
+    "message": "今月に戻る"
+  },
+  "monthSummaryLabel": {
+    "message": "月間サマリー"
+  },
+  "monthSummaryTooltip": {
+    "message": "平均は記録した日のみで計算されます。未記録の日によって平均が下がることはありません。"
+  },
+  "statDaysLoggedLabel": {
+    "message": "記録日数"
+  },
+  "statAvgScoreLabel": {
+    "message": "平均スコア"
+  },
+  "statAvgProductiveLabel": {
+    "message": "平均生産的割合"
+  },
+  "bestDayLabel": {
+    "message": "ベストな日: $KEY$($SCORE$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      },
+      "score": {
+        "content": "$2"
+      }
+    }
+  },
+  "bestDayEmptyLabel": {
+    "message": "ベストな日: — 今月はまだスコアがありません。"
+  },
+  "monthStreakLabel": {
+    "message": "今月の連続記録: 現在$CURRENT$ · 最長$LONGEST$",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "longest": {
+        "content": "$2"
+      }
+    }
+  },
+  "monthStreakTooltip": {
+    "message": "連続して記録した日数で、今月内のみでカウントされます。前後の月をまたいでは数えません。"
+  },
+  "writtenDaysNote_other": {
+    "message": "今月$COUNT$日は記述はあるもののダイヤルに時間が記録されていないため、上記のいずれにもカウントされません。これらはすべて下の記録一覧にあります。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryTrendsLabel": {
+    "message": "カテゴリの推移"
+  },
+  "categoryTrendsTooltip": {
+    "message": "表示中の月について、暦週ごとにカテゴリ別の分数を1本のバーで示します。矢印は表示されている最初の週と最後の週を比較します。"
+  },
+  "trendsEmptyNote": {
+    "message": "今月はまだ記録がありません — ダイヤルに日を記録していくと推移が表示されます。"
+  },
+  "trendWeekTooltip": {
+    "message": "$WEEK$の週: $DURATION$",
+    "placeholders": {
+      "week": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "trendDirectionTooltip": {
+    "message": "表示中の最初の週と最後の週を比較するため、途中の一時的な落ち込みで結果が変わることはありません。"
+  },
+  "weekOverWeekLabel": {
+    "message": "週次比較"
+  },
+  "weekOverWeekTooltip": {
+    "message": "今週と先週を比較します。どちらも設定した週の開始曜日から始まります。"
+  },
+  "wowTrackedLabel": {
+    "message": "記録時間"
+  },
+  "wowProductiveLabel": {
+    "message": "生産的"
+  },
+  "wowAvgScoreLabel": {
+    "message": "平均スコア"
+  },
+  "wowNoPreviousTooltip": {
+    "message": "先週は比較できる記録がありません。"
+  },
+  "wowPreviousTooltip": {
+    "message": "先週: $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "wowDeltaPoints": {
+    "message": "$N$pt",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchNotesLabel": {
+    "message": "メモを検索"
+  },
+  "searchPlaceholder": {
+    "message": "振り返りを検索…"
+  },
+  "searchAriaLabel": {
+    "message": "振り返りを検索"
+  },
+  "searchTooltip": {
+    "message": "日ビューに残した一言メモと照合します。"
+  },
+  "searchPromptNote": {
+    "message": "入力すると振り返りを検索します。"
+  },
+  "searchNoMatchNote": {
+    "message": "「$QUERY$」に一致するメモはありません。",
+    "placeholders": {
+      "query": {
+        "content": "$1"
+      }
+    }
+  },
+  "searchResultTooltip": {
+    "message": "この日に移動"
+  },
+  "theLogLabel": {
+    "message": "記録一覧"
+  },
+  "logRangeGroupLabel": {
+    "message": "表示する記録の範囲"
+  },
+  "logRangeWeekLabel": {
+    "message": "今週"
+  },
+  "logRangeMonthLabel": {
+    "message": "今月"
+  },
+  "logRangeAllLabel": {
+    "message": "すべて"
+  },
+  "logEmptyNote": {
+    "message": "この範囲にはまだ何も記述されていません。日ビューのメモや予定がここに表示されます。"
+  },
+  "openDayTooltip": {
+    "message": "この日を開く"
+  },
+  "logMeantToLabel": {
+    "message": "予定"
+  },
+  "logWhatHappenedLabel": {
+    "message": "実際の内容"
+  },
+  "logMeantToAvoidLabel": {
+    "message": "避けたかったこと"
+  },
+  "worthNoticingHistoryTooltip": {
+    "message": "直近数週間の自分のデータから見つかったパターンです。求めない限り、ここに助言は表示されません。"
+  },
+  "worthNoticingSubnote": {
+    "message": "直近数週間から"
+  },
+  "suggestionShowLabel": {
+    "message": "他の人はどうしているか"
+  },
+  "suggestionHideLabel": {
+    "message": "隠す"
+  },
+  "silenceObservationLabel": {
+    "message": "今後表示しない"
+  },
+  "silenceObservationTooltip": {
+    "message": "今回だけでなく、今後ずっと表示されなくなります。"
+  },
+  "suggestionDisclaimer": {
+    "message": "これらは方法の一例であり、推奨ではありません。Daily Dialとの提携関係はありません。"
+  },
+  "historyEmptyBefore": {
+    "message": "まだ履歴がありません。日ビューでいくつか記録すると、1〜2週間ほどでこのタブがヒートマップやカテゴリの推移、週次比較を含む月ごとの全体像に変わります。今すぐその様子を見てみますか。"
+  },
+  "historyEmptyAfter": {
+    "message": "を使うと、3週間分がすぐに用意されます。"
+  },
+  "futureNotLogged": {
+    "message": "それはまだ起きていません — 記録できるのは現在時刻までです。"
+  },
+  "copyYesterdayUpToNowToast": {
+    "message": "現在時刻までの昨日の内容をコピーしました — 残りの時間はまだ来ていません"
+  },
+  "templateAppliedUpToNowToast": {
+    "message": "現在時刻まで「$NAME$」を適用しました — 残りの時間はまだ来ていません",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "breakdownNotYet": {
+    "message": "未到来"
+  },
+  "errPickDates": {
+    "message": "開始日と終了日を選択してください。"
+  },
+  "errEndDateBeforeStart": {
+    "message": "終了日が開始日より前になっています。"
+  },
+  "errRangeTooLong": {
+    "message": "$COUNT$日分あります — 1回の記録で対応できるのは最大$MAX$日です。",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "errBadStartTime": {
+    "message": "開始時刻が正しくありません。"
+  },
+  "errBadEndTime": {
+    "message": "終了時刻が正しくありません。"
+  },
+  "errEndTimeBeforeStart": {
+    "message": "終了時刻が開始時刻より前になっています。"
+  },
+  "errTryExample": {
+    "message": "「9-11 deep work」のように入力してください。"
+  },
+  "errUnreadableEntry": {
+    "message": "読み取れませんでした。「9-11 deep work」や「9pm-11pm study」のように入力してください。"
+  },
+  "errUnreadableTime": {
+    "message": "時刻を読み取れませんでした — 24時間表記(13:30)または12時間表記(1:30pm)で入力してください。"
+  },
+  "errNoCategoryGiven": {
+    "message": "「9-11 deep work」のようにカテゴリを入力してください。"
+  },
+  "errNoCategoryMatch": {
+    "message": "「$TEXT$」に一致するカテゴリがありません。",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "errCategoryAmbiguous": {
+    "message": "「$TEXT$」は$MATCHES$に一致します — より具体的に入力してください。",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      },
+      "matches": {
+        "content": "$2"
+      }
+    }
+  },
+  "errFileEmpty": {
+    "message": "そのファイルは空です。"
+  },
+  "errNotDailyDialCsv": {
+    "message": "Daily DialのCSVエクスポートではないようです。"
+  },
+  "errCsvBadDate": {
+    "message": "$ROW$行目: 日付「$VALUE$」が不正です。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadStartTime": {
+    "message": "$ROW$行目: 開始時刻「$VALUE$」が不正です。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBadEndTime": {
+    "message": "$ROW$行目: 終了時刻「$VALUE$」が不正です。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvUnknownCategory": {
+    "message": "$ROW$行目: 不明なカテゴリ「$VALUE$」です。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "value": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvBlockTooShort": {
+    "message": "$ROW$行目: ブロックが$MIN$分未満です。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      },
+      "min": {
+        "content": "$2"
+      }
+    }
+  },
+  "errCsvEndNotAfterStart": {
+    "message": "$ROW$行目: 終了が開始より後になっていません。",
+    "placeholders": {
+      "row": {
+        "content": "$1"
+      }
+    }
+  },
+  "errNotValidJson": {
+    "message": "そのファイルは有効なJSONではありません。"
+  },
+  "errNotDailyDialBackup": {
+    "message": "Daily Dialのバックアップではないようです。"
+  },
+  "errMissingSchemaVersion": {
+    "message": "スキーマバージョンがありません — Daily Dialのバックアップではないようです。"
+  },
+  "errBackupTooNew": {
+    "message": "このバックアップはDaily Dialの新しいバージョン(スキーマ$VERSION$)で作成されています。先に拡張機能を更新してください。",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapNothingLogged": {
+    "message": "先週は記録がありませんでした。今週は新たに始めてみませんか。"
+  },
+  "recapTrackedProductive": {
+    "message": "記録時間$DURATION$、生産的$PERCENT$%。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "recapTopCategory": {
+    "message": "最も多くの時間は$CATEGORY$に使われました。",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "recapAskAdjust": {
+    "message": "今週調整したいことはありますか。"
+  },
+  "obsOvercommitHeadline": {
+    "message": "終えられる以上の予定を設定しています"
+  },
+  "obsOvercommitDetail": {
+    "message": "直近$DAYS$日間で$SET$件の予定を設定し、達成したのは$DONE$件のみです。",
+    "placeholders": {
+      "set": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "done": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsNoBreaksHeadline": {
+    "message": "$DAYS$日間、休憩や中立の時間が記録されていません",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsNoBreaksDetail": {
+    "message": "直近$DAYS$日間で$DURATION$を記録しましたが、中立カテゴリのものはありません。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsDistractionHeadline": {
+    "message": "直近$DAYS$日間で妨げの時間が増えています",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsDistractionDetail": {
+    "message": "直近$DAYS$日間で妨げとして記録されたのは$CURRENT$で、その前の$DAYS$日間の$PREVIOUS$から増えています。",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      },
+      "previous": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsCoverageHeadline": {
+    "message": "直近$DAYS$日間と比べて記録が減っています",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "obsCoverageDetail": {
+    "message": "直近$RECENTDAYS$日間は1日あたり$RECENT$を記録し、その前の$PRIORDAYS$日間の1日あたり$PRIOR$から減っています。",
+    "placeholders": {
+      "recent": {
+        "content": "$1"
+      },
+      "recentdays": {
+        "content": "$2"
+      },
+      "prior": {
+        "content": "$3"
+      },
+      "priordays": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaDetail": {
+    "message": "「$CATEGORY$」は有効になっていますが、その期間に0分しか記録されていません — 6つのカテゴリ枠のうち1つが使われていません。",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptMorning": {
+    "message": "午前中はどうでしたか。忘れないうちに記録しておきましょう。"
+  },
+  "promptEveningUnlogged": {
+    "message": "今日はまだ$DURATION$が記録されていません。締めくくって、一言理由を添えましょう。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "promptEveningComplete": {
+    "message": "今日はすべて記録済みです。忘れないうちに一言理由を添えましょう。"
+  },
+  "insightNothingLogged": {
+    "message": "まだ何も記録されていません。カテゴリを選び、リングをドラッグして最初のブロックを描きましょう。"
+  },
+  "insightProductivePct": {
+    "message": "記録時間のうち<b>$PERCENT$%</b>が生産的でした。",
+    "placeholders": {
+      "percent": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightMostlyDrain": {
+    "message": "<b>$DURATION$</b>が消耗と記録した時間に使われ、前進のために使った時間を上回りました。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightTopCategory": {
+    "message": "この日最も多かったのは<b>$CATEGORY$</b>で、<b>$DURATION$</b>でした。",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "insightFragmented": {
+    "message": "ただし細切れで、途切れずに続いた最長は$DURATION$のみでした。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightLongStretch": {
+    "message": "途切れずに続いた最長は<b>$DURATION$</b>でした。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightStillUnlogged": {
+    "message": "$DURATION$がまだ未記録です。",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      }
+    }
+  },
+  "scoreNoData": {
+    "message": "データなし"
+  },
+  "scoreTooLittle": {
+    "message": "記録が少なくスコア算出不可"
+  },
+  "scoreLockedIn": {
+    "message": "絶好調"
+  },
+  "scoreSolid": {
+    "message": "好調"
+  },
+  "scoreMixedBag": {
+    "message": "まちまち"
+  },
+  "scoreOffTrack": {
+    "message": "低調"
+  },
+  "sampleReflectionGoodFocus": {
+    "message": "昼食後は集中できました。"
+  },
+  "sampleReflectionDistracted": {
+    "message": "夜はほとんど気が散っていました。"
+  },
+  "sampleReflectionRough": {
+    "message": "厳しい1日で、ほとんどスクロールしていました。"
+  },
+  "shareScoreLabel": {
+    "message": "スコア"
+  },
+  "shareNothingLogged": {
+    "message": "まだ記録がありません"
+  },
+  "shareTrackedLine": {
+    "message": "記録$DURATION$ · 生産的$PERCENT$%",
+    "placeholders": {
+      "duration": {
+        "content": "$1"
+      },
+      "percent": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareLedLine": {
+    "message": "$CATEGORY$が$DURATION$で最多",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      },
+      "duration": {
+        "content": "$2"
+      }
+    }
+  },
+  "shareStreakLine": {
+    "message": "🔥 $COUNT$日連続",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "durationHourSuffix": {
+    "message": "時"
+  },
+  "durationMinuteSuffix": {
+    "message": "分"
+  },
+  "sug_intentionOvercommit_lead": {
+    "message": "実際にやり遂げた3〜4個は、やろうとしただけの10個より価値があります。"
+  },
+  "sug_intentionOvercommit_text1": {
+    "message": "設定数を減らしましょう。必ずやることを1つ、できればやりたいことを2つ程度にすると、ほとんどの人にとって十分な1日になります。"
+  },
+  "sug_intentionOvercommit_text2": {
+    "message": "一度に終えられる大きさまで小さくしましょう。「申請書をなんとかする」ではなく「メールの下書きを書く」のようにします。"
+  },
+  "sug_intentionOvercommit_text3": {
+    "message": "何度も持ち越されるものは「いつか」用の1つのメモにまとめ、毎日の未達成として現れないようにしましょう。"
+  },
+  "sug_noBreaks_lead": {
+    "message": "記録されない休憩は、たいてい実際には取られていません。"
+  },
+  "sug_noBreaks_text1": {
+    "message": "休憩をタイマーで設定し、集中している最中に立ち止まる判断をしなくて済むようにしましょう。"
+  },
+  "sug_noBreaks_text2": {
+    "message": "休憩は画面から完全に離れて取りましょう。散歩や食事など、別のウィンドウではないものにします。"
+  },
+  "sug_noBreaks_text3": {
+    "message": "すでに休んでいるのに記録していない場合は、記録しましょう。16時間ぶっ通しに見える1日は、実際に過ごした1日ではありません。"
+  },
+  "sug_peakHoursUnprotected_lead": {
+    "message": "最も調子が良い時間帯は、他の何かに奪われる前に守る価値があります。"
+  },
+  "sug_peakHoursUnprotected_text1": {
+    "message": "他の人が見られるカレンダーにその時間を予定として入れ、先に確保しておきましょう。"
+  },
+  "sug_peakHoursUnprotected_text2": {
+    "message": "その時間帯はすべての通知を消しましょう。見ないようにするだけでは不十分です。"
+  },
+  "sug_peakHoursUnprotected_text3": {
+    "message": "その時間帯には最も簡単な作業ではなく、最も難しい作業から始めましょう。簡単な作業は後回しにしても問題ありませんが、難しい作業はそうはいきません。"
+  },
+  "sug_peakHoursUnprotected_text4": {
+    "message": "できるなら、その時間帯は場所を変えましょう。別の部屋や図書館は、たいていのソフトウェアより効果があります。"
+  },
+  "sug_distractionTrend_lead": {
+    "message": "妨げが増えるのは、多くの場合意志の問題ではなく手間の少なさの問題です。狙いは、簡単なことを少しだけ面倒にすることです。"
+  },
+  "sug_distractionTrend_text1": {
+    "message": "時間を取られるサイトはブロックしますが、実際に作業したい時間帯だけにしましょう。終日ブロックはたいてい丸ごとオフにされてしまいます。"
+  },
+  "sug_distractionTrend_text2": {
+    "message": "アプリをブロックする代わりに、開く前に一呼吸置く仕組みを入れましょう。数秒の手間だけで、無意識に開いてしまうことのほとんどを防げます。"
+  },
+  "sug_distractionTrend_text3": {
+    "message": "しばらくの間、スマホを禁止するのではなくつまらないものにしましょう。"
+  },
+  "sug_distractionTrend_text4": {
+    "message": "作業中はスマホを別の部屋に置きましょう。地味で無料ですが、そのデバイスにインストールするどんなアプリよりも確実です。"
+  },
+  "sug_distractionTrend_text5": {
+    "message": "取り除くのではなく置き換えましょう。代わりに何に時間を使うかを決めておかないと、元に戻りがちです。"
+  },
+  "sug_coverageDecline_lead": {
+    "message": "記録が減ることは、多くの場合調子が悪くなっている最初の兆候であり、同時にその悪さを見えにくくしているものでもあります。"
+  },
+  "sug_coverageDecline_text1": {
+    "message": "深夜にまとめて思い出すのではなく、1日のうち決まった2〜3回のタイミングで記録しましょう。Daily Dial自体のリマインダー(設定→リマインダー)はそのためにあります。"
+  },
+  "sug_coverageDecline_text2": {
+    "message": "まったく記録しないより、大まかにでも記録しましょう。おおよその1日は空白の1日よりずっと価値があり、後から詳しくすることもできます。"
+  },
+  "sug_coverageDecline_text3": {
+    "message": "ダイヤルの下にある「1日の流れ」を使うと、数分で空白を埋められます。行はすでに用意されているので、あとは言葉を入れるだけです。"
+  },
+  "sug_coverageDecline_text4": {
+    "message": "もし手間に見合わなくなっているなら、それに気づくこと自体にも価値があります。負担に感じる記録ツールは、いずれ使わなくなってしまいます。"
+  },
+  "sug_untrackedLifeArea_lead": {
+    "message": "カテゴリになっていないものは、これらの数字のどこにも表れません。そして表れないものは、つい後回しにされがちです。"
+  },
+  "sug_untrackedLifeArea_text1": {
+    "message": "使っていないカテゴリの名前を、抜け落ちているもの(人と過ごす時間、運動、睡眠など、自分に正直でありたいこと)に変更しましょう(設定→カテゴリ)。"
+  },
+  "sug_untrackedLifeArea_text2": {
+    "message": "重みは生産的ではなく中立にしましょう。目的はスコアを付けることではなく、見えるようにすることです。"
+  },
+  "sug_untrackedLifeArea_text3": {
+    "message": "カテゴリにしてしまえば、あとはすでにある目標や履歴の推移機能が残りを引き受けてくれます。"
+  },
+  "sugPlat_Stretchly": {
+    "message": "Windows · macOS · Linux · 無料、オープンソース"
+  },
+  "sugPlat_TimeOut": {
+    "message": "macOS · 無料"
+  },
+  "sugPlat_Focusmodes": {
+    "message": "macOS · iOS · 標準搭載"
+  },
+  "sugPlat_DigitalWellbeingFocusmode": {
+    "message": "Android · 標準搭載"
+  },
+  "sugPlat_SelfControl": {
+    "message": "macOS · 無料、オープンソース"
+  },
+  "sugPlat_ColdTurkey": {
+    "message": "Windows · macOS · 無料プランあり"
+  },
+  "sugPlat_Freedom": {
+    "message": "Windows · macOS · iOS · Android · 有料"
+  },
+  "sugPlat_onesec": {
+    "message": "iOS · Android · 無料プランあり"
+  },
+  "sugPlat_AssistiveAccess": {
+    "message": "iOS 17以降 · 標準搭載 — スマホをいくつかの大きくシンプルなアプリだけに絞り込みます"
+  },
+  "sugPlat_ScreenTimeapplimits": {
+    "message": "iOS · macOS · 標準搭載"
+  },
+  "defaultCategory0": {
+    "message": "集中作業"
+  },
+  "defaultCategory1": {
+    "message": "応募"
+  },
+  "defaultCategory2": {
+    "message": "学習"
+  },
+  "defaultCategory3": {
+    "message": "事務"
+  },
+  "defaultCategory4": {
+    "message": "休憩"
+  },
+  "defaultCategory5": {
+    "message": "気散じ"
+  },
+  "recapIntentions_other": {
+    "message": "$SET$件の予定のうち$DONE$件を達成しました。",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "set": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsPeakHourHeadline_other": {
+    "message": "記録した$LOGGED$日のうち$PROTECTED$日で、$HOUR$が最も生産的な時間帯です",
+    "placeholders": {
+      "hour": {
+        "content": "$1"
+      },
+      "protected": {
+        "content": "$2"
+      },
+      "logged": {
+        "content": "$3"
+      }
+    }
+  },
+  "obsPeakHourDetail_other": {
+    "message": "直近$DAYS$日間で、$HOUR$は他のどの時間帯よりも多くの生産的な時間を積み重ねましたが、記録した$LOGGED$日のうち生産的な状態を保てたのは$PROTECTED$日だけでした。",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      },
+      "protected": {
+        "content": "$3"
+      },
+      "logged": {
+        "content": "$4"
+      }
+    }
+  },
+  "obsUntrackedAreaHeadline_other": {
+    "message": "直近$DAYS$日間の記録はすべて$COUNT$個のカテゴリに集中しています",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "filledDaysUpToNow_other": {
+    "message": "現在時刻までの$COUNT$日分を記録しました",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBanner_other": {
+    "message": "<b>$COUNT$</b>日連続",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "streakBestSuffix": {
+    "message": "· 最高: $BEST$",
+    "placeholders": {
+      "best": {
+        "content": "$1"
+      }
+    }
+  },
+  "languageLabel": {
+    "message": "言語"
+  },
+  "languageTooltip": {
+    "message": "「自動」はブラウザの言語に従います。変更するとページが再読み込みされますが、書いた内容には一切触れません。"
+  },
+  "languageNote": {
+    "message": "変わるのはアプリ自身の言葉だけです。メモ・予定・カテゴリ名は書いたままの形で残ります。"
+  },
+  "languageAutomatic": {
+    "message": "自動"
+  },
+  "alreadyLoggedHint": {
+    "message": "すでに$CATEGORY$です — 置き換えるにはダブルクリック",
+    "placeholders": {
+      "category": {
+        "content": "$1"
+      }
+    }
+  },
+  "replacedBlockToast": {
+    "message": "$START$–$END$ の $FROM$ を $TO$ に置き換えました — 元に戻すには ⌘Z",
+    "placeholders": {
+      "from": {
+        "content": "$1"
+      },
+      "to": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      }
+    }
+  },
+  "tooltipReplaceHint": {
+    "message": "ダブルクリックで置き換え"
+  },
+  "notifyEveningTitle": {
+    "message": "今日を締めくくりましょう"
+  },
+  "notifyRecapTitle": {
+    "message": "週間まとめ"
+  },
+  "appNameShort": {
+    "message": "Daily Dial"
+  },
+  "themeToggleLabel": {
+    "message": "テーマ: $CURRENT$。クリックで$NEXT$に切り替わります。",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      }
+    }
+  },
+  "themeSwitchedToast": {
+    "message": "テーマ: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "reportIssueLabel": {
+    "message": "不具合の報告・提案"
+  },
+  "reportIssueNote": {
+    "message": " — GitHub が開きます。あなたの記録は一切添付されず、書いた内容だけが送られます。"
+  },
+  "llmImportLabel": {
+    "message": "他から記録を持ち込む"
+  },
+  "llmImportTooltip": {
+    "message": "このアプリのCSV形式と、あなたのカテゴリ名を含むプロンプトをコピーします。過去の記録と一緒に任意のAIアシスタントに貼り付けてください。"
+  },
+  "copyImportPromptLabel": {
+    "message": "AIアシスタント用のプロンプトをコピー"
+  },
+  "llmImportNote": {
+    "message": "任意のアシスタントに貼り付け、その下に過去の記録を足して、返ってきたCSVを取り込んでください。プロンプトに含まれるのは形式とカテゴリ名だけで、記録した時間の内容は含まれません。この拡張機能はどこにも送信しません。"
+  },
+  "importPromptCopiedToast": {
+    "message": "プロンプトをコピーしました — 過去の記録と一緒にアシスタントへ貼り付けてください"
+  },
+  "copyFailedToast": {
+    "message": "クリップボードにコピーできませんでした。"
+  },
+  "reviewNudgeText": {
+    "message": "役に立ちましたか？短いレビューが他の人の助けになります。"
+  },
+  "reviewNudgeGoLabel": {
+    "message": "レビューを書く"
+  },
+  "reviewNudgeDismissTooltip": {
+    "message": "今回は見送る"
+  },
+  "rateLinkLabel": {
+    "message": "この拡張機能を評価する"
+  },
+  "readTheGuideLabel": {
+    "message": "設定手順つきの詳しいガイドを読む →"
+  }
+}

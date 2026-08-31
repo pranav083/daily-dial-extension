@@ -16,8 +16,10 @@
   <header class="masthead">
     <a class="home" href="{{ '/' | relative_url }}">Daily Dial</a>
     <nav>
+      <a href="{{ '/demo/index.html' | relative_url }}">Try it</a>
       <a href="{{ '/about.html' | relative_url }}">About</a>
-      <a href="{{ '/GETTING_STARTED.html' | relative_url }}">Getting started</a>
+      <a href="{{ '/guides/' | relative_url }}">Guides</a>
+      <a href="{{ '/faq.html' | relative_url }}">FAQ</a>
       <a href="https://github.com/pranav083/daily-dial-extension">GitHub</a>
     </nav>
   </header>
@@ -26,7 +28,9 @@
 
   <footer class="site-foot">
     Daily Dial is free and open source, MIT licensed.
-    <a href="https://github.com/pranav083/daily-dial-extension/blob/main/PRIVACY.md">Privacy</a> ·
+    <a href="{{ '/privacy.html' | relative_url }}">Privacy</a> ·
+    <a href="{{ '/changelog.html' | relative_url }}">What's new</a> ·
+    <a href="{{ '/languages.html' | relative_url }}">Languages</a> ·
     <a href="https://github.com/pranav083/daily-dial-extension/issues/new/choose">Report a bug</a> ·
     <a href="https://github.com/pranav083/daily-dial-extension">Source</a>
   </footer>

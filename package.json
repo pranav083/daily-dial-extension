@@ -10,9 +10,11 @@
     "lint": "eslint .",
     "check:version": "node scripts/check-version.mjs",
     "check:package": "node scripts/check-package.mjs",
-    "check": "npm run lint && npm test && npm run check:version && npm run check:package && node scripts/check-locales.mjs",
+    "check": "npm run lint && npm test && npm run check:version && npm run check:package && node scripts/check-locales.mjs && node scripts/check-demo.mjs",
     "package": "zip -r daily-dial-v$npm_package_version.zip manifest.json dial.html dial.css dial.js i18n.js lib.js history.js historyLib.js drive.js suggestions.js background.js fonts icons _locales LICENSE -x '.*'",
-    "check:locales": "node scripts/check-locales.mjs"
+    "check:locales": "node scripts/check-locales.mjs",
+    "build:demo": "node scripts/build-demo.mjs",
+    "check:demo": "node scripts/check-demo.mjs"
   },
   "repository": {
     "type": "git",
