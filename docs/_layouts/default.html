@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Proves to Google that this site is ours. The OAuth consent screen for
+     Drive backup links here, and Google will not show an app name or icon
+     for a home page the developer has not verified in Search Console.
+     It lives in the shared layout rather than on one page because Search
+     Console re-checks periodically and revokes verification if the tag
+     disappears. Do not remove. -->
+<meta name="google-site-verification" content="sFc_gZPWfN-sp3zLaHS3gf-AI8AJ60C6JClhyyZSqsM">
 <title>{% if page.title and page.title != site.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
 <meta name="description" content="{{ page.description | default: site.description }}">
 <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
