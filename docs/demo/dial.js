@@ -1831,23 +1831,34 @@ function renderBackupStatus() {
 
 let reviewAsk = null;
 
-/** Shown at most twice ever. Deciding is pure (`shouldAskForReview`); this
- *  only records that an ask happened, so the second one is spaced by real
- *  use rather than by however often the page happens to render. */
+/**
+ * Shown at most twice ever. Deciding is pure (`shouldAskForReview`); this
+ * only records that an ask happened, so the second one is spaced by real use
+ * rather than by however often the page happens to render.
+ *
+ * `reviewNudgeOpen` is why this is not simply `bar.hidden = !due`. Recording
+ * the ask is what makes it no longer due, so recomputing on the next render
+ * hid the bar again — it appeared on load and vanished the instant you
+ * painted anything, taking 72px of layout with it. Once asked, it stays until
+ * answered.
+ */
+let reviewNudgeOpen = false;
+
 function renderReviewNudge() {
   const bar = $("review-nudge");
   if (!bar) return;
-  const due = shouldAskForReview(reviewAsk, loggedDayCount());
-  if (due && bar.hidden) {
+  if (!reviewNudgeOpen && shouldAskForReview(reviewAsk, loggedDayCount())) {
+    reviewNudgeOpen = true;
     reviewAsk = noteReviewAsked(reviewAsk, loggedDayCount());
     saveLocal({ [REVIEW_ASK_KEY]: reviewAsk }).catch(reportStorageFailure);
   }
-  bar.hidden = !due;
+  bar.hidden = !reviewNudgeOpen;
 }
 
 /** Both answers end this ask; only the second dismissal, or following the
  *  link, ends it for good. */
 function closeReviewNudge(followed) {
+  reviewNudgeOpen = false;
   $("review-nudge").hidden = true;
   if (followed || (reviewAsk?.asks ?? 0) >= REVIEW_MAX_ASKS) {
     reviewAsk = noteReviewDone(reviewAsk);

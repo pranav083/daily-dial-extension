@@ -8,6 +8,15 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.30.1] — 2026-08-31
+
+### Fixed
+
+- **The occasional review request disappeared as soon as you did anything.**
+  It showed on opening, then the first edit made it vanish — while still
+  counting as one of the two times it is ever allowed to ask. It also shifted
+  the dial upward as it went. It now stays until you answer it.
+
 ## [1.30.0] — 2026-08-30
 
 ### Added
