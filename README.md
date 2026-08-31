@@ -164,6 +164,20 @@ exported on a Hindi install has to import cleanly on an English one — that is
 a format, not prose. And the **name "Daily Dial"**, because it is what people
 search the store for.
 
+### Guides
+
+Daily Dial names a pattern and stops there — blocking and enforcing are other
+tools' jobs, and they do them better. These are the handoff, on the docs site:
+
+- [Make your phone boring](https://pranav083.github.io/daily-dial-extension/guides/boring-phone.html)
+  — Assistive Access, Screen Time, greyscale, Digital Wellbeing
+- [Block sites during the hours you want to work](https://pranav083.github.io/daily-dial-extension/guides/blocking-sites.html)
+- [Protect your best hour](https://pranav083.github.io/daily-dial-extension/guides/best-hour.html)
+- [Rest that actually happens](https://pranav083.github.io/daily-dial-extension/guides/rest.html)
+
+Nothing in them is sponsored or affiliated; each tool is named as an example
+of an approach.
+
 ## Your data
 
 Everything stays in `chrome.storage.local`, on your machine.
