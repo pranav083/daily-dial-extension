@@ -2378,5 +2378,11 @@
         "content": "$1"
       }
     }
+  },
+  "reportIssueLabel": {
+    "message": "报告问题或提出建议"
+  },
+  "reportIssueNote": {
+    "message": " — 打开 GitHub。不会附带你的任何记录，只有你写的内容会提交。"
   }
 }

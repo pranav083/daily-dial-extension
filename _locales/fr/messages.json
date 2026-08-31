@@ -2543,5 +2543,11 @@
         "content": "$1"
       }
     }
+  },
+  "reportIssueLabel": {
+    "message": "Signaler un bug ou proposer une idée"
+  },
+  "reportIssueNote": {
+    "message": " — ouvre GitHub. Rien de ta journée n’est joint ; seul ce que tu écris part."
   }
 }

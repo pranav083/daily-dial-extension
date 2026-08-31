@@ -26,6 +26,7 @@ const browserGlobals = {
   Image: "readonly",
   File: "readonly",
   localStorage: "readonly",
+  navigator: "readonly",
   XMLHttpRequest: "readonly",
 };
 

@@ -586,5 +586,7 @@
  "notifyRecapTitle": "साप्ताहिक सारांश",
  "appNameShort": "Daily Dial",
  "themeToggleLabel": "थीम: $CURRENT$। $NEXT$ के लिए क्लिक करें।",
- "themeSwitchedToast": "थीम: $NAME$"
+ "themeSwitchedToast": "थीम: $NAME$",
+ "reportIssueLabel": "कोई गड़बड़ बताएँ या सुझाव दें",
+ "reportIssueNote": " — GitHub खुलता है। आपके दिन का कुछ भी संलग्न नहीं होता; सिर्फ़ वही जाता है जो आप लिखते हैं।"
 }

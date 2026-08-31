@@ -12,6 +12,10 @@ The version here always matches `manifest.json`.
 
 ### Added
 
+- **A way to report a bug from inside the app.** Settings → About now links
+  to the project's issue form, with the version and browser already filled
+  in — the two questions people are least able to answer and most likely to
+  get wrong. Nothing from your day is attached; only what you type is sent.
 - **A theme button in the top bar**, beside the settings menu. One press
   cycles system → light → dark and back. Theme is the one appearance setting
   people change by mood rather than once, so it no longer lives three clicks

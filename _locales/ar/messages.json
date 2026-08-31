@@ -3203,5 +3203,11 @@
         "content": "$1"
       }
     }
+  },
+  "reportIssueLabel": {
+    "message": "أبلغ عن خلل أو اقترح شيئًا"
+  },
+  "reportIssueNote": {
+    "message": " — يفتح GitHub. لا يُرفق أي شيء من يومك؛ يُرسل ما تكتبه فقط."
   }
 }

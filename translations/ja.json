@@ -571,5 +571,7 @@
  "notifyRecapTitle": "週間まとめ",
  "appNameShort": "Daily Dial",
  "themeToggleLabel": "テーマ: $CURRENT$。クリックで$NEXT$に切り替わります。",
- "themeSwitchedToast": "テーマ: $NAME$"
+ "themeSwitchedToast": "テーマ: $NAME$",
+ "reportIssueLabel": "不具合の報告・提案",
+ "reportIssueNote": " — GitHub が開きます。あなたの記録は一切添付されず、書いた内容だけが送られます。"
 }

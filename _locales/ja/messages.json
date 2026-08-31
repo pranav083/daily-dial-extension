@@ -2378,5 +2378,11 @@
         "content": "$1"
       }
     }
+  },
+  "reportIssueLabel": {
+    "message": "不具合の報告・提案"
+  },
+  "reportIssueNote": {
+    "message": " — GitHub が開きます。あなたの記録は一切添付されず、書いた内容だけが送られます。"
   }
 }

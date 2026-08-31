@@ -3750,6 +3750,14 @@ async function boot() {
   const version = chrome.runtime.getManifest().version;
   $("version").textContent = `v${version}`;
   $("about-version").textContent = `v${version}`;
+  // Pre-fill the bug template's version and browser fields. They are the two
+  // questions a reporter is least able to answer and most likely to get
+  // wrong, and the page already knows both.
+  const issueUrl = new URL("https://github.com/pranav083/daily-dial-extension/issues/new");
+  issueUrl.searchParams.set("template", "bug_report.yml");
+  issueUrl.searchParams.set("version", version);
+  issueUrl.searchParams.set("chrome", navigator.userAgent);
+  $("report-issue").href = issueUrl.toString();
   $("multifill-max-days").textContent = String(MULTI_DAY_FILL_MAX_DAYS);
 
   renderTicksInto($("ticks"), 24, pad2);

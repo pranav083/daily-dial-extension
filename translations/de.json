@@ -586,5 +586,7 @@
  "notifyRecapTitle": "Wochenrückblick",
  "appNameShort": "Daily Dial",
  "themeToggleLabel": "Design: $CURRENT$. Klicken für $NEXT$.",
- "themeSwitchedToast": "Design: $NAME$"
+ "themeSwitchedToast": "Design: $NAME$",
+ "reportIssueLabel": "Fehler melden oder etwas vorschlagen",
+ "reportIssueNote": " — öffnet GitHub. Nichts aus deinem Tag wird angehängt; nur was du schreibst."
 }

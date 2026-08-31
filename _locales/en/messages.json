@@ -1492,6 +1492,14 @@
     "message": "GitHub",
     "description": "Link to the project's GitHub repository, shown in the About tab."
   },
+  "reportIssueLabel": {
+    "message": "Report a bug or suggest something",
+    "description": "Link in Settings → About that opens the project's GitHub issue form."
+  },
+  "reportIssueNote": {
+    "message": " — opens GitHub. Nothing from your day is attached; only what you type goes in.",
+    "description": "Note beside the report link, making clear no personal data is sent. Keep the leading dash and space."
+  },
   "gettingStartedLinkLabel": {
     "message": "Getting started",
     "description": "Link to the getting-started guide, shown in the About tab."

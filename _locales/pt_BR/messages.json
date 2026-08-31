@@ -2543,5 +2543,11 @@
         "content": "$1"
       }
     }
+  },
+  "reportIssueLabel": {
+    "message": "Relatar um erro ou sugerir algo"
+  },
+  "reportIssueNote": {
+    "message": " — abre o GitHub. Nada do seu dia é anexado; só o que você escrever."
   }
 }

@@ -646,5 +646,7 @@
  "notifyRecapTitle": "ملخّص الأسبوع",
  "appNameShort": "Daily Dial",
  "themeToggleLabel": "المظهر: $CURRENT$. انقر للانتقال إلى $NEXT$.",
- "themeSwitchedToast": "المظهر: $NAME$"
+ "themeSwitchedToast": "المظهر: $NAME$",
+ "reportIssueLabel": "أبلغ عن خلل أو اقترح شيئًا",
+ "reportIssueNote": " — يفتح GitHub. لا يُرفق أي شيء من يومك؛ يُرسل ما تكتبه فقط."
 }
