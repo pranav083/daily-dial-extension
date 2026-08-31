@@ -2359,5 +2359,24 @@
   },
   "appNameShort": {
     "message": "Daily Dial"
+  },
+  "themeToggleLabel": {
+    "message": "主题：$CURRENT$。点击切换为$NEXT$。",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      }
+    }
+  },
+  "themeSwitchedToast": {
+    "message": "主题：$NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   }
 }

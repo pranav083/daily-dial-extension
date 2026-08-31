@@ -3184,5 +3184,24 @@
   },
   "appNameShort": {
     "message": "Daily Dial"
+  },
+  "themeToggleLabel": {
+    "message": "المظهر: $CURRENT$. انقر للانتقال إلى $NEXT$.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      }
+    }
+  },
+  "themeSwitchedToast": {
+    "message": "المظهر: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   }
 }

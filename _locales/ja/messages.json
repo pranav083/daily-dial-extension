@@ -2359,5 +2359,24 @@
   },
   "appNameShort": {
     "message": "Daily Dial"
+  },
+  "themeToggleLabel": {
+    "message": "テーマ: $CURRENT$。クリックで$NEXT$に切り替わります。",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      }
+    }
+  },
+  "themeSwitchedToast": {
+    "message": "テーマ: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   }
 }

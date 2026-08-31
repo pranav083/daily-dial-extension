@@ -50,6 +50,12 @@
           <button id="next-day" data-i18n-label="nextDayLabel" aria-label="Next day" data-i18n-title="nextDayLabel" title="Next day">›</button>
           <button class="today-jump" id="today-jump" hidden data-i18n-title="todayJumpTooltip" title="Jump back to today" data-i18n="dateToday">Today</button>
         </div>
+        <!-- Theme is the one appearance setting people change by mood rather
+             than once, so it gets a button here instead of living three
+             clicks deep. One button cycling three states, not a switch: the
+             default is "follow the system", and a two-way toggle would have
+             no way back to it. -->
+        <button class="icon-btn theme-btn" id="theme-toggle"><span id="theme-icon">🖥️</span></button>
         <button class="icon-btn settings-btn" id="open-settings" aria-haspopup="dialog"
                 data-i18n-label="settingsButtonLabel" aria-label="Settings" data-i18n-title="settingsButtonTooltip" title="Categories, reminders, goals, backup, and appearance">☰</button>
       </div>

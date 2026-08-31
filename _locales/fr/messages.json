@@ -2524,5 +2524,24 @@
   },
   "appNameShort": {
     "message": "Daily Dial"
+  },
+  "themeToggleLabel": {
+    "message": "Thème : $CURRENT$. Clique pour $NEXT$.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      }
+    }
+  },
+  "themeSwitchedToast": {
+    "message": "Thème : $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   }
 }

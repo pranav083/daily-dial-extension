@@ -584,5 +584,7 @@
  "tooltipReplaceHint": "Doppelklick zum Ersetzen",
  "notifyEveningTitle": "Schließ deinen Tag ab",
  "notifyRecapTitle": "Wochenrückblick",
- "appNameShort": "Daily Dial"
+ "appNameShort": "Daily Dial",
+ "themeToggleLabel": "Design: $CURRENT$. Klicken für $NEXT$.",
+ "themeSwitchedToast": "Design: $NAME$"
 }

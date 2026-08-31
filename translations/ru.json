@@ -614,5 +614,7 @@
  "tooltipReplaceHint": "двойной щелчок заменит",
  "notifyEveningTitle": "Заверши свой день",
  "notifyRecapTitle": "Итоги недели",
- "appNameShort": "Daily Dial"
+ "appNameShort": "Daily Dial",
+ "themeToggleLabel": "Тема: $CURRENT$. Нажми, чтобы выбрать $NEXT$.",
+ "themeSwitchedToast": "Тема: $NAME$"
 }

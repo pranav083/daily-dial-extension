@@ -569,5 +569,7 @@
  "tooltipReplaceHint": "双击可替换",
  "notifyEveningTitle": "为今天收个尾",
  "notifyRecapTitle": "每周回顾",
- "appNameShort": "Daily Dial"
+ "appNameShort": "Daily Dial",
+ "themeToggleLabel": "主题：$CURRENT$。点击切换为$NEXT$。",
+ "themeSwitchedToast": "主题：$NAME$"
 }

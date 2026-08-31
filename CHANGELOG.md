@@ -8,6 +8,16 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.30.0] — 2026-08-30
+
+### Added
+
+- **A theme button in the top bar**, beside the settings menu. One press
+  cycles system → light → dark and back. Theme is the one appearance setting
+  people change by mood rather than once, so it no longer lives three clicks
+  deep — and Settings → Appearance still has it, with the two kept in step
+  whichever you use.
+
 ## [1.29.1] — 2026-08-30
 
 ### Fixed

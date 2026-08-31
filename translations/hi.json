@@ -584,5 +584,7 @@
  "tooltipReplaceHint": "बदलने के लिए डबल-क्लिक करें",
  "notifyEveningTitle": "अपना दिन पूरा कीजिए",
  "notifyRecapTitle": "साप्ताहिक सारांश",
- "appNameShort": "Daily Dial"
+ "appNameShort": "Daily Dial",
+ "themeToggleLabel": "थीम: $CURRENT$। $NEXT$ के लिए क्लिक करें।",
+ "themeSwitchedToast": "थीम: $NAME$"
 }

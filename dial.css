@@ -362,6 +362,12 @@ body {
   overflow: hidden;
 }
 .dial-head-switches { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* The theme button carries an emoji rather than a glyph in the UI font, so
+   it needs its own size and a little optical nudge — at the icon-btn's
+   default it sat a shade high next to the ☰. */
+.theme-btn { font-size: 0.95rem; line-height: 1; }
+.theme-btn span { display: block; transform: translateY(0.5px); }
 /* The AM/PM pair keeps its space when it is not in use, rather than leaving
    the flow. Moving it into the header stopped it pushing the dial down at
    full width, but on a narrower card its appearance still wrapped the header

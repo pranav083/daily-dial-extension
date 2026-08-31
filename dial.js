@@ -415,10 +415,46 @@ function reportStorageFailure(err) {
 
 /* ---------- theme ---------- */
 
+/** The three themes in the order the top-bar button cycles them, each with
+ *  the glyph that shows which one is active. */
+const THEME_CYCLE = [
+  { value: "system", icon: "🖥️", labelKey: "themeSystem" },
+  { value: "light", icon: "☀️", labelKey: "themeLight" },
+  { value: "dark", icon: "🌙", labelKey: "themeDark" },
+];
+
 function applyTheme() {
   const root = document.documentElement;
   if (settings.theme === "light" || settings.theme === "dark") root.dataset.theme = settings.theme;
   else delete root.dataset.theme;
+  renderThemeToggle();
+}
+
+/** Keeps the top-bar button showing the theme actually in force — including
+ *  when it was changed from Settings, which is the same setting by another
+ *  door. */
+function renderThemeToggle() {
+  const btn = $("theme-toggle");
+  if (!btn) return;
+  const i = Math.max(0, THEME_CYCLE.findIndex((x) => x.value === settings.theme));
+  const now = THEME_CYCLE[i];
+  const next = THEME_CYCLE[(i + 1) % THEME_CYCLE.length];
+  $("theme-icon").textContent = now.icon;
+  // Names the current theme and what one more press gives, because an icon
+  // alone cannot say which of three states it is in.
+  const label = t("themeToggleLabel", [t(now.labelKey), t(next.labelKey)]);
+  btn.title = label;
+  btn.setAttribute("aria-label", label);
+}
+
+function cycleTheme() {
+  const i = Math.max(0, THEME_CYCLE.findIndex((x) => x.value === settings.theme));
+  const next = THEME_CYCLE[(i + 1) % THEME_CYCLE.length];
+  settings = normalizeSettings({ ...settings, theme: next.value });
+  persistSettings();
+  applyTheme();
+  syncAppearanceInputs();
+  toast(t("themeSwitchedToast", [t(next.labelKey)]));
 }
 
 /* ---------- SVG scaffolding ---------- */
@@ -3628,6 +3664,7 @@ function wireEvents() {
   // Not part of saveAppearance: the language lives in localStorage, not in
   // `settings`, so it never travels in a backup to someone else's device.
   $("language-select").addEventListener("change", onLanguageChange);
+  $("theme-toggle").addEventListener("click", cycleTheme);
 
   // ---- data: export/import ----
   $("export-csv").addEventListener("click", exportCsv);

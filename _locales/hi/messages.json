@@ -2524,5 +2524,24 @@
   },
   "appNameShort": {
     "message": "Daily Dial"
+  },
+  "themeToggleLabel": {
+    "message": "थीम: $CURRENT$। $NEXT$ के लिए क्लिक करें।",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      }
+    }
+  },
+  "themeSwitchedToast": {
+    "message": "थीम: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
   }
 }

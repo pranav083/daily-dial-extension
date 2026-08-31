@@ -569,5 +569,7 @@
  "tooltipReplaceHint": "ダブルクリックで置き換え",
  "notifyEveningTitle": "今日を締めくくりましょう",
  "notifyRecapTitle": "週間まとめ",
- "appNameShort": "Daily Dial"
+ "appNameShort": "Daily Dial",
+ "themeToggleLabel": "テーマ: $CURRENT$。クリックで$NEXT$に切り替わります。",
+ "themeSwitchedToast": "テーマ: $NAME$"
 }

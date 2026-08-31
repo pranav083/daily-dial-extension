@@ -644,5 +644,7 @@
  "tooltipReplaceHint": "انقر مرتين للاستبدال",
  "notifyEveningTitle": "أنهِ يومك",
  "notifyRecapTitle": "ملخّص الأسبوع",
- "appNameShort": "Daily Dial"
+ "appNameShort": "Daily Dial",
+ "themeToggleLabel": "المظهر: $CURRENT$. انقر للانتقال إلى $NEXT$.",
+ "themeSwitchedToast": "المظهر: $NAME$"
 }

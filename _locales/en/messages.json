@@ -1391,6 +1391,27 @@
     "message": "Dark",
     "description": "Dark theme option."
   },
+  "themeToggleLabel": {
+    "message": "Theme: $CURRENT$. Click for $NEXT$.",
+    "description": "Accessible label and tooltip for the theme button in the top bar. Names the current theme and what one more click gives.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      }
+    }
+  },
+  "themeSwitchedToast": {
+    "message": "Theme: $NAME$",
+    "description": "Brief confirmation after the theme button is pressed.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
   "timeFormatLabel": {
     "message": "Time format",
     "description": "Label for the 24-hour/12-hour time format dropdown."

@@ -584,5 +584,7 @@
  "tooltipReplaceHint": "double-clic pour remplacer",
  "notifyEveningTitle": "Termine ta journée",
  "notifyRecapTitle": "Récap de la semaine",
- "appNameShort": "Daily Dial"
+ "appNameShort": "Daily Dial",
+ "themeToggleLabel": "Thème : $CURRENT$. Clique pour $NEXT$.",
+ "themeSwitchedToast": "Thème : $NAME$"
 }
