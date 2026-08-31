@@ -30,7 +30,7 @@ import {
 } from "./historyLib.js";
 import { getAppData, goToDay, silenceObservation } from "./dial.js";
 import { dateFmt, fmtFullDate, shortWeekdayNames, t, tm, tp } from "./i18n.js";
-import { suggestionFor } from "./suggestions.js";
+import { GUIDE_BASE, suggestionFor } from "./suggestions.js";
 
 const $ = (id) => document.getElementById(id);
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -691,6 +691,21 @@ function suggestionBody(suggestion) {
   lead.className = "review-lead";
   lead.textContent = t(suggestion.leadKey);
   wrap.appendChild(lead);
+
+  // A guide, where one exists. The approaches above are the short version;
+  // the guide is the one with per-platform setup steps, which lives on the
+  // docs site rather than being bundled and translated into the extension.
+  if (suggestion.guide) {
+    const more = document.createElement("p");
+    more.className = "review-guide";
+    const a = document.createElement("a");
+    a.href = GUIDE_BASE + suggestion.guide + ".html";
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = t("readTheGuideLabel");
+    more.appendChild(a);
+    wrap.appendChild(more);
+  }
 
   const list = document.createElement("ul");
   list.className = "review-approaches";

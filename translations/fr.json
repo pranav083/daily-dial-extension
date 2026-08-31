@@ -598,5 +598,6 @@
  "reviewNudgeText": "Utile ? Un court avis aide d’autres personnes à le trouver.",
  "reviewNudgeGoLabel": "Écrire un avis",
  "reviewNudgeDismissTooltip": "Non merci",
- "rateLinkLabel": "Noter cette extension"
+ "rateLinkLabel": "Noter cette extension",
+ "readTheGuideLabel": "Lire le guide complet, avec les étapes →"
 }

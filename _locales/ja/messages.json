@@ -2414,5 +2414,8 @@
   },
   "rateLinkLabel": {
     "message": "この拡張機能を評価する"
+  },
+  "readTheGuideLabel": {
+    "message": "設定手順つきの詳しいガイドを読む →"
   }
 }

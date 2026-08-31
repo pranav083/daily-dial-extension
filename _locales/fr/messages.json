@@ -2579,5 +2579,8 @@
   },
   "rateLinkLabel": {
     "message": "Noter cette extension"
+  },
+  "readTheGuideLabel": {
+    "message": "Lire le guide complet, avec les étapes →"
   }
 }

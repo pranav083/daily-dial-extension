@@ -583,5 +583,6 @@
  "reviewNudgeText": "役に立ちましたか？短いレビューが他の人の助けになります。",
  "reviewNudgeGoLabel": "レビューを書く",
  "reviewNudgeDismissTooltip": "今回は見送る",
- "rateLinkLabel": "この拡張機能を評価する"
+ "rateLinkLabel": "この拡張機能を評価する",
+ "readTheGuideLabel": "設定手順つきの詳しいガイドを読む →"
 }

@@ -2579,5 +2579,8 @@
   },
   "rateLinkLabel": {
     "message": "इस एक्सटेंशन को रेट करें"
+  },
+  "readTheGuideLabel": {
+    "message": "सेटअप चरणों के साथ पूरी गाइड पढ़ें →"
   }
 }

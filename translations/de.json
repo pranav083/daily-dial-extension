@@ -598,5 +598,6 @@
  "reviewNudgeText": "Nützlich gewesen? Eine kurze Bewertung hilft anderen, es zu finden.",
  "reviewNudgeGoLabel": "Bewertung schreiben",
  "reviewNudgeDismissTooltip": "Nein danke",
- "rateLinkLabel": "Diese Erweiterung bewerten"
+ "rateLinkLabel": "Diese Erweiterung bewerten",
+ "readTheGuideLabel": "Vollständige Anleitung mit Einrichtungsschritten lesen →"
 }

@@ -2579,5 +2579,8 @@
   },
   "rateLinkLabel": {
     "message": "Valorar esta extensión"
+  },
+  "readTheGuideLabel": {
+    "message": "Leer la guía completa, con pasos de configuración →"
   }
 }

@@ -28,9 +28,13 @@
  */
 
 /**
+ * Guides live on the project's docs site, not in here. They are long-form
+ * prose with per-platform setup steps, which has no business being bundled
+ * into an extension that has to translate every string it ships.
+ *
  * @typedef {{name: string, platforms: string, url: string}} Tool
  * @typedef {{text: string, tools?: Tool[]}} Approach
- * @typedef {{lead: string, approaches: Approach[]}} Suggestion
+ * @typedef {{guide?: string, leadKey: string, approaches: Approach[]}} Suggestion
  * @type {Record<string, Suggestion>}
  */
 export const SUGGESTIONS = {
@@ -47,6 +51,7 @@ export const SUGGESTIONS = {
 
   /* Two weeks with no rest logged at all. */
   noBreaks: {
+    guide: "rest",
     leadKey: "sug_noBreaks_lead",
     approaches: [
       {
@@ -63,6 +68,7 @@ export const SUGGESTIONS = {
 
   /* The hour you're most productive in is the one you least often protect. */
   peakHoursUnprotected: {
+    guide: "best-hour",
     leadKey: "sug_peakHoursUnprotected_lead",
     approaches: [
       { textKey: "sug_peakHoursUnprotected_text1" },
@@ -80,6 +86,7 @@ export const SUGGESTIONS = {
 
   /* Distraction time climbing week over week. */
   distractionTrend: {
+    guide: "blocking-sites",
     leadKey: "sug_distractionTrend_lead",
     approaches: [
       {
@@ -138,6 +145,9 @@ export const SUGGESTIONS = {
  *  rather than a preference, and it has no business travelling in a backup to
  *  another device where the patterns will be different. */
 export const SILENCED_KEY = "silencedObservations";
+
+/** Where a suggestion's long-form guide lives. */
+export const GUIDE_BASE = "https://pranav083.github.io/daily-dial-extension/guides/";
 
 /** @returns {Suggestion|null} */
 export const suggestionFor = (key) => SUGGESTIONS[key] ?? null;

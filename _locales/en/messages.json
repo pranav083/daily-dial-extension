@@ -2341,6 +2341,10 @@
     "message": "These are examples of an approach, not recommendations — none are affiliated with Daily Dial.",
     "description": "Disclaimer shown under a suggested-approaches list."
   },
+  "readTheGuideLabel": {
+    "message": "Read the full guide, with setup steps →",
+    "description": "Link from an observation to its long-form guide on the docs site. Opens in a new tab."
+  },
   "historyEmptyBefore": {
     "message": "No history yet. Log a few days on the Day view — once you have a week or two, this tab turns into a month-by-month picture: a heatmap, category trends, and week-over-week comparisons. Want to see what that looks like right now?",
     "description": "Placeholder text shown on the History tab before any data exists, before the 'Load sample data' link."

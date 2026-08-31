@@ -598,5 +598,6 @@
  "reviewNudgeText": "क्या यह काम आया? एक छोटी समीक्षा दूसरों को इसे ढूँढने में मदद करती है।",
  "reviewNudgeGoLabel": "समीक्षा लिखें",
  "reviewNudgeDismissTooltip": "अभी नहीं",
- "rateLinkLabel": "इस एक्सटेंशन को रेट करें"
+ "rateLinkLabel": "इस एक्सटेंशन को रेट करें",
+ "readTheGuideLabel": "सेटअप चरणों के साथ पूरी गाइड पढ़ें →"
 }

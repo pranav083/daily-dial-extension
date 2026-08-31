@@ -2579,5 +2579,8 @@
   },
   "rateLinkLabel": {
     "message": "Diese Erweiterung bewerten"
+  },
+  "readTheGuideLabel": {
+    "message": "Vollständige Anleitung mit Einrichtungsschritten lesen →"
   }
 }

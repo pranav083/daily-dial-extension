@@ -598,5 +598,6 @@
  "reviewNudgeText": "¿Te ha servido? Una reseña breve ayuda a que otras personas lo encuentren.",
  "reviewNudgeGoLabel": "Escribir una reseña",
  "reviewNudgeDismissTooltip": "No, gracias",
- "rateLinkLabel": "Valorar esta extensión"
+ "rateLinkLabel": "Valorar esta extensión",
+ "readTheGuideLabel": "Leer la guía completa, con pasos de configuración →"
 }

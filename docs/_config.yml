@@ -1,0 +1,10 @@
+# GitHub Pages serves this folder. Kept deliberately plain: the guides are
+# prose, and a heavier theme would be another thing to keep working.
+title: Daily Dial
+description: Time tracking that shows you where the day actually went — and guides for taking the day back.
+theme: jekyll-theme-primer
+show_downloads: false
+# Files that belong to the repo rather than the site.
+exclude:
+  - STORE_LISTING.md
+  - store/

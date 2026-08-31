@@ -583,5 +583,6 @@
  "reviewNudgeText": "用着还顺手吗？一条简短的评价能帮别人找到它。",
  "reviewNudgeGoLabel": "写一条评价",
  "reviewNudgeDismissTooltip": "暂不需要",
- "rateLinkLabel": "为这个扩展评分"
+ "rateLinkLabel": "为这个扩展评分",
+ "readTheGuideLabel": "阅读完整指南，含设置步骤 →"
 }

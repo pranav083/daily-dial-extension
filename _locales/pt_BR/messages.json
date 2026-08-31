@@ -2579,5 +2579,8 @@
   },
   "rateLinkLabel": {
     "message": "Avaliar esta extensão"
+  },
+  "readTheGuideLabel": {
+    "message": "Ler o guia completo, com os passos →"
   }
 }

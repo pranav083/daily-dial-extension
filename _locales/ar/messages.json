@@ -3239,5 +3239,8 @@
   },
   "rateLinkLabel": {
     "message": "قيّم هذا الامتداد"
+  },
+  "readTheGuideLabel": {
+    "message": "اقرأ الدليل الكامل مع خطوات الإعداد ←"
   }
 }

@@ -2414,5 +2414,8 @@
   },
   "rateLinkLabel": {
     "message": "为这个扩展评分"
+  },
+  "readTheGuideLabel": {
+    "message": "阅读完整指南，含设置步骤 →"
   }
 }

@@ -628,5 +628,6 @@
  "reviewNudgeText": "Пригодилось? Короткий отзыв поможет другим его найти.",
  "reviewNudgeGoLabel": "Написать отзыв",
  "reviewNudgeDismissTooltip": "Нет, спасибо",
- "rateLinkLabel": "Оценить расширение"
+ "rateLinkLabel": "Оценить расширение",
+ "readTheGuideLabel": "Читать полное руководство с шагами настройки →"
 }
