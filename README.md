@@ -12,8 +12,11 @@
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-4285F4.svg)](manifest.json)
 [![No dependencies](https://img.shields.io/badge/runtime%20deps-0-success.svg)](package.json)
 [![Local only](https://img.shields.io/badge/data-local%20only-success.svg)](#your-data)
+[![Latest release](https://img.shields.io/github/v/release/pranav083/daily-dial-extension?label=release)](https://github.com/pranav083/daily-dial-extension/releases/latest)
 
-[Install](#install) · [How it works](#how-it-works) · [Your data](#your-data) · [Privacy](PRIVACY.md) · [Contributing](CONTRIBUTING.md)
+**[Try it in your browser](https://pranav083.github.io/daily-dial-extension/demo/index.html)** — the real extension, no install, data stays in your browser.
+
+[Website](https://pranav083.github.io/daily-dial-extension/) · [Install](#install) · [How it works](#how-it-works) · [Guides](https://pranav083.github.io/daily-dial-extension/guides/) · [Your data](#your-data) · [Privacy](PRIVACY.md) · [Contributing](CONTRIBUTING.md)
 
 <img src="docs/demo.gif" width="820" alt="Painting a day on the dial, typing a block in, and watching the score update live">
 
@@ -78,7 +81,7 @@ on macOS, `%LOCALAPPDATA%\Google\Chrome\User Data\Default\Extensions\` on
 Windows). Compare it against the matching tag:
 
 ```bash
-git checkout v1.28.0   # or whichever version you installed
+git checkout $(gh release view --json tagName -q .tagName)   # or whichever version you installed
 diff -r . "$CHROME_PROFILE/Extensions/mgcjgngceajnmfhkifccaoeccbmfikhn/<version>/"
 ```
 
