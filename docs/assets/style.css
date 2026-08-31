@@ -1,0 +1,184 @@
+/* The site wears the extension's own palette and faces, so the two do not
+   look like different products. Tokens copied from dial.css rather than
+   re-picked; if they diverge there, they diverge here, and that is the
+   honest signal that someone changed one and not the other. */
+
+@font-face {
+  font-family: "Manrope";
+  src: url("fonts/manrope.woff2") format("woff2");
+  font-weight: 400 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  --surface: #eef1f0;
+  --panel: #ffffff;
+  --panel-2: #f4f6f5;
+  --ink: #171b20;
+  --ink-2: #454c53;
+  --ink-muted: #5f666e;
+  --border: rgba(23, 27, 32, 0.12);
+  --border-soft: rgba(23, 27, 32, 0.07);
+  --accent: #a8661a;
+  --accent-fill: #d99a48;
+  --accent-ink: #171208;
+  --focus-ring: #a8661a;
+  --cat-0: #2a78d6;
+  --cat-1: #ec6836;
+  --cat-2: #18a972;
+  --font-ui: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+
+/* Follows the reader's system, the same way the extension's default does. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --surface: #0e1116;
+    --panel: #171c24;
+    --panel-2: #1d232c;
+    --ink: #e7ebee;
+    --ink-2: #aeb6bf;
+    --ink-muted: #949dab;
+    --border: rgba(231, 235, 238, 0.12);
+    --border-soft: rgba(231, 235, 238, 0.07);
+    --accent: #e8ab5c;
+    --accent-fill: #e0a458;
+    --accent-ink: #1a1206;
+    --focus-ring: #e0a458;
+    --cat-0: #3987e5;
+    --cat-1: #e56432;
+    --cat-2: #32a16e;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 46rem; margin: 0 auto; padding: 28px 22px 80px; }
+
+/* ---- masthead ---- */
+.masthead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.masthead a.home {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.masthead nav { margin-left: auto; display: flex; gap: 14px; flex-wrap: wrap; }
+.masthead nav a { font-size: 0.88rem; color: var(--ink-muted); text-decoration: none; }
+.masthead nav a:hover { color: var(--ink); }
+
+/* ---- prose ---- */
+h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 10px; text-wrap: balance; }
+h2 {
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin: 34px 0 8px;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+h3 { font-size: 1rem; font-weight: 700; margin: 24px 0 6px; }
+p, li { color: var(--ink-2); }
+strong { color: var(--ink); font-weight: 700; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:hover { color: var(--ink); }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+
+ul, ol { padding-left: 1.2rem; }
+li { margin: 5px 0; }
+li::marker { color: var(--ink-muted); }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 34px 0; }
+
+blockquote {
+  margin: 18px 0;
+  padding: 10px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--panel);
+  border-radius: 0 10px 10px 0;
+}
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--panel-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  line-height: 1.55;
+}
+pre code { background: none; border: none; padding: 0; font-size: inherit; }
+
+table { width: 100%; border-collapse: collapse; margin: 18px 0; display: block; overflow-x: auto; }
+th, td { text-align: left; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--border-soft); }
+th { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); }
+
+img { max-width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
+
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+/* ---- the install call to action ---- */
+.cta {
+  display: inline-block;
+  background: var(--accent-fill);
+  color: var(--accent-ink);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 999px;
+  margin: 6px 8px 6px 0;
+}
+.cta:hover { color: var(--accent-ink); filter: brightness(1.05); }
+
+.site-foot {
+  margin-top: 56px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 0.84rem;
+  color: var(--ink-muted);
+}
+.site-foot a { color: var(--ink-muted); }

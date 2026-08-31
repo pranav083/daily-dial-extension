@@ -1,15 +1,21 @@
 ---
 title: Daily Dial
+description: Paint your day on a 24-hour dial, then see whether the time went where you meant it to.
 ---
 
-# Daily Dial
+# Where did the day actually go?
 
-Paint your day on a 24-hour dial, then see whether the time went where you
-meant it to. Free, open source, and your data never leaves your device.
+Paint your day on a 24-hour dial — pick a category, drag across the hours, and
+a full day is logged in about ten seconds. Then see whether the time went where
+you meant it to.
 
-[**Install from the Chrome Web Store**](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn)
-· [Source on GitHub](https://github.com/pranav083/daily-dial-extension)
-· [Getting started](GETTING_STARTED.html)
+Free, open source, and no account. By default it makes no network requests at
+all: your data stays in your browser.
+
+[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn){: .cta}
+[About the extension](about.html){: .cta}
+
+![Painting a day on the dial, typing a block in, and watching the score update live](demo.gif)
 
 ---
 

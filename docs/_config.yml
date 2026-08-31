@@ -2,7 +2,8 @@
 # prose, and a heavier theme would be another thing to keep working.
 title: Daily Dial
 description: Time tracking that shows you where the day actually went — and guides for taking the day back.
-theme: jekyll-theme-primer
+# No remote theme: the site uses the extension's own palette and faces,
+# defined in assets/style.css and _layouts/default.html.
 show_downloads: false
 # Files that belong to the repo rather than the site.
 exclude:
