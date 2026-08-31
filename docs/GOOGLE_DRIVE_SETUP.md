@@ -8,10 +8,11 @@ repo, in your own Google account — nobody can do it for you, including an AI
 assistant, since it requires clicking through Google's own console as
 yourself.
 
-Good news: for your own personal use, this takes about ten minutes and costs
-nothing, and doesn't require Google's app-verification review at all (that's
-only needed once you want people *other than a handful you personally add*
-to use Drive backup — see the note at the end).
+Good news: it takes about ten minutes, costs nothing, and needs no
+app-verification review even when you publish it for everyone — both scopes
+this extension uses are non-sensitive. What it *does* need is Publishing
+status set to **In production**, or Drive backup works only for you. See the
+last section; it is the step easiest to get wrong and hardest to notice.
 
 ## Before you start: get your extension's ID
 
@@ -70,6 +71,13 @@ directly and doesn't depend on that client type at all.)
    ```
    Don't add any other Drive scope — this is the one that keeps the whole
    feature narrowly sandboxed to files this extension creates itself.
+
+   Add `userinfo.email` as well; `drive.js` requests it so the settings
+   screen can show which account is connected:
+   ```
+   https://www.googleapis.com/auth/userinfo.email
+   ```
+   Both are non-sensitive, which is what keeps publishing review-free.
 5. **Test users** step: add your own Google account email (and anyone
    else's you want able to use Drive backup right away). Save.
 6. **Publishing status.** Testing is fine while you are still setting up —
