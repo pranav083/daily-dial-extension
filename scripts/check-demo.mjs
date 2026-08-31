@@ -27,3 +27,13 @@ if (stale.length) {
   process.exit(1);
 }
 console.log(`Demo check passed — docs/demo/ matches the extension at v${version}.`);
+
+// Jekyll drops underscore-prefixed directories unless _config.yml says
+// otherwise. The demo loads its catalogs from _locales at runtime, so getting
+// this wrong publishes a demo where every string is a humanised key — which
+// looks like the app is broken, and is invisible until someone opens it.
+const config = readFileSync(join(root, "docs", "_config.yml"), "utf8");
+if (!/^include:\s*(\n\s*-\s*_locales)/m.test(config)) {
+  console.error("docs/_config.yml must `include: [_locales]`, or the demo publishes with no translations.");
+  process.exit(1);
+}

@@ -9,3 +9,10 @@ show_downloads: false
 exclude:
   - STORE_LISTING.md
   - store/
+
+# Jekyll drops directories whose names start with an underscore. The demo
+# loads its message catalogs from _locales at runtime, so without this the
+# playable demo publishes with every string missing and falls back to
+# humanised key names.
+include:
+  - _locales
