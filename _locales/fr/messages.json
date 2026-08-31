@@ -2582,5 +2582,8 @@
   },
   "readTheGuideLabel": {
     "message": "Lire le guide complet, avec les étapes →"
+  },
+  "commandOpenDial": {
+    "message": "Ouvrir Daily Dial"
   }
 }

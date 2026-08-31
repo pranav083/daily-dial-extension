@@ -745,6 +745,23 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   flex: none;
 }
 .icon-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
+/* A 26px button is comfortable with a mouse and too small for a thumb. Rather
+   than make it bigger for everyone, grow only the hit area, and only where
+   the pointer is coarse — the demo on the site is the same markup, and phones
+   are where its links get opened. */
+@media (pointer: coarse) {
+  .icon-btn, .pen, .view-tab, .datenav button, .strip-day {
+    position: relative;
+  }
+  .icon-btn::after, .pen::after, .view-tab::after, .datenav button::after, .strip-day::after {
+    content: "";
+    position: absolute;
+    inset: 50% 50%;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+}
 .icon-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* Settings lives top-right, where people look for it — not buried beside the

@@ -2912,5 +2912,8 @@
   },
   "readTheGuideLabel": {
     "message": "Читать полное руководство с шагами настройки →"
+  },
+  "commandOpenDial": {
+    "message": "Открыть Daily Dial"
   }
 }

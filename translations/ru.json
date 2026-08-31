@@ -629,5 +629,6 @@
  "reviewNudgeGoLabel": "Написать отзыв",
  "reviewNudgeDismissTooltip": "Нет, спасибо",
  "rateLinkLabel": "Оценить расширение",
- "readTheGuideLabel": "Читать полное руководство с шагами настройки →"
+ "readTheGuideLabel": "Читать полное руководство с шагами настройки →",
+ "commandOpenDial": "Открыть Daily Dial"
 }

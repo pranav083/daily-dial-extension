@@ -291,6 +291,19 @@ async function openDial(hash) {
   await chrome.tabs.create({ url: chrome.runtime.getURL("dial.html") + dialUrlSuffix(hash) });
 }
 
+/**
+ * The keyboard shortcut, for the same reason the toolbar button exists: on a
+ * manual tracker, the thing that decides whether a day gets logged is how
+ * little friction stands between remembering and recording. A shortcut is the
+ * shortest path there is.
+ *
+ * `chrome.commands` may be absent where the shortcut is unsupported, so this
+ * is guarded rather than assumed.
+ */
+chrome.commands?.onCommand?.addListener?.((command) => {
+  if (command === "open-dial") openDial();
+});
+
 // Wrapped, not passed directly: onClicked hands the listener the Tab object,
 // which openDial would take as its `hash` argument and concatenate into the
 // URL as "[object Object]" — breaking every toolbar click.

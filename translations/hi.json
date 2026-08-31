@@ -599,5 +599,6 @@
  "reviewNudgeGoLabel": "समीक्षा लिखें",
  "reviewNudgeDismissTooltip": "अभी नहीं",
  "rateLinkLabel": "इस एक्सटेंशन को रेट करें",
- "readTheGuideLabel": "सेटअप चरणों के साथ पूरी गाइड पढ़ें →"
+ "readTheGuideLabel": "सेटअप चरणों के साथ पूरी गाइड पढ़ें →",
+ "commandOpenDial": "डेली डायल खोलें"
 }

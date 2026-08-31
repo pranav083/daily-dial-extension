@@ -599,5 +599,6 @@
  "reviewNudgeGoLabel": "Écrire un avis",
  "reviewNudgeDismissTooltip": "Non merci",
  "rateLinkLabel": "Noter cette extension",
- "readTheGuideLabel": "Lire le guide complet, avec les étapes →"
+ "readTheGuideLabel": "Lire le guide complet, avec les étapes →",
+ "commandOpenDial": "Ouvrir Daily Dial"
 }

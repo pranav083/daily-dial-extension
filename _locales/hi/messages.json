@@ -2582,5 +2582,8 @@
   },
   "readTheGuideLabel": {
     "message": "सेटअप चरणों के साथ पूरी गाइड पढ़ें →"
+  },
+  "commandOpenDial": {
+    "message": "डेली डायल खोलें"
   }
 }

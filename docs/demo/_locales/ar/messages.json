@@ -3242,5 +3242,8 @@
   },
   "readTheGuideLabel": {
     "message": "اقرأ الدليل الكامل مع خطوات الإعداد ←"
+  },
+  "commandOpenDial": {
+    "message": "فتح Daily Dial"
   }
 }

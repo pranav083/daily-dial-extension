@@ -8,6 +8,22 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.32.0] — 2026-08-31
+
+### Added
+
+- **A keyboard shortcut.** <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>
+  (<kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd> on a Mac) opens the dial from
+  anywhere. On a tracker you fill in yourself, the thing that decides whether
+  a day gets logged is how little stands between remembering and recording.
+  Rebindable at `chrome://extensions/shortcuts`.
+
+### Fixed
+
+- **Small controls are now properly tappable on a touch screen.** Buttons
+  sized for a mouse were as small as 19px. Their hit areas are 44px on touch
+  devices, while they look exactly as before with a pointer.
+
 ## [1.31.1] — 2026-08-31
 
 ### Fixed

@@ -599,5 +599,6 @@
  "reviewNudgeGoLabel": "Bewertung schreiben",
  "reviewNudgeDismissTooltip": "Nein danke",
  "rateLinkLabel": "Diese Erweiterung bewerten",
- "readTheGuideLabel": "Vollständige Anleitung mit Einrichtungsschritten lesen →"
+ "readTheGuideLabel": "Vollständige Anleitung mit Einrichtungsschritten lesen →",
+ "commandOpenDial": "Daily Dial öffnen"
 }

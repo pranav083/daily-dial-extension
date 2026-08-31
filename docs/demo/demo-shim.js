@@ -31,7 +31,7 @@
     runtime: {
       id: "demo", lastError: null,
       getURL: (p) => new URL(p, location.href).href,
-      getManifest: () => ({ version: "1.31.1" }),
+      getManifest: () => ({ version: "1.32.0" }),
       sendMessage: () => Promise.resolve({}),
       onMessage: listeners(), getContexts: () => Promise.resolve([]),
     },

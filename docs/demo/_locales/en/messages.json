@@ -11,6 +11,10 @@
     "message": "Open Daily Dial",
     "description": "Tooltip shown when hovering the extension's toolbar icon."
   },
+  "commandOpenDial": {
+    "message": "Open Daily Dial",
+    "description": "Description of the keyboard shortcut, shown on chrome://extensions/shortcuts."
+  },
   "saveFailedToast": {
     "message": "Couldn't save — your last change may be lost.",
     "description": "Toast shown when a write to browser storage fails."

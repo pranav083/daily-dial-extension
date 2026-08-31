@@ -584,5 +584,6 @@
  "reviewNudgeGoLabel": "写一条评价",
  "reviewNudgeDismissTooltip": "暂不需要",
  "rateLinkLabel": "为这个扩展评分",
- "readTheGuideLabel": "阅读完整指南，含设置步骤 →"
+ "readTheGuideLabel": "阅读完整指南，含设置步骤 →",
+ "commandOpenDial": "打开 Daily Dial"
 }

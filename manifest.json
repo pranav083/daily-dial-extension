@@ -2,9 +2,15 @@
   "manifest_version": 3,
   "name": "__MSG_appName__",
   "default_locale": "en",
-  "version": "1.31.1",
+  "version": "1.32.0",
   "description": "__MSG_appDescription__",
-  "permissions": ["storage", "unlimitedStorage", "alarms", "notifications", "identity"],
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "alarms",
+    "notifications",
+    "identity"
+  ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
@@ -16,6 +22,15 @@
       "32": "icons/icon-32.png",
       "48": "icons/icon-48.png",
       "128": "icons/icon-128.png"
+    }
+  },
+  "commands": {
+    "open-dial": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+D",
+        "mac": "Command+Shift+D"
+      },
+      "description": "__MSG_commandOpenDial__"
     }
   },
   "icons": {

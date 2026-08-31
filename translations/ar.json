@@ -659,5 +659,6 @@
  "reviewNudgeGoLabel": "اكتب مراجعة",
  "reviewNudgeDismissTooltip": "لا، شكرًا",
  "rateLinkLabel": "قيّم هذا الامتداد",
- "readTheGuideLabel": "اقرأ الدليل الكامل مع خطوات الإعداد ←"
+ "readTheGuideLabel": "اقرأ الدليل الكامل مع خطوات الإعداد ←",
+ "commandOpenDial": "فتح Daily Dial"
 }

@@ -2417,5 +2417,8 @@
   },
   "readTheGuideLabel": {
     "message": "設定手順つきの詳しいガイドを読む →"
+  },
+  "commandOpenDial": {
+    "message": "Daily Dial を開く"
   }
 }
