@@ -585,5 +585,9 @@
  "reviewNudgeDismissTooltip": "暂不需要",
  "rateLinkLabel": "为这个扩展评分",
  "readTheGuideLabel": "阅读完整指南，含设置步骤 →",
- "commandOpenDial": "打开 Daily Dial"
+ "commandOpenDial": "打开 Daily Dial",
+ "dialStartLabel": "圆环起点",
+ "dialStartTooltip": "把午夜放在顶部是惯例，但这会让圆环最显眼的上方留给你在睡觉的时段。从起床时间开始，你的一天就从顶部开始。",
+ "dialStartMidnight": "午夜",
+ "dialStartWaking": "我的起床时间"
 }

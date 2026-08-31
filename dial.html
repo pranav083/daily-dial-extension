@@ -743,6 +743,15 @@
             </select>
           </div>
           <div class="reminder-row">
+            <label for="dial-start-select" data-i18n-title="dialStartTooltip"
+                   title="Midnight at the top is the convention. Starting at your waking hour turns the ring so your day begins at the top, instead of spending the top of the circle on hours you were asleep."
+                   data-i18n="dialStartLabel">Ring starts at</label>
+            <select id="dial-start-select">
+              <option value="midnight" data-i18n="dialStartMidnight">Midnight</option>
+              <option value="waking" data-i18n="dialStartWaking">My waking hour</option>
+            </select>
+          </div>
+          <div class="reminder-row">
             <label for="week-start-select" data-i18n-title="weekStartTooltip" title="Which day begins a week, used by the weekly recap." data-i18n="weekStartLabel">Week starts on</label>
             <select id="week-start-select">
               <option value="0" data-i18n="daySunday">Sunday</option>

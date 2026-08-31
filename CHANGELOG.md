@@ -8,6 +8,16 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.33.0] — 2026-08-31
+
+### Added
+
+- **The ring can start at your waking hour** instead of midnight
+  (Settings → Appearance → Ring starts at). Midnight at the top is the
+  convention, and it spends the top of the circle — the part your eye reads
+  first — on hours you were asleep. Turning it puts your actual day across
+  the top. Midnight remains the default.
+
 ## [1.32.0] — 2026-08-31
 
 ### Added

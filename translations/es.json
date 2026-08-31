@@ -600,5 +600,9 @@
  "reviewNudgeDismissTooltip": "No, gracias",
  "rateLinkLabel": "Valorar esta extensión",
  "readTheGuideLabel": "Leer la guía completa, con pasos de configuración →",
- "commandOpenDial": "Abrir Daily Dial"
+ "commandOpenDial": "Abrir Daily Dial",
+ "dialStartLabel": "El anillo empieza en",
+ "dialStartTooltip": "Medianoche arriba es lo convencional. Empezar en tu hora de despertar gira el anillo para que tu día comience arriba, en vez de dedicar la parte superior del círculo a horas en las que dormías.",
+ "dialStartMidnight": "Medianoche",
+ "dialStartWaking": "Mi hora de despertar"
 }

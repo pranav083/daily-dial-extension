@@ -2585,5 +2585,17 @@
   },
   "commandOpenDial": {
     "message": "Abrir o Daily Dial"
+  },
+  "dialStartLabel": {
+    "message": "O anel começa em"
+  },
+  "dialStartTooltip": {
+    "message": "Meia-noite no topo é a convenção, e gasta o topo do círculo com horas em que você dormia. Começar na sua hora de acordar coloca o seu dia no topo."
+  },
+  "dialStartMidnight": {
+    "message": "Meia-noite"
+  },
+  "dialStartWaking": {
+    "message": "Minha hora de acordar"
   }
 }

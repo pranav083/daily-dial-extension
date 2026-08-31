@@ -2420,5 +2420,17 @@
   },
   "commandOpenDial": {
     "message": "Daily Dial を開く"
+  },
+  "dialStartLabel": {
+    "message": "リングの開始位置"
+  },
+  "dialStartTooltip": {
+    "message": "真夜中を上にするのが一般的ですが、それでは円の上部が眠っていた時間に費やされます。起床時刻から始めると、あなたの一日が上から始まります。"
+  },
+  "dialStartMidnight": {
+    "message": "真夜中"
+  },
+  "dialStartWaking": {
+    "message": "起床時刻"
   }
 }

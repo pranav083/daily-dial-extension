@@ -44,6 +44,8 @@ import {
   SLOT_MIN,
   UNTRACKED,
   WEIGHT_GLYPH,
+  CX,
+  CY,
   angleAt,
   buildBackup,
   REVIEW_ASK_KEY,
@@ -74,6 +76,7 @@ import {
   fillSlotWindow,
   fmtClock,
   fmtDuration,
+  hmToSlot,
   goalProgress,
   hmToMinutes,
   isValidTime,
@@ -653,6 +656,45 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
    */
   const futureLayer = svgEl("g", { class: "future-layer" });
   svgNode.insertBefore(futureLayer, segLayer);
+
+  /**
+   * Everything that turns with the clock.
+   *
+   * Rotating the ring could have been done in the slot-to-angle maths, but
+   * then every wedge crossing the new seam would need splitting in two, and
+   * so would the future arc, the caret and the edge handles. Rotating one
+   * group is the same picture with none of that: the geometry is untouched
+   * and only the pointer angle has to be adjusted back, in one place.
+   *
+   * The centre clock stays outside it, because text that turns with the ring
+   * is unreadable.
+   */
+  const rotor = svgEl("g", { class: "dial-rotor" });
+  svgNode.insertBefore(rotor, futureLayer);
+  for (const layer of [futureLayer, segLayer, $(svgId === "dial" ? "ticks" : svgId === "dial-am" ? "ticks-am" : "ticks-pm"), needleLayer]) {
+    if (layer) rotor.appendChild(layer);
+  }
+
+  /**
+   * Degrees the ring is turned by. Only the full 24-hour ring rotates: on the
+   * AM/PM faces each covers half a day, so "start at your waking hour" has no
+   * meaning for the half that does not contain it.
+   */
+  function rotationDeg() {
+    if (settings.dialStart !== "waking" || slotsInView !== SLOTS) return 0;
+    return (hmToSlot(settings.dayWindow.start) / SLOTS) * 360;
+  }
+
+  /** Applies the turn, and counter-turns the hour labels so they stay upright. */
+  function applyRotation() {
+    const deg = rotationDeg();
+    rotor.setAttribute("transform", `rotate(${-deg} ${CX} ${CY})`);
+    for (const label of rotor.querySelectorAll(".tick-label")) {
+      const x = Number(label.getAttribute("x"));
+      const y = Number(label.getAttribute("y"));
+      label.setAttribute("transform", deg ? `rotate(${deg} ${x} ${y})` : "");
+    }
+  }
   // Added last so the seam handle draws above the wedges and the needle.
   const handleLayer = svgEl("g", { class: "edge-layer" });
   svgNode.appendChild(handleLayer);
@@ -974,12 +1016,20 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   }
 
   function render() {
+    applyRotation();
     renderFuture();
     renderSegments();
     renderNoteMarks();
     renderNeedle();
     renderCenter();
     svgNode.setAttribute("aria-label", dayLabelText(baseLabel, slotOffset, slotsInView));
+  }
+
+  /** The angle under the pointer, expressed against an unrotated ring — which
+   *  is what every slot calculation downstream assumes. */
+  function dialAngleAt(x, y) {
+    const { angle, dist } = angleAt(x, y);
+    return { angle: (angle + rotationDeg()) % 360, dist };
   }
 
   function svgPointFromEvent(evt) {
@@ -1122,7 +1172,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   svgNode.addEventListener("pointerdown", (evt) => {
     if (evt.button !== 0) return;
     const p = svgPointFromEvent(evt);
-    const { angle, dist } = angleAt(p.x, p.y);
+    const { angle, dist } = dialAngleAt(p.x, p.y);
     if (dist < R_IN - 14 || dist > R_OUT + 18) return;
 
     // Checked here as well as on the 30s tick: a stroke started inside that
@@ -1179,7 +1229,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
 
   svgNode.addEventListener("pointermove", (evt) => {
     const p = svgPointFromEvent(evt);
-    const { angle, dist } = angleAt(p.x, p.y);
+    const { angle, dist } = dialAngleAt(p.x, p.y);
 
     if (dragEdge) {
       // Clamped to the two blocks involved: either can be squeezed to nothing,
@@ -2824,6 +2874,7 @@ function syncAppearanceInputs() {
   $("theme-select").value = settings.theme;
   $("time-format-select").value = settings.timeFormat;
   $("dial-mode-select").value = settings.dialMode;
+  $("dial-start-select").value = settings.dialStart;
   $("week-start-select").value = String(settings.weekStart);
   $("day-window-start").value = settings.dayWindow.start;
   $("day-window-end").value = settings.dayWindow.end;
@@ -2837,6 +2888,7 @@ function saveAppearance() {
     theme: $("theme-select").value,
     timeFormat: $("time-format-select").value,
     dialMode: $("dial-mode-select").value,
+    dialStart: $("dial-start-select").value,
     weekStart: Number($("week-start-select").value),
     dayWindow: {
       start: isValidTime(startVal) ? startVal : settings.dayWindow.start,
@@ -2846,6 +2898,7 @@ function saveAppearance() {
   persistSettings();
   applyTheme();
   applyDialMode();
+  renderDial();
   renderStrip();
   renderSide();
   toast(t("appearanceUpdatedToast"));
@@ -3738,7 +3791,7 @@ function wireEvents() {
 
   // ---- appearance ----
   for (const id of [
-    "theme-select", "time-format-select", "dial-mode-select", "week-start-select",
+    "theme-select", "time-format-select", "dial-mode-select", "dial-start-select", "week-start-select",
     "day-window-start", "day-window-end",
   ]) {
     $(id).addEventListener("change", saveAppearance);

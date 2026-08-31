@@ -585,5 +585,9 @@
  "reviewNudgeDismissTooltip": "今回は見送る",
  "rateLinkLabel": "この拡張機能を評価する",
  "readTheGuideLabel": "設定手順つきの詳しいガイドを読む →",
- "commandOpenDial": "Daily Dial を開く"
+ "commandOpenDial": "Daily Dial を開く",
+ "dialStartLabel": "リングの開始位置",
+ "dialStartTooltip": "真夜中を上にするのが一般的ですが、それでは円の上部が眠っていた時間に費やされます。起床時刻から始めると、あなたの一日が上から始まります。",
+ "dialStartMidnight": "真夜中",
+ "dialStartWaking": "起床時刻"
 }

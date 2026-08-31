@@ -600,5 +600,9 @@
  "reviewNudgeDismissTooltip": "Non merci",
  "rateLinkLabel": "Noter cette extension",
  "readTheGuideLabel": "Lire le guide complet, avec les étapes →",
- "commandOpenDial": "Ouvrir Daily Dial"
+ "commandOpenDial": "Ouvrir Daily Dial",
+ "dialStartLabel": "L’anneau commence à",
+ "dialStartTooltip": "Minuit en haut, c’est la convention — et cela consacre le haut du cercle à des heures où tu dormais. Commencer à ton heure de réveil fait démarrer ta journée en haut.",
+ "dialStartMidnight": "Minuit",
+ "dialStartWaking": "Mon heure de réveil"
 }

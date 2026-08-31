@@ -600,5 +600,9 @@
  "reviewNudgeDismissTooltip": "Nein danke",
  "rateLinkLabel": "Diese Erweiterung bewerten",
  "readTheGuideLabel": "Vollständige Anleitung mit Einrichtungsschritten lesen →",
- "commandOpenDial": "Daily Dial öffnen"
+ "commandOpenDial": "Daily Dial öffnen",
+ "dialStartLabel": "Ring beginnt bei",
+ "dialStartTooltip": "Mitternacht oben ist die Konvention und verbraucht den oberen Teil des Kreises für Stunden, in denen du geschlafen hast. Beim Aufwachzeitpunkt zu beginnen setzt deinen Tag nach oben.",
+ "dialStartMidnight": "Mitternacht",
+ "dialStartWaking": "Meine Aufstehzeit"
 }

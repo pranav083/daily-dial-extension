@@ -2420,5 +2420,17 @@
   },
   "commandOpenDial": {
     "message": "打开 Daily Dial"
+  },
+  "dialStartLabel": {
+    "message": "圆环起点"
+  },
+  "dialStartTooltip": {
+    "message": "把午夜放在顶部是惯例，但这会让圆环最显眼的上方留给你在睡觉的时段。从起床时间开始，你的一天就从顶部开始。"
+  },
+  "dialStartMidnight": {
+    "message": "午夜"
+  },
+  "dialStartWaking": {
+    "message": "我的起床时间"
   }
 }

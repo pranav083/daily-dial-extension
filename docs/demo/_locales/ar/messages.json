@@ -3245,5 +3245,17 @@
   },
   "commandOpenDial": {
     "message": "فتح Daily Dial"
+  },
+  "dialStartLabel": {
+    "message": "تبدأ الحلقة عند"
+  },
+  "dialStartTooltip": {
+    "message": "منتصف الليل في الأعلى هو العُرف، وهو يمنح أعلى الدائرة لساعات كنت نائمًا فيها. البدء من ساعة استيقاظك يجعل يومك يبدأ من الأعلى."
+  },
+  "dialStartMidnight": {
+    "message": "منتصف الليل"
+  },
+  "dialStartWaking": {
+    "message": "ساعة استيقاظي"
   }
 }

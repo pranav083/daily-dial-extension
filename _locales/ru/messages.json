@@ -2915,5 +2915,17 @@
   },
   "commandOpenDial": {
     "message": "Открыть Daily Dial"
+  },
+  "dialStartLabel": {
+    "message": "Кольцо начинается с"
+  },
+  "dialStartTooltip": {
+    "message": "Полночь наверху — это условность, и она отдаёт верх круга часам, когда ты спал. Начало с часа пробуждения ставит твой день наверх."
+  },
+  "dialStartMidnight": {
+    "message": "Полночь"
+  },
+  "dialStartWaking": {
+    "message": "Мой час пробуждения"
   }
 }

@@ -1476,6 +1476,22 @@
     "message": "One ring covering all 24 hours, or two smaller rings — one for AM, one for PM.",
     "description": "Tooltip on the dial-layout dropdown label."
   },
+  "dialStartLabel": {
+    "message": "Ring starts at",
+    "description": "Label for the choice of where the top of the 24-hour ring sits."
+  },
+  "dialStartTooltip": {
+    "message": "Midnight at the top is the convention. Starting at your waking hour turns the ring so your day begins at the top, instead of spending the top of the circle on hours you were asleep.",
+    "description": "Tooltip for that choice."
+  },
+  "dialStartMidnight": {
+    "message": "Midnight",
+    "description": "Option: the ring starts at midnight, the conventional clock layout."
+  },
+  "dialStartWaking": {
+    "message": "My waking hour",
+    "description": "Option: the ring starts at the waking hour set under Waking hours."
+  },
   "weekStartLabel": {
     "message": "Week starts on",
     "description": "Label for the week-start-day dropdown."

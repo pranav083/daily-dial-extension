@@ -600,5 +600,9 @@
  "reviewNudgeDismissTooltip": "Não, obrigado",
  "rateLinkLabel": "Avaliar esta extensão",
  "readTheGuideLabel": "Ler o guia completo, com os passos →",
- "commandOpenDial": "Abrir o Daily Dial"
+ "commandOpenDial": "Abrir o Daily Dial",
+ "dialStartLabel": "O anel começa em",
+ "dialStartTooltip": "Meia-noite no topo é a convenção, e gasta o topo do círculo com horas em que você dormia. Começar na sua hora de acordar coloca o seu dia no topo.",
+ "dialStartMidnight": "Meia-noite",
+ "dialStartWaking": "Minha hora de acordar"
 }

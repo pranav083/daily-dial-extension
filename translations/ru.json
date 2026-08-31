@@ -630,5 +630,9 @@
  "reviewNudgeDismissTooltip": "Нет, спасибо",
  "rateLinkLabel": "Оценить расширение",
  "readTheGuideLabel": "Читать полное руководство с шагами настройки →",
- "commandOpenDial": "Открыть Daily Dial"
+ "commandOpenDial": "Открыть Daily Dial",
+ "dialStartLabel": "Кольцо начинается с",
+ "dialStartTooltip": "Полночь наверху — это условность, и она отдаёт верх круга часам, когда ты спал. Начало с часа пробуждения ставит твой день наверх.",
+ "dialStartMidnight": "Полночь",
+ "dialStartWaking": "Мой час пробуждения"
 }

@@ -2585,5 +2585,17 @@
   },
   "commandOpenDial": {
     "message": "Ouvrir Daily Dial"
+  },
+  "dialStartLabel": {
+    "message": "L’anneau commence à"
+  },
+  "dialStartTooltip": {
+    "message": "Minuit en haut, c’est la convention — et cela consacre le haut du cercle à des heures où tu dormais. Commencer à ton heure de réveil fait démarrer ta journée en haut."
+  },
+  "dialStartMidnight": {
+    "message": "Minuit"
+  },
+  "dialStartWaking": {
+    "message": "Mon heure de réveil"
   }
 }

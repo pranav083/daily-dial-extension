@@ -660,5 +660,9 @@
  "reviewNudgeDismissTooltip": "لا، شكرًا",
  "rateLinkLabel": "قيّم هذا الامتداد",
  "readTheGuideLabel": "اقرأ الدليل الكامل مع خطوات الإعداد ←",
- "commandOpenDial": "فتح Daily Dial"
+ "commandOpenDial": "فتح Daily Dial",
+ "dialStartLabel": "تبدأ الحلقة عند",
+ "dialStartTooltip": "منتصف الليل في الأعلى هو العُرف، وهو يمنح أعلى الدائرة لساعات كنت نائمًا فيها. البدء من ساعة استيقاظك يجعل يومك يبدأ من الأعلى.",
+ "dialStartMidnight": "منتصف الليل",
+ "dialStartWaking": "ساعة استيقاظي"
 }

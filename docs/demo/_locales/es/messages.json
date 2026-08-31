@@ -2585,5 +2585,17 @@
   },
   "commandOpenDial": {
     "message": "Abrir Daily Dial"
+  },
+  "dialStartLabel": {
+    "message": "El anillo empieza en"
+  },
+  "dialStartTooltip": {
+    "message": "Medianoche arriba es lo convencional. Empezar en tu hora de despertar gira el anillo para que tu día comience arriba, en vez de dedicar la parte superior del círculo a horas en las que dormías."
+  },
+  "dialStartMidnight": {
+    "message": "Medianoche"
+  },
+  "dialStartWaking": {
+    "message": "Mi hora de despertar"
   }
 }

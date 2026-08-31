@@ -84,6 +84,11 @@ export const DEFAULT_SETTINGS = {
   theme: "system", // "system" | "light" | "dark"
   timeFormat: "24h", // "24h" | "12h"
   dialMode: "24h", // "24h" | "ampm" | "ampm-toggle" — one 24-hour ring, two 12-hour
+  // Where the top of the 24-hour ring sits. Midnight is the convention and
+  // the default; "waking" turns the ring so your day starts at the top,
+  // which puts the hours you are awake across the part of the circle the eye
+  // reads first instead of spending the top third on sleep.
+  dialStart: "midnight", // "midnight" | "waking"
   // rings side by side, or one 12-hour ring with a switch between AM and PM
   weekStart: 0, // 0 = Sunday, 1 = Monday
   goals: {}, // { [categoryId]: targetMinutesPerDay }
@@ -428,6 +433,7 @@ export function normalizeCategories(saved, translate = null) {
 
 const THEMES = ["system", "light", "dark"];
 const DIAL_MODES = ["24h", "ampm", "ampm-toggle"];
+const DIAL_STARTS = ["midnight", "waking"];
 
 /** Goals are keyed by category id (0–5); only positive integer minute targets survive. */
 function normalizeGoals(saved) {
@@ -478,6 +484,7 @@ export function normalizeSettings(saved) {
   const theme = THEMES.includes(saved?.theme) ? saved.theme : DEFAULT_SETTINGS.theme;
   const timeFormat = saved?.timeFormat === "12h" ? "12h" : "24h";
   const dialMode = DIAL_MODES.includes(saved?.dialMode) ? saved.dialMode : DEFAULT_SETTINGS.dialMode;
+  const dialStart = DIAL_STARTS.includes(saved?.dialStart) ? saved.dialStart : DEFAULT_SETTINGS.dialStart;
   const weekStart = saved?.weekStart === 1 ? 1 : 0;
   const weeklyRecapDay =
     Number.isInteger(saved?.weeklyRecapDay) && saved.weeklyRecapDay >= 0 && saved.weeklyRecapDay <= 6
@@ -497,6 +504,7 @@ export function normalizeSettings(saved) {
     theme,
     timeFormat,
     dialMode,
+    dialStart,
     weekStart,
     goals: normalizeGoals(saved?.goals),
     weeklyGoals: normalizeGoals(saved?.weeklyGoals),
@@ -1587,7 +1595,7 @@ function parseCsvRows(text) {
  *  through a spreadsheet, or came from a 10-minute tracker) produced a
  *  fractional array index: the row imported as nothing at all, while the
  *  import still reported success and counted the day. */
-const hmToSlot = (hm) => {
+export const hmToSlot = (hm) => {
   const [h, m] = hm.split(":").map(Number);
   return Math.round((h * 60 + m) / SLOT_MIN);
 };
