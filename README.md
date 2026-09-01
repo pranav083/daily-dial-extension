@@ -124,13 +124,30 @@ Each category carries a weight: `+` counts toward your score, `·` is neutral,
 `–` counts against it. The daily score is:
 
 ```
-(productive − distraction) ÷ tracked
+(productive − distraction) ÷ max(productive + distraction, your daily target)
 ```
 
-It measures the *shape* of a day rather than its length, so a well-spent four
-hours beats a scattered ten. Alongside it you get tracked time, productive
-percentage, your longest unbroken stretch of focus, and a plain-language read of
-the day — the answer to "was I productive?" without having to interpret a chart.
+Two things follow from that denominator, and both are deliberate.
+
+**Logging less can never help you.** Where you fall short of the target, the
+target is what you are measured against — so two productive hours against a
+four-hour target read 50, not 100. An earlier version divided by tracked time
+alone, which meant two good hours and an otherwise blank day scored a perfect
+100: the arithmetic rewarded precisely the behaviour the tool exists to
+discourage.
+
+**Neutral time is free.** A category you have called neither good nor bad sits
+outside the fraction entirely, so admitting to an afternoon off costs you
+nothing. Distraction still subtracts, because that is how you weighted it.
+
+The target is the sum of your daily goals on productive categories
+(Settings → Goals), or four hours if you have not set any — roughly where
+sustained focused work tops out. When a typical day drifts well clear of it in
+either direction, History says so and suggests moving it.
+
+Alongside the score you get tracked time, productive percentage, your longest
+unbroken stretch of focus, and a plain-language read of the day — the answer to
+"was I productive?" without having to interpret a chart.
 
 Untracked time is shown rather than hidden, so gaps in logging stay visible
 instead of silently flattering your numbers.

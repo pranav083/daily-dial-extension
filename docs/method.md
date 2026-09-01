@@ -41,17 +41,25 @@ The cost: you have to decide what matters, and you have to decide it right. A po
 
 This is why weights are editable. You can recalibrate. If a weight starts producing numbers that feel untrue, change it. The score should match your intuition, and if it doesn't, that is information worth trusting.
 
-## Dividing by tracked time, not by 24 hours
+## Dividing by the day you meant to have
 
-The score is calculated as (productive − distraction) ÷ tracked time. Not by the calendar day, by the hours you actually logged.
+The score is (productive − distraction) divided by whichever is larger: the weighted time you logged, or your daily target.
 
-This means a focused four-hour day beats a scattered ten-hour day. A day where you logged only three hours and spent two of them deep in work scores higher than a day where you logged twelve and spent four of them in deep work. The metric measures the shape of your time, not its quantity.
+That denominator has been wrong once already, and the way it was wrong is worth keeping on the record.
 
-The cost: someone who logs only their best hours can game the system. If you log only the time when you knew you were focused, you will get a flattering score that tells you nothing.
+The original divided by tracked time alone. The reasoning was that a metric should measure the shape of your time rather than its quantity — nobody needs a tool that rewards working longer, and a focused four-hour day genuinely is better than a scattered ten-hour one. That reasoning still holds. The implementation did not.
 
-This is why Daily Dial has a floor. If you log fewer than two hours, the tool declines to produce a confident score. It shows you the data but says "too little logged to measure." That is a nudge, not an enforcement—you are free to ignore it—but it reminds you that the number only means something if you logged most of your day.
+Dividing a day by itself means two productive hours and an otherwise blank day return a perfect score. Not a flattering one: a *perfect* one, identical to a flawless twelve-hour day and better than an honest day with one bad hour in it. The number did not merely permit logging selectively — it paid you for it, on the one screen whose entire claim is that it shows you untracked time and never flatters you.
 
-The benefit is real: it shifts the metric from duration to quality. Nobody needs a tool that rewards working longer. Everyone benefits from a tool that measures whether the time they actually spent was time well used.
+This page used to describe that as a known cost, mitigated by refusing to score days under two hours. That was a patch over a hole, and not even a tight one: two hours exactly cleared the floor and scored a hundred.
+
+The fix is to put the day you meant to have into the denominator. Where you fall short of your target, the target is what you are measured against, so two productive hours against a four-hour target read 50. Above it, your own weighted time takes over. Logging less cannot help you any more, because the thing you failed to do is still in the arithmetic.
+
+One refinement followed, and it only became visible once the new scale was laid out and read. Dividing by everything logged made four productive hours plus four hours of rest score the same as two productive hours with nothing else admitted to — so logging the rest cost exactly what hiding half the day would. That is the same perverse incentive moved one step further out. A neutral category is one you have declared neither good nor bad, so it now sits in neither half of the fraction. Rest is free. Distraction is not, because you weighted it that way.
+
+What holds now is a property rather than a formula: logging something that actually happened can never raise your score, and logging something neutral can never lower it. Honesty is never the losing move.
+
+The two-hour floor is still there, for a reason that survived the change. A barely-started day is not yet a day. It used to flatter; against a target it would accuse, calling you off track at nine in the morning for the crime of logging early. Both are the same mistake, so the tool still declines to score until there is a day to score.
 
 ## Untracked time stays visible
 

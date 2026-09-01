@@ -11,7 +11,11 @@ The dial has 96 slots of 15 minutes each. Finer resolution would make the drag t
 
 ## How is the score calculated?
 
-Your score is (productive − distraction) ÷ tracked time, shown as a percentage from −100 to +100. It divides by *tracked* time, not the full 24 hours, so it measures the shape of your day rather than its length: a focused 4 hours beats a scattered 10. Below 2 hours logged, the score stays hidden and shows "too little logged" instead. Thirty minutes of one category divided by itself reads as +100, which means nothing.
+Your score is (productive − distraction) divided by whichever is larger: the weighted time you logged, or your daily target. Shown as a percentage from −100 to +100.
+
+The target does the important work. Two productive hours against a four-hour target read 50, not 100 — so logging only your best hours can never flatter you, because the day you meant to have is still in the denominator. Neutral time sits outside the fraction, so logging a break costs nothing; distraction subtracts, because that is how you weighted it.
+
+The target is the sum of your daily goals on productive categories, or four hours if you have not set any. Below 2 hours logged the score stays hidden and shows "too little logged" instead, since a barely-started day is not yet a day.
 
 ## What happens if I miss a day?
 
