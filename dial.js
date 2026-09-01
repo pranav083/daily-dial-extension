@@ -2141,6 +2141,8 @@ async function shareAsImage() {
     tracked: t("shareTrackedLine", [fmtDuration(shareStats.trackedMin), String(shareStats.productivePct)]),
     led: shareTop ? t("shareLedLine", [shareTop.name, fmtDuration(shareTop.min)]) : "",
     streak: streak && streak.current > 0 ? t("shareStreakLine", [String(streak.current)]) : "",
+    whereTimeWent: t("whereTimeWentLabel"),
+    untracked: t("untrackedCapitalized"),
   });
 
   let blob;

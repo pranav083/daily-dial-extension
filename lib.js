@@ -1995,7 +1995,12 @@ export function dialUrlSuffix(hash) {
  *  there. Matches this project's dark theme, which is also what every store
  *  screenshot uses, so a share always looks the same regardless of the
  *  sharer's own theme setting. */
-const SHARE_CAT_HEX = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300"];
+/** The dark-theme --cat-N values from dial.css, which is the palette the
+ *  card is drawn on. Kept in step by a test that reads the stylesheet:
+ *  these had drifted, and Distraction was being drawn in green while the
+ *  app drew it red — a wedge nobody checked, on the one picture that
+ *  leaves the device. */
+export const SHARE_CAT_HEX = ["#3987e5", "#e56432", "#32a16e", "#d59105", "#d24c83", "#bc3a3f"];
 const SHARE_TONE_HEX = { good: "#0ca30c", warning: "#fab219", critical: "#d03b3b", muted: "#7c8590" };
 
 const escapeXml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -2009,6 +2014,8 @@ const SHARE_LABELS = {
   tracked: "",
   led: "",
   streak: "",
+  whereTimeWent: "Where the time went",
+  untracked: "Untracked",
 };
 
 /**
@@ -2097,6 +2104,45 @@ export function buildShareSvgMarkup(slots, categories, dateLabel, streak = null,
   if (streak && streak.current > 0) {
     y += 30;
     parts.push(text(rightX, 16, 400, "#e7ebee", L.streak || `🔥 ${streak.current} day streak`));
+  }
+
+  // The breakdown, which is the part of the day panel worth carrying over.
+  // Without it the card was a ring, a number and a line of text — accurate,
+  // and on a quiet day almost empty. The bars are what make a shared picture
+  // legible at a glance to someone who has never seen the app.
+  if (stats.trackedMin > 0) {
+    const BAR_X = rightX + 150;
+    const BAR_W = 160;
+    const END_X = W - 50;
+    const rows = categories
+      .map((c, i) => ({ name: c.name, min: stats.perCat[i] * SLOT_MIN, hex: SHARE_CAT_HEX[i] ?? "#7c8590" }))
+      .filter((r) => r.min > 0)
+      .sort((a, b) => b.min - a.min);
+    const untrackedMin = SLOTS * SLOT_MIN - stats.trackedMin;
+    if (untrackedMin > 0) rows.push({ name: L.untracked, min: untrackedMin, hex: "#7c8590", muted: true });
+
+    // Scaled against the longest row, not the day, so a mostly-untracked day
+    // still shows readable bars rather than six slivers.
+    const longest = Math.max(...rows.map((r) => r.min));
+
+    y += 44;
+    parts.push(
+      `<text x="${rightX}" y="${y}" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" font-size="11" letter-spacing="1.2" fill="#7c8590">${escapeXml(L.whereTimeWent.toUpperCase())}</text>`
+    );
+
+    y += 22;
+    for (const row of rows) {
+      const barY = y - 9;
+      const fillW = Math.max(3, Math.round((row.min / longest) * BAR_W));
+      parts.push(
+        `<circle cx="${rightX + 5}" cy="${y - 4}" r="4" fill="${row.hex}" fill-opacity="${row.muted ? 0.55 : 1}"/>`,
+        `<text x="${rightX + 18}" y="${y}" font-family="ui-sans-serif,system-ui,sans-serif" font-size="14" fill="${row.muted ? "#aeb6bf" : "#e7ebee"}">${escapeXml(row.name)}</text>`,
+        `<rect x="${BAR_X}" y="${barY}" width="${BAR_W}" height="7" rx="3.5" fill="rgba(231,235,238,0.10)"/>`,
+        `<rect x="${BAR_X}" y="${barY}" width="${fillW}" height="7" rx="3.5" fill="${row.hex}" fill-opacity="${row.muted ? 0.45 : 1}"/>`,
+        `<text x="${END_X}" y="${y}" text-anchor="end" font-family="monospace" font-size="13" fill="#aeb6bf">${escapeXml(fmtDuration(row.min))}</text>`
+      );
+      y += 27;
+    }
   }
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">

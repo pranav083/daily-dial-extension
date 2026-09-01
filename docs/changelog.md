@@ -19,6 +19,11 @@ The version here always matches `manifest.json`.
 
 ### Changed
 
+- **"Share as image" now carries the day's breakdown**, not just a ring and a
+  number. It shows where the time went, bar by bar, with untracked time
+  included — the part of the panel actually worth handing to someone else. On
+  a quiet day the old card was a near-empty circle beside the word "score".
+
 - **The daily score is measured against a target, not against itself.** It
   used to divide productive time by however much you had logged, so logging
   *less* raised it: two good hours and a blank day read +100, the same as a
@@ -36,6 +41,14 @@ The version here always matches `manifest.json`.
   (Settings → Goals), summed, and falls back to four hours when none are set.
 - Score bands re-cut for the new scale. Under the old ratio they sat at
   40/10/-15, which suited a number that hit 100 on two clean hours.
+
+### Fixed
+
+- **The share card drew Distraction in green.** Its palette was a second copy
+  of the category colours, and it had drifted from the stylesheet: five of six
+  were subtly off and `--cat-5` was a green where the app shows red. Wrong for
+  months on the one picture that leaves the device. A test now reads dial.css
+  and fails when the two disagree.
 
 ### Added
 

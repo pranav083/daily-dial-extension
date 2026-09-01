@@ -89,6 +89,7 @@ import {
   buildSampleDays,
   challengeProgress,
   buildShareSvgMarkup,
+  SHARE_CAT_HEX,
   DRIVE_BACKUP_FILENAME,
   driveCreateMultipartBody,
   driveDeleteUrl,
@@ -1148,6 +1149,44 @@ test("buildShareSvgMarkup renders one wedge per run and includes the date and sc
   assert.equal((svg.match(/<path /g) ?? []).length, 2, "one wedge per run");
   assert.match(svg, />Friday, August 28</);
   assert.match(svg, />Deep Work led at 2h</);
+});
+
+test("the share card's palette matches the stylesheet it is drawn against", () => {
+  // These drifted, and nobody noticed: the card drew Distraction in green
+  // (#008300) while the app drew it red. A wedge on the one picture that
+  // leaves the device, wrong for months, because two copies of a palette had
+  // no way of disagreeing out loud. Now they do.
+  const css = readFileSync(new URL("../dial.css", import.meta.url), "utf8");
+  const dark = css.match(/:root\[data-theme="dark"\]\s*\{([\s\S]*?)\}/)?.[1];
+  assert.ok(dark, "found the dark-theme block in dial.css");
+
+  const svg = buildShareSvgMarkup(paint(blank(), 9, 10, 5), cats, "Today"); // distraction only
+  for (let i = 0; i < 6; i++) {
+    const hex = dark.match(new RegExp(`--cat-${i}:\\s*(#[0-9a-fA-F]{6})`))?.[1];
+    assert.ok(hex, `dial.css defines --cat-${i}`);
+    assert.equal(SHARE_CAT_HEX[i], hex.toLowerCase(), `share colour ${i} matches --cat-${i}`);
+  }
+  assert.match(svg, new RegExp(SHARE_CAT_HEX[5]), "the distraction wedge uses that colour");
+});
+
+test("buildShareSvgMarkup lists where the time went, including what was not logged", () => {
+  let slots = paint(blank(), 9, 13, 0);   // 4h Deep Work
+  slots = paint(slots, 13, 14, 5);        // 1h Distraction
+  const svg = buildShareSvgMarkup(slots, cats, "Today", null, {
+    whereTimeWent: "Where the time went",
+    untracked: "Untracked",
+  });
+  assert.match(svg, />WHERE THE TIME WENT</, "the section is labelled");
+  assert.match(svg, />Deep Work</);
+  assert.match(svg, />4h</);
+  assert.match(svg, />Untracked</, "unlogged time is shown rather than quietly dropped");
+  assert.match(svg, />19h</, "24h less the 5h logged");
+  assert.ok(svg.indexOf(">Deep Work<") < svg.indexOf(">Distraction<"), "ordered by time spent");
+});
+
+test("buildShareSvgMarkup omits the breakdown entirely on an empty day", () => {
+  const svg = buildShareSvgMarkup(blank(), cats, "Today", null, { whereTimeWent: "Where the time went" });
+  assert.doesNotMatch(svg, />WHERE THE TIME WENT</, "no breakdown when there is nothing to break down");
 });
 
 test("buildShareSvgMarkup shows an em dash and no wedges for an untouched day", () => {
