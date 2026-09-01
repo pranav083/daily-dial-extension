@@ -138,6 +138,18 @@ export const SUGGESTIONS = {
       { textKey: "sug_untrackedLifeArea_text3" },
     ],
   },
+
+  /* The daily target and a typical day have drifted apart. The only entry
+     here about the app rather than the user, so it names no tool at all —
+     the fix is a field in Settings, and recommending software for a problem
+     this app created would be absurd. */
+  targetMismatch: {
+    leadKey: "sug_targetMismatch_lead",
+    approaches: [
+      { textKey: "sug_targetMismatch_text1" },
+      { textKey: "sug_targetMismatch_text2" },
+    ],
+  },
 };
 
 /** Observation ids the user has silenced for good. Kept in its own storage

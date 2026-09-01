@@ -509,7 +509,7 @@
     "message": "Cibles quotidiennes, par catégorie"
   },
   "dailyGoalsNote": {
-    "message": "Laisse vide pour aucun objectif. La progression s'affiche dans le panneau latéral une fois une cible définie."
+    "message": "Laisse vide pour aucun objectif. La progression s'affiche dans le panneau latéral une fois une cible définie, et les cibles des catégories productives forment ensemble la référence du score du jour."
   },
   "weeklyGoalsSectionLabel": {
     "message": "Cibles hebdomadaires, par catégorie"
@@ -2597,5 +2597,39 @@
   },
   "dialStartWaking": {
     "message": "Mon heure de réveil"
+  },
+  "obsTargetHeadline": {
+    "message": "Une journée typique ici, c'est $TYPICAL$ de temps productif, pour un objectif de $TARGET$",
+    "placeholders": {
+      "typical": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsTargetDetail": {
+    "message": "Sur les $DAYS$ derniers jours, ta journée médiane comptait $TYPICAL$ de temps productif. Le score du jour se mesure par rapport à $TARGET$.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "typical": {
+        "content": "$2"
+      },
+      "target": {
+        "content": "$3"
+      }
+    }
+  },
+  "sug_targetMismatch_lead": {
+    "message": "L'objectif est un réglage, pas un verdict. Il mérite d'être déplacé dès qu'il ne te décrit plus."
+  },
+  "sug_targetMismatch_text1": {
+    "message": "Si tu le dépasses la plupart des jours, relève-le. Un objectif toujours atteint ne t'apprend plus rien : le score s'aplatit près du sommet et ne distingue plus une bonne journée d'une journée ordinaire."
+  },
+  "sug_targetMismatch_text2": {
+    "message": "Si tu n'en approches que rarement, abaisse-le. Un objectif hors d'atteinte ne pousse personne à en faire plus ; il donne seulement l'impression que le chiffre parle de quelqu'un d'autre, et un chiffre pareil finit ignoré."
   }
 }

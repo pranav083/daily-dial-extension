@@ -697,7 +697,7 @@
     "description": "Section heading over the per-category daily goal inputs."
   },
   "dailyGoalsNote": {
-    "message": "Leave blank for no goal. Progress shows in the side panel once a target is set.",
+    "message": "Leave blank for no goal. Progress shows in the side panel once a target is set, and the targets on productive categories together set what the daily score is measured against.",
     "description": "Note under the daily goal inputs."
   },
   "weeklyGoalsSectionLabel": {
@@ -3203,5 +3203,44 @@
   "defaultCategory5": {
     "message": "Distraction",
     "description": "Default name for category slot 5, written once when someone first opens the extension. From then on it is the user's own data and is never re-translated, so a change here only affects new installs. Shown in a narrow chip — keep it short."
+  },
+  "obsTargetHeadline": {
+    "message": "A typical day here is $TYPICAL$ of productive time, against a target of $TARGET$",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "typical": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsTargetDetail": {
+    "message": "Over the last $DAYS$ days, your median day held $TYPICAL$ of productive time. The daily score is measured against $TARGET$.",
+    "description": "Text produced by lib.js and shown in the UI.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "typical": {
+        "content": "$2"
+      },
+      "target": {
+        "content": "$3"
+      }
+    }
+  },
+  "sug_targetMismatch_lead": {
+    "message": "The target is a setting, not a verdict. It's worth moving when it stops describing you.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_targetMismatch_text1": {
+    "message": "If you clear it most days, raise it. A target you always meet stops telling you anything — the score flattens out near the top, where it can no longer tell a good day from an ordinary one.",
+    "description": "Observation advice text from suggestions.js."
+  },
+  "sug_targetMismatch_text2": {
+    "message": "If you rarely come close, lower it. An unreachable target doesn't make anyone do more; it just makes the number feel like it's about someone else, and a number like that gets ignored.",
+    "description": "Observation advice text from suggestions.js."
   }
 }

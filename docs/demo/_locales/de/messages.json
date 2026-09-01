@@ -509,7 +509,7 @@
     "message": "Tagesziele pro Kategorie"
   },
   "dailyGoalsNote": {
-    "message": "Leer lassen für kein Ziel. Der Fortschritt erscheint im Seitenbereich, sobald ein Ziel gesetzt ist."
+    "message": "Leer lassen für kein Ziel. Der Fortschritt erscheint im Seitenbereich, sobald ein Ziel gesetzt ist, und die Ziele der produktiven Kategorien ergeben zusammen den Maßstab der Tageswertung."
   },
   "weeklyGoalsSectionLabel": {
     "message": "Wochenziele pro Kategorie"
@@ -2597,5 +2597,39 @@
   },
   "dialStartWaking": {
     "message": "Meine Aufstehzeit"
+  },
+  "obsTargetHeadline": {
+    "message": "Ein typischer Tag umfasst hier $TYPICAL$ produktive Zeit, bei einem Ziel von $TARGET$",
+    "placeholders": {
+      "typical": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsTargetDetail": {
+    "message": "In den letzten $DAYS$ Tagen enthielt dein mittlerer Tag $TYPICAL$ produktive Zeit. Die Tageswertung wird an $TARGET$ gemessen.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "typical": {
+        "content": "$2"
+      },
+      "target": {
+        "content": "$3"
+      }
+    }
+  },
+  "sug_targetMismatch_lead": {
+    "message": "Das Ziel ist eine Einstellung, kein Urteil. Es lohnt sich, es zu verschieben, sobald es dich nicht mehr beschreibt."
+  },
+  "sug_targetMismatch_text1": {
+    "message": "Wenn du es an den meisten Tagen überschreitest, setz es höher. Ein Ziel, das du immer erreichst, sagt nichts mehr aus — die Wertung flacht oben ab und kann einen guten Tag nicht mehr von einem gewöhnlichen unterscheiden."
+  },
+  "sug_targetMismatch_text2": {
+    "message": "Wenn du selten in die Nähe kommst, setz es niedriger. Ein unerreichbares Ziel bringt niemanden dazu, mehr zu tun; es lässt die Zahl nur so wirken, als ginge es um jemand anderen — und so eine Zahl wird ignoriert."
   }
 }

@@ -78,6 +78,9 @@ import {
   reminderMessage,
   runAt,
   scoreBucket,
+  dayScore,
+  dailyTargetMin,
+  DEFAULT_DAILY_TARGET_MIN,
   MIN_TRACKED_FOR_SCORE,
   shouldNudgeBackup,
   slotFromAngle,
@@ -107,6 +110,8 @@ import {
   detectCoverageDecline,
   detectPeakHoursUnprotected,
   detectUntrackedLifeArea,
+  detectTargetMismatch,
+  TARGET_MISMATCH_WINDOW_DAYS,
   MIN_HISTORY_DAYS,
   MIN_LOGGED_DAYS,
   OVERCOMMIT_WINDOW_DAYS,
@@ -368,7 +373,11 @@ test("computeStats totals a mixed day", () => {
   assert.equal(s.distractionMin, 60);
   assert.equal(s.productivePct, 67);
   assert.equal(s.longestFocusMin, 240);
-  assert.equal(s.score, Math.round(((240 - 60) / 360) * 100));
+  // 240 productive minus 60 distraction, over the 300 weighted minutes — the
+  // hour of Break sits outside the fraction entirely. Dividing by all 360
+  // tracked minutes would give 50, docking this day ten points for the
+  // honesty of admitting to a break.
+  assert.equal(s.score, 60);
   assert.equal(s.untrackedSlots, SLOTS - 24);
 });
 
@@ -413,9 +422,70 @@ test("computeStats ignores slots referencing a missing category", () => {
 test("scoreBucket thresholds", () => {
   assert.equal(scoreBucket(null).tone, "muted");
   assert.equal(label(scoreBucket(80)), "Locked in");
-  assert.equal(label(scoreBucket(20)), "Solid");
-  assert.equal(label(scoreBucket(0)), "Mixed bag");
+  assert.equal(label(scoreBucket(75)), "Locked in", "boundary is inclusive");
+  assert.equal(label(scoreBucket(74)), "Solid");
+  assert.equal(label(scoreBucket(45)), "Solid", "boundary is inclusive");
+  assert.equal(label(scoreBucket(44)), "Mixed bag");
+  assert.equal(label(scoreBucket(15)), "Mixed bag", "boundary is inclusive");
+  assert.equal(label(scoreBucket(14)), "Off track");
   assert.equal(label(scoreBucket(-50)), "Off track");
+});
+
+test("logging more time can never raise the score", () => {
+  // The property the old denominator got wrong. Two productive hours and
+  // nothing else used to divide 120 by 120 and read +100 — a perfect day for
+  // painting almost none of it. Adding honest, unproductive time to a day
+  // must not be punished by a number that was only high because it was
+  // ignorant.
+  const twoGoodHours = computeStats(paint(blank(), 9, 11, 0), cats);
+  assert.equal(twoGoodHours.score, 50, "2h against a 4h target is half a day, not a whole one");
+  assert.notEqual(twoGoodHours.score, 100);
+
+  let alsoLoggedABreak = paint(blank(), 9, 11, 0);
+  alsoLoggedABreak = paint(alsoLoggedABreak, 11, 13, 4); // neutral
+  assert.equal(
+    computeStats(alsoLoggedABreak, cats).score,
+    twoGoodHours.score,
+    "logging a break is free — a neutral category moves the score in neither direction",
+  );
+
+  let alsoLoggedDistraction = paint(blank(), 9, 11, 0);
+  alsoLoggedDistraction = paint(alsoLoggedDistraction, 11, 13, 5);
+  assert.ok(
+    computeStats(alsoLoggedDistraction, cats).score < twoGoodHours.score,
+    "distraction is not free, because the user weighted it that way",
+  );
+
+  const fullProductiveDay = computeStats(paint(blank(), 9, 13, 0), cats);
+  assert.equal(fullProductiveDay.score, 100, "4h productive meets the default target");
+  assert.ok(fullProductiveDay.score > twoGoodHours.score, "a longer good day outranks a short one");
+});
+
+test("dayScore floors its denominator at the target", () => {
+  // Below the target the target is the denominator, so a short day is
+  // measured against the day you meant to have.
+  assert.equal(dayScore(60, 0, 240), 25);
+  assert.equal(dayScore(240, 0, 240), 100, "meeting the target is a full score");
+  // Past it, more productive time cannot push the score above 100, but it
+  // also cannot drag it down.
+  assert.equal(dayScore(480, 0, 240), 100);
+  // Distraction subtracts and dilutes; the result floors at -100.
+  assert.equal(dayScore(240, 240, 240), 0, "an equal split cancels out");
+  assert.equal(dayScore(0, 240, 240), -100);
+  assert.equal(dayScore(0, 9999, 240), -100, "clamped, not unbounded");
+});
+
+test("dailyTargetMin prefers the user's own goals over the default", () => {
+  assert.equal(dailyTargetMin({}, cats), DEFAULT_DAILY_TARGET_MIN, "no goals set");
+  assert.equal(dailyTargetMin({ goals: {} }, cats), DEFAULT_DAILY_TARGET_MIN);
+
+  // Only productive categories contribute: a goal on Break is a thing you
+  // want to do, not a thing the score is measured against.
+  assert.equal(dailyTargetMin({ goals: { 0: 120, 2: 60 } }, cats), 180, "Deep Work + Study");
+  assert.equal(dailyTargetMin({ goals: { 4: 120 } }, cats), DEFAULT_DAILY_TARGET_MIN, "Break is not productive");
+
+  const noDeepWork = cats.map((c) => (c.id === 0 ? { ...c, enabled: false } : c));
+  assert.equal(dailyTargetMin({ goals: { 0: 120, 2: 60 } }, noDeepWork), 60, "a disabled category's goal is ignored");
 });
 
 /* ---------- insight ---------- */
@@ -1422,11 +1492,81 @@ function daysMap(now, entries) {
  *  passes without disturbing the metric under test. */
 const historyFiller = (offset) => ({ offset, day: mkDay(paint(blank(), 3, 3.25, 0)) });
 
+/* ----- target mismatch ----- */
+
+/** `count` logged days inside the detector's window, each holding exactly
+ *  `productiveMin` of Deep Work, plus the filler that opens the history gate. */
+function daysOfProductiveTime(productiveMin, count = 10) {
+  const entries = [];
+  for (let i = 0; i < count; i++) {
+    entries.push({ offset: i, day: mkDay(paint(blank(), 9, 9 + productiveMin / 60, 0)) });
+  }
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  return daysMap(PATTERN_NOW, entries);
+}
+
+test("detectTargetMismatch fires when a typical day clears the target comfortably", () => {
+  const obs = detectTargetMismatch(daysOfProductiveTime(360), cats, {}, PATTERN_NOW);
+  assert.ok(obs, "6h a day against a 4h target is worth mentioning");
+  assert.equal(obs.id, "targetMismatch");
+  assert.equal(obs.suggestionKey, "targetMismatch");
+  assert.match(render(obs.headline), /6h/, "states the typical day");
+  assert.match(render(obs.headline), /4h/, "and the target it is measured against");
+});
+
+test("detectTargetMismatch fires when the target is never close to being met", () => {
+  const obs = detectTargetMismatch(daysOfProductiveTime(60), cats, {}, PATTERN_NOW);
+  assert.ok(obs, "1h a day against a 4h target is a yardstick of the wrong length");
+  assert.match(render(obs.detail), new RegExp(String(TARGET_MISMATCH_WINDOW_DAYS)));
+});
+
+test("detectTargetMismatch stays quiet when the target roughly fits", () => {
+  assert.equal(detectTargetMismatch(daysOfProductiveTime(240), cats, {}, PATTERN_NOW), null, "exactly on target");
+  assert.equal(
+    detectTargetMismatch(daysOfProductiveTime(255), cats, {}, PATTERN_NOW),
+    null,
+    "15m over is inside the minimum gap — the two figures would round to nearly the same thing",
+  );
+  assert.equal(
+    detectTargetMismatch(daysOfProductiveTime(285), cats, {}, PATTERN_NOW),
+    null,
+    "45m over clears the gap but not the ratio: a target you beat slightly is still a fair target",
+  );
+});
+
+test("detectTargetMismatch uses the median, so one enormous day cannot move it", () => {
+  const entries = [];
+  for (let i = 0; i < 9; i++) entries.push({ offset: i, day: mkDay(paint(blank(), 9, 13, 0)) }); // 4h — on target
+  entries.push({ offset: 9, day: mkDay(paint(blank(), 2, 22, 0)) }); // one 20h outlier
+  entries.push(historyFiller(MIN_HISTORY_DAYS));
+  const days = daysMap(PATTERN_NOW, entries);
+
+  // The mean of these ten days is 5h 36m, which would clear the ratio and
+  // wrongly advise raising a target that nine days out of ten met exactly.
+  assert.equal(detectTargetMismatch(days, cats, {}, PATTERN_NOW), null);
+});
+
+test("detectTargetMismatch measures against the user's own goals when they have set any", () => {
+  const days = daysOfProductiveTime(240); // 4h a day — the default target exactly
+  assert.equal(detectTargetMismatch(days, cats, {}, PATTERN_NOW), null, "on target by default");
+
+  const obs = detectTargetMismatch(days, cats, { goals: { 0: 60 } }, PATTERN_NOW);
+  assert.ok(obs, "the same days miss a 1h goal by a mile in the other direction");
+  assert.match(render(obs.headline), /1h/, "names the goal, not the default");
+});
+
+test("detectTargetMismatch says nothing without three weeks of history", () => {
+  const entries = [];
+  for (let i = 0; i < 10; i++) entries.push({ offset: i, day: mkDay(paint(blank(), 9, 15, 0)) });
+  const days = daysMap(PATTERN_NOW, entries); // no filler: plenty of days, not enough elapsed time
+  assert.equal(detectTargetMismatch(days, cats, {}, PATTERN_NOW), null);
+});
+
 test("detectPatterns returns an empty array when there's no history at all", () => {
   assert.deepEqual(detectPatterns(new Map(), cats, DEFAULT_SETTINGS, PATTERN_NOW), []);
 });
 
-test("detectPatterns fires all six detectors, in the fixed order, when every condition is met", () => {
+test("detectPatterns fires every detector, in the fixed order, when every condition is met", () => {
   const entries = [];
 
   // Offsets 0-6: this week's heavy distraction (current window for
@@ -1463,7 +1603,17 @@ test("detectPatterns fires all six detectors, in the fixed order, when every con
 
   assert.deepEqual(
     observations.map((o) => o.id),
-    ["intentionOvercommit", "noBreaks", "peakHoursUnprotected", "distractionTrend", "coverageDecline", "untrackedLifeArea"]
+    [
+      "intentionOvercommit",
+      "noBreaks",
+      "peakHoursUnprotected",
+      "distractionTrend",
+      "coverageDecline",
+      "untrackedLifeArea",
+      // These days are almost entirely distraction, so a typical one holds
+      // nowhere near the four productive hours the score is measured against.
+      "targetMismatch",
+    ]
   );
   for (const o of observations) {
     assert.equal(o.suggestionKey, o.id, "suggestionKey mirrors id for every detector");

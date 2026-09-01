@@ -509,7 +509,7 @@
     "message": "カテゴリごとの1日の目標"
   },
   "dailyGoalsNote": {
-    "message": "目標を設定しない場合は空欄のままにしてください。目標を設定すると、サイドパネルに進捗が表示されます。"
+    "message": "目標を設定しない場合は空欄のままにしてください。目標を設定すると、サイドパネルに進捗が表示されます。また、生産的なカテゴリの目標の合計が、日々のスコアの基準になります。"
   },
   "weeklyGoalsSectionLabel": {
     "message": "カテゴリごとの週の目標"
@@ -2432,5 +2432,39 @@
   },
   "dialStartWaking": {
     "message": "起床時刻"
+  },
+  "obsTargetHeadline": {
+    "message": "ここでの平均的な一日は生産的な時間が $TYPICAL$ で、目標は $TARGET$ です",
+    "placeholders": {
+      "typical": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsTargetDetail": {
+    "message": "直近 $DAYS$ 日間で、中央値の一日の生産的な時間は $TYPICAL$ でした。日々のスコアは $TARGET$ を基準に測られます。",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "typical": {
+        "content": "$2"
+      },
+      "target": {
+        "content": "$3"
+      }
+    }
+  },
+  "sug_targetMismatch_lead": {
+    "message": "目標は設定であって、判定ではありません。自分の実態と合わなくなったら、動かす価値があります。"
+  },
+  "sug_targetMismatch_text1": {
+    "message": "ほとんどの日で超えているなら、上げてください。いつも達成できる目標は何も教えてくれなくなります。スコアが上限近くで頭打ちになり、良い日と普通の日を区別できなくなるからです。"
+  },
+  "sug_targetMismatch_text2": {
+    "message": "めったに届かないなら、下げてください。手の届かない目標は誰かの行動を増やしはしません。その数字が自分とは関係のないもののように感じられるだけで、そうなった数字は見られなくなります。"
   }
 }

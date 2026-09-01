@@ -509,7 +509,7 @@
     "message": "Objetivos diarios, por categoría"
   },
   "dailyGoalsNote": {
-    "message": "Déjalo en blanco para no fijar meta. El progreso se muestra en el panel lateral en cuanto hay un objetivo."
+    "message": "Déjalo en blanco para no fijar meta. El progreso se muestra en el panel lateral en cuanto hay un objetivo, y los objetivos de las categorías productivas fijan juntos la referencia de la puntuación diaria."
   },
   "weeklyGoalsSectionLabel": {
     "message": "Objetivos semanales, por categoría"
@@ -2597,5 +2597,39 @@
   },
   "dialStartWaking": {
     "message": "Mi hora de despertar"
+  },
+  "obsTargetHeadline": {
+    "message": "Un día típico aquí son $TYPICAL$ de tiempo productivo, frente a un objetivo de $TARGET$",
+    "placeholders": {
+      "typical": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsTargetDetail": {
+    "message": "En los últimos $DAYS$ días, tu día mediano tuvo $TYPICAL$ de tiempo productivo. La puntuación diaria se mide contra $TARGET$.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "typical": {
+        "content": "$2"
+      },
+      "target": {
+        "content": "$3"
+      }
+    }
+  },
+  "sug_targetMismatch_lead": {
+    "message": "El objetivo es un ajuste, no un veredicto. Vale la pena moverlo cuando deja de describirte."
+  },
+  "sug_targetMismatch_text1": {
+    "message": "Si lo superas casi todos los días, súbelo. Un objetivo que siempre alcanzas deja de decirte nada: la puntuación se aplana cerca del tope y ya no distingue un buen día de uno corriente."
+  },
+  "sug_targetMismatch_text2": {
+    "message": "Si rara vez te acercas, bájalo. Un objetivo inalcanzable no hace que nadie haga más; solo hace que el número parezca sobre otra persona, y un número así se acaba ignorando."
   }
 }

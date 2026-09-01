@@ -665,7 +665,7 @@ export function fillRange(slots, from, to, cat) {
  *   productivePct:number, longestFocusMin:number, score:number|null}}
  *   `score` is null when nothing is logged — distinct from a score of 0.
  */
-export function computeStats(slots, categories, dayWindow = null) {
+export function computeStats(slots, categories, dayWindow = null, targetMin = DEFAULT_DAILY_TARGET_MIN) {
   const perCat = categories.map(() => 0);
   let untrackedSlots = 0;
 
@@ -714,15 +714,91 @@ export function computeStats(slots, categories, dayWindow = null) {
     distractionMin,
     productivePct: trackedMin > 0 ? Math.round((productiveMin / trackedMin) * 100) : 0,
     longestFocusMin,
-    score: trackedMin > 0 ? Math.round(((productiveMin - distractionMin) / trackedMin) * 100) : null,
+    score: trackedMin > 0 ? dayScore(productiveMin, distractionMin, targetMin) : null,
   };
 }
 
 /**
+ * A day's target for productive time, in minutes. Four hours.
+ *
+ * Not an arbitrary round number: sustained focused work tops out at roughly
+ * this much per day for most people, and the research and the practitioners
+ * broadly agree. A target you can hit on a good day and miss honestly on a
+ * bad one is the only kind worth scoring against — set it at eight hours and
+ * every day reads as failure, which teaches you to stop looking.
+ */
+export const DEFAULT_DAILY_TARGET_MIN = 240;
+
+/**
+ * The productive-time target to score a day against.
+ *
+ * Prefers the user's own daily goals, summed across the categories that count
+ * as productive, so someone who has said what they are aiming for is scored
+ * against that rather than against our guess. Falls back to the default when
+ * no goals are set, which is the common case.
+ *
+ * @param {{goals?:Record<number, number>}} settings
+ * @param {Array<{id:number, weight:number, enabled?:boolean}>} categories
+ * @returns {number} minutes, always at least one slot
+ */
+export function dailyTargetMin(settings, categories) {
+  let sum = 0;
+  for (const c of categories) {
+    if (c.weight !== 1 || c.enabled === false) continue;
+    const goal = settings?.goals?.[c.id];
+    if (typeof goal === "number" && goal > 0) sum += goal;
+  }
+  return sum > 0 ? sum : DEFAULT_DAILY_TARGET_MIN;
+}
+
+/**
+ * How good was this day, from -100 to 100.
+ *
+ * The denominator is the whole design. It used to be `trackedMin` — the share
+ * of what you logged that was productive — and that had a perverse property:
+ * logging less raised your score. Paint two good hours, leave the other
+ * twenty-two blank, and the arithmetic returns +100, the same as a flawless
+ * full day and better than an honest one with a bad hour in it. The number
+ * rewarded exactly the behaviour the app exists to discourage.
+ *
+ * The floor at `targetMin` fixes that half: below the target, a short log is
+ * measured against the day you meant to have, so two productive hours against
+ * a four-hour target read 50 rather than 100.
+ *
+ * Weighted time, not tracked time, is the other half — and it is the subtler
+ * one. Dividing by everything logged would mean a day of four productive
+ * hours and four hours of break scored the same as two productive hours and
+ * nothing else admitted to: honesty about the break costing exactly what
+ * hiding half the day would. Since a neutral category is one the user has
+ * declared neither good nor bad, it belongs in neither half of the fraction.
+ * Breaks are free. Distraction is not, because they weighted it that way.
+ *
+ * What survives is one property worth stating plainly: logging a thing that
+ * actually happened can never raise your score, and logging a neutral one can
+ * never lower it. Honesty is never the losing move.
+ *
+ * @param {number} productiveMin
+ * @param {number} distractionMin
+ * @param {number} targetMin
+ * @returns {number} clamped to [-100, 100]
+ */
+export function dayScore(productiveMin, distractionMin, targetMin = DEFAULT_DAILY_TARGET_MIN) {
+  const weighted = productiveMin + distractionMin;
+  const denom = Math.max(weighted, targetMin, 1);
+  const raw = Math.round(((productiveMin - distractionMin) / denom) * 100);
+  return Math.max(-100, Math.min(100, raw));
+}
+
+/**
  * Below this much logged time, the score is arithmetic on too little to mean
- * anything. Thirty minutes of Deep Work and nothing else divides 30 by 30 and
- * reads +100 — the same as a flawless twelve-hour day, and better than an
- * honest one with a bad hour in it.
+ * anything, and it is withheld rather than asserted.
+ *
+ * The direction of the error changed when the denominator did. It used to
+ * flatter: thirty minutes of Deep Work and nothing else divided 30 by 30 and
+ * read +100. Now it accuses — thirty minutes against a four-hour target reads
+ * 13, which labels someone "off track" at nine in the morning for the crime
+ * of having logged early. Both are the same mistake, that a barely-started
+ * day is not yet a day, so the guard is still here and still needed.
  */
 export const MIN_TRACKED_FOR_SCORE = 120;
 
@@ -739,9 +815,13 @@ export function scoreBucket(score, trackedMin) {
   if (trackedMin !== undefined && trackedMin < MIN_TRACKED_FOR_SCORE) {
     return { labelKey: "scoreTooLittle", tone: "muted", provisional: true };
   }
-  if (score >= 40) return { labelKey: "scoreLockedIn", tone: "good" };
-  if (score >= 10) return { labelKey: "scoreSolid", tone: "good" };
-  if (score >= -15) return { labelKey: "scoreMixedBag", tone: "warning" };
+  // Re-cut for the target-based score. Under the old ratio these sat at
+  // 40/10/-15, which suited a number that hit 100 on two clean hours; against
+  // a target, 100 means a full productive day and the bands have to move up
+  // with it or every modest day reads as a triumph.
+  if (score >= 75) return { labelKey: "scoreLockedIn", tone: "good" };
+  if (score >= 45) return { labelKey: "scoreSolid", tone: "good" };
+  if (score >= 15) return { labelKey: "scoreMixedBag", tone: "warning" };
   return { labelKey: "scoreOffTrack", tone: "critical" };
 }
 
@@ -1351,6 +1431,64 @@ export function detectUntrackedLifeArea(days, categories, now) {
   };
 }
 
+export const TARGET_MISMATCH_WINDOW_DAYS = 21;
+/** Beating the target by a quarter, or missing it by half. Deliberately
+ *  asymmetric: a target you clear comfortably is only costing you a more
+ *  useful number, while one you never come close to quietly teaches you the
+ *  score is not about you — and people stop looking at scores like that. So
+ *  aiming too high has to be more wrong before it is worth raising. */
+export const TARGET_MISMATCH_RATIO_HIGH = 1.25;
+export const TARGET_MISMATCH_RATIO_LOW = 0.5;
+/** Below this the two figures round to nearly the same thing on screen, and
+ *  an observation whose own evidence looks identical reads as noise. */
+export const TARGET_MISMATCH_MIN_GAP_MIN = 30;
+
+const median = (xs) => {
+  const s = [...xs].sort((a, b) => a - b);
+  const mid = s.length >> 1;
+  return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+};
+
+/**
+ * A typical day's productive time sits well clear of the target it is scored
+ * against, in either direction.
+ *
+ * The median, not the mean: one fourteen-hour push should not raise a figure
+ * meant to describe an ordinary day, and one sick day should not lower it.
+ *
+ * Every other detector here reports something about the user's habits. This
+ * one reports that the app's own yardstick is the wrong length — which is
+ * worth saying out loud rather than leaving a number quietly wrong and
+ * letting them conclude the score is meaningless.
+ *
+ * It states both figures and stops. Whether to move the target, and which
+ * way, is advice, and lives in suggestions.js with the rest of it.
+ *
+ * @returns {Observation|null}
+ */
+export function detectTargetMismatch(days, categories, settings, now) {
+  if (!hasEnoughHistory(days, now)) return null;
+
+  const productiveMins = recentDays(days, now, TARGET_MISMATCH_WINDOW_DAYS)
+    .filter((day) => day && dayHasEntries(day))
+    .map((day) => computeStats(day.slots, categories).productiveMin);
+  if (productiveMins.length < MIN_LOGGED_DAYS) return null;
+
+  const target = dailyTargetMin(settings, categories);
+  const typical = Math.round(median(productiveMins) / SLOT_MIN) * SLOT_MIN;
+  if (Math.abs(typical - target) < TARGET_MISMATCH_MIN_GAP_MIN) return null;
+
+  const ratio = typical / target;
+  if (ratio < TARGET_MISMATCH_RATIO_HIGH && ratio > TARGET_MISMATCH_RATIO_LOW) return null;
+
+  return {
+    id: "targetMismatch",
+    headline: msg("obsTargetHeadline", fmtDuration(typical), fmtDuration(target)),
+    detail: msg("obsTargetDetail", String(TARGET_MISMATCH_WINDOW_DAYS), fmtDuration(typical), fmtDuration(target)),
+    suggestionKey: "targetMismatch",
+  };
+}
+
 /**
  * Runs every detector and returns whichever fired, dropping the rest. Order
  * is fixed (not sorted by severity or recency) so the list reads the same
@@ -1365,6 +1503,7 @@ export function detectPatterns(days, categories, settings, now = new Date()) {
     detectDistractionTrend(days, categories, now),
     detectCoverageDecline(days, settings, now),
     detectUntrackedLifeArea(days, categories, now),
+    detectTargetMismatch(days, categories, settings, now),
   ].filter(Boolean);
 }
 

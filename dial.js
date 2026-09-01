@@ -99,6 +99,7 @@ import {
   runAt,
   sameDay,
   scoreBucket,
+  dailyTargetMin,
   shouldAskForReview,
   shouldNudgeBackup,
   slotFromAngle,
@@ -1609,8 +1610,12 @@ function dayWindowMinutes() {
   return endMin > startMin ? { startMin, endMin } : null;
 }
 
+/** The productive-time target this day is scored against — the user's own
+ *  daily goals when they have set any, otherwise the default. */
+const scoreTarget = () => dailyTargetMin(settings, categories);
+
 function renderSide() {
-  const stats = computeStats(state.slots, categories, dayWindowMinutes());
+  const stats = computeStats(state.slots, categories, dayWindowMinutes(), scoreTarget());
 
   $("stat-tracked").textContent = fmtDuration(stats.trackedMin);
   $("stat-productive").textContent = stats.trackedMin ? `${stats.productivePct}%` : "—";
@@ -2121,7 +2126,7 @@ async function shareAsImage() {
   const key = dateKey(state.viewDate);
   const dateLabel = dateFmt({ weekday: "long", month: "long", day: "numeric" }).format(state.viewDate);
   const streak = isToday(state.viewDate) ? computeStreak(days, new Date()) : null;
-  const shareStats = computeStats(state.slots, categories, dayWindowMinutes());
+  const shareStats = computeStats(state.slots, categories, dayWindowMinutes(), scoreTarget());
   const shareTop = categories
     .map((c, i) => ({ name: c.name, min: shareStats.perCat[i] * SLOT_MIN }))
     .filter((r) => r.min > 0)

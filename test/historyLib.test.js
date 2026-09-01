@@ -72,7 +72,10 @@ test("buildMonthGrid distinguishes 'logged but low score' from 'not logged'", ()
 
   const logged = flat.find((c) => c.key === "2026-08-05");
   assert.equal(logged.logged, true);
-  assert.equal(logged.score, -100, "a fully-distraction day scores badly");
+  // One distracted hour against a four-hour target, not one hour out of one:
+  // a wasted hour, scored as a wasted hour rather than as a wasted day.
+  assert.equal(logged.score, -25, "a distraction-only day scores badly");
+  assert.ok(logged.score < 0);
 
   const unlogged = flat.find((c) => c.key === "2026-08-06");
   assert.equal(unlogged.logged, false, "no entries at all reads as unlogged, not scored");
@@ -105,13 +108,16 @@ test("monthSummary returns nulls when nothing is logged", () => {
 
 test("monthSummary tracks best day by score", () => {
   const days = new Map();
-  days.set("2026-08-01", dayWith(9, 10, 0)); // +100
-  days.set("2026-08-02", dayWith(9, 11, 0)); // +100, longer but same score
-  days.set("2026-08-03", dayWith(9, 10, 3)); // neutral admin, score 0
+  days.set("2026-08-01", dayWith(9, 10, 0)); // 1h productive → 25
+  days.set("2026-08-02", dayWith(9, 11, 0)); // 2h productive → 50
+  days.set("2026-08-03", dayWith(9, 10, 3)); // neutral admin → 0
 
   const summary = monthSummary(2026, 7, days, cats);
-  assert.equal(summary.bestDay.score, 100);
-  assert.ok(["2026-08-01", "2026-08-02"].includes(summary.bestDay.key));
+  // The two productive days used to tie at +100, because each divided its
+  // productive time by itself. Scored against a target, the longer day wins,
+  // which is the whole point of the change.
+  assert.equal(summary.bestDay.score, 50);
+  assert.equal(summary.bestDay.key, "2026-08-02", "two good hours beats one");
 });
 
 test("monthSummary computes current and longest streak within the month only", () => {
@@ -197,15 +203,15 @@ test("categoryTrendDirection is flat on no weeks or no change", () => {
 test("weekStats aggregates tracked time and averages score over logged days", () => {
   const start = new Date(2026, 7, 3); // a Monday
   const days = new Map();
-  days.set(dateKey(start), dayWith(9, 10, 0)); // +100
+  days.set(dateKey(start), dayWith(9, 10, 0)); // 1h productive → 25
   const next = new Date(start);
   next.setDate(next.getDate() + 1);
-  days.set(dateKey(next), dayWith(9, 11, 5)); // 2h distraction, -100
+  days.set(dateKey(next), dayWith(9, 11, 5)); // 2h distraction → -50
 
   const stats = weekStats(days, cats, start);
   assert.equal(stats.daysLogged, 2);
   assert.equal(stats.trackedMin, 180);
-  assert.equal(stats.avgScore, 0);
+  assert.equal(stats.avgScore, -12, "mean of 25 and -50, rounded");
 });
 
 test("weekStats returns null averages and zero minutes for an empty week", () => {

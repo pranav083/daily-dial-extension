@@ -509,7 +509,7 @@
     "message": "每个类别的每日目标"
   },
   "dailyGoalsNote": {
-    "message": "留空表示不设目标。设定目标后，进度会显示在侧边面板中。"
+    "message": "留空表示不设目标。设定目标后，进度会显示在侧边面板中；高效类别的目标合计，也决定了每日评分的基准。"
   },
   "weeklyGoalsSectionLabel": {
     "message": "每个类别的每周目标"
@@ -2432,5 +2432,39 @@
   },
   "dialStartWaking": {
     "message": "我的起床时间"
+  },
+  "obsTargetHeadline": {
+    "message": "这里典型的一天有 $TYPICAL$ 的高效时间，而目标是 $TARGET$",
+    "placeholders": {
+      "typical": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsTargetDetail": {
+    "message": "过去 $DAYS$ 天里，你的中位数一天有 $TYPICAL$ 的高效时间。每日评分以 $TARGET$ 为基准。",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "typical": {
+        "content": "$2"
+      },
+      "target": {
+        "content": "$3"
+      }
+    }
+  },
+  "sug_targetMismatch_lead": {
+    "message": "目标是一项设置，不是一个判决。当它不再贴合你时，就值得调整。"
+  },
+  "sug_targetMismatch_text1": {
+    "message": "如果你大多数日子都能超过它，就把它调高。总能达成的目标不再说明任何事——评分会在接近上限处变平，再也分不出好的一天和平常的一天。"
+  },
+  "sug_targetMismatch_text2": {
+    "message": "如果你很少接近它，就把它调低。够不着的目标不会让任何人多做一点，只会让这个数字显得像在说别人，而这样的数字最终会被无视。"
   }
 }

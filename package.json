@@ -1,6 +1,6 @@
 {
   "name": "daily-dial-extension",
-  "version": "1.33.0",
+  "version": "1.34.0",
   "private": true,
   "description": "Chrome extension: paint your day on a 24-hour dial and see where the time went.",
   "type": "module",

@@ -509,7 +509,7 @@
     "message": "Metas diárias, por categoria"
   },
   "dailyGoalsNote": {
-    "message": "Deixe em branco para nenhuma meta. O progresso aparece no painel lateral assim que uma meta é definida."
+    "message": "Deixe em branco para nenhuma meta. O progresso aparece no painel lateral assim que uma meta é definida, e as metas das categorias produtivas formam juntas a referência da pontuação diária."
   },
   "weeklyGoalsSectionLabel": {
     "message": "Metas semanais, por categoria"
@@ -2597,5 +2597,39 @@
   },
   "dialStartWaking": {
     "message": "Minha hora de acordar"
+  },
+  "obsTargetHeadline": {
+    "message": "Um dia típico aqui são $TYPICAL$ de tempo produtivo, para uma meta de $TARGET$",
+    "placeholders": {
+      "typical": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "obsTargetDetail": {
+    "message": "Nos últimos $DAYS$ dias, seu dia mediano teve $TYPICAL$ de tempo produtivo. A pontuação diária é medida em relação a $TARGET$.",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      },
+      "typical": {
+        "content": "$2"
+      },
+      "target": {
+        "content": "$3"
+      }
+    }
+  },
+  "sug_targetMismatch_lead": {
+    "message": "A meta é um ajuste, não um veredito. Vale movê-la quando deixa de descrever você."
+  },
+  "sug_targetMismatch_text1": {
+    "message": "Se você a supera na maioria dos dias, aumente-a. Uma meta que você sempre alcança para de dizer qualquer coisa — a pontuação achata perto do topo e não distingue mais um bom dia de um dia comum."
+  },
+  "sug_targetMismatch_text2": {
+    "message": "Se você raramente chega perto, diminua-a. Uma meta inalcançável não faz ninguém produzir mais; só faz o número parecer que é sobre outra pessoa, e um número assim acaba ignorado."
   }
 }

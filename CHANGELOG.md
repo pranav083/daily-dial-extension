@@ -8,25 +8,61 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.34.0] — 2026-09-01
+
+### Changed
+
+- **The daily score is measured against a target, not against itself.** It
+  used to divide productive time by however much you had logged, so logging
+  *less* raised it: two good hours and a blank day read +100, the same as a
+  flawless twelve-hour day and better than an honest one with a bad hour in
+  it. The number rewarded exactly the behaviour the app exists to discourage.
+  It now divides by your daily target where you fall short of it, so two
+  productive hours against a four-hour target read 50.
+- **Neutral time no longer counts against you.** Only productive and
+  distraction minutes are in the fraction. Dividing by everything logged
+  would have meant four productive hours plus four hours of break scoring the
+  same as two productive hours and nothing else admitted to — honesty about a
+  break costing exactly what hiding half the day would. Breaks are free;
+  distraction is not, because that is how you weighted it.
+- The target comes from your own daily goals on productive categories
+  (Settings → Goals), summed, and falls back to four hours when none are set.
+- Score bands re-cut for the new scale. Under the old ratio they sat at
+  40/10/-15, which suited a number that hit 100 on two clean hours.
+
 ### Added
 
+- **An observation when the target and your typical day drift apart** — a
+  median day well clear of the target in either direction, after three weeks
+  of history like every other pattern. It states both figures and leaves the
+  advice to the suggestion, which is the only one in the catalog about the
+  app rather than about you, and names no tool at all.
 - **A Firefox build.** `npm run build:firefox` produces one from the same
-  sources; not yet submitted to addons.mozilla.org.
+  sources, submitted to addons.mozilla.org.
 - `npm run firefox:redirect` prints the Google OAuth redirect URI Firefox
   uses. It is derived from the add-on id and differs from Chrome's, so Drive
   backup fails on Firefox alone until it is registered.
 
-### Changed
+### Fixed
 
-- The Firefox build declares `data_collection_permissions: ["none"]` and
-  raises its floor to Firefox 140 (142 on Android), which that key requires.
-  AMO rejects a new extension without it, as an *error* — where
-  `addons-linter` reports only a *warning*, at every version, since only AMO
-  knows an extension is new. That failure therefore cannot be reproduced
-  locally at all: a clean lint is necessary and not sufficient.
+- **Google Drive backup worked only for the developer.** The OAuth app's
+  publishing status was left on Testing, which is not a milder setting but a
+  hard allowlist of 100 accounts — so every real user was refused at Google's
+  own consent screen, on Chrome as much as Firefox, where it read as a broken
+  extension rather than a switch in a console they cannot see. Invisible to
+  the obvious test, since the developer is always on the list.
+
+### Notes on the Firefox build
+
+- It declares `data_collection_permissions: ["none"]` and raises its floor to
+  Firefox 140 (142 on Android), which that key requires. AMO rejects a new
+  extension without it, as an *error* — where `addons-linter` reports only a
+  *warning*, at every version, since only AMO knows an extension is new. That
+  failure cannot be reproduced locally at all: a clean lint is necessary and
+  not sufficient.
 - The higher floor turned out to cost nothing and pay for itself:
   `runtime.getContexts` ships in Firefox 140, so four compatibility warnings
-  went with it. The build now lints at 0 errors, 2 warnings.
+  went with it. The build lints at 0 errors, 2 warnings.
 
 ## [1.33.0] — 2026-08-31
 
