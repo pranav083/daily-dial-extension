@@ -8,6 +8,18 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.34.1] — 2026-09-02
+
+### Fixed
+
+- **The shading over hours that haven't happened yet was frozen at whatever
+  time the day last re-rendered.** The 30-second timer moved the needle and
+  the centre clock but never redrew the future arc, so a tab left open all
+  afternoon showed the needle sitting well inside its own shaded "future" —
+  and hours that had already passed still looked unavailable to paint. The
+  arc is a function of the current time in exactly the way the needle is, and
+  now refreshes alongside it.
+
 ## [1.34.0] — 2026-09-01
 
 ### Changed

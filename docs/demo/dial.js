@@ -1278,7 +1278,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     }
   });
 
-  return { render, renderSegments, renderNeedle, renderCenter };
+  return { render, renderSegments, renderNeedle, renderCenter, renderFuture };
 }
 
 const dialEngines = {
@@ -1382,12 +1382,21 @@ function stampSlots(next) {
 }
 
 /** The clock-face upkeep a 30-second timer does: move the needle, refresh
- *  the centre time. No data changed, so segments are left alone. */
+ *  the centre time, and pull back the shading over the hours that have not
+ *  happened yet. Painted segments are left alone, since no data changed.
+ *
+ *  The future arc belongs here and was missed when it was added: it is not
+ *  data, it is a function of the current time in exactly the way the needle
+ *  is. Leaving it out froze it wherever it happened to be when the day last
+ *  re-rendered, so a tab left open all afternoon showed a needle at 19:15
+ *  sitting well inside its own shaded "future" — and, worse, hours that had
+ *  already passed still looked unavailable to paint. */
 function refreshLive() {
   checkDayRollover();
   for (const engine of activeEngines()) {
     engine.renderNeedle();
     engine.renderCenter();
+    engine.renderFuture();
   }
 }
 
