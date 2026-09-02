@@ -12,6 +12,16 @@ The version here always matches `manifest.json`.
 
 ### Changed
 
+- **"Share as image" now photographs the view itself** rather than building a
+  card that resembles it — the dial, the week, the read-out, all of it, as it
+  appears on screen. The browser asks permission each time, which is the whole
+  cost: it needs no manifest permission, so nothing new appears on the
+  extension's listing. A tab capture only sees the viewport, so anything
+  scrolled out of sight is not in the picture, exactly as with any screenshot.
+- The generated card remains as the fallback for a browser that cannot
+  capture, and it now carries the day's breakdown rather than a bare ring and
+  a number.
+
 - **The week strip shows what was in each day, not just how it scored.** Every
   bar is now made of the category colours, sized by time, so a week reads as
   seven small compositions — a red block is a lost day, a long blue one is a

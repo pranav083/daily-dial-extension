@@ -2147,6 +2147,78 @@ function rasterizeSvgToPng(svgMarkup, width, height, scale = 2) {
   });
 }
 
+/** Photographs the live view, by asking the browser to capture this tab.
+ *
+ *  The obvious approach — serialise the DOM into an <svg><foreignObject> and
+ *  rasterise it — cannot work: Chrome taints the canvas for any SVG that
+ *  contains a foreignObject, so toBlob() refuses. That is true of an SVG
+ *  whose entire content is the word "hi", with nothing external in it, so no
+ *  amount of inlining gets around it.
+ *
+ *  Tab capture is the way left that produces a real picture of the real
+ *  thing. It needs no manifest permission at all — the browser asks the user
+ *  directly, every time — which suits an extension whose whole argument is
+ *  that it holds no permissions. The cost is that dialog, and it is the
+ *  reason the generated card is still here for anyone who would rather not
+ *  see it.
+ *
+ *  Must be the first await after the click: the permission prompt requires
+ *  transient user activation, and any earlier await spends it. */
+async function captureTabToPng(node) {
+  if (!navigator.mediaDevices?.getDisplayMedia) throw new Error("no display capture here");
+  const stream = await navigator.mediaDevices.getDisplayMedia({
+    video: { displaySurface: "browser" },
+    audio: false,
+    // Chrome-specific hints that put this tab at the top of the picker.
+    // Firefox ignores them and shows its own; both end up capturing a tab.
+    preferCurrentTab: true,
+    selfBrowserSurface: "include",
+    surfaceSwitching: "exclude",
+  });
+
+  try {
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    video.muted = true;
+    await video.play();
+    // play() resolves before a frame necessarily exists; drawing then gives
+    // a blank canvas. Wait for an actual painted frame.
+    await new Promise((resolve) => {
+      if (video.requestVideoFrameCallback) video.requestVideoFrameCallback(() => resolve());
+      else requestAnimationFrame(() => requestAnimationFrame(resolve));
+    });
+
+    // The frame covers the viewport, in device pixels; the element's box is
+    // in CSS pixels. One ratio converts between them.
+    const scaleX = video.videoWidth / window.innerWidth;
+    const scaleY = video.videoHeight / window.innerHeight;
+    const rect = node.getBoundingClientRect();
+    const sx = Math.max(0, Math.round(rect.left * scaleX));
+    const sy = Math.max(0, Math.round(rect.top * scaleY));
+    const sw = Math.min(video.videoWidth - sx, Math.round(rect.width * scaleX));
+    const sh = Math.min(video.videoHeight - sy, Math.round(rect.height * scaleY));
+    if (sw <= 0 || sh <= 0) throw new Error("the view is not on screen to be photographed");
+    // A tab capture sees the viewport and nothing else, so anything scrolled
+    // out of sight is simply not in the photograph. That is how every
+    // screenshot behaves and is left alone deliberately — quietly shrinking
+    // the page to fit would produce an image of something the user never saw.
+    if (rect.bottom > window.innerHeight + 1 || rect.right > window.innerWidth + 1) {
+      console.info("Daily Dial: part of the view is off-screen and will not be in the image");
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = sw;
+    canvas.height = sh;
+    canvas.getContext("2d").drawImage(video, sx, sy, sw, sh, 0, 0, sw, sh);
+    video.pause();
+    return await new Promise((resolve, reject) =>
+      canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("canvas.toBlob returned null"))), "image/png")
+    );
+  } finally {
+    for (const track of stream.getTracks()) track.stop();
+  }
+}
+
 async function shareAsImage() {
   const key = dateKey(state.viewDate);
   const dateLabel = dateFmt({ weekday: "long", month: "long", day: "numeric" }).format(state.viewDate);
@@ -2170,13 +2242,25 @@ async function shareAsImage() {
     untracked: t("untrackedCapitalized"),
   });
 
+  // A photograph of the view first, since that is what people mean by
+  // "share this". The card is the fallback, for a browser that cannot capture
+  // and for anyone who dismisses the prompt without meaning to cancel.
   let blob;
   try {
-    blob = await rasterizeSvgToPng(svgMarkup, 1000, 560);
+    blob = await captureTabToPng($("view-day"));
   } catch (err) {
-    console.error("Daily Dial: could not render a share image", err);
-    toast(t("shareImageErrorToast"));
-    return;
+    // Dismissing the browser's own prompt is a decision, not a failure. Doing
+    // nothing is what the user just asked for; handing them a different image
+    // instead would be ignoring them.
+    if (err?.name === "NotAllowedError") return;
+    console.warn("Daily Dial: could not photograph the view, falling back to the card", err);
+    try {
+      blob = await rasterizeSvgToPng(svgMarkup, 1000, 560);
+    } catch (fallbackErr) {
+      console.error("Daily Dial: could not render a share image", fallbackErr);
+      toast(t("shareImageErrorToast"));
+      return;
+    }
   }
 
   // Not routed through navigator.share(): on desktop Chrome it's frequently
