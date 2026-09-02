@@ -15,6 +15,19 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.35.0] — 2026-09-02
+
+### Changed
+
+- **The week strip shows what was in each day, not just how it scored.** Every
+  bar is now made of the category colours, sized by time, so a week reads as
+  seven small compositions — a red block is a lost day, a long blue one is a
+  day of deep work, and you can find "which day did I actually study" without
+  opening any of them. It was a single bar tinted green through red, which
+  told you a verdict and nothing about what produced it. Bar length is still a
+  share of the whole 24 hours, so it stays an honest measure of how much of a
+  day was logged at all.
+
 ## [1.34.1] — 2026-09-02
 
 ### Fixed

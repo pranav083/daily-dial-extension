@@ -2012,14 +2012,30 @@ function renderStrip() {
 
     const track = document.createElement("span");
     track.className = "bar-track";
-    const fill = document.createElement("span");
-    fill.className = "bar-fill";
-    // A custom property rather than a dimension: the bar runs left-to-right
-    // beside the ring and bottom-to-top when the card is narrow enough to put
-    // the strip back on top, and only CSS knows which layout is in force.
-    fill.style.setProperty("--fill", `${stats.score === null ? 6 : Math.max(6, (stats.score + 100) / 2)}%`);
-    fill.style.background = `var(${toneVar(bucket.tone)})`;
-    track.appendChild(fill);
+    // One segment per category that has time in it, so a week reads as seven
+    // little compositions rather than seven shades of one colour. A single
+    // score-tinted bar said how a day went but never what was in it — and
+    // scanning for "which day did I actually study" is the thing this column
+    // is looked at for.
+    //
+    // Category order, not longest-first: the same colour then sits in the
+    // same place from one row to the next, which is what makes the week
+    // comparable at a glance rather than seven bars to read individually.
+    //
+    // Widths are a share of the whole 24 hours, so bar length stays an
+    // honest measure of how much of the day was logged at all.
+    categories.forEach((cat, i) => {
+      const min = stats.perCat[i] * SLOT_MIN;
+      if (min <= 0) return;
+      const seg = document.createElement("span");
+      seg.className = "bar-seg";
+      // A custom property rather than a dimension: the bar runs left-to-right
+      // beside the ring and bottom-to-top when the card is narrow enough to
+      // put the strip back on top, and only CSS knows which layout is in force.
+      seg.style.setProperty("--seg", `${(min / (SLOTS * SLOT_MIN)) * 100}%`);
+      seg.style.background = `var(--${cat.cls})`;
+      track.appendChild(seg);
+    });
 
     const num = document.createElement("span");
     num.className = "num";
