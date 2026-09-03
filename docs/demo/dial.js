@@ -2762,41 +2762,33 @@ function renderChallenge() {
   $("challenge-progress-name").textContent = progress.name;
 
   const status = $("challenge-status");
-  const tone = progress.status === "complete" ? "good" : progress.status === "outOfReach" ? "critical" : "";
+  const tone = progress.status === "complete" ? "good" : progress.status === "broken" ? "critical" : "";
   status.className = `challenge-status${tone ? " " + tone : ""}`;
   status.textContent = t(
     progress.status === "complete" ? "challengeStatusComplete"
-      : progress.status === "outOfReach" ? "challengeStatusOutOfReach"
+      : progress.status === "broken" ? "challengeStatusBroken"
       : "challengeStatusOnTrack"
   );
 
-  // Against the days that must be kept, not the calendar length — the bar
-  // should fill when the challenge is actually won.
-  const denom = progress.required || progress.day || 1;
-  $("challenge-meter-fill").style.width = `${Math.min(100, Math.round((progress.metDays / denom) * 100))}%`;
+  const denom = progress.targetDays || Math.max(progress.run, 1);
+  $("challenge-meter-fill").style.width = `${Math.min(100, Math.round((progress.run / denom) * 100))}%`;
   $("challenge-meter-fill").style.background = `var(${toneVar(tone === "critical" ? "critical" : "good")})`;
 
-  // State the rule before the tally. "Kept 1 of 18" on a 21-day challenge is
-  // unreadable without knowing where 18 came from.
-  const rule = $("challenge-rule");
-  rule.hidden = !progress.targetDays;
-  if (progress.targetDays) {
-    rule.textContent = t("challengeRule", [String(progress.day), String(progress.targetDays), String(progress.required)]);
-  }
+  $("challenge-run").textContent = progress.targetDays
+    ? t("challengeRunOf", [String(progress.run), String(progress.targetDays)])
+    : t("challengeRunOpen", [String(progress.run)]);
 
-  $("challenge-kept").textContent = progress.targetDays
-    ? t("challengeKeptOf", [String(progress.metDays), String(progress.required)])
-    : t("challengeKeptSoFar", [String(progress.metDays)]);
+  // What a day has to contain. Without it, "this day does not count" is a
+  // verdict with its reason left off.
+  const goal = progress.goal;
+  $("challenge-goal-summary").textContent =
+    goal.kind === "minutes"
+      ? t("challengeGoalEachMinutes", [fmtDuration(goal.minutes), categories[goal.categoryId]?.name ?? ""])
+      : goal.kind === "score"
+        ? t("challengeGoalEachScore", [String(goal.score)])
+        : t("challengeGoalEachLogged");
 
-  const missed = $("challenge-missed");
-  missed.hidden = !progress.targetDays;
-  if (progress.targetDays) {
-    missed.textContent = t("challengeMissedOf", [String(progress.missedDays), String(progress.allowedMisses)]);
-  }
-
-  // About the day on screen, not about today. Stepping back to yesterday and
-  // being told "today does not count yet" is a sentence about a day you are
-  // not looking at.
+  // About the day on screen, not about today.
   const line = $("challenge-today");
   const start = new Date(settings.challenge.startKey + "T00:00:00");
   const viewed = new Date(state.viewDate);
@@ -2805,9 +2797,33 @@ function renderChallenge() {
   const insideRun = offset >= 0 && (!progress.targetDays || offset < progress.targetDays);
   line.hidden = !insideRun;
   if (insideRun) {
-    const met = challengeDayMet({ slots: state.slots }, categories, progress.goal, scoreTarget());
+    const met = challengeDayMet({ slots: state.slots }, categories, goal, scoreTarget());
     line.textContent = t(met ? "challengeDayCounts" : "challengeDayNotYet");
   }
+
+  const broken = $("challenge-broken");
+  broken.hidden = progress.status !== "broken";
+  if (progress.status === "broken") {
+    broken.textContent = t("challengeBrokenOn", [
+      fmtFullDate(new Date(progress.brokenOn + "T00:00:00")),
+      String(progress.bestRun),
+    ]);
+  }
+  $("challenge-restart").hidden = progress.status !== "broken";
+}
+
+/** Starts the same challenge again from today. A broken run is not a reason
+ *  to make someone retype the name and re-pick the goal. */
+function restartChallenge() {
+  if (!settings.challenge) return;
+  settings = normalizeSettings({
+    ...settings,
+    challenge: { ...settings.challenge, startKey: dateKey(new Date()) },
+  });
+  persistSettings();
+  syncChallengeInputs();
+  renderChallenge();
+  toast(t("challengeRestartedToast"));
 }
 
 function syncAutoBackupInputs() {
@@ -3925,6 +3941,7 @@ function wireEvents() {
     $(id).addEventListener("change", saveChallenge);
   }
   $("challenge-clear").addEventListener("click", clearChallenge);
+  $("challenge-restart").addEventListener("click", restartChallenge);
   $("template-form").addEventListener("submit", (evt) => {
     evt.preventDefault();
     saveTemplateFromToday();

@@ -618,12 +618,16 @@
   "challengeGoalAmountLabel": "Menge",
   "challengeStatusOnTrack": "Auf Kurs",
   "challengeStatusComplete": "Geschafft",
-  "challengeStatusOutOfReach": "Nicht mehr erreichbar",
-  "challengeKeptOf": "$MET$ von $REQUIRED$ gehalten",
-  "challengeKeptSoFar": "Bisher $MET$ gehalten",
-  "challengeMissedOf": "$MISSED$ von $ALLOWED$ erlaubten verpasst",
   "challengeProgressTooltip": "Wie es um diese Challenge steht: gehaltene Tage, verpasste Tage und ob sie noch zu schaffen ist.",
-  "challengeRule": "Tag $DAY$ von $TARGET$ — $REQUIRED$ halten zum Abschluss",
   "challengeDayCounts": "Dieser Tag zählt",
-  "challengeDayNotYet": "Dieser Tag zählt nicht"
+  "challengeDayNotYet": "Dieser Tag zählt nicht",
+  "challengeGoalEachLogged": "Jeden Tag: irgendetwas erfasst",
+  "challengeGoalEachMinutes": "Jeden Tag: $AMOUNT$ $CATEGORY$",
+  "challengeGoalEachScore": "Jeden Tag: Wertung $SCORE$ oder mehr",
+  "challengeRunOf": "$RUN$ von $TARGET$ Tagen in Folge",
+  "challengeRunOpen": "$RUN$ Tage in Folge",
+  "challengeStatusBroken": "Gerissen",
+  "challengeBrokenOn": "Die Serie endete am $DATE$. Längste bisher: $BEST$.",
+  "challengeRestartLabel": "Ab heute neu starten",
+  "challengeRestartedToast": "Challenge ab heute neu gestartet"
 }

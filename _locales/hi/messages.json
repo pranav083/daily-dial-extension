@@ -2656,60 +2656,74 @@
   "challengeStatusComplete": {
     "message": "पूरा हुआ"
   },
-  "challengeStatusOutOfReach": {
-    "message": "अब पहुँच से बाहर"
-  },
-  "challengeKeptOf": {
-    "message": "$REQUIRED$ में से $MET$ निभाए",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      },
-      "required": {
-        "content": "$2"
-      }
-    }
-  },
-  "challengeKeptSoFar": {
-    "message": "अब तक $MET$ निभाए",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      }
-    }
-  },
-  "challengeMissedOf": {
-    "message": "$ALLOWED$ अनुमत में से $MISSED$ छूटे",
-    "placeholders": {
-      "missed": {
-        "content": "$1"
-      },
-      "allowed": {
-        "content": "$2"
-      }
-    }
-  },
   "challengeProgressTooltip": {
     "message": "यह चुनौती कैसी चल रही है: निभाए दिन, छूटे दिन, और क्या इसे अब भी पूरा किया जा सकता है।"
-  },
-  "challengeRule": {
-    "message": "$TARGET$ में से दिन $DAY$ — पूरा करने के लिए $REQUIRED$ निभाएँ",
-    "placeholders": {
-      "day": {
-        "content": "$1"
-      },
-      "target": {
-        "content": "$2"
-      },
-      "required": {
-        "content": "$3"
-      }
-    }
   },
   "challengeDayCounts": {
     "message": "यह दिन गिना जाएगा"
   },
   "challengeDayNotYet": {
     "message": "यह दिन गिना नहीं जाएगा"
+  },
+  "challengeGoalEachLogged": {
+    "message": "हर दिन: कुछ भी दर्ज हो"
+  },
+  "challengeGoalEachMinutes": {
+    "message": "हर दिन: $CATEGORY$ में $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "category": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeGoalEachScore": {
+    "message": "हर दिन: स्कोर $SCORE$ या अधिक",
+    "placeholders": {
+      "score": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeRunOf": {
+    "message": "$TARGET$ में से $RUN$ दिन लगातार",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRunOpen": {
+    "message": "$RUN$ दिन लगातार",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeStatusBroken": {
+    "message": "टूट गया"
+  },
+  "challengeBrokenOn": {
+    "message": "सिलसिला $DATE$ को टूटा। सबसे लंबा: $BEST$।",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRestartLabel": {
+    "message": "आज से फिर शुरू करें"
+  },
+  "challengeRestartedToast": {
+    "message": "चुनौती आज से फिर शुरू"
   }
 }

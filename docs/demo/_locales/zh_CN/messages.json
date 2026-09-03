@@ -2491,60 +2491,74 @@
   "challengeStatusComplete": {
     "message": "已完成"
   },
-  "challengeStatusOutOfReach": {
-    "message": "已无法完成"
-  },
-  "challengeKeptOf": {
-    "message": "已完成 $MET$ / $REQUIRED$ 天",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      },
-      "required": {
-        "content": "$2"
-      }
-    }
-  },
-  "challengeKeptSoFar": {
-    "message": "目前已完成 $MET$ 天",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      }
-    }
-  },
-  "challengeMissedOf": {
-    "message": "已错过 $MISSED$ 天，允许 $ALLOWED$ 天",
-    "placeholders": {
-      "missed": {
-        "content": "$1"
-      },
-      "allowed": {
-        "content": "$2"
-      }
-    }
-  },
   "challengeProgressTooltip": {
     "message": "这项挑战的进展：完成的天数、错过的天数，以及是否还能完成。"
-  },
-  "challengeRule": {
-    "message": "第 $DAY$ / $TARGET$ 天 — 需完成 $REQUIRED$ 天",
-    "placeholders": {
-      "day": {
-        "content": "$1"
-      },
-      "target": {
-        "content": "$2"
-      },
-      "required": {
-        "content": "$3"
-      }
-    }
   },
   "challengeDayCounts": {
     "message": "这一天已计入"
   },
   "challengeDayNotYet": {
     "message": "这一天未计入"
+  },
+  "challengeGoalEachLogged": {
+    "message": "每天：有记录即可"
+  },
+  "challengeGoalEachMinutes": {
+    "message": "每天：$CATEGORY$ $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "category": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeGoalEachScore": {
+    "message": "每天：评分 $SCORE$ 或以上",
+    "placeholders": {
+      "score": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeRunOf": {
+    "message": "连续 $RUN$ / $TARGET$ 天",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRunOpen": {
+    "message": "连续 $RUN$ 天",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeStatusBroken": {
+    "message": "已中断"
+  },
+  "challengeBrokenOn": {
+    "message": "连续记录在 $DATE$ 中断。最长为 $BEST$ 天。",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRestartLabel": {
+    "message": "从今天重新开始"
+  },
+  "challengeRestartedToast": {
+    "message": "挑战已从今天重新开始"
   }
 }

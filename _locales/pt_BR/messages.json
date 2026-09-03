@@ -2656,60 +2656,74 @@
   "challengeStatusComplete": {
     "message": "Concluído"
   },
-  "challengeStatusOutOfReach": {
-    "message": "Fora de alcance"
-  },
-  "challengeKeptOf": {
-    "message": "$MET$ de $REQUIRED$ cumpridos",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      },
-      "required": {
-        "content": "$2"
-      }
-    }
-  },
-  "challengeKeptSoFar": {
-    "message": "$MET$ cumpridos até agora",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      }
-    }
-  },
-  "challengeMissedOf": {
-    "message": "$MISSED$ perdidos de $ALLOWED$ permitidos",
-    "placeholders": {
-      "missed": {
-        "content": "$1"
-      },
-      "allowed": {
-        "content": "$2"
-      }
-    }
-  },
   "challengeProgressTooltip": {
     "message": "Como vai este desafio: dias cumpridos, dias perdidos e se ainda dá para terminar."
-  },
-  "challengeRule": {
-    "message": "Dia $DAY$ de $TARGET$ — cumpra $REQUIRED$ para concluir",
-    "placeholders": {
-      "day": {
-        "content": "$1"
-      },
-      "target": {
-        "content": "$2"
-      },
-      "required": {
-        "content": "$3"
-      }
-    }
   },
   "challengeDayCounts": {
     "message": "Este dia conta"
   },
   "challengeDayNotYet": {
     "message": "Este dia não conta"
+  },
+  "challengeGoalEachLogged": {
+    "message": "Todo dia: qualquer registro"
+  },
+  "challengeGoalEachMinutes": {
+    "message": "Todo dia: $AMOUNT$ de $CATEGORY$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "category": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeGoalEachScore": {
+    "message": "Todo dia: pontuação $SCORE$ ou mais",
+    "placeholders": {
+      "score": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeRunOf": {
+    "message": "$RUN$ de $TARGET$ dias seguidos",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRunOpen": {
+    "message": "$RUN$ dias seguidos",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeStatusBroken": {
+    "message": "Interrompido"
+  },
+  "challengeBrokenOn": {
+    "message": "A sequência terminou em $DATE$. A maior até agora: $BEST$.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRestartLabel": {
+    "message": "Recomeçar a partir de hoje"
+  },
+  "challengeRestartedToast": {
+    "message": "Desafio recomeçado a partir de hoje"
   }
 }

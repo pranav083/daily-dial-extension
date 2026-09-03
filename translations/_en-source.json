@@ -2307,28 +2307,8 @@
     "message": "Complete",
     "description": "Challenge goal and progress, shown in the UI."
   },
-  "challengeStatusOutOfReach": {
-    "message": "Out of reach",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
-  "challengeKeptOf": {
-    "message": "Kept $MET$ of $REQUIRED$",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
-  "challengeKeptSoFar": {
-    "message": "Kept $MET$ so far",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
-  "challengeMissedOf": {
-    "message": "Missed $MISSED$ of $ALLOWED$ allowed",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
   "challengeProgressTooltip": {
     "message": "How this challenge is going: days kept, days missed, and whether it can still be finished.",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
-  "challengeRule": {
-    "message": "Day $DAY$ of $TARGET$ — keep $REQUIRED$ to finish",
     "description": "Challenge goal and progress, shown in the UI."
   },
   "challengeDayCounts": {
@@ -2337,6 +2317,42 @@
   },
   "challengeDayNotYet": {
     "message": "This day does not count",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalEachLogged": {
+    "message": "Each day: anything logged",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalEachMinutes": {
+    "message": "Each day: $AMOUNT$ of $CATEGORY$",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalEachScore": {
+    "message": "Each day: score $SCORE$ or more",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeRunOf": {
+    "message": "$RUN$ of $TARGET$ days in a row",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeRunOpen": {
+    "message": "$RUN$ days in a row",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeStatusBroken": {
+    "message": "Broken",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeBrokenOn": {
+    "message": "The run ended on $DATE$. Longest so far: $BEST$.",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeRestartLabel": {
+    "message": "Restart from today",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeRestartedToast": {
+    "message": "Challenge restarted from today",
     "description": "Challenge goal and progress, shown in the UI."
   }
 }

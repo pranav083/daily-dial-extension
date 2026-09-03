@@ -2986,60 +2986,74 @@
   "challengeStatusComplete": {
     "message": "Выполнено"
   },
-  "challengeStatusOutOfReach": {
-    "message": "Уже недостижимо"
-  },
-  "challengeKeptOf": {
-    "message": "Выдержано $MET$ из $REQUIRED$",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      },
-      "required": {
-        "content": "$2"
-      }
-    }
-  },
-  "challengeKeptSoFar": {
-    "message": "Выдержано $MET$",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      }
-    }
-  },
-  "challengeMissedOf": {
-    "message": "Пропущено $MISSED$ из $ALLOWED$ допустимых",
-    "placeholders": {
-      "missed": {
-        "content": "$1"
-      },
-      "allowed": {
-        "content": "$2"
-      }
-    }
-  },
   "challengeProgressTooltip": {
     "message": "Как идёт этот вызов: выдержанные дни, пропущенные дни и остаётся ли он выполнимым."
-  },
-  "challengeRule": {
-    "message": "День $DAY$ из $TARGET$ — выдержать $REQUIRED$ для завершения",
-    "placeholders": {
-      "day": {
-        "content": "$1"
-      },
-      "target": {
-        "content": "$2"
-      },
-      "required": {
-        "content": "$3"
-      }
-    }
   },
   "challengeDayCounts": {
     "message": "Этот день засчитан"
   },
   "challengeDayNotYet": {
     "message": "Этот день не засчитан"
+  },
+  "challengeGoalEachLogged": {
+    "message": "Каждый день: хоть что-то записано"
+  },
+  "challengeGoalEachMinutes": {
+    "message": "Каждый день: $AMOUNT$ в категории $CATEGORY$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "category": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeGoalEachScore": {
+    "message": "Каждый день: оценка $SCORE$ или выше",
+    "placeholders": {
+      "score": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeRunOf": {
+    "message": "$RUN$ из $TARGET$ дней подряд",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRunOpen": {
+    "message": "$RUN$ дней подряд",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeStatusBroken": {
+    "message": "Прервано"
+  },
+  "challengeBrokenOn": {
+    "message": "Серия оборвалась $DATE$. Самая длинная: $BEST$.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRestartLabel": {
+    "message": "Начать заново с сегодня"
+  },
+  "challengeRestartedToast": {
+    "message": "Вызов начат заново с сегодняшнего дня"
   }
 }

@@ -1521,51 +1521,50 @@ test("normalizeChallengeGoal refuses nonsense without dropping the challenge", (
   assert.equal(normalizeChallengeGoal({ kind: "score", score: 999 }).score, 100, "clamped");
 });
 
-test("challengeProgress counts kept days, and never marks today as missed", () => {
-  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 10 } }).challenge;
-  // Five days done: kept, kept, missed, kept, and today still blank.
-  const days = challengeDays("2026-08-11", [true, true, false, true, false]);
+test("a challenge is consecutive — one missed day ends the run", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 21 } }).challenge;
+  const days = challengeDays("2026-08-11", [true, true, false, true, true]);
   const p = challengeProgress(c, new Date(2026, 7, 15), days, cats);
 
   assert.equal(p.day, 5);
-  assert.equal(p.metDays, 3, "three of the four finished days were kept");
-  assert.equal(p.missedDays, 1, "today is not among them");
+  assert.equal(p.status, "broken", "twenty-one days means twenty-one in a row");
+  assert.equal(p.brokenOn, "2026-08-13", "and it names the day it ended");
+  assert.equal(p.run, 2, "day four, then today — day five is today");
+  assert.equal(p.bestRun, 2);
+});
+
+test("today never breaks a run, because today is not over", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 21 } }).challenge;
+  const days = challengeDays("2026-08-11", [true, true, true, false]); // today blank
+  const p = challengeProgress(c, new Date(2026, 7, 14), days, cats);
+
+  assert.equal(p.status, "running", "an unfinished day is not a missed one");
+  assert.equal(p.brokenOn, null);
   assert.equal(p.todayMet, false);
-  assert.equal(p.daysLeft, 5);
-  // Ten days allows one miss, the same forgiveness the streak grants, so a
-  // single missed day leaves the run alive.
-  assert.equal(p.allowedMisses, 1);
-  assert.equal(p.required, 9);
-  assert.equal(p.status, "running");
+  assert.equal(p.run, 3, "the run stands at three until today either joins it or does not");
 });
 
-test("challengeProgress says when a challenge can no longer be finished", () => {
-  // Seven days: one may be missed, so six must be kept.
-  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 7 } }).challenge;
-  assert.equal(challengeProgress(c, new Date(2026, 7, 11), new Map(), cats).required, 6);
-
-  // Day five, two of the first four missed: at most five can ever be kept.
-  const doomed = challengeDays("2026-08-11", [true, false, false, true, false]);
-  const p1 = challengeProgress(c, new Date(2026, 7, 15), doomed, cats);
-  assert.equal(p1.metDays, 2);
-  assert.equal(p1.missedDays, 2);
-  assert.equal(p1.maxAchievable, 5, "two kept, today still open, two days after it");
-  assert.equal(p1.status, "outOfReach", "five cannot reach six");
-
-  // The same day with one miss instead of two is still alive.
-  const alive = challengeDays("2026-08-11", [true, true, false, true, false]);
-  const p2 = challengeProgress(c, new Date(2026, 7, 15), alive, cats);
-  assert.equal(p2.maxAchievable, 6);
-  assert.equal(p2.status, "running", "but every remaining day has to be kept");
-});
-
-test("challengeProgress reports a finished challenge as complete", () => {
+test("challengeProgress completes only on an unbroken run of the full length", () => {
   const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 3 } }).challenge;
-  const days = challengeDays("2026-08-11", [true, true, true]);
-  const p = challengeProgress(c, new Date(2026, 7, 13), days, cats);
-  assert.equal(p.metDays, 3);
-  assert.equal(p.todayMet, true, "today counts the moment it qualifies");
-  assert.equal(p.status, "complete");
+
+  const clean = challengeProgress(c, new Date(2026, 7, 13), challengeDays("2026-08-11", [true, true, true]), cats);
+  assert.equal(clean.run, 3);
+  assert.equal(clean.status, "complete");
+
+  // The same three days with a gap reach the same count of kept days and are
+  // still not a completed challenge.
+  const gapped = challengeProgress(c, new Date(2026, 7, 13), challengeDays("2026-08-11", [true, false, true]), cats);
+  assert.equal(gapped.run, 1);
+  assert.equal(gapped.status, "broken");
+});
+
+test("bestRun remembers the longest stretch even after a break", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 30 } }).challenge;
+  const days = challengeDays("2026-08-11", [true, true, true, true, false, true]);
+  const p = challengeProgress(c, new Date(2026, 7, 16), days, cats);
+  assert.equal(p.bestRun, 4, "the four days before the break");
+  assert.equal(p.run, 1, "and one since");
+  assert.equal(p.status, "broken");
 });
 
 test("challengeProgress without a day map returns the counter alone", () => {
@@ -1573,18 +1572,18 @@ test("challengeProgress without a day map returns the counter alone", () => {
   const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 10 } }).challenge;
   const p = challengeProgress(c, new Date(2026, 7, 14));
   assert.equal(p.day, 4);
-  assert.equal(p.metDays, 0);
+  assert.equal(p.run, 0);
   assert.equal(p.status, "running");
 });
 
-test("an open-ended challenge counts kept days but declares no verdict", () => {
+test("an open-ended challenge tracks the run but can never be completed", () => {
   const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11" } }).challenge;
   const days = challengeDays("2026-08-11", [true, false, true]);
   const p = challengeProgress(c, new Date(2026, 7, 13), days, cats);
   assert.equal(p.targetDays, null);
-  assert.equal(p.metDays, 2);
-  assert.equal(p.daysLeft, null, "nothing to count down to");
-  assert.equal(p.status, "running", "a run with no end cannot be out of reach");
+  assert.equal(p.run, 1, "the break reset it; today restarted it");
+  assert.equal(p.bestRun, 1);
+  assert.equal(p.status, "broken", "a gap is a gap even with no finish line");
 });
 
 test("challengeProgress is unaffected by the time of day", () => {

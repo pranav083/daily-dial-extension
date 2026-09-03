@@ -26,18 +26,22 @@ The version here always matches `manifest.json`.
   shows how many days you have kept, how many you have missed, whether today
   counts yet, and, for a challenge with a length, whether it can still be
   finished at all.
-- **One day a week may be missed**, the same forgiveness the streak already
-  grants. A 21-day run allows three. Demanding a perfect run means one bad
-  Tuesday ends a hundred-day attempt, and what people do then is stop opening
-  the app rather than start again.
-- Today is never counted as a missed day. It is not over yet, and a tracker
-  that marks your morning as a failure is one you close.
+- **A challenge is consecutive.** Twenty-one days means twenty-one days in a
+  row: one missed day ends the attempt, and the block says which day it ended
+  on and how long the best run was. A run that tolerates gaps is a weaker
+  thing wearing the same name — if breaking it costs nothing, committing to it
+  meant nothing.
+- **"Restart from today"** appears when a run breaks, so a broken attempt does
+  not mean retyping the name and re-picking the goal.
+- **The goal is stated on the card** — "Each day: 2h of Deep Work" — so
+  "this day does not count" carries its reason with it.
+- Today never breaks a run. It is not over yet, and a tracker that marks your
+  morning as a failure is one you close. It can only ever add to the run.
 
 ### Fixed
 
-- **The challenge block now says what its own numbers mean.** "Kept 1 of 18"
-  on a 21-day challenge is unreadable without knowing where 18 came from, so
-  the rule is stated first: "Day 2 of 21 — keep 18 to finish".
+- **The challenge block now says what its own numbers mean**, by stating the
+  goal it is judging days against.
 - **It describes the day you are looking at**, not always today. Stepping back
   to yesterday and being told "today does not count yet" is a sentence about a
   day that is not on screen. It also stayed frozen on whichever day was open

@@ -618,12 +618,16 @@
   "challengeGoalAmountLabel": "मात्रा",
   "challengeStatusOnTrack": "पटरी पर",
   "challengeStatusComplete": "पूरा हुआ",
-  "challengeStatusOutOfReach": "अब पहुँच से बाहर",
-  "challengeKeptOf": "$REQUIRED$ में से $MET$ निभाए",
-  "challengeKeptSoFar": "अब तक $MET$ निभाए",
-  "challengeMissedOf": "$ALLOWED$ अनुमत में से $MISSED$ छूटे",
   "challengeProgressTooltip": "यह चुनौती कैसी चल रही है: निभाए दिन, छूटे दिन, और क्या इसे अब भी पूरा किया जा सकता है।",
-  "challengeRule": "$TARGET$ में से दिन $DAY$ — पूरा करने के लिए $REQUIRED$ निभाएँ",
   "challengeDayCounts": "यह दिन गिना जाएगा",
-  "challengeDayNotYet": "यह दिन गिना नहीं जाएगा"
+  "challengeDayNotYet": "यह दिन गिना नहीं जाएगा",
+  "challengeGoalEachLogged": "हर दिन: कुछ भी दर्ज हो",
+  "challengeGoalEachMinutes": "हर दिन: $CATEGORY$ में $AMOUNT$",
+  "challengeGoalEachScore": "हर दिन: स्कोर $SCORE$ या अधिक",
+  "challengeRunOf": "$TARGET$ में से $RUN$ दिन लगातार",
+  "challengeRunOpen": "$RUN$ दिन लगातार",
+  "challengeStatusBroken": "टूट गया",
+  "challengeBrokenOn": "सिलसिला $DATE$ को टूटा। सबसे लंबा: $BEST$।",
+  "challengeRestartLabel": "आज से फिर शुरू करें",
+  "challengeRestartedToast": "चुनौती आज से फिर शुरू"
 }

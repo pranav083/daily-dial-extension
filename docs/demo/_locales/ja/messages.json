@@ -2491,60 +2491,74 @@
   "challengeStatusComplete": {
     "message": "達成"
   },
-  "challengeStatusOutOfReach": {
-    "message": "もう届きません"
-  },
-  "challengeKeptOf": {
-    "message": "$REQUIRED$ 日中 $MET$ 日達成",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      },
-      "required": {
-        "content": "$2"
-      }
-    }
-  },
-  "challengeKeptSoFar": {
-    "message": "これまでに $MET$ 日達成",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      }
-    }
-  },
-  "challengeMissedOf": {
-    "message": "許容 $ALLOWED$ 日のうち $MISSED$ 日を逃しました",
-    "placeholders": {
-      "missed": {
-        "content": "$1"
-      },
-      "allowed": {
-        "content": "$2"
-      }
-    }
-  },
   "challengeProgressTooltip": {
     "message": "このチャレンジの状況：達成した日、逃した日、そしてまだ達成可能かどうか。"
-  },
-  "challengeRule": {
-    "message": "$TARGET$ 日中 $DAY$ 日目 — 達成には $REQUIRED$ 日必要",
-    "placeholders": {
-      "day": {
-        "content": "$1"
-      },
-      "target": {
-        "content": "$2"
-      },
-      "required": {
-        "content": "$3"
-      }
-    }
   },
   "challengeDayCounts": {
     "message": "この日は条件を満たしています"
   },
   "challengeDayNotYet": {
     "message": "この日は条件を満たしていません"
+  },
+  "challengeGoalEachLogged": {
+    "message": "毎日：記録があればよい"
+  },
+  "challengeGoalEachMinutes": {
+    "message": "毎日：$CATEGORY$ を $AMOUNT$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "category": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeGoalEachScore": {
+    "message": "毎日：スコア $SCORE$ 以上",
+    "placeholders": {
+      "score": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeRunOf": {
+    "message": "$TARGET$ 日中 $RUN$ 日連続",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRunOpen": {
+    "message": "$RUN$ 日連続",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeStatusBroken": {
+    "message": "途切れました"
+  },
+  "challengeBrokenOn": {
+    "message": "$DATE$ で連続が途切れました。最長は $BEST$ 日です。",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRestartLabel": {
+    "message": "今日から再開"
+  },
+  "challengeRestartedToast": {
+    "message": "チャレンジを今日から再開しました"
   }
 }

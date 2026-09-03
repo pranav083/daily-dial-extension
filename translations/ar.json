@@ -678,12 +678,16 @@
   "challengeGoalAmountLabel": "المقدار",
   "challengeStatusOnTrack": "على المسار",
   "challengeStatusComplete": "مكتمل",
-  "challengeStatusOutOfReach": "لم يعد ممكنًا",
-  "challengeKeptOf": "تحقّق $MET$ من $REQUIRED$",
-  "challengeKeptSoFar": "تحقّق $MET$ حتى الآن",
-  "challengeMissedOf": "فات $MISSED$ من $ALLOWED$ مسموح بها",
   "challengeProgressTooltip": "كيف يسير هذا التحدي: الأيام المحقّقة، والأيام الفائتة، وهل ما زال إنهاؤه ممكنًا.",
-  "challengeRule": "اليوم $DAY$ من $TARGET$ — يلزم تحقيق $REQUIRED$",
   "challengeDayCounts": "هذا اليوم محتسب",
-  "challengeDayNotYet": "هذا اليوم غير محتسب"
+  "challengeDayNotYet": "هذا اليوم غير محتسب",
+  "challengeGoalEachLogged": "كل يوم: أي تسجيل",
+  "challengeGoalEachMinutes": "كل يوم: $AMOUNT$ من $CATEGORY$",
+  "challengeGoalEachScore": "كل يوم: درجة $SCORE$ أو أكثر",
+  "challengeRunOf": "$RUN$ من $TARGET$ يومًا متتاليًا",
+  "challengeRunOpen": "$RUN$ أيام متتالية",
+  "challengeStatusBroken": "انقطع",
+  "challengeBrokenOn": "انقطعت السلسلة في $DATE$. الأطول حتى الآن: $BEST$.",
+  "challengeRestartLabel": "ابدأ من جديد اليوم",
+  "challengeRestartedToast": "أُعيد بدء التحدي من اليوم"
 }

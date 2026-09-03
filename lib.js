@@ -510,13 +510,15 @@ export function challengeDayMet(day, categories, goal, targetMin = DEFAULT_DAILY
 /**
  * How the challenge is actually going.
  *
- * A day counter on its own says nothing about whether the run is being kept:
- * "day 14 of 21" reads identically whether every day was met or none were.
- * This counts the days that met the goal, and — where the challenge has a
- * length — says plainly whether it can still be finished.
+ * A challenge is consecutive. "Twenty-one days" means twenty-one days in a
+ * row, and a run that tolerates gaps is a different, weaker thing wearing the
+ * same name — the whole point of committing to a stretch is that breaking it
+ * means something. So one missed day ends the attempt, and the app says so
+ * plainly rather than quietly discounting it.
  *
- * Today is deliberately never counted as missed. It is not over yet, and a
- * tracker that marks the morning as a failure is one people close.
+ * The one softening is that today never breaks anything. It is not over. A
+ * run is measured to the last day that has actually finished, and today only
+ * ever adds to it.
  *
  * @param {object|null} challenge
  * @param {Date} [now]
@@ -524,9 +526,8 @@ export function challengeDayMet(day, categories, goal, targetMin = DEFAULT_DAILY
  * @param {Array} [categories]
  * @param {number} [targetMin] the daily target a "score" goal is judged against
  * @returns {{day:number, targetDays:number|null, name:string, goal:object,
- *   metDays:number, missedDays:number, daysLeft:number|null, todayMet:boolean,
- *   maxAchievable:number|null, allowedMisses:number, required:number,
- *   status:"running"|"complete"|"outOfReach"}|null}
+ *   run:number, bestRun:number, todayMet:boolean, brokenOn:string|null,
+ *   status:"running"|"complete"|"broken"}|null}
  */
 export function challengeProgress(challenge, now = new Date(), days, categories, targetMin = DEFAULT_DAILY_TARGET_MIN) {
   if (!challenge) return null;
@@ -538,40 +539,35 @@ export function challengeProgress(challenge, now = new Date(), days, categories,
 
   const goal = challenge.goal ?? { kind: "logged" };
   const base = { day, targetDays: challenge.targetDays, name: challenge.name, goal };
-  // Callers that only want the day number (the chip) need not hand over a day
-  // map, and get the counter alone rather than a wrong tally.
   if (!(days instanceof Map) || !Array.isArray(categories)) {
-    return { ...base, metDays: 0, missedDays: 0, daysLeft: null, todayMet: false, maxAchievable: null, status: "running" };
+    return { ...base, run: 0, bestRun: 0, todayMet: false, brokenOn: null, status: "running" };
   }
 
   const span = challenge.targetDays ? Math.min(day, challenge.targetDays) : day;
-  let metPast = 0;
+  const dayAt = (i) => { const d = new Date(start); d.setDate(d.getDate() + i); return d; };
+
+  // Every finished day, in order. Today is handled after: it cannot break a
+  // run it has not had the chance to finish.
+  let run = 0, bestRun = 0, brokenOn = null;
   for (let i = 0; i < span - 1; i++) {
-    const d = new Date(start);
-    d.setDate(d.getDate() + i);
-    if (challengeDayMet(days.get(dateKey(d)), categories, goal, targetMin)) metPast++;
+    const d = dayAt(i);
+    if (challengeDayMet(days.get(dateKey(d)), categories, goal, targetMin)) {
+      run++;
+      bestRun = Math.max(bestRun, run);
+    } else {
+      if (brokenOn === null) brokenOn = dateKey(d);
+      run = 0;
+    }
   }
-  const todayMet = span >= 1 && day <= (challenge.targetDays ?? Infinity)
+  const todayMet = day <= (challenge.targetDays ?? Infinity)
     && challengeDayMet(days.get(dateKey(today)), categories, goal, targetMin);
+  if (todayMet) run++;
+  bestRun = Math.max(bestRun, run);
 
-  const metDays = metPast + (todayMet ? 1 : 0);
-  const missedDays = Math.max(0, span - 1 - metPast);
-
-  if (!challenge.targetDays) {
-    return { ...base, metDays, missedDays, daysLeft: null, todayMet, maxAchievable: null, status: "running" };
-  }
-  const daysLeft = Math.max(0, challenge.targetDays - day);
-  const maxAchievable = metDays + daysLeft + (todayMet || day > challenge.targetDays ? 0 : 1);
-  // One day a week may be missed, which is the same forgiveness the streak
-  // already grants. Demanding a perfect run makes a single bad Tuesday end a
-  // hundred-day attempt, and the thing people do then is stop opening the app
-  // rather than start again.
-  const allowedMisses = Math.floor(challenge.targetDays / 7);
-  const required = challenge.targetDays - allowedMisses;
-  const status = metDays >= required ? "complete"
-    : maxAchievable < required ? "outOfReach"
+  const status = challenge.targetDays && run >= challenge.targetDays ? "complete"
+    : brokenOn ? "broken"
     : "running";
-  return { ...base, metDays, missedDays, daysLeft, todayMet, maxAchievable, allowedMisses, required, status };
+  return { ...base, run, bestRun, todayMet, brokenOn, status };
 }
 
 export function normalizeSettings(saved) {

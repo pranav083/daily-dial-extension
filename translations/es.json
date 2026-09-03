@@ -618,12 +618,16 @@
   "challengeGoalAmountLabel": "Cantidad",
   "challengeStatusOnTrack": "En marcha",
   "challengeStatusComplete": "Completado",
-  "challengeStatusOutOfReach": "Fuera de alcance",
-  "challengeKeptOf": "$MET$ de $REQUIRED$ cumplidos",
-  "challengeKeptSoFar": "$MET$ cumplidos hasta ahora",
-  "challengeMissedOf": "$MISSED$ fallados de $ALLOWED$ permitidos",
   "challengeProgressTooltip": "Cómo va este reto: días cumplidos, días fallados y si aún se puede terminar.",
-  "challengeRule": "Día $DAY$ de $TARGET$ — cumple $REQUIRED$ para terminar",
   "challengeDayCounts": "Este día cuenta",
-  "challengeDayNotYet": "Este día no cuenta"
+  "challengeDayNotYet": "Este día no cuenta",
+  "challengeGoalEachLogged": "Cada día: cualquier registro",
+  "challengeGoalEachMinutes": "Cada día: $AMOUNT$ de $CATEGORY$",
+  "challengeGoalEachScore": "Cada día: puntuación $SCORE$ o más",
+  "challengeRunOf": "$RUN$ de $TARGET$ días seguidos",
+  "challengeRunOpen": "$RUN$ días seguidos",
+  "challengeStatusBroken": "Roto",
+  "challengeBrokenOn": "La racha terminó el $DATE$. La más larga: $BEST$.",
+  "challengeRestartLabel": "Reiniciar desde hoy",
+  "challengeRestartedToast": "Reto reiniciado desde hoy"
 }

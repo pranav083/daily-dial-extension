@@ -648,12 +648,16 @@
   "challengeGoalAmountLabel": "Значение",
   "challengeStatusOnTrack": "Идёт по плану",
   "challengeStatusComplete": "Выполнено",
-  "challengeStatusOutOfReach": "Уже недостижимо",
-  "challengeKeptOf": "Выдержано $MET$ из $REQUIRED$",
-  "challengeKeptSoFar": "Выдержано $MET$",
-  "challengeMissedOf": "Пропущено $MISSED$ из $ALLOWED$ допустимых",
   "challengeProgressTooltip": "Как идёт этот вызов: выдержанные дни, пропущенные дни и остаётся ли он выполнимым.",
-  "challengeRule": "День $DAY$ из $TARGET$ — выдержать $REQUIRED$ для завершения",
   "challengeDayCounts": "Этот день засчитан",
-  "challengeDayNotYet": "Этот день не засчитан"
+  "challengeDayNotYet": "Этот день не засчитан",
+  "challengeGoalEachLogged": "Каждый день: хоть что-то записано",
+  "challengeGoalEachMinutes": "Каждый день: $AMOUNT$ в категории $CATEGORY$",
+  "challengeGoalEachScore": "Каждый день: оценка $SCORE$ или выше",
+  "challengeRunOf": "$RUN$ из $TARGET$ дней подряд",
+  "challengeRunOpen": "$RUN$ дней подряд",
+  "challengeStatusBroken": "Прервано",
+  "challengeBrokenOn": "Серия оборвалась $DATE$. Самая длинная: $BEST$.",
+  "challengeRestartLabel": "Начать заново с сегодня",
+  "challengeRestartedToast": "Вызов начат заново с сегодняшнего дня"
 }

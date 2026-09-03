@@ -603,12 +603,16 @@
   "challengeGoalAmountLabel": "数値",
   "challengeStatusOnTrack": "順調",
   "challengeStatusComplete": "達成",
-  "challengeStatusOutOfReach": "もう届きません",
-  "challengeKeptOf": "$REQUIRED$ 日中 $MET$ 日達成",
-  "challengeKeptSoFar": "これまでに $MET$ 日達成",
-  "challengeMissedOf": "許容 $ALLOWED$ 日のうち $MISSED$ 日を逃しました",
   "challengeProgressTooltip": "このチャレンジの状況：達成した日、逃した日、そしてまだ達成可能かどうか。",
-  "challengeRule": "$TARGET$ 日中 $DAY$ 日目 — 達成には $REQUIRED$ 日必要",
   "challengeDayCounts": "この日は条件を満たしています",
-  "challengeDayNotYet": "この日は条件を満たしていません"
+  "challengeDayNotYet": "この日は条件を満たしていません",
+  "challengeGoalEachLogged": "毎日：記録があればよい",
+  "challengeGoalEachMinutes": "毎日：$CATEGORY$ を $AMOUNT$",
+  "challengeGoalEachScore": "毎日：スコア $SCORE$ 以上",
+  "challengeRunOf": "$TARGET$ 日中 $RUN$ 日連続",
+  "challengeRunOpen": "$RUN$ 日連続",
+  "challengeStatusBroken": "途切れました",
+  "challengeBrokenOn": "$DATE$ で連続が途切れました。最長は $BEST$ 日です。",
+  "challengeRestartLabel": "今日から再開",
+  "challengeRestartedToast": "チャレンジを今日から再開しました"
 }

@@ -2656,60 +2656,74 @@
   "challengeStatusComplete": {
     "message": "Geschafft"
   },
-  "challengeStatusOutOfReach": {
-    "message": "Nicht mehr erreichbar"
-  },
-  "challengeKeptOf": {
-    "message": "$MET$ von $REQUIRED$ gehalten",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      },
-      "required": {
-        "content": "$2"
-      }
-    }
-  },
-  "challengeKeptSoFar": {
-    "message": "Bisher $MET$ gehalten",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      }
-    }
-  },
-  "challengeMissedOf": {
-    "message": "$MISSED$ von $ALLOWED$ erlaubten verpasst",
-    "placeholders": {
-      "missed": {
-        "content": "$1"
-      },
-      "allowed": {
-        "content": "$2"
-      }
-    }
-  },
   "challengeProgressTooltip": {
     "message": "Wie es um diese Challenge steht: gehaltene Tage, verpasste Tage und ob sie noch zu schaffen ist."
-  },
-  "challengeRule": {
-    "message": "Tag $DAY$ von $TARGET$ — $REQUIRED$ halten zum Abschluss",
-    "placeholders": {
-      "day": {
-        "content": "$1"
-      },
-      "target": {
-        "content": "$2"
-      },
-      "required": {
-        "content": "$3"
-      }
-    }
   },
   "challengeDayCounts": {
     "message": "Dieser Tag zählt"
   },
   "challengeDayNotYet": {
     "message": "Dieser Tag zählt nicht"
+  },
+  "challengeGoalEachLogged": {
+    "message": "Jeden Tag: irgendetwas erfasst"
+  },
+  "challengeGoalEachMinutes": {
+    "message": "Jeden Tag: $AMOUNT$ $CATEGORY$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "category": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeGoalEachScore": {
+    "message": "Jeden Tag: Wertung $SCORE$ oder mehr",
+    "placeholders": {
+      "score": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeRunOf": {
+    "message": "$RUN$ von $TARGET$ Tagen in Folge",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRunOpen": {
+    "message": "$RUN$ Tage in Folge",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeStatusBroken": {
+    "message": "Gerissen"
+  },
+  "challengeBrokenOn": {
+    "message": "Die Serie endete am $DATE$. Längste bisher: $BEST$.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRestartLabel": {
+    "message": "Ab heute neu starten"
+  },
+  "challengeRestartedToast": {
+    "message": "Challenge ab heute neu gestartet"
   }
 }

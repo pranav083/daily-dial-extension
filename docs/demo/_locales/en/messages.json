@@ -3275,61 +3275,9 @@
     "message": "Complete",
     "description": "Challenge goal and progress, shown in the UI."
   },
-  "challengeStatusOutOfReach": {
-    "message": "Out of reach",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
-  "challengeKeptOf": {
-    "message": "Kept $MET$ of $REQUIRED$",
-    "description": "Challenge goal and progress, shown in the UI.",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      },
-      "required": {
-        "content": "$2"
-      }
-    }
-  },
-  "challengeKeptSoFar": {
-    "message": "Kept $MET$ so far",
-    "description": "Challenge goal and progress, shown in the UI.",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      }
-    }
-  },
-  "challengeMissedOf": {
-    "message": "Missed $MISSED$ of $ALLOWED$ allowed",
-    "description": "Challenge goal and progress, shown in the UI.",
-    "placeholders": {
-      "missed": {
-        "content": "$1"
-      },
-      "allowed": {
-        "content": "$2"
-      }
-    }
-  },
   "challengeProgressTooltip": {
     "message": "How this challenge is going: days kept, days missed, and whether it can still be finished.",
     "description": "Challenge goal and progress, shown in the UI."
-  },
-  "challengeRule": {
-    "message": "Day $DAY$ of $TARGET$ — keep $REQUIRED$ to finish",
-    "description": "Challenge goal and progress, shown in the UI.",
-    "placeholders": {
-      "day": {
-        "content": "$1"
-      },
-      "target": {
-        "content": "$2"
-      },
-      "required": {
-        "content": "$3"
-      }
-    }
   },
   "challengeDayCounts": {
     "message": "This day counts",
@@ -3337,6 +3285,76 @@
   },
   "challengeDayNotYet": {
     "message": "This day does not count",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalEachLogged": {
+    "message": "Each day: anything logged",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalEachMinutes": {
+    "message": "Each day: $AMOUNT$ of $CATEGORY$",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "category": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeGoalEachScore": {
+    "message": "Each day: score $SCORE$ or more",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "score": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeRunOf": {
+    "message": "$RUN$ of $TARGET$ days in a row",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRunOpen": {
+    "message": "$RUN$ days in a row",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeStatusBroken": {
+    "message": "Broken",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeBrokenOn": {
+    "message": "The run ended on $DATE$. Longest so far: $BEST$.",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRestartLabel": {
+    "message": "Restart from today",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeRestartedToast": {
+    "message": "Challenge restarted from today",
     "description": "Challenge goal and progress, shown in the UI."
   }
 }

@@ -3316,60 +3316,74 @@
   "challengeStatusComplete": {
     "message": "مكتمل"
   },
-  "challengeStatusOutOfReach": {
-    "message": "لم يعد ممكنًا"
-  },
-  "challengeKeptOf": {
-    "message": "تحقّق $MET$ من $REQUIRED$",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      },
-      "required": {
-        "content": "$2"
-      }
-    }
-  },
-  "challengeKeptSoFar": {
-    "message": "تحقّق $MET$ حتى الآن",
-    "placeholders": {
-      "met": {
-        "content": "$1"
-      }
-    }
-  },
-  "challengeMissedOf": {
-    "message": "فات $MISSED$ من $ALLOWED$ مسموح بها",
-    "placeholders": {
-      "missed": {
-        "content": "$1"
-      },
-      "allowed": {
-        "content": "$2"
-      }
-    }
-  },
   "challengeProgressTooltip": {
     "message": "كيف يسير هذا التحدي: الأيام المحقّقة، والأيام الفائتة، وهل ما زال إنهاؤه ممكنًا."
-  },
-  "challengeRule": {
-    "message": "اليوم $DAY$ من $TARGET$ — يلزم تحقيق $REQUIRED$",
-    "placeholders": {
-      "day": {
-        "content": "$1"
-      },
-      "target": {
-        "content": "$2"
-      },
-      "required": {
-        "content": "$3"
-      }
-    }
   },
   "challengeDayCounts": {
     "message": "هذا اليوم محتسب"
   },
   "challengeDayNotYet": {
     "message": "هذا اليوم غير محتسب"
+  },
+  "challengeGoalEachLogged": {
+    "message": "كل يوم: أي تسجيل"
+  },
+  "challengeGoalEachMinutes": {
+    "message": "كل يوم: $AMOUNT$ من $CATEGORY$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "category": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeGoalEachScore": {
+    "message": "كل يوم: درجة $SCORE$ أو أكثر",
+    "placeholders": {
+      "score": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeRunOf": {
+    "message": "$RUN$ من $TARGET$ يومًا متتاليًا",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRunOpen": {
+    "message": "$RUN$ أيام متتالية",
+    "placeholders": {
+      "run": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeStatusBroken": {
+    "message": "انقطع"
+  },
+  "challengeBrokenOn": {
+    "message": "انقطعت السلسلة في $DATE$. الأطول حتى الآن: $BEST$.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeRestartLabel": {
+    "message": "ابدأ من جديد اليوم"
+  },
+  "challengeRestartedToast": {
+    "message": "أُعيد بدء التحدي من اليوم"
   }
 }
