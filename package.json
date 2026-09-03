@@ -19,7 +19,8 @@
     "lint:firefox": "npm run build:firefox && web-ext lint --source-dir build/firefox",
     "firefox:redirect": "node scripts/firefox-redirect-uri.mjs",
     "build:docs-changelog": "node scripts/build-docs-changelog.mjs",
-    "smoke": "node scripts/smoke-extension.mjs"
+    "smoke": "node scripts/smoke-extension.mjs",
+    "promo": "node scripts/make-promo.mjs"
   },
   "repository": {
     "type": "git",
