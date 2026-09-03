@@ -26,6 +26,24 @@ The version here always matches `manifest.json`.
   with. It is two groups now: identity on the left, everything you operate on
   the right, wrapping as one piece and keeping the right edge. A long
   challenge name truncates rather than setting the width of the whole bar.
+- **The dial card hung out of the panel on a narrow window.** Once the layout
+  stacks, `.dial-row` becomes a column — and its main axis becomes vertical,
+  so `flex: 1` and `min-width: 0` stop governing width and `align-items:
+  flex-start` sizes the stack to its content: 320px of ring inside a 289px
+  card, 31px over the edge.
+- **The note column was unusable on a phone.** The fixed columns added up to
+  more than the card was wide, and the note lost — squeezed to 13px, a single
+  character of whatever you had written. Below 560px the duration column now
+  gives way, since "00:00–02:45" already says 2h 45m and the note is not
+  recoverable from anywhere else on screen. The note field goes from 13px to
+  98px.
+- **Text you wrote now keeps its own direction.** A note, a reflection, a
+  category or a challenge name can be in any script regardless of the
+  interface language, and in a right-to-left UI a Latin name was being
+  reordered — "#4_application_1_lab_contact" rendered as
+  "...lication_1_lab_contact_#4".
+- **The note field showed no focus ring when reached by keyboard**, the only
+  tab stop on the day view without one.
 
 ## [1.35.2] — 2026-09-02
 

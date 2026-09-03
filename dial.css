@@ -296,8 +296,14 @@ body {
   .dial-rail { flex: 0 0 auto; width: 100%; }
   /* Ring first when everything stacks: the rail is a set of controls *for*
      the dial, and reading three of them before seeing what they act on
-     makes no sense. */
-  .dial-stack { order: -1; }
+     makes no sense.
+     width:100% is load-bearing, not tidiness. Once this row is a column the
+     main axis is vertical, so `flex: 1` and `min-width: 0` on .dial-stack
+     both stop applying to its width, and `align-items: flex-start` sizes it
+     to its content instead — 320px of ring and typed-entry row inside a
+     289px card, hanging 31px out of the right of the panel. .dial-rail was
+     already given the same treatment just above; .dial-stack was missed. */
+  .dial-stack { order: -1; width: 100%; min-width: 0; }
   .strip-wrap { flex: 0 0 auto; width: 100%; margin-top: 0; }
   .strip { display: flex; flex-direction: row; gap: 6px; }
   .strip-day { display: flex; flex: 1; flex-direction: column; gap: 5px; padding: 6px 2px; text-align: center; }
@@ -1034,6 +1040,25 @@ select {
   .topbar-right { flex-wrap: wrap; margin-left: 0; row-gap: 8px; }
 }
 
+/* User-authored text runs in whatever script the user wrote it in, which has
+   nothing to do with the language the interface is set to. Someone reading an
+   Arabic UI can perfectly well name a challenge "#4_application_1_lab_contact"
+   or write an English note, and bidi reordering then rearranges it inside the
+   right-to-left paragraph — the challenge chip rendered that name as
+   "...lication_1_lab_contact_#4".
+
+   `plaintext` makes each of these take its direction from its own first
+   strong character instead of inheriting the page's, which is the whole
+   point: these boxes hold the user's words, not ours. */
+#challenge-name,
+.bd-note,
+#reflection,
+#intent-list,
+#avoid-list,
+.cat-name {
+  unicode-bidi: plaintext;
+}
+
 /* Visible to screen readers only. */
 .sr-only {
   position: absolute;
@@ -1698,6 +1723,12 @@ select {
 .bd-note::placeholder { color: color-mix(in oklab, var(--ink-muted) 55%, transparent); }
 .bd-note:hover { border-color: var(--border); background: var(--panel-2); }
 .bd-note:focus { outline: none; border-color: var(--accent); background: var(--panel-2); color: var(--ink); }
+/* Arriving here by keyboard needs more than a 1px border shifting colour.
+   Every other control in the app gets a real ring; this one was the single
+   tab stop in the whole day view without one — found by tabbing through
+   rather than by reading, because a programmatic focus() never sets
+   :focus-visible and reports every control as fine. */
+.bd-note:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
 .bd-clear-cell { text-align: right; }
 .bd-clear {
@@ -1756,9 +1787,16 @@ select {
 .bd-extra .drop:hover { color: var(--status-critical-text); background: var(--panel-2); }
 
 @media (max-width: 560px) {
-  .breakdown-table th:nth-child(1) { width: 88px; }
-  .breakdown-table th:nth-child(2) { width: 104px; }
-  .breakdown-table th:nth-child(3) { width: 54px; }
+  .breakdown-table th:nth-child(1) { width: 76px; }
+  .breakdown-table th:nth-child(2) { width: 92px; }
+  /* "For" gives way on a phone. The four fixed columns and the note add up to
+     more than the card is wide here, and the note lost — squeezed to 13px, a
+     single character of whatever you had written. A duration is the one
+     column that is derivable from another: "00:00–02:45" already says 2h 45m,
+     and the summary line above repeats the day's totals. The note is not
+     recoverable from anywhere else on the screen. */
+  .breakdown-table th:nth-child(3),
+  .breakdown-table td:nth-child(3) { display: none; }
   .bd-when, .bd-dur { font-size: 0.7rem; }
 }
 
