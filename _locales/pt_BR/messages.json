@@ -2689,13 +2689,27 @@
       }
     }
   },
-  "challengeTodayYes": {
-    "message": "Hoje conta"
-  },
-  "challengeTodayNo": {
-    "message": "Hoje ainda não conta"
-  },
   "challengeProgressTooltip": {
     "message": "Como vai este desafio: dias cumpridos, dias perdidos e se ainda dá para terminar."
+  },
+  "challengeRule": {
+    "message": "Dia $DAY$ de $TARGET$ — cumpra $REQUIRED$ para concluir",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      },
+      "required": {
+        "content": "$3"
+      }
+    }
+  },
+  "challengeDayCounts": {
+    "message": "Este dia conta"
+  },
+  "challengeDayNotYet": {
+    "message": "Este dia não conta"
   }
 }

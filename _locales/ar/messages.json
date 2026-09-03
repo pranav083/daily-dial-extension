@@ -3349,13 +3349,27 @@
       }
     }
   },
-  "challengeTodayYes": {
-    "message": "اليوم محتسب"
-  },
-  "challengeTodayNo": {
-    "message": "اليوم غير محتسب بعد"
-  },
   "challengeProgressTooltip": {
     "message": "كيف يسير هذا التحدي: الأيام المحقّقة، والأيام الفائتة، وهل ما زال إنهاؤه ممكنًا."
+  },
+  "challengeRule": {
+    "message": "اليوم $DAY$ من $TARGET$ — يلزم تحقيق $REQUIRED$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      },
+      "required": {
+        "content": "$3"
+      }
+    }
+  },
+  "challengeDayCounts": {
+    "message": "هذا اليوم محتسب"
+  },
+  "challengeDayNotYet": {
+    "message": "هذا اليوم غير محتسب"
   }
 }

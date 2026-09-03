@@ -3019,13 +3019,27 @@
       }
     }
   },
-  "challengeTodayYes": {
-    "message": "Сегодня засчитан"
-  },
-  "challengeTodayNo": {
-    "message": "Сегодня ещё не засчитан"
-  },
   "challengeProgressTooltip": {
     "message": "Как идёт этот вызов: выдержанные дни, пропущенные дни и остаётся ли он выполнимым."
+  },
+  "challengeRule": {
+    "message": "День $DAY$ из $TARGET$ — выдержать $REQUIRED$ для завершения",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      },
+      "required": {
+        "content": "$3"
+      }
+    }
+  },
+  "challengeDayCounts": {
+    "message": "Этот день засчитан"
+  },
+  "challengeDayNotYet": {
+    "message": "Этот день не засчитан"
   }
 }

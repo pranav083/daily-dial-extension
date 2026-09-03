@@ -622,7 +622,8 @@
   "challengeKeptOf": "$MET$ de $REQUIRED$ cumplidos",
   "challengeKeptSoFar": "$MET$ cumplidos hasta ahora",
   "challengeMissedOf": "$MISSED$ fallados de $ALLOWED$ permitidos",
-  "challengeTodayYes": "Hoy cuenta",
-  "challengeTodayNo": "Hoy todavía no cuenta",
-  "challengeProgressTooltip": "Cómo va este reto: días cumplidos, días fallados y si aún se puede terminar."
+  "challengeProgressTooltip": "Cómo va este reto: días cumplidos, días fallados y si aún se puede terminar.",
+  "challengeRule": "Día $DAY$ de $TARGET$ — cumple $REQUIRED$ para terminar",
+  "challengeDayCounts": "Este día cuenta",
+  "challengeDayNotYet": "Este día no cuenta"
 }

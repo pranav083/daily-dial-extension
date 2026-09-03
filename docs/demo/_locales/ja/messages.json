@@ -2524,13 +2524,27 @@
       }
     }
   },
-  "challengeTodayYes": {
-    "message": "今日は条件を満たしています"
-  },
-  "challengeTodayNo": {
-    "message": "今日はまだ条件を満たしていません"
-  },
   "challengeProgressTooltip": {
     "message": "このチャレンジの状況：達成した日、逃した日、そしてまだ達成可能かどうか。"
+  },
+  "challengeRule": {
+    "message": "$TARGET$ 日中 $DAY$ 日目 — 達成には $REQUIRED$ 日必要",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      },
+      "required": {
+        "content": "$3"
+      }
+    }
+  },
+  "challengeDayCounts": {
+    "message": "この日は条件を満たしています"
+  },
+  "challengeDayNotYet": {
+    "message": "この日は条件を満たしていません"
   }
 }

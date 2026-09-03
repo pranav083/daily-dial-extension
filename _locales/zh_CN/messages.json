@@ -2524,13 +2524,27 @@
       }
     }
   },
-  "challengeTodayYes": {
-    "message": "今天已计入"
-  },
-  "challengeTodayNo": {
-    "message": "今天还未计入"
-  },
   "challengeProgressTooltip": {
     "message": "这项挑战的进展：完成的天数、错过的天数，以及是否还能完成。"
+  },
+  "challengeRule": {
+    "message": "第 $DAY$ / $TARGET$ 天 — 需完成 $REQUIRED$ 天",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      },
+      "required": {
+        "content": "$3"
+      }
+    }
+  },
+  "challengeDayCounts": {
+    "message": "这一天已计入"
+  },
+  "challengeDayNotYet": {
+    "message": "这一天未计入"
   }
 }

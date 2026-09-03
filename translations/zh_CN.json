@@ -607,7 +607,8 @@
   "challengeKeptOf": "已完成 $MET$ / $REQUIRED$ 天",
   "challengeKeptSoFar": "目前已完成 $MET$ 天",
   "challengeMissedOf": "已错过 $MISSED$ 天，允许 $ALLOWED$ 天",
-  "challengeTodayYes": "今天已计入",
-  "challengeTodayNo": "今天还未计入",
-  "challengeProgressTooltip": "这项挑战的进展：完成的天数、错过的天数，以及是否还能完成。"
+  "challengeProgressTooltip": "这项挑战的进展：完成的天数、错过的天数，以及是否还能完成。",
+  "challengeRule": "第 $DAY$ / $TARGET$ 天 — 需完成 $REQUIRED$ 天",
+  "challengeDayCounts": "这一天已计入",
+  "challengeDayNotYet": "这一天未计入"
 }

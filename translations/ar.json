@@ -682,7 +682,8 @@
   "challengeKeptOf": "تحقّق $MET$ من $REQUIRED$",
   "challengeKeptSoFar": "تحقّق $MET$ حتى الآن",
   "challengeMissedOf": "فات $MISSED$ من $ALLOWED$ مسموح بها",
-  "challengeTodayYes": "اليوم محتسب",
-  "challengeTodayNo": "اليوم غير محتسب بعد",
-  "challengeProgressTooltip": "كيف يسير هذا التحدي: الأيام المحقّقة، والأيام الفائتة، وهل ما زال إنهاؤه ممكنًا."
+  "challengeProgressTooltip": "كيف يسير هذا التحدي: الأيام المحقّقة، والأيام الفائتة، وهل ما زال إنهاؤه ممكنًا.",
+  "challengeRule": "اليوم $DAY$ من $TARGET$ — يلزم تحقيق $REQUIRED$",
+  "challengeDayCounts": "هذا اليوم محتسب",
+  "challengeDayNotYet": "هذا اليوم غير محتسب"
 }

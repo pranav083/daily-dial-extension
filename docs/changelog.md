@@ -33,6 +33,21 @@ The version here always matches `manifest.json`.
 - Today is never counted as a missed day. It is not over yet, and a tracker
   that marks your morning as a failure is one you close.
 
+### Fixed
+
+- **The challenge block now says what its own numbers mean.** "Kept 1 of 18"
+  on a 21-day challenge is unreadable without knowing where 18 came from, so
+  the rule is stated first: "Day 2 of 21 — keep 18 to finish".
+- **It describes the day you are looking at**, not always today. Stepping back
+  to yesterday and being told "today does not count yet" is a sentence about a
+  day that is not on screen. It also stayed frozen on whichever day was open
+  when the page loaded, because it was never redrawn when the date changed.
+- **The top bar wrapped to two rows again** as soon as you stepped off today.
+  The "Today" jump button appears then, and the row needs about 1138px against
+  the 1080 the layout allows — at every window size. While a challenge is
+  running the streak's "· best: N" now gives up its place, which is the least
+  load-bearing thing in the bar and exactly the moment the space is needed.
+
 ## [1.35.4] — 2026-09-03
 
 ### Fixed

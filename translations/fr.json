@@ -622,7 +622,8 @@
   "challengeKeptOf": "$MET$ sur $REQUIRED$ tenus",
   "challengeKeptSoFar": "$MET$ tenus jusqu'ici",
   "challengeMissedOf": "$MISSED$ manqués sur $ALLOWED$ permis",
-  "challengeTodayYes": "Aujourd'hui compte",
-  "challengeTodayNo": "Aujourd'hui ne compte pas encore",
-  "challengeProgressTooltip": "Où en est ce défi : jours tenus, jours manqués, et s'il peut encore être terminé."
+  "challengeProgressTooltip": "Où en est ce défi : jours tenus, jours manqués, et s'il peut encore être terminé.",
+  "challengeRule": "Jour $DAY$ sur $TARGET$ — en tenir $REQUIRED$ pour finir",
+  "challengeDayCounts": "Ce jour compte",
+  "challengeDayNotYet": "Ce jour ne compte pas"
 }

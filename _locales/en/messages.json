@@ -3312,16 +3312,31 @@
       }
     }
   },
-  "challengeTodayYes": {
-    "message": "Today counts",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
-  "challengeTodayNo": {
-    "message": "Today does not count yet",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
   "challengeProgressTooltip": {
     "message": "How this challenge is going: days kept, days missed, and whether it can still be finished.",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeRule": {
+    "message": "Day $DAY$ of $TARGET$ — keep $REQUIRED$ to finish",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "target": {
+        "content": "$2"
+      },
+      "required": {
+        "content": "$3"
+      }
+    }
+  },
+  "challengeDayCounts": {
+    "message": "This day counts",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeDayNotYet": {
+    "message": "This day does not count",
     "description": "Challenge goal and progress, shown in the UI."
   }
 }

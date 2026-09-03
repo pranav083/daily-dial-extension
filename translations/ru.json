@@ -652,7 +652,8 @@
   "challengeKeptOf": "Выдержано $MET$ из $REQUIRED$",
   "challengeKeptSoFar": "Выдержано $MET$",
   "challengeMissedOf": "Пропущено $MISSED$ из $ALLOWED$ допустимых",
-  "challengeTodayYes": "Сегодня засчитан",
-  "challengeTodayNo": "Сегодня ещё не засчитан",
-  "challengeProgressTooltip": "Как идёт этот вызов: выдержанные дни, пропущенные дни и остаётся ли он выполнимым."
+  "challengeProgressTooltip": "Как идёт этот вызов: выдержанные дни, пропущенные дни и остаётся ли он выполнимым.",
+  "challengeRule": "День $DAY$ из $TARGET$ — выдержать $REQUIRED$ для завершения",
+  "challengeDayCounts": "Этот день засчитан",
+  "challengeDayNotYet": "Этот день не засчитан"
 }

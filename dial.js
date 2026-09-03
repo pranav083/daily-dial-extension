@@ -56,6 +56,7 @@ import {
   buildInsight,
   buildSampleDays,
   challengeProgress,
+  challengeDayMet,
   buildShareSvgMarkup,
   computeRuns,
   computeDaySpans,
@@ -620,6 +621,10 @@ function onStrokeEnd() {
   renderSide();
   renderStrip();
   renderStreak();
+  // The challenge block reports on the day being viewed, so it has to move
+  // with the date the way everything else in this panel does. Left out, it
+  // kept describing whichever day happened to be open when the page loaded.
+  renderChallenge();
   renderBackupStatus();
   renderReviewNudge();
   // The breakdown is a view of the slots just painted and sits directly
@@ -1915,7 +1920,7 @@ function renderStreak() {
   // substituted values are numbers this module produced, never user text.
   $("streak-text").innerHTML =
     tp("streakBanner", streak.current, [String(streak.current)]) +
-    ` <span class="muted">${t("streakBestSuffix", [String(streak.longest)])}</span>`;
+    ` <span class="muted streak-best">${t("streakBestSuffix", [String(streak.longest)])}</span>`;
   $("streak-icon").textContent = streak.current > 0 ? "🔥" : "○";
   $("streak-freeze").hidden = streak.freezesUsedThisWeek === 0;
   $("streak-risk").hidden = !streak.isAtRisk;
@@ -2744,6 +2749,9 @@ function renderChallenge() {
   const block = $("challenge-block");
   chip.hidden = progress === null;
   block.hidden = progress === null;
+  // Tells the top bar to make room: with a challenge chip present the row
+  // cannot also hold the streak's "best" suffix.
+  document.querySelector(".topbar").classList.toggle("has-challenge", progress !== null);
   if (!progress) return;
 
   $("challenge-name").textContent = progress.name;
@@ -2768,6 +2776,14 @@ function renderChallenge() {
   $("challenge-meter-fill").style.width = `${Math.min(100, Math.round((progress.metDays / denom) * 100))}%`;
   $("challenge-meter-fill").style.background = `var(${toneVar(tone === "critical" ? "critical" : "good")})`;
 
+  // State the rule before the tally. "Kept 1 of 18" on a 21-day challenge is
+  // unreadable without knowing where 18 came from.
+  const rule = $("challenge-rule");
+  rule.hidden = !progress.targetDays;
+  if (progress.targetDays) {
+    rule.textContent = t("challengeRule", [String(progress.day), String(progress.targetDays), String(progress.required)]);
+  }
+
   $("challenge-kept").textContent = progress.targetDays
     ? t("challengeKeptOf", [String(progress.metDays), String(progress.required)])
     : t("challengeKeptSoFar", [String(progress.metDays)]);
@@ -2778,7 +2794,20 @@ function renderChallenge() {
     missed.textContent = t("challengeMissedOf", [String(progress.missedDays), String(progress.allowedMisses)]);
   }
 
-  $("challenge-today").textContent = t(progress.todayMet ? "challengeTodayYes" : "challengeTodayNo");
+  // About the day on screen, not about today. Stepping back to yesterday and
+  // being told "today does not count yet" is a sentence about a day you are
+  // not looking at.
+  const line = $("challenge-today");
+  const start = new Date(settings.challenge.startKey + "T00:00:00");
+  const viewed = new Date(state.viewDate);
+  viewed.setHours(0, 0, 0, 0);
+  const offset = Math.floor((viewed - start) / 86400000);
+  const insideRun = offset >= 0 && (!progress.targetDays || offset < progress.targetDays);
+  line.hidden = !insideRun;
+  if (insideRun) {
+    const met = challengeDayMet({ slots: state.slots }, categories, progress.goal, scoreTarget());
+    line.textContent = t(met ? "challengeDayCounts" : "challengeDayNotYet");
+  }
 }
 
 function syncAutoBackupInputs() {
@@ -3869,6 +3898,10 @@ function renderAll() {
   renderSide();
   renderStrip();
   renderStreak();
+  // Reports on the day being viewed, so it moves with the date like the rest
+  // of this panel. Without it here, stepping to another day left the block
+  // describing whichever day was open when the page loaded.
+  renderChallenge();
   renderBackupStatus();
   renderReviewNudge();
   // The breakdown is a view of the same slots the dial draws, so it has to

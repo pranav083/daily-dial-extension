@@ -159,14 +159,34 @@ body {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px 20px;
+  gap: 10px 14px;
 }
+/* The identity side is the half that gives way. It shrinks and truncates so
+   the controls on the right stay on one row — grouping them was not enough on
+   its own: stepping to another day reveals the "Today" jump button, which adds
+   enough width to push the whole right-hand group onto a second row at every
+   window size. Nothing about switching days should move the buttons. */
 .topbar-left {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  /* Shrink, never grow. With `1 1 auto` it expanded to eat the free space and
+     pushed the right-hand group onto its own row at every width — worse than
+     the problem it was meant to fix. */
+  flex: 0 1 auto;
+  gap: 8px 12px;
   min-width: 0;
+}
+.topbar-left > * { min-width: 0; }
+.topbar-right { flex: 0 0 auto; }
+/* Three progress chips do not fit beside the controls: the row needs about
+   1138px and the layout gives it 1080, at every window size. Something has to
+   go, and "· best: 4" is the least load-bearing thing in the bar — so it goes
+   only while a challenge is running, which is exactly when the space is
+   needed and when the challenge is the run you are watching anyway. */
+.topbar.has-challenge .streak-best { display: none; }
+@media (max-width: 1080px) {
+  .streak-best { display: none; }
 }
 .wordmark { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.01em; }
 .wordmark span {
@@ -1108,7 +1128,7 @@ select {
    perfectly reasonable thing to call one. Truncate rather than let it set the
    width of the whole top bar. */
 #challenge-name {
-  max-width: 22ch;
+  max-width: min(20ch, 14vw);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
