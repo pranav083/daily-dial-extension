@@ -116,6 +116,7 @@ There and switched off: Exercise · Sleep · Social · Errands
 
 🔔 GENTLE REMINDERS
 ⏰ Two optional daily nudges, times you choose (default: midday + evening wrap-up)
+🔕 If your system blocks Chrome's notifications, the toolbar icon still shows a ! when one is due — and a "Send a test reminder" button tells you which is happening
 📬 Optional weekly recap, also off by default
 🤫 Everything here is off until you turn it on
 

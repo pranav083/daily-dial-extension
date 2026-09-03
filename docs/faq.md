@@ -77,3 +77,40 @@ run that tolerates gaps is a weaker thing wearing the same name. One button
 restarts the same challenge from today.
 
 Today never breaks a run, because today is not over yet.
+
+## Reminders never appear. How do I find out why?
+
+Work down this list; it is ordered by how often each one is the answer.
+
+**1. Press "Send a test reminder"** (Settings → Reminders). It fires one
+immediately.
+
+- If it appears, reminders work. Check the "Next reminder" line right above
+  the button — turning reminders on at 2pm with a 1pm time schedules the first
+  for *tomorrow*, which looks exactly like nothing happening.
+- If nothing appears, the notification is being stopped outside the extension.
+  Keep going.
+
+**2. Check your operating system.** Notifications from an extension are
+delivered by the system, not by Chrome alone.
+
+- **macOS**: System Settings → Notifications → Google Chrome → *Allow
+  notifications*. Also check Focus / Do Not Disturb.
+- **Windows**: Settings → System → Notifications → Google Chrome. Also check
+  Focus assist.
+- **Linux**: whatever your desktop uses for notifications must be running.
+
+**3. Check Chrome itself**: `chrome://settings/content/notifications`.
+
+**4. Watch the toolbar icon instead.** When a reminder is due the extension
+puts a **!** on its own badge, with "Time to log your day" as the tooltip.
+That is drawn by the extension, so nothing outside it can suppress it. It
+clears when you open the day or log anything.
+
+**5. Chrome has to be running.** Alarms do not fire when it is closed, and a
+reminder whose time passed while Chrome was shut does not arrive late.
+
+If you want to see the schedule directly: `chrome://extensions` → Daily Dial →
+*service worker* → Console, then run
+`chrome.alarms.getAll().then(console.log)`. Each enabled reminder appears as
+`reminder-0` / `reminder-1` with its next `scheduledTime`.

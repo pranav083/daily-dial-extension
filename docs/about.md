@@ -41,7 +41,7 @@ the hours actually went toward the applications.
 | **Category colours** | Click the swatch in Settings → Categories. The ring, pens, week strip, bars, calendar and shared image all follow |
 | **Goals** | Optional per-category targets, daily or weekly, with progress shown in the side panel |
 | **Waking hours** | The "still unlogged" nag only counts time inside this window, so sleep isn't mistaken for a gap |
-| **Reminders** | Two a day plus an optional weekly recap, all off by default, times are yours |
+| **Reminders** | Two a day plus an optional weekly recap, all off by default, times are yours. Settings says when the next one lands, and a test button fires one now — so a system that blocks Chrome's notifications is distinguishable from a broken extension |
 | **Settings** | Categories, reminders, goals, data, appearance, and about — behind the ☰ button |
 | **Export / import** | CSV or a full-fidelity JSON backup; import merges or replaces, your choice |
 | **Share as image** | Renders the day — dial, score, top category, streak — as a PNG, built entirely on-device |

@@ -125,3 +125,21 @@ Settings → **Data**. Two independent ways to keep a copy:
 
 That's the whole surface area. Painting is the only thing you ever have to
 do — everything else here is optional.
+
+## Turning on reminders
+
+Settings → Reminders. Two a day, at times you choose, both off until you turn
+them on.
+
+Two things on that panel exist because "reminders don't work" is almost never
+what it looks like:
+
+- **Next reminder: …** tells you when the next one actually lands. Switching
+  them on at 2pm with a 1pm time schedules the first for tomorrow.
+- **Send a test reminder** fires one now. If it does not appear, your operating
+  system is refusing Chrome's notifications rather than the extension being
+  broken — the FAQ walks through where to look.
+
+When a reminder is due, the extension also puts a **!** on its toolbar icon.
+That one is drawn by the extension itself, so it shows up even where system
+notifications are blocked.

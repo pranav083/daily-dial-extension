@@ -165,6 +165,8 @@ GENTLE REMINDERS
 
 Two optional daily nudges at times you choose, and an optional weekly recap. All of it is off until you turn it on.
 
+If your system refuses Firefox's notifications, the toolbar icon still shows a ! when a reminder is due, and a "Send a test reminder" button tells you which of the two is happening. Settings also says when the next one actually lands.
+
 YOUR DATA STAYS YOURS
 
 • No account with us, and no sign-in required
