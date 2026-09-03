@@ -27,6 +27,7 @@ const browserGlobals = {
   File: "readonly",
   localStorage: "readonly",
   matchMedia: "readonly",
+  getComputedStyle: "readonly",
   requestAnimationFrame: "readonly",
   navigator: "readonly",
   XMLHttpRequest: "readonly",

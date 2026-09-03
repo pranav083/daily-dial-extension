@@ -2804,5 +2804,19 @@
   },
   "histColourByCategory": {
     "message": "Color: categoría principal"
+  },
+  "categoryColorAriaLabel": {
+    "message": "Color de $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorTooltip": {
+    "message": "Elige el color de esta categoría"
+  },
+  "categoryColorResetTooltip": {
+    "message": "Volver al color predeterminado"
   }
 }

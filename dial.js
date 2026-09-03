@@ -86,6 +86,7 @@ import {
   multiDayFillSlotRange,
   normalizeAliases,
   normalizeCategories,
+  normalizeCategoryColor,
   noteReviewAsked,
   noteReviewDone,
   normalizeDay,
@@ -314,7 +315,7 @@ function isOwnWrite(key, newValue) {
 function alreadyMatchesMemory(key, newValue) {
   let mine;
   if (key.startsWith(DAY_PREFIX)) mine = days.get(key.slice(DAY_PREFIX.length));
-  else if (key === CATEGORIES_KEY) mine = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
+  else if (key === CATEGORIES_KEY) mine = categories.map(({ name, weight, enabled, aliases, color }) => ({ name, weight, enabled, aliases, color }));
   else if (key === SETTINGS_KEY) mine = settings;
   else if (key === SAMPLE_DAY_KEYS_KEY) mine = sampleDayKeys;
   else if (key === TEMPLATES_KEY) mine = templates;
@@ -403,7 +404,7 @@ function persistDay() {
 const persistCategories = () =>
   tabIsStale
     ? undefined
-    : saveLocal({ [CATEGORIES_KEY]: categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases })) })
+    : saveLocal({ [CATEGORIES_KEY]: categories.map(({ name, weight, enabled, aliases, color }) => ({ name, weight, enabled, aliases, color })) })
         .catch(reportStorageFailure);
 
 const persistSettings = () =>
@@ -2977,6 +2978,46 @@ function addIntent(evt) {
 
 /* ---------- category editor ---------- */
 
+/**
+ * Pushes each category's chosen colour onto the document as its slot variable.
+ *
+ * Everything that draws a category — the ring, the pens, the week strip, the
+ * breakdown dots, the bars, the heatmap — already resolves `var(--cat-N)`, so
+ * overriding those four variables reaches all of it at once. The alternative
+ * was threading an explicit colour through every one of those call sites and
+ * finding out later which one had been missed.
+ *
+ * Setting the empty string removes the override and hands the slot back to
+ * the stylesheet, which is what "reset to default" needs — and, because the
+ * defaults are theme-dependent, is also what keeps a reset category following
+ * light and dark again.
+ */
+/** The colour a slot is currently drawn in, as #rrggbb.
+ *
+ *  A colour input has no concept of "unset" — handed an empty value it shows
+ *  black, so opening the picker on a default category would suggest the
+ *  category was black. This reads what the stylesheet actually resolves to
+ *  and hands that over instead. */
+function resolvedCategoryColor(c) {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(`--${c.cls}`).trim();
+  const hex = normalizeCategoryColor(value);
+  if (hex) return hex;
+  // A theme may express the default in any colour syntax; paint it once to
+  // get the rgb back, then convert.
+  const probe = document.createElement("span");
+  probe.style.color = value || "#7c8590";
+  document.body.appendChild(probe);
+  const rgb = getComputedStyle(probe).color.match(/\d+/g) ?? [124, 133, 144];
+  probe.remove();
+  return "#" + rgb.slice(0, 3).map((n) => Number(n).toString(16).padStart(2, "0")).join("");
+}
+
+function applyCategoryColors() {
+  for (const c of categories) {
+    document.documentElement.style.setProperty(`--${c.cls}`, c.color ?? "");
+  }
+}
+
 function renderCategoryEditor() {
   const rowsEl = $("cat-editor-rows");
   rowsEl.replaceChildren();
@@ -2985,10 +3026,39 @@ function renderCategoryEditor() {
     const row = document.createElement("div");
     row.className = "cat-edit-row";
 
-    const swatch = document.createElement("span");
-    swatch.className = "sw";
-    swatch.style.background = `var(--${c.cls})`;
+    // The swatch is the colour picker. A separate control beside it would be
+    // a second thing meaning the same thing.
+    const swatch = document.createElement("input");
+    swatch.type = "color";
+    swatch.className = "sw sw-picker";
+    swatch.disabled = !c.enabled;
+    swatch.value = c.color ?? resolvedCategoryColor(c);
     swatch.style.opacity = c.enabled ? "1" : "0.35";
+    swatch.setAttribute("aria-label", t("categoryColorAriaLabel", [c.name]));
+    swatch.title = t("categoryColorTooltip");
+    swatch.addEventListener("input", () => {
+      c.color = normalizeCategoryColor(swatch.value);
+      applyCategoryColors();
+      persistCategories();
+      renderAll();
+      renderCategoryEditor();
+    });
+
+    const reset = document.createElement("button");
+    reset.type = "button";
+    reset.className = "cat-color-reset";
+    reset.textContent = "↺";
+    reset.hidden = !c.color;
+    reset.disabled = !c.enabled;
+    reset.title = t("categoryColorResetTooltip");
+    reset.setAttribute("aria-label", t("categoryColorResetTooltip"));
+    reset.addEventListener("click", () => {
+      c.color = null;
+      applyCategoryColors();
+      persistCategories();
+      renderAll();
+      renderCategoryEditor();
+    });
 
     const input = document.createElement("input");
     input.type = "text";
@@ -3044,7 +3114,7 @@ function renderCategoryEditor() {
       renderSide();
     });
 
-    row.append(swatch, input, seg, toggle);
+    row.append(swatch, reset, input, seg, toggle);
 
     const aliasRow = document.createElement("div");
     aliasRow.className = "cat-alias-row";
@@ -3356,7 +3426,7 @@ function applyImport(mode) {
   const toSet = {};
   for (const [key, day] of days) toSet[DAY_PREFIX + key] = day;
   if (mode === "replace" && pendingImport.categories) {
-    toSet[CATEGORIES_KEY] = categories.map(({ name, weight, enabled, aliases }) => ({ name, weight, enabled, aliases }));
+    toSet[CATEGORIES_KEY] = categories.map(({ name, weight, enabled, aliases, color }) => ({ name, weight, enabled, aliases, color }));
   }
   if (mode === "replace" && pendingImport.settings) toSet[SETTINGS_KEY] = settings;
   saveLocal(toSet).catch(reportStorageFailure);
@@ -4241,6 +4311,7 @@ async function boot() {
   wireEvents();
 
   await loadAll();
+  applyCategoryColors();
   // Only after loadAll: the in-memory copy this compares against has to
   // exist before a foreign write can be told apart from our own.
   watchForOtherTabs();

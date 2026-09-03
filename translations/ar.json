@@ -703,5 +703,8 @@
   "histColourByTooltip": "ما الذي تعنيه ألوان التقويم.",
   "histColourByScore": "اللون: الدرجة",
   "histColourByTracked": "اللون: الساعات المسجلة",
-  "histColourByCategory": "اللون: الفئة الأبرز"
+  "histColourByCategory": "اللون: الفئة الأبرز",
+  "categoryColorAriaLabel": "لون $NAME$",
+  "categoryColorTooltip": "اختر لون هذه الفئة",
+  "categoryColorResetTooltip": "العودة إلى اللون الافتراضي"
 }

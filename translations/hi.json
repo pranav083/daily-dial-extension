@@ -643,5 +643,8 @@
   "histColourByTooltip": "कैलेंडर के रंगों का मतलब।",
   "histColourByScore": "रंग: स्कोर",
   "histColourByTracked": "रंग: दर्ज घंटे",
-  "histColourByCategory": "रंग: मुख्य श्रेणी"
+  "histColourByCategory": "रंग: मुख्य श्रेणी",
+  "categoryColorAriaLabel": "$NAME$ का रंग",
+  "categoryColorTooltip": "इस श्रेणी का रंग चुनें",
+  "categoryColorResetTooltip": "डिफ़ॉल्ट रंग पर लौटें"
 }

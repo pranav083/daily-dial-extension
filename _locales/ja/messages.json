@@ -2639,5 +2639,19 @@
   },
   "histColourByCategory": {
     "message": "色：最も多いカテゴリ"
+  },
+  "categoryColorAriaLabel": {
+    "message": "$NAME$ の色",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorTooltip": {
+    "message": "このカテゴリの色を選ぶ"
+  },
+  "categoryColorResetTooltip": {
+    "message": "既定の色に戻す"
   }
 }

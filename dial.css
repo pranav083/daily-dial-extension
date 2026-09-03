@@ -1125,6 +1125,42 @@ select {
 }
 .hist-colour-by:hover { border-color: var(--accent); color: var(--ink); }
 
+/* The swatch in the category editor is the colour picker itself. A native
+   colour input is a bordered box with padding around the swatch by default,
+   which looks nothing like the dots used everywhere else, so it is stripped
+   back to just the colour. */
+.sw-picker {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  flex: none;
+}
+.sw-picker::-webkit-color-swatch-wrapper { padding: 0; }
+.sw-picker::-webkit-color-swatch { border: none; border-radius: 50%; }
+.sw-picker::-moz-color-swatch { border: none; border-radius: 50%; }
+.sw-picker:disabled { cursor: default; }
+.cat-color-reset {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.cat-color-reset:hover { color: var(--ink); background: var(--panel-2); }
+.cat-color-reset[hidden] { display: none; }
+
 /* Visible to screen readers only. */
 .sr-only {
   position: absolute;

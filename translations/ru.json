@@ -673,5 +673,8 @@
   "histColourByTooltip": "Что означают цвета в календаре.",
   "histColourByScore": "Цвет: оценка",
   "histColourByTracked": "Цвет: записанные часы",
-  "histColourByCategory": "Цвет: главная категория"
+  "histColourByCategory": "Цвет: главная категория",
+  "categoryColorAriaLabel": "Цвет для $NAME$",
+  "categoryColorTooltip": "Выберите цвет этой категории",
+  "categoryColorResetTooltip": "Вернуть цвет по умолчанию"
 }

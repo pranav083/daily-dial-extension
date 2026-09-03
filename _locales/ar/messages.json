@@ -3464,5 +3464,19 @@
   },
   "histColourByCategory": {
     "message": "اللون: الفئة الأبرز"
+  },
+  "categoryColorAriaLabel": {
+    "message": "لون $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorTooltip": {
+    "message": "اختر لون هذه الفئة"
+  },
+  "categoryColorResetTooltip": {
+    "message": "العودة إلى اللون الافتراضي"
   }
 }

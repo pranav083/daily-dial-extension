@@ -426,6 +426,20 @@ export function normalizeAliases(saved) {
  *  @param {Array} saved
  *  @param {(key: string) => string} [translate] supplies localized default
  *    names; omitted in tests and anywhere the English defaults are wanted. */
+/**
+ * A category's own colour, or null to use the slot's default.
+ *
+ * Six-digit hex only, and lowercased so two spellings of the same colour do
+ * not read as a change. Anything else is dropped rather than guessed at: a
+ * colour is written straight into a style, and a value that is nearly a
+ * colour is how you get a category that renders as nothing at all.
+ */
+export function normalizeCategoryColor(raw) {
+  if (typeof raw !== "string") return null;
+  const hex = raw.trim().toLowerCase();
+  return /^#[0-9a-f]{6}$/.test(hex) ? hex : null;
+}
+
 export function normalizeCategories(saved, translate = null) {
   // The default *names* are UI text on a fresh install — a new Spanish user
   // should not be handed six English categories. But a saved name always
@@ -433,6 +447,7 @@ export function normalizeCategories(saved, translate = null) {
   // renames a category someone already has data recorded against.
   const defaults = DEFAULT_CATEGORIES.map((c) => ({
     ...c,
+    color: null,
     name: (translate && translate(`defaultCategory${c.id}`)) || c.name,
   }));
   if (!Array.isArray(saved)) return defaults;
@@ -441,7 +456,15 @@ export function normalizeCategories(saved, translate = null) {
     if (!s || typeof s !== "object") return base;
     const name = typeof s.name === "string" && s.name.trim() ? s.name.trim().slice(0, 24) : base.name;
     const weight = s.weight === 1 || s.weight === 0 || s.weight === -1 ? s.weight : base.weight;
-    return { id: base.id, cls: base.cls, name, weight, enabled: s.enabled !== false, aliases: normalizeAliases(s.aliases) };
+    return {
+      id: base.id,
+      cls: base.cls,
+      name,
+      weight,
+      enabled: s.enabled !== false,
+      aliases: normalizeAliases(s.aliases),
+      color: normalizeCategoryColor(s.color),
+    };
   });
 }
 
@@ -2179,7 +2202,7 @@ export function buildShareSvgMarkup(slots, categories, dateLabel, streak = null,
       const a0 = run.start * (360 / SLOTS);
       const a1 = run.end * (360 / SLOTS);
       const gap = Math.min(0.55, (a1 - a0) * 0.3);
-      const fill = SHARE_CAT_HEX[run.cat] ?? "#7c8590";
+      const fill = categories[run.cat]?.color ?? SHARE_CAT_HEX[run.cat] ?? "#7c8590";
       return `<path d="${wedgePath(R_IN, R_OUT, a0 + gap, a1 - gap)}" fill="${fill}"/>`;
     })
     .join("");
@@ -2243,7 +2266,7 @@ export function buildShareSvgMarkup(slots, categories, dateLabel, streak = null,
     const BAR_W = 160;
     const END_X = W - 50;
     const rows = categories
-      .map((c, i) => ({ name: c.name, min: stats.perCat[i] * SLOT_MIN, hex: SHARE_CAT_HEX[i] ?? "#7c8590" }))
+      .map((c, i) => ({ name: c.name, min: stats.perCat[i] * SLOT_MIN, hex: c.color ?? SHARE_CAT_HEX[i] ?? "#7c8590" }))
       .filter((r) => r.min > 0)
       .sort((a, b) => b.min - a.min);
     const untrackedMin = SLOTS * SLOT_MIN - stats.trackedMin;

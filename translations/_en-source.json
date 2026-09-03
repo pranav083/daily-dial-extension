@@ -2410,5 +2410,17 @@
   "histColourByCategory": {
     "message": "Colour: top category",
     "description": "History calendar colouring control."
+  },
+  "categoryColorAriaLabel": {
+    "message": "Colour for $NAME$",
+    "description": "Category colour control."
+  },
+  "categoryColorTooltip": {
+    "message": "Pick this category's colour",
+    "description": "Category colour control."
+  },
+  "categoryColorResetTooltip": {
+    "message": "Back to the default colour",
+    "description": "Category colour control."
   }
 }

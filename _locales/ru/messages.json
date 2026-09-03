@@ -3134,5 +3134,19 @@
   },
   "histColourByCategory": {
     "message": "Цвет: главная категория"
+  },
+  "categoryColorAriaLabel": {
+    "message": "Цвет для $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorTooltip": {
+    "message": "Выберите цвет этой категории"
+  },
+  "categoryColorResetTooltip": {
+    "message": "Вернуть цвет по умолчанию"
   }
 }

@@ -2639,5 +2639,19 @@
   },
   "histColourByCategory": {
     "message": "颜色：主要类别"
+  },
+  "categoryColorAriaLabel": {
+    "message": "$NAME$ 的颜色",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorTooltip": {
+    "message": "选择该类别的颜色"
+  },
+  "categoryColorResetTooltip": {
+    "message": "恢复默认颜色"
   }
 }

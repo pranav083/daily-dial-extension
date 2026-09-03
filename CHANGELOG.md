@@ -8,6 +8,20 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.38.0] — 2026-09-03
+
+### Added
+
+- **Every category can have its own colour.** The swatch in Settings →
+  Categories is the picker: click it, choose, and the ring, the pens, the week
+  strip, the breakdown dots, the bars, the History calendar and the shared
+  image all follow at once. A ↺ beside it hands the slot back to the default,
+  which also puts it back under the theme's control so it follows light and
+  dark again.
+- Only a real six-digit hex is accepted. A colour goes straight into a style,
+  and a value that is nearly a colour is how a category ends up rendering as
+  nothing at all.
+
 ## [1.37.0] — 2026-09-03
 
 ### Added

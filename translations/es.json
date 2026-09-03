@@ -643,5 +643,8 @@
   "histColourByTooltip": "Qué significan los colores del calendario.",
   "histColourByScore": "Color: puntuación",
   "histColourByTracked": "Color: horas registradas",
-  "histColourByCategory": "Color: categoría principal"
+  "histColourByCategory": "Color: categoría principal",
+  "categoryColorAriaLabel": "Color de $NAME$",
+  "categoryColorTooltip": "Elige el color de esta categoría",
+  "categoryColorResetTooltip": "Volver al color predeterminado"
 }

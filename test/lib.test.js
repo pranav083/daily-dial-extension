@@ -71,6 +71,7 @@ import {
   nextOccurrence,
   nextWeeklyOccurrence,
   normalizeCategories,
+  normalizeCategoryColor,
   normalizeDay,
   normalizeSettings,
   parseBackup,
@@ -492,6 +493,29 @@ test("dailyTargetMin prefers the user's own goals over the default", () => {
 
   const noDeepWork = cats.map((c) => (c.id === 0 ? { ...c, enabled: false } : c));
   assert.equal(dailyTargetMin({ goals: { 0: 120, 2: 60 } }, noDeepWork), 60, "a disabled category's goal is ignored");
+});
+
+test("a category can carry its own colour, and only a real one", () => {
+  assert.equal(normalizeCategoryColor("#3987E5"), "#3987e5", "lowercased, so one colour has one spelling");
+  assert.equal(normalizeCategoryColor("  #abcdef  "), "#abcdef");
+  for (const bad of ["#abc", "red", "rgb(1,2,3)", "#12345g", "", null, 42, "#1234567"]) {
+    assert.equal(normalizeCategoryColor(bad), null, `${JSON.stringify(bad)} is not a colour`);
+  }
+
+  const saved = [{ name: "Focus", weight: 1, enabled: true, aliases: [], color: "#112233" }];
+  const cats2 = normalizeCategories(saved);
+  assert.equal(cats2[0].color, "#112233", "a chosen colour survives");
+  assert.equal(cats2[1].color, null, "an untouched slot keeps the stylesheet's default");
+
+  const junk = normalizeCategories([{ name: "Focus", weight: 1, enabled: true, aliases: [], color: "not a colour" }]);
+  assert.equal(junk[0].color, null, "nonsense is dropped, not written into a style");
+});
+
+test("the share card draws a category in the colour the user picked", () => {
+  const recoloured = cats.map((c, i) => (i === 0 ? { ...c, color: "#00ff88" } : c));
+  const svg = buildShareSvgMarkup(paint(blank(), 9, 11, 0), recoloured, "Today");
+  assert.match(svg, /#00ff88/, "the wedge uses the chosen colour");
+  assert.doesNotMatch(svg, new RegExp(SHARE_CAT_HEX[0]), "and not the default it replaced");
 });
 
 /* ---------- day spans and which note belongs to which ---------- */

@@ -2804,5 +2804,19 @@
   },
   "histColourByCategory": {
     "message": "रंग: मुख्य श्रेणी"
+  },
+  "categoryColorAriaLabel": {
+    "message": "$NAME$ का रंग",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "categoryColorTooltip": {
+    "message": "इस श्रेणी का रंग चुनें"
+  },
+  "categoryColorResetTooltip": {
+    "message": "डिफ़ॉल्ट रंग पर लौटें"
   }
 }

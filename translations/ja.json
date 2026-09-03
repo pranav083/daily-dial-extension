@@ -628,5 +628,8 @@
   "histColourByTooltip": "カレンダーの色が示すもの。",
   "histColourByScore": "色：スコア",
   "histColourByTracked": "色：記録した時間",
-  "histColourByCategory": "色：最も多いカテゴリ"
+  "histColourByCategory": "色：最も多いカテゴリ",
+  "categoryColorAriaLabel": "$NAME$ の色",
+  "categoryColorTooltip": "このカテゴリの色を選ぶ",
+  "categoryColorResetTooltip": "既定の色に戻す"
 }

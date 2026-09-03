@@ -628,5 +628,8 @@
   "histColourByTooltip": "日历颜色的含义。",
   "histColourByScore": "颜色：评分",
   "histColourByTracked": "颜色：记录时长",
-  "histColourByCategory": "颜色：主要类别"
+  "histColourByCategory": "颜色：主要类别",
+  "categoryColorAriaLabel": "$NAME$ 的颜色",
+  "categoryColorTooltip": "选择该类别的颜色",
+  "categoryColorResetTooltip": "恢复默认颜色"
 }
