@@ -17,6 +17,9 @@ software at all.
   Time, greyscale and Digital Wellbeing, set up step by step.
 - [**Block sites during the hours you want to work**](blocking-sites.html) —
   and why an all-day block gets switched off by lunchtime.
+- [**Automate SelfControl without letting it start on its own**](selfcontrol-automation.html)
+  — the scripts, the traps, and why the schedule should fire a reminder rather
+  than the block. Technical; macOS only.
 - [**Protect your best hour**](best-hour.html) — finding it in your own data,
   then defending it.
 - [**Rest that actually happens**](rest.html) — break timers, and the

@@ -18,6 +18,8 @@ To use it: download the free, open-source app from its website, launch it, and e
 
 SelfControl works best for short, focused sessions: 90 minutes of deep work, or a single morning where you need to write without distraction. Start with 30 or 60 minutes to understand what something you cannot undo actually feels like. The irreversibility is the feature, but it is also why you need to respect it.
 
+If you settle on SelfControl and want it on a schedule, [automating it is its own guide](selfcontrol-automation.html) — with the scripts, and the argument for scheduling the reminder rather than the block.
+
 ## Cold Turkey
 
 Cold Turkey runs on Windows and macOS. Its main feature is scheduling: you can set up "every weekday from 09:00 to 12:00, block these sites" and let it run automatically. It also includes a "frozen turkey" mode that mimics SelfControl's irreversibility if you want it, plus allowance minutes—a small amount of browsing time you earn during a blocked session.

@@ -1,0 +1,668 @@
+# ============================================================
+# VIDEO / SHORT-FORM VIDEO
+# ============================================================
+
+www.youtube.com
+youtu.be
+m.youtube.com
+youtube-nocookie.com
+tiktok.com
+vimeo.com
+dailymotion.com
+rumble.com
+twitch.tv
+kick.com
+
+
+# ============================================================
+# SOCIAL MEDIA / SOCIAL FEEDS
+# ============================================================
+
+reddit.com
+old.reddit.com
+redd.it
+x.com
+twitter.com
+t.co
+facebook.com
+fb.com
+instagram.com
+threads.net
+snapchat.com
+pinterest.com
+tumblr.com
+bluesky.app
+mastodon.social
+nextdoor.com
+
+
+# ============================================================
+# MESSAGING / COMMUNITY DISTRACTIONS
+# Remove anything you actually need for work.
+# ============================================================
+
+discord.com
+discord.gg
+
+
+# ============================================================
+# GOOGLE / AGGREGATED NEWS
+# ============================================================
+
+news.google.com
+news.yahoo.com
+flipboard.com
+feedly.com
+
+
+# ============================================================
+# INDIA — MAJOR NATIONAL ENGLISH NEWS
+# ============================================================
+
+indiatoday.in
+ndtv.com
+news18.com
+firstpost.com
+timesnownews.com
+republicworld.com
+wionews.com
+newsx.com
+thehindu.com
+hindustantimes.com
+indianexpress.com
+timesofindia.indiatimes.com
+telegraphindia.com
+thestatesman.com
+tribuneindia.com
+deccanherald.com
+outlookindia.com
+theweek.in
+scroll.in
+theprint.in
+newslaundry.com
+thewire.in
+thequint.com
+swarajyamag.com
+opindia.com
+rediff.com
+oneindia.com
+freepressjournal.in
+nationalheraldindia.com
+deccanchronicle.com
+newindianexpress.com
+millenniumpost.in
+dailypioneer.com
+
+
+# ============================================================
+# INDIA — MAJOR HINDI TV / NEWS
+# Includes many of the national channels listed in current
+# Indian TV-news directories.
+# ============================================================
+
+aajtak.in
+abplive.com
+bharat24live.com
+bharatexpress.com
+cnbctv18.com
+ddnews.gov.in
+indiatvnews.com
+ndtv.in
+news18.com
+news24online.com
+newsnationtv.com
+republicbharat.com
+sudarshannews.in
+timesnowhindi.com
+tv9hindi.com
+zeebiz.com
+zeenews.india.com
+jagran.com
+amarujala.com
+livehindustan.com
+bhaskar.com
+patrika.com
+prabhasakshi.com
+navbharattimes.indiatimes.com
+jansatta.com
+haribhoomi.com
+punjabkesari.in
+
+
+# ============================================================
+# INDIA — BUSINESS / MARKETS / ECONOMY NEWS
+# ============================================================
+
+economictimes.indiatimes.com
+financialexpress.com
+business-standard.com
+businessline.com
+moneycontrol.com
+livemint.com
+cnbctv18.com
+etnownews.com
+zeebiz.com
+bqprime.com
+fortuneindia.com
+businesstoday.in
+
+
+# ============================================================
+# INDIA — GOVERNMENT / PUBLIC NEWS
+# Useful sometimes, so remove these if needed for work.
+# ============================================================
+
+pib.gov.in
+ddnews.gov.in
+newsonair.gov.in
+sansadtv.nic.in
+
+
+# ============================================================
+# INDIA — BENGALI NEWS
+# ============================================================
+
+anandabazar.com
+eisamay.com
+sangbadpratidin.in
+abplive.com
+tv9bangla.com
+zeenews.india.com
+news18.com
+kolkatatv.org
+republicworld.com
+
+
+# ============================================================
+# INDIA — MARATHI NEWS
+# ============================================================
+
+lokmat.com
+loksatta.com
+maharashtratimes.com
+saamana.com
+tv9marathi.com
+abplive.com
+zeenews.india.com
+news18.com
+
+
+# ============================================================
+# INDIA — GUJARATI NEWS
+# ============================================================
+
+gujaratsamachar.com
+sandesh.com
+divyabhaskar.co.in
+tv9gujarati.com
+zeenews.india.com
+news18.com
+
+
+# ============================================================
+# INDIA — PUNJABI NEWS
+# ============================================================
+
+jagbani.punjabkesari.in
+punjabijagran.com
+ptcnews.tv
+abplive.com
+news18.com
+
+
+# ============================================================
+# INDIA — TAMIL NEWS
+# ============================================================
+
+dinamalar.com
+dinamani.com
+dailythanthi.com
+vikatan.com
+puthiyathalaimurai.com
+polimernews.com
+news18.com
+zeenews.india.com
+tamil.oneindia.com
+
+
+# ============================================================
+# INDIA — TELUGU NEWS
+# ============================================================
+
+eenadu.net
+sakshi.com
+andhrajyothy.com
+tv9telugu.com
+ntnews.com
+v6velugu.com
+10tv.in
+news18.com
+
+
+# ============================================================
+# INDIA — KANNADA NEWS
+# ============================================================
+
+vijaykarnataka.com
+prajavani.net
+kannadaprabha.com
+udayavani.com
+tv9kannada.com
+publictv.in
+news18.com
+
+
+# ============================================================
+# INDIA — MALAYALAM NEWS
+# ============================================================
+
+manoramaonline.com
+mathrubhumi.com
+deshabhimani.com
+asianetnews.com
+mediaoneonline.com
+24news.in
+news18.com
+
+
+# ============================================================
+# INDIA — ASSAMESE / NORTHEAST NEWS
+# ============================================================
+
+assamtribune.com
+sentinelassam.com
+pratidintime.com
+newslivetv.com
+pragnews.com
+dy365.in
+northeastlivetv.com
+
+
+# ============================================================
+# INDIA — ODISHA / ODIA NEWS
+# ============================================================
+
+sambad.in
+odishatv.in
+kanaknews.com
+prameyanews.com
+kalingatv.com
+
+
+# ============================================================
+# INDIA — URDU / OTHER MAJOR NEWS
+# ============================================================
+
+inquilab.com
+siasat.com
+etemaaddaily.com
+
+
+# ============================================================
+# UNITED STATES — TV / MAINSTREAM NEWS
+# ============================================================
+
+cnn.com
+foxnews.com
+msnbc.com
+nbcnews.com
+cbsnews.com
+abcnews.go.com
+newsnationnow.com
+pbs.org
+npr.org
+cnbc.com
+
+
+# ============================================================
+# UNITED STATES — NEWSPAPERS / NATIONAL PUBLICATIONS
+# ============================================================
+
+nytimes.com
+washingtonpost.com
+wsj.com
+usatoday.com
+latimes.com
+nypost.com
+newsweek.com
+time.com
+theatlantic.com
+newyorker.com
+politico.com
+axios.com
+thehill.com
+huffpost.com
+slate.com
+thedailybeast.com
+propublica.org
+
+
+# ============================================================
+# UNITED STATES — BUSINESS / FINANCIAL NEWS
+# ============================================================
+
+bloomberg.com
+cnbc.com
+marketwatch.com
+wsj.com
+barrons.com
+forbes.com
+fortune.com
+businessinsider.com
+
+
+# ============================================================
+# UNITED KINGDOM — MAINSTREAM NEWS
+# ============================================================
+
+bbc.com
+bbc.co.uk
+theguardian.com
+telegraph.co.uk
+independent.co.uk
+thetimes.com
+ft.com
+dailymail.co.uk
+mirror.co.uk
+express.co.uk
+thesun.co.uk
+standard.co.uk
+itv.com
+news.sky.com
+channel4.com
+gbnews.com
+
+
+# ============================================================
+# CANADA
+# ============================================================
+
+cbc.ca
+ctvnews.ca
+globalnews.ca
+nationalpost.com
+theglobeandmail.com
+thestar.com
+
+
+# ============================================================
+# AUSTRALIA / NEW ZEALAND
+# ============================================================
+
+abc.net.au
+news.com.au
+smh.com.au
+theage.com.au
+skynews.com.au
+theaustralian.com.au
+9news.com.au
+7news.com.au
+rnz.co.nz
+nzherald.co.nz
+stuff.co.nz
+
+
+# ============================================================
+# INTERNATIONAL WIRE SERVICES
+# These are especially easy to refresh compulsively.
+# ============================================================
+
+reuters.com
+apnews.com
+afp.com
+
+
+# ============================================================
+# INTERNATIONAL / GLOBAL NEWS NETWORKS
+# ============================================================
+
+aljazeera.com
+dw.com
+france24.com
+euronews.com
+trtworld.com
+channelnewsasia.com
+nhk.or.jp
+scmp.com
+
+
+# ============================================================
+# EUROPE
+# ============================================================
+
+lemonde.fr
+lefigaro.fr
+liberation.fr
+spiegel.de
+faz.net
+zeit.de
+welt.de
+elpais.com
+elmundo.es
+repubblica.it
+corriere.it
+ansa.it
+politico.eu
+
+
+# ============================================================
+# MIDDLE EAST
+# ============================================================
+
+aljazeera.com
+arabnews.com
+thenationalnews.com
+middleeasteye.net
+timesofisrael.com
+jpost.com
+haaretz.com
+alarabiya.net
+
+
+# ============================================================
+# ASIA
+# ============================================================
+
+scmp.com
+channelnewsasia.com
+straitstimes.com
+japantimes.co.jp
+asahi.com
+koreatimes.co.kr
+koreaherald.com
+bangkokpost.com
+
+
+# ============================================================
+# TECH NEWS / TECH RABBIT HOLES
+# ============================================================
+
+techcrunch.com
+theverge.com
+engadget.com
+gizmodo.com
+arstechnica.com
+wired.com
+tomshardware.com
+zdnet.com
+cnet.com
+venturebeat.com
+slashdot.org
+macrumors.com
+9to5mac.com
+9to5google.com
+androidauthority.com
+androidpolice.com
+producthunt.com
+news.ycombinator.com
+
+
+# ============================================================
+# SPORTS NEWS
+# ============================================================
+
+espn.com
+espncricinfo.com
+cbssports.com
+foxsports.com
+nbcsports.com
+bleacherreport.com
+sports.yahoo.com
+theathletic.com
+si.com
+skysports.com
+goal.com
+cricbuzz.com
+sportskeeda.com
+mlb.com
+nba.com
+nfl.com
+nhl.com
+ufc.com
+formula1.com
+
+
+# ============================================================
+# STREAMING / ENTERTAINMENT
+# ============================================================
+
+netflix.com
+hulu.com
+disneyplus.com
+primevideo.com
+max.com
+peacocktv.com
+paramountplus.com
+crunchyroll.com
+tubitv.com
+plex.tv
+
+
+# ============================================================
+# MOVIES / TV / ENTERTAINMENT RABBIT HOLES
+# ============================================================
+
+imdb.com
+rottentomatoes.com
+letterboxd.com
+metacritic.com
+tmdb.org
+variety.com
+hollywoodreporter.com
+deadline.com
+ew.com
+eonline.com
+tmz.com
+
+
+# ============================================================
+# MUSIC
+# ============================================================
+
+spotify.com
+soundcloud.com
+pandora.com
+last.fm
+genius.com
+
+
+# ============================================================
+# BLOGS / LONG-FORM CONTENT / QUESTION SITES
+# ============================================================
+
+quora.com
+medium.com
+substack.com
+
+
+# ============================================================
+# MEMES / VIRAL CONTENT
+# ============================================================
+
+buzzfeed.com
+boredpanda.com
+9gag.com
+imgur.com
+giphy.com
+knowyourmeme.com
+cheezburger.com
+
+
+# ============================================================
+# GAMING
+# ============================================================
+
+steampowered.com
+steamcommunity.com
+epicgames.com
+ign.com
+gamespot.com
+polygon.com
+kotaku.com
+pcgamer.com
+gamefaqs.gamespot.com
+
+
+# ============================================================
+# SHOPPING / DEAL-HUNTING
+# ============================================================
+
+amazon.com
+ebay.com
+etsy.com
+walmart.com
+target.com
+bestbuy.com
+aliexpress.com
+temu.com
+shein.com
+wish.com
+wayfair.com
+newegg.com
+slickdeals.net
+dealnews.com
+woot.com
+
+
+# ============================================================
+# FOOD DELIVERY / BROWSING
+# ============================================================
+
+doordash.com
+ubereats.com
+grubhub.com
+instacart.com
+
+
+# ============================================================
+# REAL ESTATE BROWSING
+# ============================================================
+
+zillow.com
+redfin.com
+realtor.com
+apartments.com
+
+
+# ============================================================
+# TRAVEL BROWSING
+# ============================================================
+
+tripadvisor.com
+booking.com
+expedia.com
+kayak.com
+airbnb.com
+
+
+# ============================================================
+# RANDOM COMMON RABBIT HOLES
+# ============================================================
+
+goodreads.com
+fandom.com
+fanfiction.net
+archiveofourown.org
+craigslist.org
+chess.com
+lichess.org

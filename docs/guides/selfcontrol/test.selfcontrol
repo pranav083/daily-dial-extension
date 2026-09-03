@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BlockAsWhitelist</key>
+	<false/>
+	<key>HostBlacklist</key>
+	<array>
+		<string>www.youtube.com</string>
+		<string>youtu.be</string>
+		<string>m.youtube.com</string>
+		<string>youtube-nocookie.com</string>
+		<string>tiktok.com</string>
+		<string>vimeo.com</string>
+		<string>dailymotion.com</string>
+		<string>rumble.com</string>
+		<string>twitch.tv</string>
+		<string>kick.com</string>
+		<string>reddit.com</string>
+		<string>old.reddit.com</string>
+		<string>redd.it</string>
+		<string>x.com</string>
+		<string>twitter.com</string>
+		<string>t.co</string>
+		<string>facebook.com</string>
+		<string>fb.com</string>
+		<string>instagram.com</string>
+		<string>threads.net</string>
+		<string>snapchat.com</string>
+		<string>pinterest.com</string>
+		<string>tumblr.com</string>
+		<string>bluesky.app</string>
+		<string>mastodon.social</string>
+		<string>nextdoor.com</string>
+	</array>
+</dict>
+</plist>

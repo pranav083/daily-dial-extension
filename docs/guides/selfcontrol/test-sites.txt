@@ -1,0 +1,30 @@
+# test-sites.txt — a deliberately small list for `selfcontrol-focus.sh --test`.
+# Two-minute blocks only. youtube.com is here because it is the quickest
+# thing to verify by eye: load it, see it fail, know the block is real.
+
+www.youtube.com
+youtu.be
+m.youtube.com
+youtube-nocookie.com
+tiktok.com
+vimeo.com
+dailymotion.com
+rumble.com
+twitch.tv
+kick.com
+reddit.com
+old.reddit.com
+redd.it
+x.com
+twitter.com
+t.co
+facebook.com
+fb.com
+instagram.com
+threads.net
+snapchat.com
+pinterest.com
+tumblr.com
+bluesky.app
+mastodon.social
+nextdoor.com

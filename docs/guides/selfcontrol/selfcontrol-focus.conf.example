@@ -1,0 +1,28 @@
+# selfcontrol-focus.conf
+#
+# Normally written by selfcontrol-focus-setup.sh. Copy this to
+# ~/.config/selfcontrol-focus/selfcontrol-focus.conf if you would rather
+# hand-edit it, then apply the change with:
+#
+#   selfcontrol-focus-setup.sh --apply
+#
+# (that regenerates and reloads both LaunchAgent plists from these values)
+
+# Blocklist used by selfcontrol-focus.sh's manual start and --test.
+# Nothing auto-starts from this — see the reminder note at the bottom.
+BLOCKLIST_PATH="$HOME/.config/selfcontrol-focus/SelfControlBlocklist-DeepWork.selfcontrol"
+
+# Suggested block length in minutes, shown in the reminder notification.
+# You still pick the real duration yourself when you press Start.
+DURATION_MINUTES=120
+
+# Days the reminder fires. launchd weekday numbers:
+# 0=Sunday 1=Monday 2=Tuesday 3=Wednesday 4=Thursday 5=Friday 6=Saturday
+SCHEDULE_WEEKDAYS="1 2 3 4 5"
+
+# Reminder time, 24-hour clock, local time.
+START_HOUR=10
+START_MINUTE=00
+
+# The reminder only notifies. It never starts a block itself — that is the
+# whole design, and the reason this setup survives contact with a real week.
