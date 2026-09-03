@@ -692,5 +692,16 @@
   "challengeDayShortDetail": "هذا اليوم غير محتسب — $ACTUAL$ من $NEEDED$",
   "challengeDayNothingLogged": "هذا اليوم غير محتسب — لا يوجد أي تسجيل",
   "challengeStatusEnded": "انتهى",
-  "challengeEndedNote": "انقضت الأيام $TARGET$. أطول سلسلة: $BEST$."
+  "challengeEndedNote": "انقضت الأيام $TARGET$. أطول سلسلة: $BEST$.",
+  "defaultCategory6": "رياضة",
+  "defaultCategory7": "نوم",
+  "defaultCategory8": "تواصل",
+  "defaultCategory9": "مشاوير",
+  "penTitleWithAliases": "$NAME$ — يمكن كتابته أيضًا: $ALIASES$",
+  "penTitleWithKey": "$NAME$ — اضغط $KEY$",
+  "histColourByLabel": "تلوين الشهر حسب",
+  "histColourByTooltip": "ما الذي تعنيه ألوان التقويم.",
+  "histColourByScore": "اللون: الدرجة",
+  "histColourByTracked": "اللون: الساعات المسجلة",
+  "histColourByCategory": "اللون: الفئة الأبرز"
 }

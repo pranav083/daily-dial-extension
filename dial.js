@@ -1535,7 +1535,9 @@ window.addEventListener("keydown", (evt) => {
   }
   if (inField) return;
 
-  if (/^[1-6]$/.test(evt.key)) {
+  // 1-9 select a pen; the tenth slot has no digit left and is picked by
+  // clicking, which is what the pen list is for.
+  if (/^[1-9]$/.test(evt.key)) {
     const id = Number(evt.key) - 1;
     const cat = categories.find((c) => c.id === id);
     if (cat?.enabled) {
@@ -1566,6 +1568,15 @@ function renderPens() {
     const btn = document.createElement("button");
     btn.className = `pen${state.activePen === c.id ? " active" : ""}`;
     btn.setAttribute("aria-pressed", String(state.activePen === c.id));
+    // Aliases are only useful if you can remember them, and they live three
+    // clicks deep in Settings. Hovering the pen you would type is the moment
+    // you need to be told what this one answers to.
+    const key = c.id < 9 ? String(c.id + 1) : null;
+    btn.title = c.aliases.length
+      ? t("penTitleWithAliases", [c.name, c.aliases.join(", ")])
+      : key
+        ? t("penTitleWithKey", [c.name, key])
+        : c.name;
 
     const swatch = document.createElement("span");
     swatch.className = "swatch";
@@ -3890,6 +3901,13 @@ export const getAppData = () => ({ days, categories, settings, silenced: silence
 /** Silencing is permanent by design: "dismiss for now" would just mean the
  *  same observation returning every week to someone who has already decided
  *  their answer, which is the definition of nagging. */
+/** The History view owns its own colour choice but not the settings object,
+ *  so it hands the value back here to be validated and stored. */
+export function setHistoryColourBy(value) {
+  settings = normalizeSettings({ ...settings, historyColourBy: value });
+  persistSettings();
+}
+
 export function silenceObservation(id) {
   if (silencedObservations.includes(id)) return;
   silencedObservations = [...silencedObservations, id];

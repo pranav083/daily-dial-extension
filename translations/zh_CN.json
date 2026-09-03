@@ -617,5 +617,16 @@
   "challengeDayShortDetail": "这一天未计入 — $ACTUAL$ / $NEEDED$",
   "challengeDayNothingLogged": "这一天未计入 — 没有任何记录",
   "challengeStatusEnded": "已结束",
-  "challengeEndedNote": "$TARGET$ 天已结束。最长连续 $BEST$ 天。"
+  "challengeEndedNote": "$TARGET$ 天已结束。最长连续 $BEST$ 天。",
+  "defaultCategory6": "运动",
+  "defaultCategory7": "睡眠",
+  "defaultCategory8": "社交",
+  "defaultCategory9": "杂事",
+  "penTitleWithAliases": "$NAME$ — 也可输入：$ALIASES$",
+  "penTitleWithKey": "$NAME$ — 按 $KEY$",
+  "histColourByLabel": "按什么给月份着色",
+  "histColourByTooltip": "日历颜色的含义。",
+  "histColourByScore": "颜色：评分",
+  "histColourByTracked": "颜色：记录时长",
+  "histColourByCategory": "颜色：主要类别"
 }

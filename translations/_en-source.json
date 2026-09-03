@@ -2366,5 +2366,49 @@
   "challengeEndedNote": {
     "message": "The $TARGET$ days are up. Longest run: $BEST$.",
     "description": "Challenge goal and progress, shown in the UI."
+  },
+  "defaultCategory6": {
+    "message": "Exercise",
+    "description": "Default name for a category slot."
+  },
+  "defaultCategory7": {
+    "message": "Sleep",
+    "description": "Default name for a category slot."
+  },
+  "defaultCategory8": {
+    "message": "Social",
+    "description": "Default name for a category slot."
+  },
+  "defaultCategory9": {
+    "message": "Errands",
+    "description": "Default name for a category slot."
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — also typed as: $ALIASES$",
+    "description": "Tooltip on a category pen."
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — press $KEY$",
+    "description": "Tooltip on a category pen."
+  },
+  "histColourByLabel": {
+    "message": "Colour the month by",
+    "description": "History calendar colouring control."
+  },
+  "histColourByTooltip": {
+    "message": "What the calendar's colours mean.",
+    "description": "History calendar colouring control."
+  },
+  "histColourByScore": {
+    "message": "Colour: score",
+    "description": "History calendar colouring control."
+  },
+  "histColourByTracked": {
+    "message": "Colour: hours logged",
+    "description": "History calendar colouring control."
+  },
+  "histColourByCategory": {
+    "message": "Colour: top category",
+    "description": "History calendar colouring control."
   }
 }

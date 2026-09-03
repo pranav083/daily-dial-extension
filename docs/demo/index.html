@@ -438,6 +438,13 @@
             <span class="label" id="hist-month-label">—</span>
             <button type="button" id="hist-next-month" data-i18n-label="nextMonthLabel" aria-label="Next month" data-i18n-title="nextMonthLabel" title="Next month">›</button>
             <button type="button" class="ghost-btn" id="hist-this-month" hidden data-i18n-title="thisMonthTooltip" title="Jump back to the current month" data-i18n="thisMonthLabel">This month</button>
+            <label for="hist-colour-by" class="sr-only" data-i18n="histColourByLabel">Colour the month by</label>
+            <select id="hist-colour-by" class="hist-colour-by" data-i18n-title="histColourByTooltip"
+                    title="What the calendar's colours mean.">
+              <option value="score" data-i18n="histColourByScore">Colour: score</option>
+              <option value="tracked" data-i18n="histColourByTracked">Colour: hours logged</option>
+              <option value="category" data-i18n="histColourByCategory">Colour: top category</option>
+            </select>
           </div>
 
           <div class="hist-heatmap" id="hist-heatmap" data-i18n-label="histHeatmapAriaLabel" aria-label="Month calendar. Arrow keys move between days, Enter opens one." role="grid"></div>

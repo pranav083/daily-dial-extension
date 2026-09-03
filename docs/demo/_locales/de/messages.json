@@ -2755,5 +2755,54 @@
         "content": "$2"
       }
     }
+  },
+  "defaultCategory6": {
+    "message": "Sport"
+  },
+  "defaultCategory7": {
+    "message": "Schlaf"
+  },
+  "defaultCategory8": {
+    "message": "Soziales"
+  },
+  "defaultCategory9": {
+    "message": "Besorgungen"
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — auch als: $ALIASES$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "aliases": {
+        "content": "$2"
+      }
+    }
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — Taste $KEY$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "key": {
+        "content": "$2"
+      }
+    }
+  },
+  "histColourByLabel": {
+    "message": "Monat einfärben nach"
+  },
+  "histColourByTooltip": {
+    "message": "Was die Farben im Kalender bedeuten."
+  },
+  "histColourByScore": {
+    "message": "Farbe: Wertung"
+  },
+  "histColourByTracked": {
+    "message": "Farbe: erfasste Stunden"
+  },
+  "histColourByCategory": {
+    "message": "Farbe: Hauptkategorie"
   }
 }

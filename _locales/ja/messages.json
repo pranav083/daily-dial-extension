@@ -2590,5 +2590,54 @@
         "content": "$2"
       }
     }
+  },
+  "defaultCategory6": {
+    "message": "運動"
+  },
+  "defaultCategory7": {
+    "message": "睡眠"
+  },
+  "defaultCategory8": {
+    "message": "人づきあい"
+  },
+  "defaultCategory9": {
+    "message": "用事"
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — 別名でも入力可: $ALIASES$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "aliases": {
+        "content": "$2"
+      }
+    }
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — $KEY$ キー",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "key": {
+        "content": "$2"
+      }
+    }
+  },
+  "histColourByLabel": {
+    "message": "月の色分け"
+  },
+  "histColourByTooltip": {
+    "message": "カレンダーの色が示すもの。"
+  },
+  "histColourByScore": {
+    "message": "色：スコア"
+  },
+  "histColourByTracked": {
+    "message": "色：記録した時間"
+  },
+  "histColourByCategory": {
+    "message": "色：最も多いカテゴリ"
   }
 }

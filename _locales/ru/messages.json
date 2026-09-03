@@ -3085,5 +3085,54 @@
         "content": "$2"
       }
     }
+  },
+  "defaultCategory6": {
+    "message": "Спорт"
+  },
+  "defaultCategory7": {
+    "message": "Сон"
+  },
+  "defaultCategory8": {
+    "message": "Общение"
+  },
+  "defaultCategory9": {
+    "message": "Дела"
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — также пишется: $ALIASES$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "aliases": {
+        "content": "$2"
+      }
+    }
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — клавиша $KEY$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "key": {
+        "content": "$2"
+      }
+    }
+  },
+  "histColourByLabel": {
+    "message": "Раскрасить месяц по"
+  },
+  "histColourByTooltip": {
+    "message": "Что означают цвета в календаре."
+  },
+  "histColourByScore": {
+    "message": "Цвет: оценка"
+  },
+  "histColourByTracked": {
+    "message": "Цвет: записанные часы"
+  },
+  "histColourByCategory": {
+    "message": "Цвет: главная категория"
   }
 }

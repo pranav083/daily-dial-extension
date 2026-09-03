@@ -3415,5 +3415,54 @@
         "content": "$2"
       }
     }
+  },
+  "defaultCategory6": {
+    "message": "رياضة"
+  },
+  "defaultCategory7": {
+    "message": "نوم"
+  },
+  "defaultCategory8": {
+    "message": "تواصل"
+  },
+  "defaultCategory9": {
+    "message": "مشاوير"
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — يمكن كتابته أيضًا: $ALIASES$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "aliases": {
+        "content": "$2"
+      }
+    }
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — اضغط $KEY$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "key": {
+        "content": "$2"
+      }
+    }
+  },
+  "histColourByLabel": {
+    "message": "تلوين الشهر حسب"
+  },
+  "histColourByTooltip": {
+    "message": "ما الذي تعنيه ألوان التقويم."
+  },
+  "histColourByScore": {
+    "message": "اللون: الدرجة"
+  },
+  "histColourByTracked": {
+    "message": "اللون: الساعات المسجلة"
+  },
+  "histColourByCategory": {
+    "message": "اللون: الفئة الأبرز"
   }
 }

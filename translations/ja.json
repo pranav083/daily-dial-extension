@@ -617,5 +617,16 @@
   "challengeDayShortDetail": "この日は条件を満たしていません — $NEEDED$ のうち $ACTUAL$",
   "challengeDayNothingLogged": "この日は条件を満たしていません — 記録がありません",
   "challengeStatusEnded": "終了",
-  "challengeEndedNote": "$TARGET$ 日が終わりました。最長連続は $BEST$ 日です。"
+  "challengeEndedNote": "$TARGET$ 日が終わりました。最長連続は $BEST$ 日です。",
+  "defaultCategory6": "運動",
+  "defaultCategory7": "睡眠",
+  "defaultCategory8": "人づきあい",
+  "defaultCategory9": "用事",
+  "penTitleWithAliases": "$NAME$ — 別名でも入力可: $ALIASES$",
+  "penTitleWithKey": "$NAME$ — $KEY$ キー",
+  "histColourByLabel": "月の色分け",
+  "histColourByTooltip": "カレンダーの色が示すもの。",
+  "histColourByScore": "色：スコア",
+  "histColourByTracked": "色：記録した時間",
+  "histColourByCategory": "色：最も多いカテゴリ"
 }

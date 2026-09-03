@@ -2755,5 +2755,54 @@
         "content": "$2"
       }
     }
+  },
+  "defaultCategory6": {
+    "message": "Sport"
+  },
+  "defaultCategory7": {
+    "message": "Sommeil"
+  },
+  "defaultCategory8": {
+    "message": "Social"
+  },
+  "defaultCategory9": {
+    "message": "Courses"
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — aussi écrit : $ALIASES$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "aliases": {
+        "content": "$2"
+      }
+    }
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — touche $KEY$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "key": {
+        "content": "$2"
+      }
+    }
+  },
+  "histColourByLabel": {
+    "message": "Colorer le mois selon"
+  },
+  "histColourByTooltip": {
+    "message": "Ce que signifient les couleurs du calendrier."
+  },
+  "histColourByScore": {
+    "message": "Couleur : score"
+  },
+  "histColourByTracked": {
+    "message": "Couleur : heures enregistrées"
+  },
+  "histColourByCategory": {
+    "message": "Couleur : catégorie principale"
   }
 }

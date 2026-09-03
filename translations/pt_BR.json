@@ -632,5 +632,16 @@
   "challengeDayShortDetail": "Este dia não conta — $ACTUAL$ de $NEEDED$",
   "challengeDayNothingLogged": "Este dia não conta — nada registrado",
   "challengeStatusEnded": "Encerrado",
-  "challengeEndedNote": "Os $TARGET$ dias acabaram. Maior sequência: $BEST$."
+  "challengeEndedNote": "Os $TARGET$ dias acabaram. Maior sequência: $BEST$.",
+  "defaultCategory6": "Exercício",
+  "defaultCategory7": "Sono",
+  "defaultCategory8": "Social",
+  "defaultCategory9": "Tarefas",
+  "penTitleWithAliases": "$NAME$ — também escrito: $ALIASES$",
+  "penTitleWithKey": "$NAME$ — tecla $KEY$",
+  "histColourByLabel": "Colorir o mês por",
+  "histColourByTooltip": "O que as cores do calendário significam.",
+  "histColourByScore": "Cor: pontuação",
+  "histColourByTracked": "Cor: horas registradas",
+  "histColourByCategory": "Cor: categoria principal"
 }

@@ -2755,5 +2755,54 @@
         "content": "$2"
       }
     }
+  },
+  "defaultCategory6": {
+    "message": "व्यायाम"
+  },
+  "defaultCategory7": {
+    "message": "नींद"
+  },
+  "defaultCategory8": {
+    "message": "मेल-जोल"
+  },
+  "defaultCategory9": {
+    "message": "कामकाज"
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — इस नाम से भी: $ALIASES$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "aliases": {
+        "content": "$2"
+      }
+    }
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — $KEY$ दबाएँ",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "key": {
+        "content": "$2"
+      }
+    }
+  },
+  "histColourByLabel": {
+    "message": "महीने का रंग किसके अनुसार"
+  },
+  "histColourByTooltip": {
+    "message": "कैलेंडर के रंगों का मतलब।"
+  },
+  "histColourByScore": {
+    "message": "रंग: स्कोर"
+  },
+  "histColourByTracked": {
+    "message": "रंग: दर्ज घंटे"
+  },
+  "histColourByCategory": {
+    "message": "रंग: मुख्य श्रेणी"
   }
 }

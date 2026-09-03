@@ -632,5 +632,16 @@
   "challengeDayShortDetail": "यह दिन गिना नहीं जाएगा — $NEEDED$ में से $ACTUAL$",
   "challengeDayNothingLogged": "यह दिन गिना नहीं जाएगा — कुछ दर्ज नहीं है",
   "challengeStatusEnded": "समाप्त",
-  "challengeEndedNote": "$TARGET$ दिन पूरे हो गए। सबसे लंबा सिलसिला: $BEST$।"
+  "challengeEndedNote": "$TARGET$ दिन पूरे हो गए। सबसे लंबा सिलसिला: $BEST$।",
+  "defaultCategory6": "व्यायाम",
+  "defaultCategory7": "नींद",
+  "defaultCategory8": "मेल-जोल",
+  "defaultCategory9": "कामकाज",
+  "penTitleWithAliases": "$NAME$ — इस नाम से भी: $ALIASES$",
+  "penTitleWithKey": "$NAME$ — $KEY$ दबाएँ",
+  "histColourByLabel": "महीने का रंग किसके अनुसार",
+  "histColourByTooltip": "कैलेंडर के रंगों का मतलब।",
+  "histColourByScore": "रंग: स्कोर",
+  "histColourByTracked": "रंग: दर्ज घंटे",
+  "histColourByCategory": "रंग: मुख्य श्रेणी"
 }

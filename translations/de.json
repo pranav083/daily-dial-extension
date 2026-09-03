@@ -632,5 +632,16 @@
   "challengeDayShortDetail": "Dieser Tag zählt nicht — $ACTUAL$ von $NEEDED$",
   "challengeDayNothingLogged": "Dieser Tag zählt nicht — nichts erfasst",
   "challengeStatusEnded": "Beendet",
-  "challengeEndedNote": "Die $TARGET$ Tage sind um. Längste Serie: $BEST$."
+  "challengeEndedNote": "Die $TARGET$ Tage sind um. Längste Serie: $BEST$.",
+  "defaultCategory6": "Sport",
+  "defaultCategory7": "Schlaf",
+  "defaultCategory8": "Soziales",
+  "defaultCategory9": "Besorgungen",
+  "penTitleWithAliases": "$NAME$ — auch als: $ALIASES$",
+  "penTitleWithKey": "$NAME$ — Taste $KEY$",
+  "histColourByLabel": "Monat einfärben nach",
+  "histColourByTooltip": "Was die Farben im Kalender bedeuten.",
+  "histColourByScore": "Farbe: Wertung",
+  "histColourByTracked": "Farbe: erfasste Stunden",
+  "histColourByCategory": "Farbe: Hauptkategorie"
 }

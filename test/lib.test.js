@@ -247,7 +247,8 @@ test("normalizeSettings validates appearance, goals, and recap fields", () => {
   assert.equal(normalizeSettings({ weekStart: 1 }).weekStart, 1);
   assert.equal(normalizeSettings({ weekStart: 5 }).weekStart, 0, "only 0 or 1 are valid");
 
-  assert.deepEqual(normalizeSettings({ goals: { 0: 120, 1: 60.7, 9: 30, bad: 10, 2: -5 } }).goals, {
+  // 9 is a real category now that there are ten slots; 99 never will be.
+  assert.deepEqual(normalizeSettings({ goals: { 0: 120, 1: 60.7, 99: 30, bad: 10, 2: -5 } }).goals, {
     0: 120,
     1: 61,
   });
@@ -1218,7 +1219,8 @@ test("the share card's palette matches the stylesheet it is drawn against", () =
   assert.ok(dark, "found the dark-theme block in dial.css");
 
   const svg = buildShareSvgMarkup(paint(blank(), 9, 10, 5), cats, "Today"); // distraction only
-  for (let i = 0; i < 6; i++) {
+  assert.equal(SHARE_CAT_HEX.length, DEFAULT_CATEGORIES.length, "one share colour per category slot");
+  for (let i = 0; i < SHARE_CAT_HEX.length; i++) {
     const hex = dark.match(new RegExp(`--cat-${i}:\\s*(#[0-9a-fA-F]{6})`))?.[1];
     assert.ok(hex, `dial.css defines --cat-${i}`);
     assert.equal(SHARE_CAT_HEX[i], hex.toLowerCase(), `share colour ${i} matches --cat-${i}`);

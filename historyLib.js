@@ -19,7 +19,7 @@ export const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate
  * intentions or a reflection but no painted time. They are mutually
  * exclusive, and a cell that is neither is genuinely empty.
  * @typedef {{key:string, date:Date, day:number, inMonth:boolean, logged:boolean,
- *   written:boolean, score:number|null, trackedMin:number, productivePct:number}} DayCell
+ *   written:boolean, score:number|null, trackedMin:number, productivePct:number,\n *   topCat:number|null}} DayCell
  */
 
 /**
@@ -36,6 +36,15 @@ export const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate
  * @param {number} [weekStart] 0=Sunday, 1=Monday
  * @returns {DayCell[][]} weeks, each an array of 7 DayCell
  */
+/** Which category a day held most of, or null if it held none. */
+function topCategoryOf(perCat) {
+  let best = -1;
+  perCat.forEach((slots, i) => {
+    if (slots > 0 && (best === -1 || slots > perCat[best])) best = i;
+  });
+  return best === -1 ? null : best;
+}
+
 export function buildMonthGrid(year, month, days, categories, weekStart = 0) {
   const first = new Date(year, month, 1);
   const startOffset = (first.getDay() - weekStart + 7) % 7;
@@ -63,6 +72,11 @@ export function buildMonthGrid(year, month, days, categories, weekStart = 0) {
       score: stats ? stats.score : null,
       trackedMin: stats ? stats.trackedMin : 0,
       productivePct: stats ? stats.productivePct : 0,
+      // The category the day held most of, so a month can be coloured by what
+      // it was actually spent on rather than only by how it scored. Null when
+      // nothing was painted; ties go to the earlier slot, which keeps the
+      // colouring stable instead of flickering between two equal halves.
+      topCat: stats ? topCategoryOf(stats.perCat) : null,
     });
     cursor.setDate(cursor.getDate() + 1);
     // Keep going past month-end until the last week is full, same as a

@@ -2755,5 +2755,54 @@
         "content": "$2"
       }
     }
+  },
+  "defaultCategory6": {
+    "message": "Ejercicio"
+  },
+  "defaultCategory7": {
+    "message": "Sueño"
+  },
+  "defaultCategory8": {
+    "message": "Social"
+  },
+  "defaultCategory9": {
+    "message": "Recados"
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — también se escribe: $ALIASES$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "aliases": {
+        "content": "$2"
+      }
+    }
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — pulsa $KEY$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "key": {
+        "content": "$2"
+      }
+    }
+  },
+  "histColourByLabel": {
+    "message": "Colorear el mes por"
+  },
+  "histColourByTooltip": {
+    "message": "Qué significan los colores del calendario."
+  },
+  "histColourByScore": {
+    "message": "Color: puntuación"
+  },
+  "histColourByTracked": {
+    "message": "Color: horas registradas"
+  },
+  "histColourByCategory": {
+    "message": "Color: categoría principal"
   }
 }

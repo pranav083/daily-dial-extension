@@ -54,6 +54,10 @@
   --cat-3: #ac9400;
   --cat-4: #df70a5;
   --cat-5: #af2427;
+  --cat-6: #158e86;
+  --cat-7: #7351c9;
+  --cat-8: #65821f;
+  --cat-9: #5f6d7d;
 
   --font-ui: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -89,6 +93,10 @@
     --cat-3: #d59105;
     --cat-4: #d24c83;
     --cat-5: #bc3a3f;
+    --cat-6: #1aa39a;
+    --cat-7: #8c6ede;
+    --cat-8: #7a9a2e;
+    --cat-9: #7d8794;
   }
 }
 :root[data-theme="dark"] {
@@ -117,6 +125,10 @@
   --cat-3: #d59105;
   --cat-4: #d24c83;
   --cat-5: #bc3a3f;
+  --cat-6: #1aa39a;
+  --cat-7: #8c6ede;
+  --cat-8: #7a9a2e;
+  --cat-9: #7d8794;
 }
 
 * { box-sizing: border-box; }
@@ -476,6 +488,10 @@ body {
 .cat-3 { fill: var(--cat-3); }
 .cat-4 { fill: var(--cat-4); }
 .cat-5 { fill: var(--cat-5); }
+.cat-6 { fill: var(--cat-6); }
+.cat-7 { fill: var(--cat-7); }
+.cat-8 { fill: var(--cat-8); }
+.cat-9 { fill: var(--cat-9); }
 .tick-line { stroke: var(--ink-muted); opacity: 0.5; }
 .tick-label { fill: var(--ink-muted); font-family: var(--font-mono); font-size: 11px; }
 .needle-line { stroke: var(--accent-fill); stroke-width: 2; }
@@ -1097,6 +1113,18 @@ select {
 .challenge-line { margin: 0; font-size: 0.78rem; color: var(--ink-2); font-family: var(--font-mono); }
 .challenge-line.muted { color: var(--ink-muted); }
 
+.hist-colour-by {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--ink-2);
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.hist-colour-by:hover { border-color: var(--accent); color: var(--ink); }
+
 /* Visible to screen readers only. */
 .sr-only {
   position: absolute;
@@ -1609,6 +1637,10 @@ select {
 .hist-trend-svg rect.cat-3 { fill: var(--cat-3); }
 .hist-trend-svg rect.cat-4 { fill: var(--cat-4); }
 .hist-trend-svg rect.cat-5 { fill: var(--cat-5); }
+.hist-trend-svg rect.cat-6 { fill: var(--cat-6); }
+.hist-trend-svg rect.cat-7 { fill: var(--cat-7); }
+.hist-trend-svg rect.cat-8 { fill: var(--cat-8); }
+.hist-trend-svg rect.cat-9 { fill: var(--cat-9); }
 
 /* ---- note search ---- */
 .hist-search-input {

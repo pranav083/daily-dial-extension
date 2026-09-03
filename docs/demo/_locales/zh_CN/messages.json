@@ -2590,5 +2590,54 @@
         "content": "$2"
       }
     }
+  },
+  "defaultCategory6": {
+    "message": "运动"
+  },
+  "defaultCategory7": {
+    "message": "睡眠"
+  },
+  "defaultCategory8": {
+    "message": "社交"
+  },
+  "defaultCategory9": {
+    "message": "杂事"
+  },
+  "penTitleWithAliases": {
+    "message": "$NAME$ — 也可输入：$ALIASES$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "aliases": {
+        "content": "$2"
+      }
+    }
+  },
+  "penTitleWithKey": {
+    "message": "$NAME$ — 按 $KEY$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "key": {
+        "content": "$2"
+      }
+    }
+  },
+  "histColourByLabel": {
+    "message": "按什么给月份着色"
+  },
+  "histColourByTooltip": {
+    "message": "日历颜色的含义。"
+  },
+  "histColourByScore": {
+    "message": "颜色：评分"
+  },
+  "histColourByTracked": {
+    "message": "颜色：记录时长"
+  },
+  "histColourByCategory": {
+    "message": "颜色：主要类别"
   }
 }

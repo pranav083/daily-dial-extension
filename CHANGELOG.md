@@ -8,6 +8,27 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.37.0] — 2026-09-03
+
+### Added
+
+- **Four more category slots**, off until you switch them on: Exercise,
+  Sleep, Social and Errands. Six was a deliberate cap — a palette you can tell
+  apart at a glance, and a list short enough to pick from without reading —
+  but the app's own advice is to repurpose an unused category for a life area
+  going untracked, and someone already using all six had nothing to
+  repurpose. Nothing changes for anyone who does not want them. Keys 1–9 pick
+  a pen; the tenth is a click.
+- **Hovering a pen shows what else it answers to.** Aliases have always
+  existed for typed entry and lived three clicks deep in Settings, where you
+  could not see them at the moment you needed them: "Deep Work — also typed
+  as: dw, focus, deep". A pen without aliases shows its number key instead.
+- **The History calendar can be coloured three ways** — by score, by hours
+  logged, or by the category the day led with. A green-to-red scale answers
+  "how did it go" and cannot answer "when did I actually log anything" or
+  "what was this month made of", which are the other two reasons to look at a
+  month. The choice is remembered.
+
 ## [1.36.0] — 2026-09-03
 
 ### Added

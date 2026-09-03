@@ -76,6 +76,17 @@ export const DEFAULT_CATEGORIES = [
   { id: 3, name: "Admin", weight: 0, enabled: true, cls: "cat-3", aliases: [] },
   { id: 4, name: "Break", weight: 0, enabled: true, cls: "cat-4", aliases: [] },
   { id: 5, name: "Distraction", weight: -1, enabled: true, cls: "cat-5", aliases: [] },
+  // Four more slots, off until switched on. Six was a deliberate cap — a
+  // palette a person can tell apart at a glance, and a list short enough to
+  // pick from without reading. But the app's own advice is to repurpose an
+  // unused category for a life area that is going untracked, and someone
+  // already using all six had nothing to repurpose. These start disabled so
+  // nothing changes for anyone who does not want them, and they are named for
+  // the areas the observations most often point at.
+  { id: 6, name: "Exercise", weight: 1, enabled: false, cls: "cat-6", aliases: [] },
+  { id: 7, name: "Sleep", weight: 0, enabled: false, cls: "cat-7", aliases: [] },
+  { id: 8, name: "Social", weight: 0, enabled: false, cls: "cat-8", aliases: [] },
+  { id: 9, name: "Errands", weight: 0, enabled: false, cls: "cat-9", aliases: [] },
 ];
 
 export const DEFAULT_SETTINGS = {
@@ -91,6 +102,9 @@ export const DEFAULT_SETTINGS = {
   dialStart: "midnight", // "midnight" | "waking"
   // rings side by side, or one 12-hour ring with a switch between AM and PM
   weekStart: 0, // 0 = Sunday, 1 = Monday
+  // What the History calendar's colours mean: how the day scored, how much
+  // was logged, or what it was mostly spent on.
+  historyColourBy: "score", // "score" | "tracked" | "category"
   goals: {}, // { [categoryId]: targetMinutesPerDay }
   weeklyRecapOn: false,
   weeklyRecapDay: 0, // 0 = Sunday .. 6 = Saturday
@@ -434,6 +448,7 @@ export function normalizeCategories(saved, translate = null) {
 const THEMES = ["system", "light", "dark"];
 const DIAL_MODES = ["24h", "ampm", "ampm-toggle"];
 const DIAL_STARTS = ["midnight", "waking"];
+export const HISTORY_COLOUR_BY = ["score", "tracked", "category"];
 
 /** Goals are keyed by category id (0–5); only positive integer minute targets survive. */
 function normalizeGoals(saved) {
@@ -625,6 +640,7 @@ export function normalizeSettings(saved) {
     weeklyRecapTime,
     lastExportAt,
     challenge,
+    historyColourBy: HISTORY_COLOUR_BY.includes(saved?.historyColourBy) ? saved.historyColourBy : "score",
     observationsOn: saved?.observationsOn !== false,
     autoBackupOn: saved?.autoBackupOn === true,
     dayWindow,
@@ -2112,7 +2128,7 @@ export function dialUrlSuffix(hash) {
  *  these had drifted, and Distraction was being drawn in green while the
  *  app drew it red — a wedge nobody checked, on the one picture that
  *  leaves the device. */
-export const SHARE_CAT_HEX = ["#3987e5", "#e56432", "#32a16e", "#d59105", "#d24c83", "#bc3a3f"];
+export const SHARE_CAT_HEX = ["#3987e5", "#e56432", "#32a16e", "#d59105", "#d24c83", "#bc3a3f", "#1aa39a", "#8c6ede", "#7a9a2e", "#7d8794"];
 const SHARE_TONE_HEX = { good: "#0ca30c", warning: "#fab219", critical: "#d03b3b", muted: "#7c8590" };
 
 const escapeXml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

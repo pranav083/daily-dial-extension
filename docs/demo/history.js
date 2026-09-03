@@ -28,7 +28,7 @@ import {
   searchNotes,
   weekOverWeek,
 } from "./historyLib.js";
-import { getAppData, goToDay, silenceObservation } from "./dial.js";
+import { getAppData, goToDay, setHistoryColourBy, silenceObservation } from "./dial.js";
 import { dateFmt, fmtFullDate, shortWeekdayNames, t, tm, tp } from "./i18n.js";
 import { GUIDE_BASE, suggestionFor } from "./suggestions.js";
 
@@ -84,13 +84,36 @@ const fmtPct = (n) => (n === null ? "—" : `${n}%`);
 /** Background intensity scales with |score|, so the heatmap reads as a
  *  gradient rather than three flat buckets — a +5 day and a +95 day both
  *  read "good" but shouldn't look identical. */
-function heatColor(score, trackedMin) {
-  const bucket = scoreBucket(score, trackedMin);
-  const intensity = Math.max(30, Math.min(90, 30 + Math.abs(score) * 0.6));
+/**
+ * What a day's square is coloured by.
+ *
+ * Score is the default and answers "how did it go". It is not the only
+ * question a month is looked at to answer: "when did I actually log
+ * anything" and "what was this month made of" are both better served by
+ * intensity of tracked time and by the category the day led with, and
+ * neither is recoverable from a green-to-red scale.
+ */
+function heatColor(cell, mode, categories) {
+  if (mode === "tracked") {
+    // Against a twelve-hour day rather than twenty-four: almost nobody logs
+    // a full day, and scaling to 24h would leave every square nearly blank.
+    const pct = Math.max(12, Math.min(92, (cell.trackedMin / (12 * 60)) * 92));
+    return `color-mix(in oklab, var(--accent) ${Math.round(pct)}%, var(--panel-2))`;
+  }
+  if (mode === "category") {
+    if (cell.topCat === null || !categories[cell.topCat]) return "var(--panel-2)";
+    // Share of the day the leading category held, so a day that was mostly
+    // one thing reads stronger than one that merely tipped that way.
+    const share = cell.trackedMin > 0 ? Math.min(1, cell.trackedMin / (8 * 60)) : 0;
+    const pct = Math.round(35 + share * 55);
+    return `color-mix(in oklab, var(--${categories[cell.topCat].cls}) ${pct}%, var(--panel-2))`;
+  }
+  const bucket = scoreBucket(cell.score, cell.trackedMin);
+  const intensity = Math.max(30, Math.min(90, 30 + Math.abs(cell.score) * 0.6));
   return `color-mix(in oklab, var(${toneVar(bucket.tone)}) ${intensity}%, var(--panel-2))`;
 }
 
-function renderHeatmap(year, month, days, categories, weekStart) {
+function renderHeatmap(year, month, days, categories, weekStart, colourBy = "score") {
   const el = $("hist-heatmap");
   el.replaceChildren();
 
@@ -126,7 +149,7 @@ function renderHeatmap(year, month, days, categories, weekStart) {
       let label;
       if (cell.logged) {
         btn.classList.add("logged");
-        btn.style.background = heatColor(cell.score, cell.trackedMin);
+        btn.style.background = heatColor(cell, colourBy, categories);
         label = t("heatmapLoggedLabel", [fmtFullDate(cell.date), fmtScore(cell.score), fmtDuration(cell.trackedMin)]);
       } else if (cell.written) {
         // Written up but no time painted. Marked rather than left blank: an
@@ -413,6 +436,10 @@ function ensureWired() {
   });
   $("hist-this-month").addEventListener("click", () => {
     state.cursor = new Date();
+    renderHistory();
+  });
+  $("hist-colour-by").addEventListener("change", (evt) => {
+    setHistoryColourBy(evt.target.value);
     renderHistory();
   });
   $("log-range").addEventListener("click", (evt) => {
@@ -772,7 +799,9 @@ export function renderHistory() {
   $("hist-month-label").textContent = monthLabel(year, month);
   $("hist-this-month").hidden = isSameMonth(state.cursor, new Date());
 
-  renderHeatmap(year, month, days, categories, settings.weekStart);
+  const colourBy = settings.historyColourBy ?? "score";
+  $("hist-colour-by").value = colourBy;
+  renderHeatmap(year, month, days, categories, settings.weekStart, colourBy);
   renderSummary(year, month, days, categories);
   renderTrends(year, month, days, categories, settings.weekStart);
   renderWeekOverWeek(days, categories, settings.weekStart);

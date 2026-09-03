@@ -662,5 +662,16 @@
   "challengeDayShortDetail": "Этот день не засчитан — $ACTUAL$ из $NEEDED$",
   "challengeDayNothingLogged": "Этот день не засчитан — ничего не записано",
   "challengeStatusEnded": "Завершено",
-  "challengeEndedNote": "$TARGET$ дней истекли. Самая длинная серия: $BEST$."
+  "challengeEndedNote": "$TARGET$ дней истекли. Самая длинная серия: $BEST$.",
+  "defaultCategory6": "Спорт",
+  "defaultCategory7": "Сон",
+  "defaultCategory8": "Общение",
+  "defaultCategory9": "Дела",
+  "penTitleWithAliases": "$NAME$ — также пишется: $ALIASES$",
+  "penTitleWithKey": "$NAME$ — клавиша $KEY$",
+  "histColourByLabel": "Раскрасить месяц по",
+  "histColourByTooltip": "Что означают цвета в календаре.",
+  "histColourByScore": "Цвет: оценка",
+  "histColourByTracked": "Цвет: записанные часы",
+  "histColourByCategory": "Цвет: главная категория"
 }

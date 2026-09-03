@@ -632,5 +632,16 @@
   "challengeDayShortDetail": "Ce jour ne compte pas — $ACTUAL$ sur $NEEDED$",
   "challengeDayNothingLogged": "Ce jour ne compte pas — rien d'enregistré",
   "challengeStatusEnded": "Terminé",
-  "challengeEndedNote": "Les $TARGET$ jours sont écoulés. Plus longue série : $BEST$."
+  "challengeEndedNote": "Les $TARGET$ jours sont écoulés. Plus longue série : $BEST$.",
+  "defaultCategory6": "Sport",
+  "defaultCategory7": "Sommeil",
+  "defaultCategory8": "Social",
+  "defaultCategory9": "Courses",
+  "penTitleWithAliases": "$NAME$ — aussi écrit : $ALIASES$",
+  "penTitleWithKey": "$NAME$ — touche $KEY$",
+  "histColourByLabel": "Colorer le mois selon",
+  "histColourByTooltip": "Ce que signifient les couleurs du calendrier.",
+  "histColourByScore": "Couleur : score",
+  "histColourByTracked": "Couleur : heures enregistrées",
+  "histColourByCategory": "Couleur : catégorie principale"
 }

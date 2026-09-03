@@ -632,5 +632,16 @@
   "challengeDayShortDetail": "Este día no cuenta — $ACTUAL$ de $NEEDED$",
   "challengeDayNothingLogged": "Este día no cuenta — no hay nada registrado",
   "challengeStatusEnded": "Terminado",
-  "challengeEndedNote": "Los $TARGET$ días se acabaron. Racha más larga: $BEST$."
+  "challengeEndedNote": "Los $TARGET$ días se acabaron. Racha más larga: $BEST$.",
+  "defaultCategory6": "Ejercicio",
+  "defaultCategory7": "Sueño",
+  "defaultCategory8": "Social",
+  "defaultCategory9": "Recados",
+  "penTitleWithAliases": "$NAME$ — también se escribe: $ALIASES$",
+  "penTitleWithKey": "$NAME$ — pulsa $KEY$",
+  "histColourByLabel": "Colorear el mes por",
+  "histColourByTooltip": "Qué significan los colores del calendario.",
+  "histColourByScore": "Color: puntuación",
+  "histColourByTracked": "Color: horas registradas",
+  "histColourByCategory": "Color: categoría principal"
 }

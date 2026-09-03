@@ -82,6 +82,21 @@ test("buildMonthGrid distinguishes 'logged but low score' from 'not logged'", ()
   assert.equal(unlogged.score, null, "score is null, never 0, when nothing was logged");
 });
 
+test("buildMonthGrid reports the category a day held most of", () => {
+  const days = new Map();
+  // Three hours of Study against two of Deep Work.
+  const slots = Array(96).fill(-1);
+  for (let i = 36; i < 44; i++) slots[i] = 0;   // 2h Deep Work
+  for (let i = 44; i < 56; i++) slots[i] = 2;   // 3h Study
+  days.set("2026-08-05", { slots, reflection: "", notes: [], intents: [], avoid: [] });
+
+  const cell = buildMonthGrid(2026, 7, days, cats, 0).flat().find((c) => c.key === "2026-08-05");
+  assert.equal(cell.topCat, 2, "Study led the day");
+
+  const empty = buildMonthGrid(2026, 7, days, cats, 0).flat().find((c) => c.key === "2026-08-06");
+  assert.equal(empty.topCat, null, "a day with nothing painted leads with nothing");
+});
+
 /* ---------- monthSummary ---------- */
 
 test("monthSummary averages only over logged days", () => {
