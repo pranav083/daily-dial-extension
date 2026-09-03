@@ -19,6 +19,13 @@ The version here always matches `manifest.json`.
   So every resize left a grey arc sitting off the block it belonged to, and a
   day edited a few times ended up fringed with marks lining up with nothing.
   Both halves of the screen now find a note the same way.
+- **The top bar fell apart once a challenge was running.** It laid out five
+  loose children with space-between, so the extra chip overflowed the line and
+  dropped the date nav onto a row of its own, left-aligned under the wordmark
+  — the primary control of the screen, marooned from the buttons it belongs
+  with. It is two groups now: identity on the left, everything you operate on
+  the right, wrapping as one piece and keeping the right edge. A long
+  challenge name truncates rather than setting the width of the whole bar.
 
 ## [1.35.2] — 2026-09-02
 

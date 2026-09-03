@@ -25,6 +25,7 @@
 
   <div class="app">
     <div class="topbar">
+      <div class="topbar-left">
       <div class="wordmark"><span data-i18n="wordmarkTitle">Daily Dial</span><span id="version" data-i18n="wordmarkTagline">Time &amp; focus log</span></div>
 
       <div class="streak-banner" id="streak-banner"
@@ -54,13 +55,14 @@
         <span id="challenge-name"></span>
         <span class="challenge-day" id="challenge-day"></span>
       </button>
-
-      <nav class="view-nav" id="view-nav" data-i18n-label="viewNavLabel" aria-label="Views">
-        <button type="button" class="view-tab active" data-view="day" aria-current="page" data-i18n="viewTabDay">Day</button>
-        <button type="button" class="view-tab" data-view="history" data-i18n-title="viewTabHistoryTooltip" title="Your months at a glance, and how categories trend over time" data-i18n="viewTabHistory">History</button>
-      </nav>
+      </div>
 
       <div class="topbar-right">
+        <nav class="view-nav" id="view-nav" data-i18n-label="viewNavLabel" aria-label="Views">
+          <button type="button" class="view-tab active" data-view="day" aria-current="page" data-i18n="viewTabDay">Day</button>
+          <button type="button" class="view-tab" data-view="history" data-i18n-title="viewTabHistoryTooltip" title="Your months at a glance, and how categories trend over time" data-i18n="viewTabHistory">History</button>
+        </nav>
+
         <div class="datenav" id="datenav-wrap">
           <button id="prev-day" data-i18n-label="prevDayLabel" aria-label="Previous day" data-i18n-title="prevDayLabel" title="Previous day">‹</button>
           <span class="label" id="date-label" data-i18n="dateToday">Today</span>

@@ -146,12 +146,27 @@ body {
 }
 
 /* ---- top bar ---- */
+/* Two clusters, not five loose children.
+ *
+ * As five siblings with space-between, adding the challenge chip overflowed
+ * the line and dropped the date nav onto a row of its own, left-aligned under
+ * the wordmark — the primary control of the whole screen, marooned away from
+ * the buttons it belongs with, while the rest of the bar sat spread out above
+ * it. Grouping means the right-hand side wraps as one piece and stays on the
+ * right, and the identity side wraps within itself. */
 .topbar {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px 20px;
+}
+.topbar-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  min-width: 0;
 }
 .wordmark { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.01em; }
 .wordmark span {
@@ -773,6 +788,9 @@ textarea#reflection::placeholder { color: var(--ink-muted); }
   display: flex;
   align-items: center;
   gap: 10px;
+  /* Holds the right edge even when it is alone on a wrapped row, which
+     space-between alone does not do. */
+  margin-left: auto;
 }
 .settings-btn {
   width: 30px;
@@ -1011,6 +1029,9 @@ select {
 @media (max-width: 720px) {
   .topbar { align-items: flex-start; }
   .streak-banner { order: 3; }
+  /* Below this the right-hand cluster is wider than the screen, so it wraps
+     within itself and gives up its right edge rather than running off it. */
+  .topbar-right { flex-wrap: wrap; margin-left: 0; row-gap: 8px; }
 }
 
 /* Visible to screen readers only. */
@@ -1039,6 +1060,15 @@ select {
   padding: 5px 12px;
   border-radius: 999px;
   cursor: pointer;
+}
+/* A challenge is named by its owner, and "#4_application_1_lab_contact" is a
+   perfectly reasonable thing to call one. Truncate rather than let it set the
+   width of the whole top bar. */
+#challenge-name {
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .challenge-chip[hidden] { display: none; }
 .challenge-chip:hover { border-color: var(--accent); }
