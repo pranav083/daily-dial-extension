@@ -15,6 +15,18 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.35.3] — 2026-09-02
+
+### Fixed
+
+- **The note marks around the outside of the ring drifted off their blocks.**
+  A note keeps the boundaries it was written against, and the list already
+  knew that — it matches a note to a stretch by midpoint, so resizing a block
+  never orphans its note. The ring did not, and drew the stored range instead.
+  So every resize left a grey arc sitting off the block it belonged to, and a
+  day edited a few times ended up fringed with marks lining up with nothing.
+  Both halves of the screen now find a note the same way.
+
 ## [1.35.2] — 2026-09-02
 
 ### Fixed

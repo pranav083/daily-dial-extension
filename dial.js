@@ -773,14 +773,31 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     return `${leftPart}   |   ${rightPart}`;
   }
 
-  /** A tick outside the ring wherever a note is pinned. */
+  /**
+   * A tick outside the ring wherever a note is pinned.
+   *
+   * Drawn across the stretch a note currently belongs to, found exactly the
+   * way the list finds it — by midpoint, via noteIndicesForSpan — rather than
+   * at the range the note was stored with.
+   *
+   * Those two are the same only until the block moves. A note keeps the
+   * boundaries it was written against, and the list already knows this and
+   * matches by midpoint so that resizing a block does not orphan its note.
+   * The ring did not: it drew the old range. So every resize left a grey arc
+   * sitting off the block it belonged to, and a day edited a few times ended
+   * up fringed with marks lining up with nothing — the same note, drawn in
+   * two different places by two parts of the same screen.
+   */
   function renderNoteMarks() {
     noteLayer.replaceChildren();
-    for (const note of state.notes ?? []) {
-      const from = note.from - slotOffset;
-      const to = note.to - slotOffset;
+    const notes = state.notes ?? [];
+    if (!notes.length) return;
+    const per = 360 / slotsInView;
+    for (const span of computeDaySpans(state.slots)) {
+      if (!noteIndicesForSpan(notes, span.start, span.end).length) continue;
+      const from = span.start - slotOffset;
+      const to = span.end - slotOffset;
       if (to <= 0 || from >= slotsInView) continue;
-      const per = 360 / slotsInView;
       const a0 = Math.max(0, from) * per;
       const a1 = Math.min(slotsInView, to) * per;
       noteLayer.appendChild(
