@@ -2444,7 +2444,7 @@
     "description": "Reminder settings."
   },
   "reminderTestSentToast": {
-    "message": "Sent. If nothing appeared, your system is blocking Chrome's notifications.",
+    "message": "Sent. If nothing appeared, your system is blocking Chrome's notifications. The icon keeps today's score while the day has time in it.",
     "description": "Reminder settings."
   },
   "reminderTestFailedToast": {
@@ -2454,5 +2454,9 @@
   "badgeNudgeTitle": {
     "message": "Time to log your day — click to open Daily Dial",
     "description": "Toolbar tooltip when a reminder is waiting."
+  },
+  "reminderTestBadgeToast": {
+    "message": "Sent — and the toolbar icon now shows a !. Reopen this page to clear it.",
+    "description": "Reminder settings."
   }
 }

@@ -107,6 +107,20 @@ puts a **!** on its own badge, with "Time to log your day" as the tooltip.
 That is drawn by the extension, so nothing outside it can suppress it. It
 clears when you open the day or log anything.
 
+*To see it on purpose,* the day has to be empty — once there is time in the
+day the badge keeps showing the score instead, because a score you have
+earned is worth more than a nudge you no longer need. So:
+
+1. Open Daily Dial on a day with nothing logged (or press *Clear day*).
+2. Settings → Reminders → **Send a test reminder**.
+3. Close or switch away from the Daily Dial tab, and look at the toolbar
+   icon. It should read **!** in amber.
+
+The toast tells you which of the two happened: on an empty day it says the
+icon now shows a **!**; on a day that already has time in it, it says the
+icon is keeping the score. If you press the button on a logged day and then
+go hunting for a **!** that was never going to appear, that is why.
+
 **5. Chrome has to be running.** Alarms do not fire when it is closed, and a
 reminder whose time passed while Chrome was shut does not arrive late.
 

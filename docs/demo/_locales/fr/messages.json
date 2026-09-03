@@ -2843,12 +2843,15 @@
     "message": "En envoie un tout de suite, pour voir si les notifications te parviennent."
   },
   "reminderTestSentToast": {
-    "message": "Envoyé. Si rien n'est apparu, ton système bloque les notifications de Chrome."
+    "message": "Envoyé. Si rien n'est apparu, ton système bloque les notifications de Chrome. L'icône garde le score du jour tant que la journée contient du temps."
   },
   "reminderTestFailedToast": {
     "message": "Envoi impossible — recharge la page et réessaie."
   },
   "badgeNudgeTitle": {
     "message": "C'est l'heure de noter ta journée — clique pour ouvrir Daily Dial"
+  },
+  "reminderTestBadgeToast": {
+    "message": "Envoyé — et l'icône de la barre affiche maintenant un !. Rouvre cette page pour l'effacer."
   }
 }

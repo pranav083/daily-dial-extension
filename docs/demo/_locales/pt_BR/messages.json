@@ -2843,12 +2843,15 @@
     "message": "Envia um agora, para você ver se as notificações chegam."
   },
   "reminderTestSentToast": {
-    "message": "Enviado. Se nada apareceu, seu sistema está bloqueando as notificações do Chrome."
+    "message": "Enviado. Se nada apareceu, seu sistema está bloqueando as notificações do Chrome. O ícone mantém a pontuação de hoje enquanto o dia tiver tempo registrado."
   },
   "reminderTestFailedToast": {
     "message": "Não foi possível enviar — recarregue a página e tente de novo."
   },
   "badgeNudgeTitle": {
     "message": "Hora de registrar seu dia — clique para abrir o Daily Dial"
+  },
+  "reminderTestBadgeToast": {
+    "message": "Enviado — e o ícone da barra agora mostra um !. Reabra esta página para limpá-lo."
   }
 }

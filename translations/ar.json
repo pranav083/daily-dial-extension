@@ -712,7 +712,8 @@
   "reminderNoneScheduled": "لا توجد تذكيرات مجدولة.",
   "reminderTestLabel": "أرسل تذكيرًا تجريبيًا",
   "reminderTestTooltip": "يرسل واحدًا الآن، لترى إن كانت الإشعارات تصلك أصلًا.",
-  "reminderTestSentToast": "أُرسل. إن لم يظهر شيء، فنظامك يحجب إشعارات Chrome.",
+  "reminderTestSentToast": "أُرسل. إن لم يظهر شيء، فنظامك يحجب إشعارات Chrome. ويبقي الرمز على درجة اليوم ما دام في اليوم وقت مسجَّل.",
   "reminderTestFailedToast": "تعذّر الإرسال — أعد تحميل الصفحة وحاول مجددًا.",
-  "badgeNudgeTitle": "حان وقت تسجيل يومك — انقر لفتح Daily Dial"
+  "badgeNudgeTitle": "حان وقت تسجيل يومك — انقر لفتح Daily Dial",
+  "reminderTestBadgeToast": "أُرسل — ويعرض رمز الشريط الآن !. أعد فتح هذه الصفحة لإزالته."
 }

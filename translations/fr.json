@@ -652,7 +652,8 @@
   "reminderNoneScheduled": "Aucun rappel programmé.",
   "reminderTestLabel": "Envoyer un rappel de test",
   "reminderTestTooltip": "En envoie un tout de suite, pour voir si les notifications te parviennent.",
-  "reminderTestSentToast": "Envoyé. Si rien n'est apparu, ton système bloque les notifications de Chrome.",
+  "reminderTestSentToast": "Envoyé. Si rien n'est apparu, ton système bloque les notifications de Chrome. L'icône garde le score du jour tant que la journée contient du temps.",
   "reminderTestFailedToast": "Envoi impossible — recharge la page et réessaie.",
-  "badgeNudgeTitle": "C'est l'heure de noter ta journée — clique pour ouvrir Daily Dial"
+  "badgeNudgeTitle": "C'est l'heure de noter ta journée — clique pour ouvrir Daily Dial",
+  "reminderTestBadgeToast": "Envoyé — et l'icône de la barre affiche maintenant un !. Rouvre cette page pour l'effacer."
 }

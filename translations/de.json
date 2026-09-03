@@ -652,7 +652,8 @@
   "reminderNoneScheduled": "Keine Erinnerungen geplant.",
   "reminderTestLabel": "Testerinnerung senden",
   "reminderTestTooltip": "Sendet sofort eine, damit du siehst, ob Benachrichtigungen überhaupt ankommen.",
-  "reminderTestSentToast": "Gesendet. Wenn nichts erschien, blockiert dein System Chromes Benachrichtigungen.",
+  "reminderTestSentToast": "Gesendet. Wenn nichts erschien, blockiert dein System Chromes Benachrichtigungen. Das Symbol behält die heutige Wertung, solange der Tag Zeit enthält.",
   "reminderTestFailedToast": "Konnte nicht gesendet werden — Seite neu laden und erneut versuchen.",
-  "badgeNudgeTitle": "Zeit, deinen Tag zu erfassen — klicken, um Daily Dial zu öffnen"
+  "badgeNudgeTitle": "Zeit, deinen Tag zu erfassen — klicken, um Daily Dial zu öffnen",
+  "reminderTestBadgeToast": "Gesendet — und das Symbol in der Leiste zeigt jetzt ein !. Seite neu öffnen, um es zu löschen."
 }

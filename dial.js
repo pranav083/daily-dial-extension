@@ -3217,11 +3217,23 @@ function saveReminders() {
   );
 }
 
-/** Fires one immediately, so "did that arrive?" is answerable now. */
+/** Fires one immediately, so "did that arrive?" is answerable now.
+ *
+ *  It reports which of the two signals to watch, because that depends on the
+ *  day: the badge only carries the nudge while today has nothing logged, since
+ *  once there is a score it keeps the score. Saying the same thing in both
+ *  cases left "watch the toolbar icon" as advice that silently did not apply. */
 async function sendTestReminder() {
   try {
     await chrome.runtime.sendMessage({ type: "test-notification" });
-    toast(t("reminderTestSentToast"));
+    // Read back what the icon actually shows rather than predicting it.
+    let badge = "";
+    try {
+      badge = await chrome.action.getBadgeText({});
+    } catch {
+      // Not every context exposes chrome.action; fall back to the plain message.
+    }
+    toast(badge === "!" ? t("reminderTestBadgeToast") : t("reminderTestSentToast"));
   } catch {
     toast(t("reminderTestFailedToast"));
   }

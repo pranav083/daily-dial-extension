@@ -8,6 +8,17 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.40.1] — 2026-09-03
+
+### Fixed
+
+- **"Send a test reminder" now says which signal to watch for.** It sent the
+  same "Sent." either way, so the advice to watch the toolbar icon silently did
+  not apply on a day that already had time logged — the badge keeps the score
+  there rather than showing the **!**, and the flag was raised invisibly. The
+  toast now reads back what the icon actually shows and reports that case
+  distinctly, and the FAQ says the **!** is only visible on an empty day.
+
 ## [1.40.0] — 2026-09-03
 
 ### Added

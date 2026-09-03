@@ -652,7 +652,8 @@
   "reminderNoneScheduled": "Nenhum lembrete agendado.",
   "reminderTestLabel": "Enviar um lembrete de teste",
   "reminderTestTooltip": "Envia um agora, para você ver se as notificações chegam.",
-  "reminderTestSentToast": "Enviado. Se nada apareceu, seu sistema está bloqueando as notificações do Chrome.",
+  "reminderTestSentToast": "Enviado. Se nada apareceu, seu sistema está bloqueando as notificações do Chrome. O ícone mantém a pontuação de hoje enquanto o dia tiver tempo registrado.",
   "reminderTestFailedToast": "Não foi possível enviar — recarregue a página e tente de novo.",
-  "badgeNudgeTitle": "Hora de registrar seu dia — clique para abrir o Daily Dial"
+  "badgeNudgeTitle": "Hora de registrar seu dia — clique para abrir o Daily Dial",
+  "reminderTestBadgeToast": "Enviado — e o ícone da barra agora mostra um !. Reabra esta página para limpá-lo."
 }

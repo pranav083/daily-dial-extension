@@ -2678,12 +2678,15 @@
     "message": "立即发送一条，看看通知是否能送达。"
   },
   "reminderTestSentToast": {
-    "message": "已发送。如果什么都没出现，是系统屏蔽了 Chrome 的通知。"
+    "message": "已发送。如果什么都没出现，是系统屏蔽了 Chrome 的通知。只要当天已有记录，图标就会继续显示评分。"
   },
   "reminderTestFailedToast": {
     "message": "发送失败 — 请重新加载页面后再试。"
   },
   "badgeNudgeTitle": {
     "message": "该记录今天了 — 点击打开 Daily Dial"
+  },
+  "reminderTestBadgeToast": {
+    "message": "已发送 — 工具栏图标现在显示一个 !。重新打开此页面即可清除。"
   }
 }

@@ -637,7 +637,8 @@
   "reminderNoneScheduled": "通知の予定はありません。",
   "reminderTestLabel": "テスト通知を送る",
   "reminderTestTooltip": "今すぐ1件送ります。通知がそもそも届くかどうかを確かめられます。",
-  "reminderTestSentToast": "送信しました。何も表示されない場合、システム側が Chrome の通知を止めています。",
+  "reminderTestSentToast": "送信しました。何も表示されない場合、システム側が Chrome の通知を止めています。その日に記録があるあいだ、アイコンはスコアを表示し続けます。",
   "reminderTestFailedToast": "送信できませんでした — ページを再読み込みして、もう一度お試しください。",
-  "badgeNudgeTitle": "一日を記録する時間です — クリックして Daily Dial を開く"
+  "badgeNudgeTitle": "一日を記録する時間です — クリックして Daily Dial を開く",
+  "reminderTestBadgeToast": "送信しました。ツールバーのアイコンに ! が表示されています。このページを開き直すと消えます。"
 }

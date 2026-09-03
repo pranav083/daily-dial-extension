@@ -2843,12 +2843,15 @@
     "message": "Sendet sofort eine, damit du siehst, ob Benachrichtigungen überhaupt ankommen."
   },
   "reminderTestSentToast": {
-    "message": "Gesendet. Wenn nichts erschien, blockiert dein System Chromes Benachrichtigungen."
+    "message": "Gesendet. Wenn nichts erschien, blockiert dein System Chromes Benachrichtigungen. Das Symbol behält die heutige Wertung, solange der Tag Zeit enthält."
   },
   "reminderTestFailedToast": {
     "message": "Konnte nicht gesendet werden — Seite neu laden und erneut versuchen."
   },
   "badgeNudgeTitle": {
     "message": "Zeit, deinen Tag zu erfassen — klicken, um Daily Dial zu öffnen"
+  },
+  "reminderTestBadgeToast": {
+    "message": "Gesendet — und das Symbol in der Leiste zeigt jetzt ein !. Seite neu öffnen, um es zu löschen."
   }
 }

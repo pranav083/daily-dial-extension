@@ -637,7 +637,8 @@
   "reminderNoneScheduled": "没有安排提醒。",
   "reminderTestLabel": "发送测试提醒",
   "reminderTestTooltip": "立即发送一条，看看通知是否能送达。",
-  "reminderTestSentToast": "已发送。如果什么都没出现，是系统屏蔽了 Chrome 的通知。",
+  "reminderTestSentToast": "已发送。如果什么都没出现，是系统屏蔽了 Chrome 的通知。只要当天已有记录，图标就会继续显示评分。",
   "reminderTestFailedToast": "发送失败 — 请重新加载页面后再试。",
-  "badgeNudgeTitle": "该记录今天了 — 点击打开 Daily Dial"
+  "badgeNudgeTitle": "该记录今天了 — 点击打开 Daily Dial",
+  "reminderTestBadgeToast": "已发送 — 工具栏图标现在显示一个 !。重新打开此页面即可清除。"
 }
