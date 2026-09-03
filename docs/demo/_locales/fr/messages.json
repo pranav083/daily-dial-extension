@@ -449,7 +449,7 @@
     "message": "Bilan du soir"
   },
   "remindersNote": {
-    "message": "Les notifications n'arrivent que si Chrome est ouvert, et passent par les notifications de ton système — si un test n'apparaît jamais, c'est là que Chrome est bloqué, pas ici. Celle du soir indique la part de la journée encore non enregistrée."
+    "message": "Les notifications n'arrivent que si Chrome est ouvert, et passent par les notifications de ton système — si un test n'apparaît jamais, c'est là que Chrome est bloqué, pas ici. Dans ce cas l'icône de la barre affiche encore un ! jusqu'à ce que tu ouvres la journée. Celle du soir indique la part de la journée encore non enregistrée."
   },
   "weeklyRecapSectionLabel": {
     "message": "Récap hebdomadaire"
@@ -2847,5 +2847,8 @@
   },
   "reminderTestFailedToast": {
     "message": "Envoi impossible — recharge la page et réessaie."
+  },
+  "badgeNudgeTitle": {
+    "message": "C'est l'heure de noter ta journée — clique pour ouvrir Daily Dial"
   }
 }

@@ -4343,6 +4343,9 @@ async function boot() {
 
   await loadAll();
   applyCategoryColors();
+  // Opening the dial is the answer to the nudge, whether or not a
+  // notification ever reached the user.
+  chrome.runtime.sendMessage({ type: "nudge-seen" }).catch(() => {});
   // Only after loadAll: the in-memory copy this compares against has to
   // exist before a foreign write can be told apart from our own.
   watchForOtherTabs();

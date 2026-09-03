@@ -449,7 +449,7 @@
     "message": "Abendabschluss"
   },
   "remindersNote": {
-    "message": "Benachrichtigungen erscheinen nur, solange Chrome läuft, und laufen über die Benachrichtigungen deines Systems — kommt ein Test nie an, wird Chrome dort blockiert, nicht hier. Die abendliche nennt dir, wie viel des Tages noch nicht erfasst ist."
+    "message": "Benachrichtigungen erscheinen nur, solange Chrome läuft, und laufen über die Benachrichtigungen deines Systems — kommt ein Test nie an, wird Chrome dort blockiert, nicht hier. Dann zeigt das Symbol in der Leiste weiterhin ein !, bis du den Tag öffnest. Die abendliche nennt dir, wie viel des Tages noch nicht erfasst ist."
   },
   "weeklyRecapSectionLabel": {
     "message": "Wochenrückblick"
@@ -2847,5 +2847,8 @@
   },
   "reminderTestFailedToast": {
     "message": "Konnte nicht gesendet werden — Seite neu laden und erneut versuchen."
+  },
+  "badgeNudgeTitle": {
+    "message": "Zeit, deinen Tag zu erfassen — klicken, um Daily Dial zu öffnen"
   }
 }

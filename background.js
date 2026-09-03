@@ -106,12 +106,51 @@ async function rescheduleAlarms() {
  *  dial — text is the score itself (e.g. "+42", "-15"), colour matches the
  *  same good/warning/critical bucket the dial's own score badge uses. Blank
  *  until today has at least one painted block. */
-async function refreshBadge() {
-  const key = DAY_PREFIX + dateKey(new Date());
-  const [{ [key]: raw }, categories] = await Promise.all([chrome.storage.local.get(key), getCategories()]);
-  const slots = Array.isArray(raw?.slots) && raw.slots.length === SLOTS ? raw.slots : null;
+/**
+ * A reminder that is due and has not been acted on yet, as a date key.
+ *
+ * The toolbar icon is the fallback when the operating system will not deliver
+ * a notification — which the extension cannot detect and the user often
+ * cannot either. It costs no permission, it is already on screen, and on the
+ * days a reminder matters the badge is blank anyway, because a day with
+ * nothing logged has no score to show.
+ */
+const NUDGE_KEY = "reminderNudgeFor";
 
-  if (!slots || slots.every((v) => v === UNTRACKED)) {
+async function markNudgePending() {
+  await chrome.storage.local.set({ [NUDGE_KEY]: dateKey(new Date()) });
+  await refreshBadge();
+}
+
+/** Cleared by opening the dial, by logging anything, or by the day ending. */
+async function clearNudge() {
+  await chrome.storage.local.remove(NUDGE_KEY);
+  await refreshBadge();
+}
+
+async function refreshBadge() {
+  // The badge now carries words, so it needs the language the same way the
+  // notifications do — the worker cannot read the choice synchronously.
+  await loadStoredOverride();
+  const key = DAY_PREFIX + dateKey(new Date());
+  const [{ [key]: raw, [NUDGE_KEY]: nudgeFor }, categories] = await Promise.all([
+    chrome.storage.local.get([key, NUDGE_KEY]),
+    getCategories(),
+  ]);
+  const slots = Array.isArray(raw?.slots) && raw.slots.length === SLOTS ? raw.slots : null;
+  const logged = slots && slots.some((v) => v !== UNTRACKED);
+  // Yesterday's pending nudge is not today's business.
+  const nudging = nudgeFor === dateKey(new Date()) && !logged;
+
+  if (nudging) {
+    await chrome.action.setBadgeText({ text: "!" });
+    await chrome.action.setBadgeBackgroundColor({ color: BADGE_COLORS.warning ?? BADGE_COLORS.muted });
+    await chrome.action.setTitle({ title: t("badgeNudgeTitle") });
+    return;
+  }
+  await chrome.action.setTitle({ title: t("appName") });
+
+  if (!logged) {
     await chrome.action.setBadgeText({ text: "" });
     return;
   }
@@ -221,6 +260,9 @@ async function notify(index) {
   // synchronously the way the page does.
   await loadStoredOverride();
   const untracked = await untrackedMinutesToday();
+  // Raised whether or not the notification is ever shown: this is the half
+  // that survives a system which refuses them.
+  await markNudgePending();
   chrome.notifications.create(`dial-${index}-${Date.now()}`, {
     type: "basic",
     iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
@@ -367,6 +409,10 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   // One now, on demand. "Reminders don't work" is usually the system refusing
   // Chrome's notifications rather than anything here, and there was no way to
   // tell those apart without waiting until 1pm to find out.
+  if (msg?.type === "nudge-seen") {
+    clearNudge().then(() => sendResponse({ ok: true }));
+    return true;
+  }
   if (msg?.type === "test-notification") {
     notify(0).then(() => sendResponse({ ok: true })).catch(() => sendResponse({ ok: false }));
     return true;

@@ -108,7 +108,7 @@ first time you open it.
 | **Past days** | Arrows beside the date, or click a bar in the week strip |
 | **History** | A month heatmap, month summary, week-over-week deltas, per-category trends, and search across your notes — the History tab beside Day. Colour the month by score, by hours logged, or by the category each day led with |
 | **Dial layout** | One 24-hour ring, two 12-hour AM/PM rings side by side, or one 12-hour ring with a switch — pick one via the quick switcher above the dial, or Settings → Appearance |
-| **Toolbar badge** | Today's score on the extension icon itself, coloured to match — no click needed |
+| **Toolbar badge** | Today's score on the extension icon itself, coloured to match — no click needed. When a reminder is due it shows a **!** instead, so a system that blocks Chrome's notifications cannot silence it |
 | **Streaks** | 🔥 counts any day with at least one block; one missed day a week is forgiven |
 | **Challenges** | A named run of consecutive days with a goal of your own — anything logged, minutes of a category, or a score. It says how many days in a row you have kept, whether today counts, and whether the run is still alive |
 | **Category colours** | Click the swatch in Settings → Categories. The ring, pens, week strip, bars, calendar and shared image all follow |

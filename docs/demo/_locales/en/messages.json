@@ -617,7 +617,7 @@
     "description": "Label for the second daily reminder time field."
   },
   "remindersNote": {
-    "message": "Notifications only fire while Chrome is running, and they arrive through your system's own notifications — if a test never appears, Chrome is being blocked there rather than here. The evening one tells you how much of the day is still unlogged.",
+    "message": "Notifications only fire while Chrome is running, and they arrive through your system's own notifications — if a test never appears, Chrome is being blocked there rather than here. When that happens the toolbar icon still shows a ! until you open the day. The evening one tells you how much of the day is still unlogged.",
     "description": "Note under the daily reminder time fields."
   },
   "weeklyRecapSectionLabel": {
@@ -3502,5 +3502,9 @@
   "reminderTestFailedToast": {
     "message": "Could not send it — reload the page and try again.",
     "description": "Reminder settings."
+  },
+  "badgeNudgeTitle": {
+    "message": "Time to log your day — click to open Daily Dial",
+    "description": "Toolbar tooltip when a reminder is waiting."
   }
 }

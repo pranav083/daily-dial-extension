@@ -136,7 +136,7 @@
   "reminderToggleTooltip": "每天在以下时间发送两次通知。仅在 Chrome 运行时生效。",
   "middayNudgeLabel": "午间提醒",
   "eveningWrapupLabel": "晚间总结",
-  "remindersNote": "通知只在 Chrome 运行时送达，并且经过系统自身的通知——如果测试也从未出现，是系统在拦截 Chrome，而不是这里。晚上的那条会告诉你当天还有多少没记录。",
+  "remindersNote": "通知只在 Chrome 运行时送达，并且经过系统自身的通知——如果测试也从未出现，是系统在拦截 Chrome，而不是这里。这时工具栏图标仍会显示一个 !，直到你打开当天。晚上的那条会告诉你当天还有多少没记录。",
   "weeklyRecapSectionLabel": "每周回顾",
   "weeklyRecapToggleLabel": "发送每周回顾",
   "weeklyRecapToggleTooltip": "每周一次的摘要通知：已记录时间、主要类别、最佳一天和连续记录。",
@@ -638,5 +638,6 @@
   "reminderTestLabel": "发送测试提醒",
   "reminderTestTooltip": "立即发送一条，看看通知是否能送达。",
   "reminderTestSentToast": "已发送。如果什么都没出现，是系统屏蔽了 Chrome 的通知。",
-  "reminderTestFailedToast": "发送失败 — 请重新加载页面后再试。"
+  "reminderTestFailedToast": "发送失败 — 请重新加载页面后再试。",
+  "badgeNudgeTitle": "该记录今天了 — 点击打开 Daily Dial"
 }

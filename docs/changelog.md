@@ -15,6 +15,19 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.40.0] — 2026-09-03
+
+### Added
+
+- **The toolbar icon carries the reminder when your system will not.** A due
+  reminder now puts a **!** on the extension's badge and "Time to log your day"
+  on its tooltip, until you open the day or log something. Notifications travel
+  through the operating system, which can refuse them without telling the
+  extension or the user; the badge costs no permission, is already on screen,
+  and on the days a reminder matters it was blank anyway — a day with nothing
+  logged has no score to show.
+- It clears the moment you open the dial, and never survives into the next day.
+
 ## [1.39.0] — 2026-09-03
 
 ### Added

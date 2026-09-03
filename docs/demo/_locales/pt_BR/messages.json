@@ -449,7 +449,7 @@
     "message": "Fechamento da noite"
   },
   "remindersNote": {
-    "message": "As notificações só chegam enquanto o Chrome está aberto, e passam pelas notificações do seu sistema — se um teste nunca aparece, é ali que o Chrome está bloqueado, não aqui. A da noite diz quanto do dia ainda está sem registro."
+    "message": "As notificações só chegam enquanto o Chrome está aberto, e passam pelas notificações do seu sistema — se um teste nunca aparece, é ali que o Chrome está bloqueado, não aqui. Nesse caso o ícone da barra continua mostrando um ! até você abrir o dia. A da noite diz quanto do dia ainda está sem registro."
   },
   "weeklyRecapSectionLabel": {
     "message": "Resumo semanal"
@@ -2847,5 +2847,8 @@
   },
   "reminderTestFailedToast": {
     "message": "Não foi possível enviar — recarregue a página e tente de novo."
+  },
+  "badgeNudgeTitle": {
+    "message": "Hora de registrar seu dia — clique para abrir o Daily Dial"
   }
 }
