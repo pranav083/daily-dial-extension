@@ -724,8 +724,13 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
      seam: one side gives up exactly what the other takes, and no third block
      is touched. */
 
-  /** How close (in slots) the cursor must be to a seam to grab it. ~7 min. */
-  const EDGE_GRAB = 0.45;
+  // How near a seam a press counts as "grab this boundary" rather than
+  // "paint here", in slots. Measured at the default size, 0.45 is about 11px
+  // of arc — fine for a mouse, which also gets the handle appearing and the
+  // cursor changing as it hunts, and far too thin for a finger, which gets
+  // neither and cannot hover to find it. The same reasoning as the 44px hit
+  // areas the rest of the UI already grew for coarse pointers.
+  const EDGE_GRAB = matchMedia?.("(pointer: coarse)")?.matches ? 1.2 : 0.45;
 
   /** Where the cursor sits in slot space, unrounded — seams live at integers. */
   const fractionalSlot = (angle) => (angle / 360) * slotsInView;
@@ -2302,7 +2307,17 @@ function syncTypedEntryCategories() {
     opt.textContent = c.name;
     select.appendChild(opt);
   }
-  const wanted = previous !== "" ? previous : String(state.activePen);
+  // Follow the active pen. These are the same choice offered in two places,
+  // and typing a range almost always means "the thing already in my hand".
+  //
+  // It used to keep `previous` and only fall back to the pen when the control
+  // was empty — which happens exactly once, on first render — so after that
+  // the pen and this dropdown drifted apart permanently and silently. The
+  // comment above has always claimed otherwise.
+  //
+  // The eraser has no option here, so while it is held the last real category
+  // stays put rather than the control emptying itself.
+  const wanted = state.activePen === UNTRACKED ? previous : String(state.activePen);
   if ([...select.options].some((o) => o.value === wanted)) select.value = wanted;
 }
 

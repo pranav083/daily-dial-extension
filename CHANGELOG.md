@@ -8,6 +8,23 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.35.2] — 2026-09-02
+
+### Fixed
+
+- **The typed-entry dropdown never followed the pen.** Selecting Applications
+  left the dropdown on whatever it showed before, so typing a range added the
+  wrong category unless you noticed and changed it. The code kept the previous
+  value and only fell back to the active pen when the control was empty —
+  which happens once, on first render — while its own comment claimed it
+  followed the pen. It does now.
+- **Seams are easier to grab on a touch screen.** The window for "drag this
+  boundary" rather than "paint here" was about 11px of arc at full size, and
+  proportionally smaller on a small screen. A mouse can find that, helped by
+  the handle appearing and the cursor changing; a finger has neither, and no
+  hover to hunt with. It is wider on coarse pointers now, the same reasoning
+  as the 44px hit areas elsewhere.
+
 ## [1.35.1] — 2026-09-02
 
 ### Fixed
