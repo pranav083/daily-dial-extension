@@ -15,6 +15,19 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.35.4] — 2026-09-03
+
+### Fixed
+
+- **The keyboard shortcut never worked.** `Ctrl+Shift+D` /
+  `Cmd+Shift+D` is Chrome's own "Bookmark all tabs", and Chrome silently
+  declines a suggested key that collides with one of its own — no warning, no
+  error, the command simply arrives with no shortcut attached. It has been
+  dead since it shipped in 1.32.0. It is **`Ctrl+Shift+Y` / `Cmd+Shift+Y`**
+  now, confirmed assigned by asking `chrome.commands.getAll()` in a real
+  loaded extension rather than by reading the manifest and assuming.
+  Rebindable as before at `chrome://extensions/shortcuts`.
+
 ## [1.35.3] — 2026-09-02
 
 ### Fixed

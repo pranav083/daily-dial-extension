@@ -1,6 +1,6 @@
 {
   "name": "daily-dial-extension",
-  "version": "1.35.3",
+  "version": "1.35.4",
   "private": true,
   "description": "Chrome extension: paint your day on a 24-hour dial and see where the time went.",
   "type": "module",
@@ -18,7 +18,8 @@
     "build:firefox": "node scripts/build-firefox.mjs",
     "lint:firefox": "npm run build:firefox && web-ext lint --source-dir build/firefox",
     "firefox:redirect": "node scripts/firefox-redirect-uri.mjs",
-    "build:docs-changelog": "node scripts/build-docs-changelog.mjs"
+    "build:docs-changelog": "node scripts/build-docs-changelog.mjs",
+    "smoke": "node scripts/smoke-extension.mjs"
   },
   "repository": {
     "type": "git",

@@ -121,7 +121,7 @@ HOW IT WORKS
 • Drag around the ring to paint — or press 1-6 for a pen, 0 or E for the eraser
 • Type it instead: "9-11 deep work" or "9pm-11pm study"
 • Ctrl+Z / Cmd+Z undoes one stroke at a time, 30 deep — Ctrl+Shift+Z redoes
-• Ctrl+Shift+D / Cmd+Shift+D opens the dial from anywhere
+• Ctrl+Shift+Y / Cmd+Shift+Y opens the dial from anywhere (rebindable)
 • Copy yesterday into today in one click
 • A live needle always marks "now"
 • Jump days with the arrows, or click any bar in the 7-day strip
