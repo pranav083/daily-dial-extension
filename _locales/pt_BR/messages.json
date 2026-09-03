@@ -2631,5 +2631,71 @@
   },
   "sug_targetMismatch_text2": {
     "message": "Se você raramente chega perto, diminua-a. Uma meta inalcançável não faz ninguém produzir mais; só faz o número parecer que é sobre outra pessoa, e um número assim acaba ignorado."
+  },
+  "challengeGoalLabel": {
+    "message": "Todo dia"
+  },
+  "challengeGoalLogged": {
+    "message": "Qualquer registro"
+  },
+  "challengeGoalMinutes": {
+    "message": "Minutos de"
+  },
+  "challengeGoalScore": {
+    "message": "Pontuação mínima"
+  },
+  "challengeGoalCategoryLabel": {
+    "message": "Categoria"
+  },
+  "challengeGoalAmountLabel": {
+    "message": "Quantidade"
+  },
+  "challengeStatusOnTrack": {
+    "message": "No caminho"
+  },
+  "challengeStatusComplete": {
+    "message": "Concluído"
+  },
+  "challengeStatusOutOfReach": {
+    "message": "Fora de alcance"
+  },
+  "challengeKeptOf": {
+    "message": "$MET$ de $REQUIRED$ cumpridos",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeKeptSoFar": {
+    "message": "$MET$ cumpridos até agora",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeMissedOf": {
+    "message": "$MISSED$ perdidos de $ALLOWED$ permitidos",
+    "placeholders": {
+      "missed": {
+        "content": "$1"
+      },
+      "allowed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeTodayYes": {
+    "message": "Hoje conta"
+  },
+  "challengeTodayNo": {
+    "message": "Hoje ainda não conta"
+  },
+  "challengeProgressTooltip": {
+    "message": "Como vai este desafio: dias cumpridos, dias perdidos e se ainda dá para terminar."
   }
 }

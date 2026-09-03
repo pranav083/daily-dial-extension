@@ -90,6 +90,8 @@ import {
   angleAt,
   buildSampleDays,
   challengeProgress,
+  challengeDayMet,
+  normalizeChallengeGoal,
   buildShareSvgMarkup,
   SHARE_CAT_HEX,
   DRIVE_BACKUP_FILENAME,
@@ -1466,12 +1468,123 @@ test("normalizeDay accepts an avoid list as plain strings or objects", () => {
 
 test("challengeProgress counts the start date as day 1", () => {
   const c = normalizeSettings({ challenge: { name: "#100days", startKey: "2026-08-11", targetDays: 100 } }).challenge;
-  assert.deepEqual(c, { name: "#100days", startKey: "2026-08-11", targetDays: 100 });
+  assert.deepEqual(c, { name: "#100days", startKey: "2026-08-11", targetDays: 100, goal: { kind: "logged" } });
 
   assert.equal(challengeProgress(c, new Date(2026, 7, 11)).day, 1, "the start date is day 1");
   assert.equal(challengeProgress(c, new Date(2026, 7, 29)).day, 19);
   assert.equal(challengeProgress(c, new Date(2026, 7, 10)), null, "nothing before it starts");
   assert.equal(challengeProgress(null, new Date()), null);
+});
+
+/* ---------- what a challenge asks of a day, and whether it can still be kept ---------- */
+
+/** A run of days ending yesterday, each either meeting the goal or not. */
+function challengeDays(startKey, pattern, minutesPerDay = 120, cat = 0) {
+  const days = new Map();
+  const start = new Date(startKey + "T00:00:00");
+  pattern.forEach((met, i) => {
+    const d = new Date(start); d.setDate(d.getDate() + i);
+    const slots = blank();
+    if (met) for (let j = 36; j < 36 + minutesPerDay / SLOT_MIN; j++) slots[j] = cat;
+    days.set(dateKey(d), { slots, reflection: "", notes: [], intents: [], avoid: [] });
+  });
+  return days;
+}
+
+test("a challenge goal defaults to simply logging the day", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11" } }).challenge;
+  assert.deepEqual(c.goal, { kind: "logged" }, "the honest floor: show up and write it down");
+  assert.equal(challengeDayMet({ slots: paint(blank(), 9, 10, 0) }, cats, c.goal), true);
+  assert.equal(challengeDayMet({ slots: blank() }, cats, c.goal), false, "an empty day is not a kept day");
+  assert.equal(challengeDayMet(undefined, cats, c.goal), false, "and neither is a missing one");
+});
+
+test("a minutes goal asks for time in one category", () => {
+  const goal = normalizeChallengeGoal({ kind: "minutes", categoryId: 0, minutes: 120 });
+  assert.deepEqual(goal, { kind: "minutes", categoryId: 0, minutes: 120 });
+  assert.equal(challengeDayMet({ slots: paint(blank(), 9, 11, 0) }, cats, goal), true, "exactly two hours counts");
+  assert.equal(challengeDayMet({ slots: paint(blank(), 9, 10.75, 0) }, cats, goal), false, "1h45 does not");
+  assert.equal(challengeDayMet({ slots: paint(blank(), 9, 13, 2) }, cats, goal), false, "the wrong category does not");
+});
+
+test("a score goal asks the day to clear a number", () => {
+  const goal = normalizeChallengeGoal({ kind: "score", score: 50 });
+  assert.equal(challengeDayMet({ slots: paint(blank(), 9, 11, 0) }, cats, goal), true, "2h of a 4h target scores 50");
+  assert.equal(challengeDayMet({ slots: paint(blank(), 9, 10, 0) }, cats, goal), false, "1h scores 25");
+});
+
+test("normalizeChallengeGoal refuses nonsense without dropping the challenge", () => {
+  assert.deepEqual(normalizeChallengeGoal({ kind: "wat" }), { kind: "logged" });
+  assert.deepEqual(normalizeChallengeGoal(null), { kind: "logged" });
+  assert.deepEqual(normalizeChallengeGoal({ kind: "minutes" }), { kind: "minutes", categoryId: 0, minutes: 60 });
+  assert.equal(normalizeChallengeGoal({ kind: "minutes", minutes: 7 }).minutes, 15, "rounded to a slot");
+  assert.equal(normalizeChallengeGoal({ kind: "score", score: 999 }).score, 100, "clamped");
+});
+
+test("challengeProgress counts kept days, and never marks today as missed", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 10 } }).challenge;
+  // Five days done: kept, kept, missed, kept, and today still blank.
+  const days = challengeDays("2026-08-11", [true, true, false, true, false]);
+  const p = challengeProgress(c, new Date(2026, 7, 15), days, cats);
+
+  assert.equal(p.day, 5);
+  assert.equal(p.metDays, 3, "three of the four finished days were kept");
+  assert.equal(p.missedDays, 1, "today is not among them");
+  assert.equal(p.todayMet, false);
+  assert.equal(p.daysLeft, 5);
+  // Ten days allows one miss, the same forgiveness the streak grants, so a
+  // single missed day leaves the run alive.
+  assert.equal(p.allowedMisses, 1);
+  assert.equal(p.required, 9);
+  assert.equal(p.status, "running");
+});
+
+test("challengeProgress says when a challenge can no longer be finished", () => {
+  // Seven days: one may be missed, so six must be kept.
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 7 } }).challenge;
+  assert.equal(challengeProgress(c, new Date(2026, 7, 11), new Map(), cats).required, 6);
+
+  // Day five, two of the first four missed: at most five can ever be kept.
+  const doomed = challengeDays("2026-08-11", [true, false, false, true, false]);
+  const p1 = challengeProgress(c, new Date(2026, 7, 15), doomed, cats);
+  assert.equal(p1.metDays, 2);
+  assert.equal(p1.missedDays, 2);
+  assert.equal(p1.maxAchievable, 5, "two kept, today still open, two days after it");
+  assert.equal(p1.status, "outOfReach", "five cannot reach six");
+
+  // The same day with one miss instead of two is still alive.
+  const alive = challengeDays("2026-08-11", [true, true, false, true, false]);
+  const p2 = challengeProgress(c, new Date(2026, 7, 15), alive, cats);
+  assert.equal(p2.maxAchievable, 6);
+  assert.equal(p2.status, "running", "but every remaining day has to be kept");
+});
+
+test("challengeProgress reports a finished challenge as complete", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 3 } }).challenge;
+  const days = challengeDays("2026-08-11", [true, true, true]);
+  const p = challengeProgress(c, new Date(2026, 7, 13), days, cats);
+  assert.equal(p.metDays, 3);
+  assert.equal(p.todayMet, true, "today counts the moment it qualifies");
+  assert.equal(p.status, "complete");
+});
+
+test("challengeProgress without a day map returns the counter alone", () => {
+  // The chip only needs "day 4 of 10" and should not be handed a wrong tally.
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 10 } }).challenge;
+  const p = challengeProgress(c, new Date(2026, 7, 14));
+  assert.equal(p.day, 4);
+  assert.equal(p.metDays, 0);
+  assert.equal(p.status, "running");
+});
+
+test("an open-ended challenge counts kept days but declares no verdict", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11" } }).challenge;
+  const days = challengeDays("2026-08-11", [true, false, true]);
+  const p = challengeProgress(c, new Date(2026, 7, 13), days, cats);
+  assert.equal(p.targetDays, null);
+  assert.equal(p.metDays, 2);
+  assert.equal(p.daysLeft, null, "nothing to count down to");
+  assert.equal(p.status, "running", "a run with no end cannot be out of reach");
 });
 
 test("challengeProgress is unaffected by the time of day", () => {

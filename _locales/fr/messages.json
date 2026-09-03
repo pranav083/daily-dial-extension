@@ -2631,5 +2631,71 @@
   },
   "sug_targetMismatch_text2": {
     "message": "Si tu n'en approches que rarement, abaisse-le. Un objectif hors d'atteinte ne pousse personne à en faire plus ; il donne seulement l'impression que le chiffre parle de quelqu'un d'autre, et un chiffre pareil finit ignoré."
+  },
+  "challengeGoalLabel": {
+    "message": "Chaque jour"
+  },
+  "challengeGoalLogged": {
+    "message": "N'importe quel enregistrement"
+  },
+  "challengeGoalMinutes": {
+    "message": "Minutes de"
+  },
+  "challengeGoalScore": {
+    "message": "Score au moins"
+  },
+  "challengeGoalCategoryLabel": {
+    "message": "Catégorie"
+  },
+  "challengeGoalAmountLabel": {
+    "message": "Quantité"
+  },
+  "challengeStatusOnTrack": {
+    "message": "En bonne voie"
+  },
+  "challengeStatusComplete": {
+    "message": "Terminé"
+  },
+  "challengeStatusOutOfReach": {
+    "message": "Hors d'atteinte"
+  },
+  "challengeKeptOf": {
+    "message": "$MET$ sur $REQUIRED$ tenus",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeKeptSoFar": {
+    "message": "$MET$ tenus jusqu'ici",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeMissedOf": {
+    "message": "$MISSED$ manqués sur $ALLOWED$ permis",
+    "placeholders": {
+      "missed": {
+        "content": "$1"
+      },
+      "allowed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeTodayYes": {
+    "message": "Aujourd'hui compte"
+  },
+  "challengeTodayNo": {
+    "message": "Aujourd'hui ne compte pas encore"
+  },
+  "challengeProgressTooltip": {
+    "message": "Où en est ce défi : jours tenus, jours manqués, et s'il peut encore être terminé."
   }
 }

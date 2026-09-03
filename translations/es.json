@@ -609,5 +609,20 @@
   "obsTargetDetail": "En los últimos $DAYS$ días, tu día mediano tuvo $TYPICAL$ de tiempo productivo. La puntuación diaria se mide contra $TARGET$.",
   "sug_targetMismatch_lead": "El objetivo es un ajuste, no un veredicto. Vale la pena moverlo cuando deja de describirte.",
   "sug_targetMismatch_text1": "Si lo superas casi todos los días, súbelo. Un objetivo que siempre alcanzas deja de decirte nada: la puntuación se aplana cerca del tope y ya no distingue un buen día de uno corriente.",
-  "sug_targetMismatch_text2": "Si rara vez te acercas, bájalo. Un objetivo inalcanzable no hace que nadie haga más; solo hace que el número parezca sobre otra persona, y un número así se acaba ignorando."
+  "sug_targetMismatch_text2": "Si rara vez te acercas, bájalo. Un objetivo inalcanzable no hace que nadie haga más; solo hace que el número parezca sobre otra persona, y un número así se acaba ignorando.",
+  "challengeGoalLabel": "Cada día",
+  "challengeGoalLogged": "Cualquier registro",
+  "challengeGoalMinutes": "Minutos de",
+  "challengeGoalScore": "Puntuación mínima",
+  "challengeGoalCategoryLabel": "Categoría",
+  "challengeGoalAmountLabel": "Cantidad",
+  "challengeStatusOnTrack": "En marcha",
+  "challengeStatusComplete": "Completado",
+  "challengeStatusOutOfReach": "Fuera de alcance",
+  "challengeKeptOf": "$MET$ de $REQUIRED$ cumplidos",
+  "challengeKeptSoFar": "$MET$ cumplidos hasta ahora",
+  "challengeMissedOf": "$MISSED$ fallados de $ALLOWED$ permitidos",
+  "challengeTodayYes": "Hoy cuenta",
+  "challengeTodayNo": "Hoy todavía no cuenta",
+  "challengeProgressTooltip": "Cómo va este reto: días cumplidos, días fallados y si aún se puede terminar."
 }

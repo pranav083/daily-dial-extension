@@ -2274,5 +2274,65 @@
   "sug_targetMismatch_text2": {
     "message": "If you rarely come close, lower it. An unreachable target doesn't make anyone do more; it just makes the number feel like it's about someone else, and a number like that gets ignored.",
     "description": "Observation advice text from suggestions.js."
+  },
+  "challengeGoalLabel": {
+    "message": "Each day",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalLogged": {
+    "message": "Anything logged",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalMinutes": {
+    "message": "Minutes of",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalScore": {
+    "message": "Score at least",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalCategoryLabel": {
+    "message": "Category",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeGoalAmountLabel": {
+    "message": "Amount",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeStatusOnTrack": {
+    "message": "On track",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeStatusComplete": {
+    "message": "Complete",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeStatusOutOfReach": {
+    "message": "Out of reach",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeKeptOf": {
+    "message": "Kept $MET$ of $REQUIRED$",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeKeptSoFar": {
+    "message": "Kept $MET$ so far",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeMissedOf": {
+    "message": "Missed $MISSED$ of $ALLOWED$ allowed",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeTodayYes": {
+    "message": "Today counts",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeTodayNo": {
+    "message": "Today does not count yet",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeProgressTooltip": {
+    "message": "How this challenge is going: days kept, days missed, and whether it can still be finished.",
+    "description": "Challenge goal and progress, shown in the UI."
   }
 }

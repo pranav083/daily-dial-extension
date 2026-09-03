@@ -594,5 +594,20 @@
   "obsTargetDetail": "直近 $DAYS$ 日間で、中央値の一日の生産的な時間は $TYPICAL$ でした。日々のスコアは $TARGET$ を基準に測られます。",
   "sug_targetMismatch_lead": "目標は設定であって、判定ではありません。自分の実態と合わなくなったら、動かす価値があります。",
   "sug_targetMismatch_text1": "ほとんどの日で超えているなら、上げてください。いつも達成できる目標は何も教えてくれなくなります。スコアが上限近くで頭打ちになり、良い日と普通の日を区別できなくなるからです。",
-  "sug_targetMismatch_text2": "めったに届かないなら、下げてください。手の届かない目標は誰かの行動を増やしはしません。その数字が自分とは関係のないもののように感じられるだけで、そうなった数字は見られなくなります。"
+  "sug_targetMismatch_text2": "めったに届かないなら、下げてください。手の届かない目標は誰かの行動を増やしはしません。その数字が自分とは関係のないもののように感じられるだけで、そうなった数字は見られなくなります。",
+  "challengeGoalLabel": "毎日",
+  "challengeGoalLogged": "記録があればよい",
+  "challengeGoalMinutes": "分（カテゴリ）",
+  "challengeGoalScore": "スコアが次以上",
+  "challengeGoalCategoryLabel": "カテゴリ",
+  "challengeGoalAmountLabel": "数値",
+  "challengeStatusOnTrack": "順調",
+  "challengeStatusComplete": "達成",
+  "challengeStatusOutOfReach": "もう届きません",
+  "challengeKeptOf": "$REQUIRED$ 日中 $MET$ 日達成",
+  "challengeKeptSoFar": "これまでに $MET$ 日達成",
+  "challengeMissedOf": "許容 $ALLOWED$ 日のうち $MISSED$ 日を逃しました",
+  "challengeTodayYes": "今日は条件を満たしています",
+  "challengeTodayNo": "今日はまだ条件を満たしていません",
+  "challengeProgressTooltip": "このチャレンジの状況：達成した日、逃した日、そしてまだ達成可能かどうか。"
 }

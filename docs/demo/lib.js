@@ -458,22 +458,120 @@ function normalizeChallenge(raw) {
   if (!name || !startKey || Number.isNaN(new Date(startKey + "T00:00:00").getTime())) return null;
   const targetDays =
     Number.isInteger(raw.targetDays) && raw.targetDays > 0 && raw.targetDays <= 3650 ? raw.targetDays : null;
-  return { name, startKey, targetDays };
+  return { name, startKey, targetDays, goal: normalizeChallengeGoal(raw.goal) };
+}
+
+/** The kinds of thing a day can be asked to contain. */
+export const CHALLENGE_GOAL_KINDS = ["logged", "minutes", "score"];
+
+/**
+ * What a day has to hold for it to count toward the challenge.
+ *
+ * Defaults to "logged", which asks only that the day was written down at all.
+ * That is the honest floor for a tracker: a run of showing up is a real thing
+ * to attempt, and demanding a number from the start turns the first bad week
+ * into a reason to stop.
+ */
+export function normalizeChallengeGoal(raw) {
+  const kind = CHALLENGE_GOAL_KINDS.includes(raw?.kind) ? raw.kind : "logged";
+  if (kind === "minutes") {
+    const categoryId = Number.isInteger(raw.categoryId) && raw.categoryId >= 0 && raw.categoryId < DEFAULT_CATEGORIES.length
+      ? raw.categoryId : 0;
+    // Never rounds to zero. A goal of "seven minutes" snapping to nothing
+    // would be met by every day including an empty one, which is the one
+    // answer a challenge must not give.
+    const minutes = Number.isFinite(raw.minutes) && raw.minutes > 0
+      ? Math.min(24 * 60, Math.max(SLOT_MIN, Math.round(raw.minutes / SLOT_MIN) * SLOT_MIN)) : 60;
+    return { kind, categoryId, minutes };
+  }
+  if (kind === "score") {
+    const score = Number.isFinite(raw.score) ? Math.max(-100, Math.min(100, Math.round(raw.score))) : 50;
+    return { kind, score };
+  }
+  return { kind: "logged" };
 }
 
 /**
- * Which day of the challenge `now` falls on, counting the start date as
- * day 1. Null before it starts.
- * @returns {{day:number, targetDays:number|null, name:string}|null}
+ * Did this day meet the challenge's goal?
+ *
+ * @param {{slots:number[]}|undefined} day
+ * @param {Array} categories
+ * @param {{kind:string, categoryId?:number, minutes?:number, score?:number}} goal
+ * @param {number} [targetMin] the daily target the score is measured against
  */
-export function challengeProgress(challenge, now = new Date()) {
+export function challengeDayMet(day, categories, goal, targetMin = DEFAULT_DAILY_TARGET_MIN) {
+  if (!day || !Array.isArray(day.slots)) return false;
+  const stats = computeStats(day.slots, categories, null, targetMin);
+  if (goal?.kind === "minutes") return stats.perCat[goal.categoryId] * SLOT_MIN >= goal.minutes;
+  if (goal?.kind === "score") return stats.score !== null && stats.score >= goal.score;
+  return stats.trackedMin > 0;
+}
+
+/**
+ * How the challenge is actually going.
+ *
+ * A day counter on its own says nothing about whether the run is being kept:
+ * "day 14 of 21" reads identically whether every day was met or none were.
+ * This counts the days that met the goal, and — where the challenge has a
+ * length — says plainly whether it can still be finished.
+ *
+ * Today is deliberately never counted as missed. It is not over yet, and a
+ * tracker that marks the morning as a failure is one people close.
+ *
+ * @param {object|null} challenge
+ * @param {Date} [now]
+ * @param {Map<string, object>} [days] omit for the day counter alone
+ * @param {Array} [categories]
+ * @param {number} [targetMin] the daily target a "score" goal is judged against
+ * @returns {{day:number, targetDays:number|null, name:string, goal:object,
+ *   metDays:number, missedDays:number, daysLeft:number|null, todayMet:boolean,
+ *   maxAchievable:number|null, allowedMisses:number, required:number,
+ *   status:"running"|"complete"|"outOfReach"}|null}
+ */
+export function challengeProgress(challenge, now = new Date(), days, categories, targetMin = DEFAULT_DAILY_TARGET_MIN) {
   if (!challenge) return null;
   const start = new Date(challenge.startKey + "T00:00:00");
   const today = new Date(now);
   today.setHours(0, 0, 0, 0);
   const day = Math.floor((today - start) / 86400000) + 1;
   if (day < 1) return null;
-  return { day, targetDays: challenge.targetDays, name: challenge.name };
+
+  const goal = challenge.goal ?? { kind: "logged" };
+  const base = { day, targetDays: challenge.targetDays, name: challenge.name, goal };
+  // Callers that only want the day number (the chip) need not hand over a day
+  // map, and get the counter alone rather than a wrong tally.
+  if (!(days instanceof Map) || !Array.isArray(categories)) {
+    return { ...base, metDays: 0, missedDays: 0, daysLeft: null, todayMet: false, maxAchievable: null, status: "running" };
+  }
+
+  const span = challenge.targetDays ? Math.min(day, challenge.targetDays) : day;
+  let metPast = 0;
+  for (let i = 0; i < span - 1; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    if (challengeDayMet(days.get(dateKey(d)), categories, goal, targetMin)) metPast++;
+  }
+  const todayMet = span >= 1 && day <= (challenge.targetDays ?? Infinity)
+    && challengeDayMet(days.get(dateKey(today)), categories, goal, targetMin);
+
+  const metDays = metPast + (todayMet ? 1 : 0);
+  const missedDays = Math.max(0, span - 1 - metPast);
+
+  if (!challenge.targetDays) {
+    return { ...base, metDays, missedDays, daysLeft: null, todayMet, maxAchievable: null, status: "running" };
+  }
+  const daysLeft = Math.max(0, challenge.targetDays - day);
+  const maxAchievable = metDays + daysLeft + (todayMet || day > challenge.targetDays ? 0 : 1);
+  // One day a week may be missed, which is the same forgiveness the streak
+  // already grants. Demanding a perfect run makes a single bad Tuesday end a
+  // hundred-day attempt, and the thing people do then is stop opening the app
+  // rather than start again.
+  const allowedMisses = Math.floor(challenge.targetDays / 7);
+  const required = challenge.targetDays - allowedMisses;
+  const status = metDays >= required ? "complete"
+    : maxAchievable < required ? "outOfReach"
+    : "running";
+  return { ...base, metDays, missedDays, daysLeft, todayMet, maxAchievable, allowedMisses, required, status };
 }
 
 export function normalizeSettings(saved) {

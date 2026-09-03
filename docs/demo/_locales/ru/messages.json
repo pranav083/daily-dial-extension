@@ -2961,5 +2961,71 @@
   },
   "sug_targetMismatch_text2": {
     "message": "Если ты редко к ней приближаешься, опусти её. Недостижимая цель не заставляет никого делать больше; она лишь создаёт ощущение, что число относится к кому-то другому, — а такое число просто перестают замечать."
+  },
+  "challengeGoalLabel": {
+    "message": "Каждый день"
+  },
+  "challengeGoalLogged": {
+    "message": "Хоть что-то записано"
+  },
+  "challengeGoalMinutes": {
+    "message": "Минут категории"
+  },
+  "challengeGoalScore": {
+    "message": "Оценка не ниже"
+  },
+  "challengeGoalCategoryLabel": {
+    "message": "Категория"
+  },
+  "challengeGoalAmountLabel": {
+    "message": "Значение"
+  },
+  "challengeStatusOnTrack": {
+    "message": "Идёт по плану"
+  },
+  "challengeStatusComplete": {
+    "message": "Выполнено"
+  },
+  "challengeStatusOutOfReach": {
+    "message": "Уже недостижимо"
+  },
+  "challengeKeptOf": {
+    "message": "Выдержано $MET$ из $REQUIRED$",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeKeptSoFar": {
+    "message": "Выдержано $MET$",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeMissedOf": {
+    "message": "Пропущено $MISSED$ из $ALLOWED$ допустимых",
+    "placeholders": {
+      "missed": {
+        "content": "$1"
+      },
+      "allowed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeTodayYes": {
+    "message": "Сегодня засчитан"
+  },
+  "challengeTodayNo": {
+    "message": "Сегодня ещё не засчитан"
+  },
+  "challengeProgressTooltip": {
+    "message": "Как идёт этот вызов: выдержанные дни, пропущенные дни и остаётся ли он выполнимым."
   }
 }

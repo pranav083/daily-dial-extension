@@ -594,5 +594,20 @@
   "obsTargetDetail": "过去 $DAYS$ 天里，你的中位数一天有 $TYPICAL$ 的高效时间。每日评分以 $TARGET$ 为基准。",
   "sug_targetMismatch_lead": "目标是一项设置，不是一个判决。当它不再贴合你时，就值得调整。",
   "sug_targetMismatch_text1": "如果你大多数日子都能超过它，就把它调高。总能达成的目标不再说明任何事——评分会在接近上限处变平，再也分不出好的一天和平常的一天。",
-  "sug_targetMismatch_text2": "如果你很少接近它，就把它调低。够不着的目标不会让任何人多做一点，只会让这个数字显得像在说别人，而这样的数字最终会被无视。"
+  "sug_targetMismatch_text2": "如果你很少接近它，就把它调低。够不着的目标不会让任何人多做一点，只会让这个数字显得像在说别人，而这样的数字最终会被无视。",
+  "challengeGoalLabel": "每天",
+  "challengeGoalLogged": "有记录即可",
+  "challengeGoalMinutes": "分钟，类别",
+  "challengeGoalScore": "评分不低于",
+  "challengeGoalCategoryLabel": "类别",
+  "challengeGoalAmountLabel": "数值",
+  "challengeStatusOnTrack": "进行顺利",
+  "challengeStatusComplete": "已完成",
+  "challengeStatusOutOfReach": "已无法完成",
+  "challengeKeptOf": "已完成 $MET$ / $REQUIRED$ 天",
+  "challengeKeptSoFar": "目前已完成 $MET$ 天",
+  "challengeMissedOf": "已错过 $MISSED$ 天，允许 $ALLOWED$ 天",
+  "challengeTodayYes": "今天已计入",
+  "challengeTodayNo": "今天还未计入",
+  "challengeProgressTooltip": "这项挑战的进展：完成的天数、错过的天数，以及是否还能完成。"
 }

@@ -344,6 +344,24 @@
           <div class="goal-rows" id="weekly-goal-rows"></div>
         </div>
 
+        <!-- How the challenge is actually going. A day counter alone reads the
+             same whether every day was kept or none were, so this says how
+             many were, whether today counts yet, and — where the run has a
+             length — whether it can still be finished. -->
+        <div class="journal-block challenge-block" id="challenge-block" hidden>
+          <p class="section-label" data-i18n-title="challengeProgressTooltip" title="How this challenge is going: days kept, days missed, and whether it can still be finished." data-i18n="challengeSectionLabel">Challenge</p>
+          <div class="challenge-progress">
+            <div class="challenge-progress-head">
+              <span class="challenge-progress-name" id="challenge-progress-name"></span>
+              <span class="challenge-status" id="challenge-status"></span>
+            </div>
+            <div class="meter challenge-meter"><div class="meter-fill" id="challenge-meter-fill"></div></div>
+            <p class="challenge-line" id="challenge-kept"></p>
+            <p class="challenge-line muted" id="challenge-missed"></p>
+            <p class="challenge-line" id="challenge-today"></p>
+          </div>
+        </div>
+
         <!-- The intentions you set for the day, ticked off as they land.
              The point isn't the list, it's seeing a week later which ones
              you actually did. -->
@@ -614,6 +632,16 @@
             <input type="date" id="challenge-start-input">
             <label for="challenge-target-input" data-i18n="challengeLengthLabel">Length (days)</label>
             <input type="number" id="challenge-target-input" min="1" max="3650" placeholder="100">
+            <label for="challenge-goal-kind" data-i18n="challengeGoalLabel">Each day</label>
+            <select id="challenge-goal-kind">
+              <option value="logged" data-i18n="challengeGoalLogged">Anything logged</option>
+              <option value="minutes" data-i18n="challengeGoalMinutes">Minutes of</option>
+              <option value="score" data-i18n="challengeGoalScore">Score at least</option>
+            </select>
+            <label for="challenge-goal-cat" id="challenge-goal-cat-label" data-i18n="challengeGoalCategoryLabel" hidden>Category</label>
+            <select id="challenge-goal-cat" hidden></select>
+            <label for="challenge-goal-value" id="challenge-goal-value-label" data-i18n="challengeGoalAmountLabel" hidden>Amount</label>
+            <input type="number" id="challenge-goal-value" min="0" hidden>
           </div>
           <div class="footer-actions">
             <button class="ghost-btn danger" id="challenge-clear" hidden data-i18n="clearChallengeLabel">Clear challenge</button>

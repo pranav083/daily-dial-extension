@@ -2466,5 +2466,71 @@
   },
   "sug_targetMismatch_text2": {
     "message": "めったに届かないなら、下げてください。手の届かない目標は誰かの行動を増やしはしません。その数字が自分とは関係のないもののように感じられるだけで、そうなった数字は見られなくなります。"
+  },
+  "challengeGoalLabel": {
+    "message": "毎日"
+  },
+  "challengeGoalLogged": {
+    "message": "記録があればよい"
+  },
+  "challengeGoalMinutes": {
+    "message": "分（カテゴリ）"
+  },
+  "challengeGoalScore": {
+    "message": "スコアが次以上"
+  },
+  "challengeGoalCategoryLabel": {
+    "message": "カテゴリ"
+  },
+  "challengeGoalAmountLabel": {
+    "message": "数値"
+  },
+  "challengeStatusOnTrack": {
+    "message": "順調"
+  },
+  "challengeStatusComplete": {
+    "message": "達成"
+  },
+  "challengeStatusOutOfReach": {
+    "message": "もう届きません"
+  },
+  "challengeKeptOf": {
+    "message": "$REQUIRED$ 日中 $MET$ 日達成",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeKeptSoFar": {
+    "message": "これまでに $MET$ 日達成",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeMissedOf": {
+    "message": "許容 $ALLOWED$ 日のうち $MISSED$ 日を逃しました",
+    "placeholders": {
+      "missed": {
+        "content": "$1"
+      },
+      "allowed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeTodayYes": {
+    "message": "今日は条件を満たしています"
+  },
+  "challengeTodayNo": {
+    "message": "今日はまだ条件を満たしていません"
+  },
+  "challengeProgressTooltip": {
+    "message": "このチャレンジの状況：達成した日、逃した日、そしてまだ達成可能かどうか。"
   }
 }

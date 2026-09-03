@@ -15,6 +15,24 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.36.0] — 2026-09-03
+
+### Added
+
+- **A challenge now has a goal, and tells you whether you are keeping it.** It
+  was a day counter: "day 14 of 21" reads exactly the same whether every day
+  was kept or none were. Set what a day has to contain — anything logged at
+  all, so many minutes of a category, or a daily score — and the side panel
+  shows how many days you have kept, how many you have missed, whether today
+  counts yet, and, for a challenge with a length, whether it can still be
+  finished at all.
+- **One day a week may be missed**, the same forgiveness the streak already
+  grants. A 21-day run allows three. Demanding a perfect run means one bad
+  Tuesday ends a hundred-day attempt, and what people do then is stop opening
+  the app rather than start again.
+- Today is never counted as a missed day. It is not over yet, and a tracker
+  that marks your morning as a failure is one you close.
+
 ## [1.35.4] — 2026-09-03
 
 ### Fixed

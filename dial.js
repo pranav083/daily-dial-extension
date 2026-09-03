@@ -2739,14 +2739,46 @@ function addAvoid(evt) {
 /* ---------- challenge ---------- */
 
 function renderChallenge() {
-  const progress = challengeProgress(settings.challenge, new Date());
+  const progress = challengeProgress(settings.challenge, new Date(), days, categories, scoreTarget());
   const chip = $("challenge-chip");
+  const block = $("challenge-block");
   chip.hidden = progress === null;
+  block.hidden = progress === null;
   if (!progress) return;
+
   $("challenge-name").textContent = progress.name;
   $("challenge-day").textContent = progress.targetDays
     ? t("challengeDayProgress", [String(progress.day), String(progress.targetDays)])
     : t("challengeDaySimple", [String(progress.day)]);
+
+  $("challenge-progress-name").textContent = progress.name;
+
+  const status = $("challenge-status");
+  const tone = progress.status === "complete" ? "good" : progress.status === "outOfReach" ? "critical" : "";
+  status.className = `challenge-status${tone ? " " + tone : ""}`;
+  status.textContent = t(
+    progress.status === "complete" ? "challengeStatusComplete"
+      : progress.status === "outOfReach" ? "challengeStatusOutOfReach"
+      : "challengeStatusOnTrack"
+  );
+
+  // Against the days that must be kept, not the calendar length — the bar
+  // should fill when the challenge is actually won.
+  const denom = progress.required || progress.day || 1;
+  $("challenge-meter-fill").style.width = `${Math.min(100, Math.round((progress.metDays / denom) * 100))}%`;
+  $("challenge-meter-fill").style.background = `var(${toneVar(tone === "critical" ? "critical" : "good")})`;
+
+  $("challenge-kept").textContent = progress.targetDays
+    ? t("challengeKeptOf", [String(progress.metDays), String(progress.required)])
+    : t("challengeKeptSoFar", [String(progress.metDays)]);
+
+  const missed = $("challenge-missed");
+  missed.hidden = !progress.targetDays;
+  if (progress.targetDays) {
+    missed.textContent = t("challengeMissedOf", [String(progress.missedDays), String(progress.allowedMisses)]);
+  }
+
+  $("challenge-today").textContent = t(progress.todayMet ? "challengeTodayYes" : "challengeTodayNo");
 }
 
 function syncAutoBackupInputs() {
@@ -2778,6 +2810,38 @@ function syncChallengeInputs() {
   $("challenge-start-input").value = c?.startKey ?? "";
   $("challenge-target-input").value = c?.targetDays ?? "";
   $("challenge-clear").hidden = !c;
+
+  const goal = c?.goal ?? { kind: "logged" };
+  $("challenge-goal-kind").value = goal.kind;
+
+  const catSelect = $("challenge-goal-cat");
+  catSelect.replaceChildren();
+  for (const cat of categories.filter((x) => x.enabled)) {
+    const opt = document.createElement("option");
+    opt.value = String(cat.id);
+    opt.textContent = cat.name;
+    catSelect.appendChild(opt);
+  }
+  if (goal.kind === "minutes") catSelect.value = String(goal.categoryId ?? 0);
+  $("challenge-goal-value").value =
+    goal.kind === "minutes" ? goal.minutes : goal.kind === "score" ? goal.score : "";
+  syncChallengeGoalFields();
+}
+
+/** Only the fields the chosen goal actually uses. "Anything logged" needs no
+ *  number at all, and showing an empty one invites filling it in. */
+function syncChallengeGoalFields() {
+  const kind = $("challenge-goal-kind").value;
+  const showCat = kind === "minutes";
+  const showValue = kind === "minutes" || kind === "score";
+  for (const [el, show] of [
+    [$("challenge-goal-cat"), showCat], [$("challenge-goal-cat-label"), showCat],
+    [$("challenge-goal-value"), showValue], [$("challenge-goal-value-label"), showValue],
+  ]) el.hidden = !show;
+  const value = $("challenge-goal-value");
+  value.min = kind === "score" ? "-100" : "15";
+  value.max = kind === "score" ? "100" : "1440";
+  value.step = kind === "score" ? "5" : "15";
 }
 
 function saveChallenge() {
@@ -2785,8 +2849,14 @@ function saveChallenge() {
   const startKey = $("challenge-start-input").value;
   const rawTarget = Number($("challenge-target-input").value);
   // A challenge needs both a name and a start; anything less is no challenge.
+  const kind = $("challenge-goal-kind").value;
+  const rawValue = Number($("challenge-goal-value").value);
+  const goal =
+    kind === "minutes" ? { kind, categoryId: Number($("challenge-goal-cat").value), minutes: rawValue }
+    : kind === "score" ? { kind, score: rawValue }
+    : { kind: "logged" };
   const next = name && startKey
-    ? { name, startKey, targetDays: Number.isInteger(rawTarget) && rawTarget > 0 ? rawTarget : null }
+    ? { name, startKey, targetDays: Number.isInteger(rawTarget) && rawTarget > 0 ? rawTarget : null, goal }
     : null;
   settings = normalizeSettings({ ...settings, challenge: next });
   persistSettings();
@@ -3816,7 +3886,9 @@ function wireEvents() {
   $("intent-form").addEventListener("submit", addIntent);
   $("avoid-form").addEventListener("submit", addAvoid);
   $("challenge-chip").addEventListener("click", () => openSettings("goals"));
-  for (const id of ["challenge-name-input", "challenge-start-input", "challenge-target-input"]) {
+  $("challenge-goal-kind").addEventListener("change", () => { syncChallengeGoalFields(); saveChallenge(); });
+  $("challenge-goal-cat").addEventListener("change", saveChallenge);
+  for (const id of ["challenge-name-input", "challenge-start-input", "challenge-target-input", "challenge-goal-value"]) {
     $(id).addEventListener("change", saveChallenge);
   }
   $("challenge-clear").addEventListener("click", clearChallenge);

@@ -609,5 +609,20 @@
   "obsTargetDetail": "Sur les $DAYS$ derniers jours, ta journée médiane comptait $TYPICAL$ de temps productif. Le score du jour se mesure par rapport à $TARGET$.",
   "sug_targetMismatch_lead": "L'objectif est un réglage, pas un verdict. Il mérite d'être déplacé dès qu'il ne te décrit plus.",
   "sug_targetMismatch_text1": "Si tu le dépasses la plupart des jours, relève-le. Un objectif toujours atteint ne t'apprend plus rien : le score s'aplatit près du sommet et ne distingue plus une bonne journée d'une journée ordinaire.",
-  "sug_targetMismatch_text2": "Si tu n'en approches que rarement, abaisse-le. Un objectif hors d'atteinte ne pousse personne à en faire plus ; il donne seulement l'impression que le chiffre parle de quelqu'un d'autre, et un chiffre pareil finit ignoré."
+  "sug_targetMismatch_text2": "Si tu n'en approches que rarement, abaisse-le. Un objectif hors d'atteinte ne pousse personne à en faire plus ; il donne seulement l'impression que le chiffre parle de quelqu'un d'autre, et un chiffre pareil finit ignoré.",
+  "challengeGoalLabel": "Chaque jour",
+  "challengeGoalLogged": "N'importe quel enregistrement",
+  "challengeGoalMinutes": "Minutes de",
+  "challengeGoalScore": "Score au moins",
+  "challengeGoalCategoryLabel": "Catégorie",
+  "challengeGoalAmountLabel": "Quantité",
+  "challengeStatusOnTrack": "En bonne voie",
+  "challengeStatusComplete": "Terminé",
+  "challengeStatusOutOfReach": "Hors d'atteinte",
+  "challengeKeptOf": "$MET$ sur $REQUIRED$ tenus",
+  "challengeKeptSoFar": "$MET$ tenus jusqu'ici",
+  "challengeMissedOf": "$MISSED$ manqués sur $ALLOWED$ permis",
+  "challengeTodayYes": "Aujourd'hui compte",
+  "challengeTodayNo": "Aujourd'hui ne compte pas encore",
+  "challengeProgressTooltip": "Où en est ce défi : jours tenus, jours manqués, et s'il peut encore être terminé."
 }

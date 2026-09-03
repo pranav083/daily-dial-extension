@@ -2631,5 +2631,71 @@
   },
   "sug_targetMismatch_text2": {
     "message": "Wenn du selten in die Nähe kommst, setz es niedriger. Ein unerreichbares Ziel bringt niemanden dazu, mehr zu tun; es lässt die Zahl nur so wirken, als ginge es um jemand anderen — und so eine Zahl wird ignoriert."
+  },
+  "challengeGoalLabel": {
+    "message": "Jeden Tag"
+  },
+  "challengeGoalLogged": {
+    "message": "Irgendetwas erfasst"
+  },
+  "challengeGoalMinutes": {
+    "message": "Minuten von"
+  },
+  "challengeGoalScore": {
+    "message": "Wertung mindestens"
+  },
+  "challengeGoalCategoryLabel": {
+    "message": "Kategorie"
+  },
+  "challengeGoalAmountLabel": {
+    "message": "Menge"
+  },
+  "challengeStatusOnTrack": {
+    "message": "Auf Kurs"
+  },
+  "challengeStatusComplete": {
+    "message": "Geschafft"
+  },
+  "challengeStatusOutOfReach": {
+    "message": "Nicht mehr erreichbar"
+  },
+  "challengeKeptOf": {
+    "message": "$MET$ von $REQUIRED$ gehalten",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeKeptSoFar": {
+    "message": "Bisher $MET$ gehalten",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeMissedOf": {
+    "message": "$MISSED$ von $ALLOWED$ erlaubten verpasst",
+    "placeholders": {
+      "missed": {
+        "content": "$1"
+      },
+      "allowed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeTodayYes": {
+    "message": "Heute zählt"
+  },
+  "challengeTodayNo": {
+    "message": "Heute zählt noch nicht"
+  },
+  "challengeProgressTooltip": {
+    "message": "Wie es um diese Challenge steht: gehaltene Tage, verpasste Tage und ob sie noch zu schaffen ist."
   }
 }

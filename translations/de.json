@@ -609,5 +609,20 @@
   "obsTargetDetail": "In den letzten $DAYS$ Tagen enthielt dein mittlerer Tag $TYPICAL$ produktive Zeit. Die Tageswertung wird an $TARGET$ gemessen.",
   "sug_targetMismatch_lead": "Das Ziel ist eine Einstellung, kein Urteil. Es lohnt sich, es zu verschieben, sobald es dich nicht mehr beschreibt.",
   "sug_targetMismatch_text1": "Wenn du es an den meisten Tagen überschreitest, setz es höher. Ein Ziel, das du immer erreichst, sagt nichts mehr aus — die Wertung flacht oben ab und kann einen guten Tag nicht mehr von einem gewöhnlichen unterscheiden.",
-  "sug_targetMismatch_text2": "Wenn du selten in die Nähe kommst, setz es niedriger. Ein unerreichbares Ziel bringt niemanden dazu, mehr zu tun; es lässt die Zahl nur so wirken, als ginge es um jemand anderen — und so eine Zahl wird ignoriert."
+  "sug_targetMismatch_text2": "Wenn du selten in die Nähe kommst, setz es niedriger. Ein unerreichbares Ziel bringt niemanden dazu, mehr zu tun; es lässt die Zahl nur so wirken, als ginge es um jemand anderen — und so eine Zahl wird ignoriert.",
+  "challengeGoalLabel": "Jeden Tag",
+  "challengeGoalLogged": "Irgendetwas erfasst",
+  "challengeGoalMinutes": "Minuten von",
+  "challengeGoalScore": "Wertung mindestens",
+  "challengeGoalCategoryLabel": "Kategorie",
+  "challengeGoalAmountLabel": "Menge",
+  "challengeStatusOnTrack": "Auf Kurs",
+  "challengeStatusComplete": "Geschafft",
+  "challengeStatusOutOfReach": "Nicht mehr erreichbar",
+  "challengeKeptOf": "$MET$ von $REQUIRED$ gehalten",
+  "challengeKeptSoFar": "Bisher $MET$ gehalten",
+  "challengeMissedOf": "$MISSED$ von $ALLOWED$ erlaubten verpasst",
+  "challengeTodayYes": "Heute zählt",
+  "challengeTodayNo": "Heute zählt noch nicht",
+  "challengeProgressTooltip": "Wie es um diese Challenge steht: gehaltene Tage, verpasste Tage und ob sie noch zu schaffen ist."
 }

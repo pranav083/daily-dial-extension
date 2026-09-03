@@ -1059,6 +1059,24 @@ select {
   unicode-bidi: plaintext;
 }
 
+/* ---- challenge progress ---- */
+.challenge-progress { display: flex; flex-direction: column; gap: 7px; }
+.challenge-progress-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.challenge-progress-name {
+  font-weight: 700; font-size: 0.86rem; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  unicode-bidi: plaintext;
+}
+.challenge-status {
+  flex: none; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 999px;
+  background: var(--panel-2); color: var(--ink-2); border: 1px solid var(--border);
+}
+.challenge-status.good { color: var(--status-good-text); border-color: color-mix(in oklab, var(--status-good-text) 45%, transparent); }
+.challenge-status.critical { color: var(--status-critical-text); border-color: color-mix(in oklab, var(--status-critical-text) 45%, transparent); }
+.challenge-meter { height: 6px; }
+.challenge-line { margin: 0; font-size: 0.78rem; color: var(--ink-2); font-family: var(--font-mono); }
+.challenge-line.muted { color: var(--ink-muted); }
+
 /* Visible to screen readers only. */
 .sr-only {
   position: absolute;

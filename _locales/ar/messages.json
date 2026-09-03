@@ -3291,5 +3291,71 @@
   },
   "sug_targetMismatch_text2": {
     "message": "وإن كنت نادرًا ما تقترب منه، فاخفضه. الهدف بعيد المنال لا يدفع أحدًا إلى بذل المزيد؛ إنما يجعل الرقم يبدو وكأنه عن شخص آخر، ورقم كهذا يُهمَل."
+  },
+  "challengeGoalLabel": {
+    "message": "كل يوم"
+  },
+  "challengeGoalLogged": {
+    "message": "أي تسجيل"
+  },
+  "challengeGoalMinutes": {
+    "message": "دقائق من"
+  },
+  "challengeGoalScore": {
+    "message": "الدرجة لا تقل عن"
+  },
+  "challengeGoalCategoryLabel": {
+    "message": "الفئة"
+  },
+  "challengeGoalAmountLabel": {
+    "message": "المقدار"
+  },
+  "challengeStatusOnTrack": {
+    "message": "على المسار"
+  },
+  "challengeStatusComplete": {
+    "message": "مكتمل"
+  },
+  "challengeStatusOutOfReach": {
+    "message": "لم يعد ممكنًا"
+  },
+  "challengeKeptOf": {
+    "message": "تحقّق $MET$ من $REQUIRED$",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeKeptSoFar": {
+    "message": "تحقّق $MET$ حتى الآن",
+    "placeholders": {
+      "met": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeMissedOf": {
+    "message": "فات $MISSED$ من $ALLOWED$ مسموح بها",
+    "placeholders": {
+      "missed": {
+        "content": "$1"
+      },
+      "allowed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeTodayYes": {
+    "message": "اليوم محتسب"
+  },
+  "challengeTodayNo": {
+    "message": "اليوم غير محتسب بعد"
+  },
+  "challengeProgressTooltip": {
+    "message": "كيف يسير هذا التحدي: الأيام المحقّقة، والأيام الفائتة، وهل ما زال إنهاؤه ممكنًا."
   }
 }
