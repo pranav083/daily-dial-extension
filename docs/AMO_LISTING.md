@@ -384,10 +384,13 @@ try before reading.
 - [x] Update `DAILY_DIAL_LAUNCH.md` — "Firefox port" moves out of *worth
       building* and becomes a line in every post, since it roughly doubles
       the addressable audience and r/firefox becomes a place you can post.
-- [ ] Test Drive backup on Firefox **once**, end to end, after registering the
+- [x] Test Drive backup on Firefox **once**, end to end, after registering the
       redirect URI. It is the only feature that can break on Firefox alone.
-      Still capped at 100 users by the OAuth consent screen's Testing status,
-      so this tests the Firefox half, not the cap.
+      Done — the redirect URI resolves and a backup round-trips. Still capped
+      at 100 users by the OAuth consent screen's Testing status, which is a
+      separate matter from whether Firefox works.
+
+Section 5 is complete.
 
 ---
 
