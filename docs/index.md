@@ -13,6 +13,7 @@ Free, open source, and no account. By default it makes no network requests at
 all: your data stays in your browser.
 
 [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn){: .cta}
+[Install for Firefox](https://addons.mozilla.org/en-US/firefox/addon/daily-dial-time-tracker-focus/){: .cta}
 [Try it here first](demo/index.html){: .cta}
 
 No install needed to try it — the demo below is the real extension, running in

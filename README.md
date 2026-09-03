@@ -7,6 +7,7 @@
 **Paint your day on a 24-hour dial, and see whether the time went where you meant it to.**
 
 [![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-install-4285F4.svg)](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn)
+[![Firefox Add-ons](https://img.shields.io/badge/Firefox%20Add--ons-install-FF7139.svg)](https://addons.mozilla.org/en-US/firefox/addon/daily-dial-time-tracker-focus/)
 [![CI](https://github.com/pranav083/daily-dial-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/pranav083/daily-dial-extension/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-4285F4.svg)](manifest.json)
@@ -42,7 +43,11 @@ the hours actually went toward the applications.
 
 ## Install
 
-**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn)** — one click, and it updates itself.
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/daily-dial/mgcjgngceajnmfhkifccaoeccbmfikhn)** — Chrome, Edge, Brave, Opera.
+
+**[Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/daily-dial-time-tracker-focus/)** — Firefox 140+, and Firefox for Android 142+.
+
+Either one is a single click, and updates itself.
 
 <details>
 <summary>Or load it from source</summary>

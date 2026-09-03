@@ -375,13 +375,19 @@ try before reading.
 
 ## 5. After it is approved
 
-- [ ] Add the AMO link to `README.md`, `docs/index.md`, and the site header
+**Approved 2026-09-03. Live at**
+<https://addons.mozilla.org/en-US/firefox/addon/daily-dial-time-tracker-focus/>
+— slug `daily-dial-time-tracker-focus`, first public version 1.33.0.
+
+- [x] Add the AMO link to `README.md`, `docs/index.md`, and the site header
       next to the Web Store badge.
-- [ ] Update `DAILY_DIAL_LAUNCH.md` — "Firefox port" moves out of *worth
+- [x] Update `DAILY_DIAL_LAUNCH.md` — "Firefox port" moves out of *worth
       building* and becomes a line in every post, since it roughly doubles
       the addressable audience and r/firefox becomes a place you can post.
 - [ ] Test Drive backup on Firefox **once**, end to end, after registering the
       redirect URI. It is the only feature that can break on Firefox alone.
+      Still capped at 100 users by the OAuth consent screen's Testing status,
+      so this tests the Firefox half, not the cap.
 
 ---
 
@@ -391,3 +397,51 @@ Every AMO upload needs a version higher than the last, same as Chrome. The two
 stores can sit at different versions without a problem — Firefox does not care
 what Chrome is serving. Run `npm run check` first; it verifies `manifest.json`
 and `package.json` agree before anything else.
+
+Build and check the package before uploading:
+
+```bash
+npm run check                 # must exit 0
+npm run build:firefox         # writes build/firefox/ from the Chrome sources
+npx web-ext lint --source-dir build/firefox
+cd build/firefox && zip -rq ../firefox-dist/daily_dial_time_tracker_focus-<version>.zip . -x '.*'
+```
+
+A clean run is **0 errors and 2 warnings** — both are the `innerHTML`
+assignments described in the reviewer note, and 1.33.0 was approved with them.
+Anything else is new and worth reading before uploading.
+
+### Version notes for 1.40.1
+
+The "What's new in this version" box. Users see it on the listing; reviewers
+read it first.
+
+```
+Challenges now have a goal and a verdict. "Day 14 of 21" read the same whether
+you had kept every day or none of them — a challenge now states what a day has
+to contain, counts the days you kept and missed, and is strictly consecutive:
+one missed day ends the attempt, and it says which day it ended on and how long
+your best run was.
+
+Ten categories instead of six. The four new ones (Exercise, Sleep, Social,
+Errands) are off until you switch them on, and every category can now be given
+its own colour, which repaints the ring, the pens, the week strip, the
+breakdown, the History calendar and the shared image at once.
+
+The History calendar can be coloured by score, by hours logged, or by the
+category each day led with.
+
+Reminders you can test: a "Send a test reminder" button and a line saying when
+the next one actually lands. If your operating system swallows the
+notification, the toolbar icon now shows a "!" instead — drawn by the add-on,
+so nothing outside it can suppress it.
+
+Fixed: the daily score is now measured against a target rather than against
+itself, so a two-hour day no longer scores 100. Dragging a block could only
+ever make it longer. Note marks drifted off their blocks after a resize. The
+page scrolled sideways on a phone. The keyboard shortcut had never worked and
+is now Ctrl/Cmd+Shift+Y.
+```
+
+Nothing in this release changes permissions, adds a network request, or touches
+the Drive code, so the reviewer note in section 4 stands unedited.
