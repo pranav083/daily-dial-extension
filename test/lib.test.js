@@ -51,6 +51,8 @@ import {
   buildInsight,
   computeRuns,
   computeStats,
+  computeDaySpans,
+  noteIndicesForSpan,
   computeStreak,
   dateKey,
   dayHasEntries,
@@ -487,6 +489,59 @@ test("dailyTargetMin prefers the user's own goals over the default", () => {
 
   const noDeepWork = cats.map((c) => (c.id === 0 ? { ...c, enabled: false } : c));
   assert.equal(dailyTargetMin({ goals: { 0: 120, 2: 60 } }, noDeepWork), 60, "a disabled category's goal is ignored");
+});
+
+/* ---------- day spans and which note belongs to which ---------- */
+
+test("computeDaySpans covers the whole day with no gaps or overlaps", () => {
+  let slots = paint(blank(), 9, 12, 0);
+  slots = paint(slots, 12, 14, 5);
+  const spans = computeDaySpans(slots);
+
+  assert.equal(spans[0].start, 0, "starts at midnight");
+  assert.equal(spans.at(-1).end, SLOTS, "runs to the end of the day");
+  for (let i = 1; i < spans.length; i++) {
+    assert.equal(spans[i].start, spans[i - 1].end, "each span begins where the last ended");
+    assert.notEqual(spans[i].cat, spans[i - 1].cat, "adjacent spans always differ, or they would be one span");
+  }
+  assert.deepEqual(
+    spans.map((s) => [s.start, s.end, s.cat]),
+    [[0, 36, UNTRACKED], [36, 48, 0], [48, 56, 5], [56, SLOTS, UNTRACKED]],
+    "gaps are spans too — the day list shows them, so they are not optional",
+  );
+});
+
+test("noteIndicesForSpan follows a block that has been resized", () => {
+  // The property the ring got wrong: a note keeps the range it was written
+  // against, so matching has to tolerate the block moving underneath it.
+  const notes = [{ from: 36, to: 48, text: "a note" }]; // written on 09:00–12:00
+
+  assert.deepEqual(noteIndicesForSpan(notes, 36, 48), [0], "exact range still matches");
+  assert.deepEqual(noteIndicesForSpan(notes, 36, 60), [0], "the block grew to 15:00");
+  assert.deepEqual(noteIndicesForSpan(notes, 40, 48), [0], "the block shrank from the left");
+  assert.deepEqual(noteIndicesForSpan(notes, 0, 36), [], "the block before it keeps its own notes");
+  assert.deepEqual(noteIndicesForSpan(notes, 48, SLOTS), [], "and so does the one after");
+});
+
+test("noteIndicesForSpan gives a note to exactly one span", () => {
+  // Every span in a day is checked in turn, so a note landing in two of them
+  // would be drawn twice on the ring and edited in two rows of the list.
+  const notes = [
+    { from: 0, to: 12, text: "early" },
+    { from: 36, to: 48, text: "mid" },
+    { from: 88, to: 96, text: "late" },
+  ];
+  let slots = paint(blank(), 9, 12, 0);
+  slots = paint(slots, 22, 24, 5);
+
+  const claimed = computeDaySpans(slots).flatMap((s) => noteIndicesForSpan(notes, s.start, s.end));
+  assert.deepEqual([...claimed].sort(), [0, 1, 2], "every note is claimed, exactly once");
+});
+
+test("noteIndicesForSpan survives an empty or missing note list", () => {
+  assert.deepEqual(noteIndicesForSpan([], 0, SLOTS), []);
+  assert.deepEqual(noteIndicesForSpan(undefined, 0, SLOTS), []);
+  assert.deepEqual(noteIndicesForSpan(null, 0, SLOTS), []);
 });
 
 /* ---------- insight ---------- */
