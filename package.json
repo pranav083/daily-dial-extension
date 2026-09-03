@@ -20,7 +20,8 @@
     "firefox:redirect": "node scripts/firefox-redirect-uri.mjs",
     "build:docs-changelog": "node scripts/build-docs-changelog.mjs",
     "smoke": "node scripts/smoke-extension.mjs",
-    "promo": "node scripts/make-promo.mjs"
+    "promo": "node scripts/make-promo.mjs",
+    "shots": "node scripts/make-store-shots.mjs"
   },
   "repository": {
     "type": "git",

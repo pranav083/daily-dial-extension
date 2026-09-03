@@ -78,12 +78,15 @@ search does not surface it on its own.
 ✅ Daily Dial: one drag. Fast enough for every day, honest enough to catch everything.
 
 ✍️ HOW IT WORKS
-🖱️ Drag around the ring to paint — or press 1-6 for a pen, 0/E for the eraser
+🖱️ Drag around the ring to paint — or press 1-9 for a pen, 0/E for the eraser
 ⌨️ Type it instead: "9-11 deep work" or "9pm-11pm study"
 ↩️ Ctrl+Z / Cmd+Z undoes one stroke at a time, 30 deep — Ctrl+Shift+Z redoes
 📋 Copy yesterday into today in one click
 🧭 A live needle always marks "now"
 📅 Jump days with the arrows, or click any bar in the 7-day strip
+
+📅 A MONTH AT A GLANCE
+Colour the History calendar three ways — by score, by hours logged, or by the category each day led with. "How did it go" and "what was this month made of" are different questions.
 
 📊 WAS TODAY ACTUALLY PRODUCTIVE?
 🎯 A daily score, from your categories' weights
@@ -94,12 +97,15 @@ search does not surface it on its own.
 
 🔥 STAY WITH IT
 🔥 Streak counter — one missed day a week forgiven, so one slip doesn't cost you weeks
+🏁 Challenges — a named run of consecutive days with a goal you set: anything logged, minutes of a category, or a daily score. It tells you how many days in a row you've kept, whether today counts, and whether the run is still alive. Miss a day and it says so — a run that tolerates gaps isn't a run
 🎯 Optional daily goals per category, with a progress bar
 📬 Optional weekly recap: time tracked, top category, best day, streak
 
 🎨 MADE YOUR OWN
-6 category slots — rename, reweight, hide the ones you don't use.
-Defaults: Deep Work · Applications · Study · Admin · Break · Distraction
+10 category slots — rename, reweight, recolour, hide the ones you don't use.
+On by default: Deep Work · Applications · Study · Admin · Break · Distraction
+There and switched off: Exercise · Sleep · Social · Errands
+🎨 Click a category's swatch to pick its colour — the ring, week strip, calendar and shared image all follow
 🔒 Renaming is safe — days store the slot, never the name, so history never rewrites.
 
 🌍 IN YOUR LANGUAGE
@@ -147,15 +153,21 @@ MIT licensed. A few small files of plain, unminified JavaScript — readable in 
 | Asset | Size | Required | File |
 |---|---|---|---|
 | Store icon | 128×128 PNG | Yes | `icons/icon-128.png` |
-| Screenshot | 1280×800 PNG | Yes (1–5) | `docs/store/screenshot-*.png` |
+| Screenshot | 1280×800 PNG | Yes (1–5) | `docs/store/screenshot-*.png` — run `npm run shots` |
 | Small promo tile | 440×280 PNG | For featuring | `docs/store/promo-440x280.png` |
 | Marquee promo tile | 1400×560 PNG | For featuring | `docs/store/promo-1400x560.png` |
 
 Screenshot captions, in order:
 
 1. *Paint a day in seconds — pick a category and drag around the ring*
-2. *See whether the time went where you meant it to*
-3. *Make the categories yours, and set two gentle daily reminders*
+2. *See whether the time went where you meant it to, and how the run is going*
+3. *A month at a glance, coloured by score, hours, or what each day was spent on*
+4. *Ten categories, each with its own colour, weight and words*
+
+`npm run shots` regenerates all four from the running extension at the size
+the Store requires. They were hand-made once and went stale for months —
+advertising a scoring rule the app had replaced — which nothing caught,
+because a screenshot cannot fail a build.
 
 ---
 

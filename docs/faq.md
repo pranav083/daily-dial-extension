@@ -54,3 +54,26 @@ Yes, and open source under the MIT licence. No ads, analytics, telemetry, or pai
 It doesn't block sites, enforce anything, auto-capture what you're doing, manage tasks, or connect to your calendar. It shows you where the time went and stops there. Guides on the site cover tools that handle the blocking part.
 
 Still stuck? [Open an issue](https://github.com/pranav083/daily-dial-extension/issues/new/choose) — questions are welcome, not just bugs.
+
+## Can I change a category's colour?
+
+Yes. Settings → Categories, and click the swatch beside a category's name —
+that swatch is the picker. The ring, the pens, the week strip, the bars, the
+History calendar and the shared image all change together. The ↺ beside it
+puts the slot back to its default, which also puts it back under the theme's
+control, so it follows light and dark again.
+
+## How many categories are there?
+
+Ten slots. Six are on to begin with; Exercise, Sleep, Social and Errands are
+there and switched off. Days store the slot rather than the name, so renaming
+or recolouring a category never rewrites history.
+
+## What happens if I miss a day of a challenge?
+
+It ends, and the card says which day it ended on and how long your best run
+was. That is deliberate: twenty-one days means twenty-one days in a row, and a
+run that tolerates gaps is a weaker thing wearing the same name. One button
+restarts the same challenge from today.
+
+Today never breaks a run, because today is not over yet.

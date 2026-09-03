@@ -27,16 +27,18 @@ the hours actually went toward the applications.
 |---|---|
 | **Paint** | Pick a category, then click or drag around the ring |
 | **Erase** | Choose the Eraser pen, or press <kbd>0</kbd>/<kbd>E</kbd>, then drag over a block |
-| **Pick a pen** | Click one, or press <kbd>1</kbd>–<kbd>6</kbd> |
+| **Pick a pen** | Click one, or press <kbd>1</kbd>–<kbd>9</kbd> |
 | **Type an entry** | `9-11 deep work`, `13:30-15 applications`, `9pm-11pm study` — or your own alias, e.g. `9-11 leetcode` |
-| **Category aliases** | Link your own words to a category (Settings → Categories) so typed entries recognize them |
+| **Category aliases** | Link your own words to a category (Settings → Categories) so typed entries recognize them — hover a pen to see what it answers to |
 | **Copy yesterday** | Fills today from the previous day; confirms before overwriting |
 | **Undo / redo** | <kbd>⌘Z</kbd> / <kbd>⇧⌘Z</kbd> (<kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd>) — 30 deep |
 | **Past days** | Arrows beside the date, or click a bar in the week strip |
-| **History** | A month heatmap, month summary, week-over-week deltas, per-category trends, and search across your notes — the History tab beside Day |
+| **History** | A month heatmap, month summary, week-over-week deltas, per-category trends, and search across your notes — the History tab beside Day. Colour the month by score, by hours logged, or by the category each day led with |
 | **Dial layout** | One 24-hour ring, two 12-hour AM/PM rings side by side, or one 12-hour ring with a switch — pick one via the quick switcher above the dial, or Settings → Appearance |
 | **Toolbar badge** | Today's score on the extension icon itself, coloured to match — no click needed |
 | **Streaks** | 🔥 counts any day with at least one block; one missed day a week is forgiven |
+| **Challenges** | A named run of consecutive days with a goal of your own — anything logged, minutes of a category, or a score. It says how many days in a row you have kept, whether today counts, and whether the run is still alive |
+| **Category colours** | Click the swatch in Settings → Categories. The ring, pens, week strip, bars, calendar and shared image all follow |
 | **Goals** | Optional per-category targets, daily or weekly, with progress shown in the side panel |
 | **Waking hours** | The "still unlogged" nag only counts time inside this window, so sleep isn't mistaken for a gap |
 | **Reminders** | Two a day plus an optional weekly recap, all off by default, times are yours |
@@ -81,13 +83,21 @@ instead of silently flattering your numbers.
 
 ### Categories
 
-Six slots, renameable, reweightable, hideable. Days store the slot *index*, not
-the name, so renaming a category never rewrites your history.
+Ten slots, renameable, reweightable, hideable, and each with a colour of its
+own. Days store the slot *index*, not the name, so renaming a category never
+rewrites your history — and never repaints a day you logged months ago.
 
-The defaults assume a job or university search — **Deep Work, Applications,
-Study, Admin, Break, Distraction** — with Applications broken out deliberately,
-so you can see at a glance whether you actually spent time on applications or
-only on studying.
+Six are on by default and assume a job or university search — **Deep Work,
+Applications, Study, Admin, Break, Distraction** — with Applications broken out
+deliberately, so you can see at a glance whether you actually spent time on
+applications or only on studying.
+
+Four more are there and switched off: **Exercise, Sleep, Social, Errands**. The
+app's own observations suggest repurposing an unused category for a life area
+going untracked, which is no advice at all to someone already using all six.
+
+Click a category's swatch to give it a colour; the ↺ beside it hands the slot
+back to the default, which also puts it back under the theme's control.
 
 ### Languages
 

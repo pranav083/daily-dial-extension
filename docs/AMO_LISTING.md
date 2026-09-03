@@ -118,13 +118,17 @@ Daily Dial asks for one drag. Fast enough to do every day, honest enough to catc
 
 HOW IT WORKS
 
-• Drag around the ring to paint — or press 1-6 for a pen, 0 or E for the eraser
+• Drag around the ring to paint — or press 1-9 for a pen, 0 or E for the eraser
 • Type it instead: "9-11 deep work" or "9pm-11pm study"
 • Ctrl+Z / Cmd+Z undoes one stroke at a time, 30 deep — Ctrl+Shift+Z redoes
 • Ctrl+Shift+Y / Cmd+Shift+Y opens the dial from anywhere (rebindable)
 • Copy yesterday into today in one click
 • A live needle always marks "now"
 • Jump days with the arrows, or click any bar in the 7-day strip
+
+A MONTH AT A GLANCE
+
+Colour the History calendar by score, by hours logged, or by the category each day led with. "How did it go" and "what was this month made of" are different questions, and one scale cannot answer both.
 
 WAS TODAY ACTUALLY PRODUCTIVE?
 
@@ -137,13 +141,17 @@ WAS TODAY ACTUALLY PRODUCTIVE?
 STAY WITH IT
 
 • A streak counter that forgives one missed day a week, so one slip doesn't cost you a month
+• Challenges — a named run of consecutive days with a goal you set. It says how many you have kept in a row, whether today counts, and whether the run can still be finished. One missed day ends it, because a run that tolerates gaps is not a run
 • Optional daily goals per category, with a progress bar
 • An optional weekly recap: time tracked, top category, best day, streak
 
 MADE YOUR OWN
 
-Six category slots — rename them, reweight them, hide the ones you don't use.
-Defaults: Deep Work, Applications, Study, Admin, Break, Distraction.
+Ten category slots — rename them, reweight them, recolour them, hide the ones you don't use.
+On by default: Deep Work, Applications, Study, Admin, Break, Distraction.
+There and switched off: Exercise, Sleep, Social, Errands.
+
+Click a category's swatch to pick its colour. The ring, the week strip, the calendar and the shared image all follow.
 
 Renaming is safe. Days store the slot, never the name, so your history never rewrites itself behind you.
 
