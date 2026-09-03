@@ -136,7 +136,7 @@
   "reminderToggleTooltip": "以下の時刻に1日2回通知します。Chromeが起動している間のみ届きます。",
   "middayNudgeLabel": "昼のリマインド",
   "eveningWrapupLabel": "夜のまとめ",
-  "remindersNote": "通知はChromeが起動している間のみ届きます。夜の通知では、その日にまだ記録していない時間の長さをお知らせします。",
+  "remindersNote": "通知は Chrome が起動している間だけ届き、OS の通知を経由します。テストが届かない場合、止めているのはこのアプリではなく OS の設定です。夜の通知は、その日のうちまだ記録されていない時間を知らせます。",
   "weeklyRecapSectionLabel": "週次まとめ",
   "weeklyRecapToggleLabel": "週次まとめを送る",
   "weeklyRecapToggleTooltip": "週に1回届く要約通知です。記録時間、最も多いカテゴリ、ベストな日、連続記録が含まれます。",
@@ -631,5 +631,12 @@
   "histColourByCategory": "色：最も多いカテゴリ",
   "categoryColorAriaLabel": "$NAME$ の色",
   "categoryColorTooltip": "このカテゴリの色を選ぶ",
-  "categoryColorResetTooltip": "既定の色に戻す"
+  "categoryColorResetTooltip": "既定の色に戻す",
+  "reminderNextLabel": "次の通知：$DAY$ $TIME$",
+  "reminderTomorrow": "明日",
+  "reminderNoneScheduled": "通知の予定はありません。",
+  "reminderTestLabel": "テスト通知を送る",
+  "reminderTestTooltip": "今すぐ1件送ります。通知がそもそも届くかどうかを確かめられます。",
+  "reminderTestSentToast": "送信しました。何も表示されない場合、システム側が Chrome の通知を止めています。",
+  "reminderTestFailedToast": "送信できませんでした — ページを再読み込みして、もう一度お試しください。"
 }

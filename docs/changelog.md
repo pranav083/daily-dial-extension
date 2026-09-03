@@ -15,6 +15,25 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.39.0] — 2026-09-03
+
+### Added
+
+- **"Send a test reminder"**, in Settings → Reminders. Reminders arrive
+  through your operating system's own notifications, so when they never show
+  up the cause is usually there rather than here — and there was no way to
+  tell the two apart without waiting until one o'clock to find out. This sends
+  one now.
+- **Settings says when the next one actually lands** — "Next reminder: tomorrow
+  at 13:00". Turning reminders on at 2pm with a 1pm time schedules the first
+  for tomorrow, which is correct and looks exactly like nothing happening.
+
+### Changed
+
+- The note under the reminder times now says plainly that notifications pass
+  through the system's own, and that a test which never appears means Chrome
+  is blocked there rather than broken here.
+
 ## [1.38.0] — 2026-09-03
 
 ### Added

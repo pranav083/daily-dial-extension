@@ -489,7 +489,7 @@
     "message": "Вечерний итог"
   },
   "remindersNote": {
-    "message": "Уведомления приходят только пока запущен Chrome. Вечернее сообщает, сколько дня ещё не отмечено."
+    "message": "Уведомления приходят, только пока Chrome запущен, и идут через уведомления вашей системы — если тест так и не появился, Chrome заблокирован там, а не здесь. Вечернее сообщает, сколько дня ещё не записано."
   },
   "weeklyRecapSectionLabel": {
     "message": "Итоги недели"
@@ -3148,5 +3148,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "Вернуть цвет по умолчанию"
+  },
+  "reminderNextLabel": {
+    "message": "Следующее напоминание: $DAY$ в $TIME$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "завтра"
+  },
+  "reminderNoneScheduled": {
+    "message": "Напоминания не запланированы."
+  },
+  "reminderTestLabel": {
+    "message": "Отправить тестовое напоминание"
+  },
+  "reminderTestTooltip": {
+    "message": "Отправит одно прямо сейчас, чтобы стало видно, доходят ли уведомления вообще."
+  },
+  "reminderTestSentToast": {
+    "message": "Отправлено. Если ничего не появилось, система блокирует уведомления Chrome."
+  },
+  "reminderTestFailedToast": {
+    "message": "Не удалось отправить — перезагрузите страницу и попробуйте снова."
   }
 }

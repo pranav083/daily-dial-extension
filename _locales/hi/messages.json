@@ -449,7 +449,7 @@
     "message": "शाम का समापन"
   },
   "remindersNote": {
-    "message": "सूचनाएँ तभी आती हैं जब क्रोम चल रहा हो। शाम वाली बताती है कि दिन का कितना हिस्सा अब भी दर्ज नहीं है।"
+    "message": "सूचनाएँ तभी आती हैं जब Chrome चल रहा हो, और वे आपके सिस्टम की सूचनाओं से होकर आती हैं — अगर जाँच वाली भी कभी न दिखे, तो Chrome वहाँ रोका जा रहा है, यहाँ नहीं। शाम वाली बताती है कि दिन का कितना हिस्सा अभी दर्ज नहीं है।"
   },
   "weeklyRecapSectionLabel": {
     "message": "साप्ताहिक सारांश"
@@ -2818,5 +2818,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "डिफ़ॉल्ट रंग पर लौटें"
+  },
+  "reminderNextLabel": {
+    "message": "अगला रिमाइंडर: $DAY$ $TIME$ बजे",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "कल"
+  },
+  "reminderNoneScheduled": {
+    "message": "कोई रिमाइंडर निर्धारित नहीं।"
+  },
+  "reminderTestLabel": {
+    "message": "जाँच के लिए रिमाइंडर भेजें"
+  },
+  "reminderTestTooltip": {
+    "message": "अभी एक भेजता है, ताकि पता चले कि सूचनाएँ आप तक पहुँचती भी हैं या नहीं।"
+  },
+  "reminderTestSentToast": {
+    "message": "भेज दिया। अगर कुछ नहीं दिखा, तो आपका सिस्टम Chrome की सूचनाएँ रोक रहा है।"
+  },
+  "reminderTestFailedToast": {
+    "message": "भेजा नहीं जा सका — पेज दोबारा लोड करके फिर कोशिश करें।"
   }
 }

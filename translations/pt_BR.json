@@ -136,7 +136,7 @@
   "reminderToggleTooltip": "Duas notificações por dia, nos horários abaixo. Elas só disparam enquanto o Chrome estiver em execução.",
   "middayNudgeLabel": "Lembrete do meio-dia",
   "eveningWrapupLabel": "Fechamento da noite",
-  "remindersNote": "As notificações só disparam enquanto o Chrome estiver em execução. A da noite informa quanto do dia ainda não foi registrado.",
+  "remindersNote": "As notificações só chegam enquanto o Chrome está aberto, e passam pelas notificações do seu sistema — se um teste nunca aparece, é ali que o Chrome está bloqueado, não aqui. A da noite diz quanto do dia ainda está sem registro.",
   "weeklyRecapSectionLabel": "Resumo semanal",
   "weeklyRecapToggleLabel": "Enviar um resumo semanal",
   "weeklyRecapToggleTooltip": "Uma notificação de resumo uma vez por semana: tempo rastreado, categoria principal, melhor dia e sequência.",
@@ -646,5 +646,12 @@
   "histColourByCategory": "Cor: categoria principal",
   "categoryColorAriaLabel": "Cor de $NAME$",
   "categoryColorTooltip": "Escolha a cor desta categoria",
-  "categoryColorResetTooltip": "Voltar à cor padrão"
+  "categoryColorResetTooltip": "Voltar à cor padrão",
+  "reminderNextLabel": "Próximo lembrete: $DAY$ às $TIME$",
+  "reminderTomorrow": "amanhã",
+  "reminderNoneScheduled": "Nenhum lembrete agendado.",
+  "reminderTestLabel": "Enviar um lembrete de teste",
+  "reminderTestTooltip": "Envia um agora, para você ver se as notificações chegam.",
+  "reminderTestSentToast": "Enviado. Se nada apareceu, seu sistema está bloqueando as notificações do Chrome.",
+  "reminderTestFailedToast": "Não foi possível enviar — recarregue a página e tente de novo."
 }

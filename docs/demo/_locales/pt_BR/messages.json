@@ -449,7 +449,7 @@
     "message": "Fechamento da noite"
   },
   "remindersNote": {
-    "message": "As notificações só disparam enquanto o Chrome estiver em execução. A da noite informa quanto do dia ainda não foi registrado."
+    "message": "As notificações só chegam enquanto o Chrome está aberto, e passam pelas notificações do seu sistema — se um teste nunca aparece, é ali que o Chrome está bloqueado, não aqui. A da noite diz quanto do dia ainda está sem registro."
   },
   "weeklyRecapSectionLabel": {
     "message": "Resumo semanal"
@@ -2818,5 +2818,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "Voltar à cor padrão"
+  },
+  "reminderNextLabel": {
+    "message": "Próximo lembrete: $DAY$ às $TIME$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "amanhã"
+  },
+  "reminderNoneScheduled": {
+    "message": "Nenhum lembrete agendado."
+  },
+  "reminderTestLabel": {
+    "message": "Enviar um lembrete de teste"
+  },
+  "reminderTestTooltip": {
+    "message": "Envia um agora, para você ver se as notificações chegam."
+  },
+  "reminderTestSentToast": {
+    "message": "Enviado. Se nada apareceu, seu sistema está bloqueando as notificações do Chrome."
+  },
+  "reminderTestFailedToast": {
+    "message": "Não foi possível enviar — recarregue a página e tente de novo."
   }
 }

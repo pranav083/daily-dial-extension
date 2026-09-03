@@ -449,7 +449,7 @@
     "message": "夜のまとめ"
   },
   "remindersNote": {
-    "message": "通知はChromeが起動している間のみ届きます。夜の通知では、その日にまだ記録していない時間の長さをお知らせします。"
+    "message": "通知は Chrome が起動している間だけ届き、OS の通知を経由します。テストが届かない場合、止めているのはこのアプリではなく OS の設定です。夜の通知は、その日のうちまだ記録されていない時間を知らせます。"
   },
   "weeklyRecapSectionLabel": {
     "message": "週次まとめ"
@@ -2653,5 +2653,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "既定の色に戻す"
+  },
+  "reminderNextLabel": {
+    "message": "次の通知：$DAY$ $TIME$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "明日"
+  },
+  "reminderNoneScheduled": {
+    "message": "通知の予定はありません。"
+  },
+  "reminderTestLabel": {
+    "message": "テスト通知を送る"
+  },
+  "reminderTestTooltip": {
+    "message": "今すぐ1件送ります。通知がそもそも届くかどうかを確かめられます。"
+  },
+  "reminderTestSentToast": {
+    "message": "送信しました。何も表示されない場合、システム側が Chrome の通知を止めています。"
+  },
+  "reminderTestFailedToast": {
+    "message": "送信できませんでした — ページを再読み込みして、もう一度お試しください。"
   }
 }

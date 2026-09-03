@@ -505,7 +505,7 @@
     "message": "ملخّص المساء"
   },
   "remindersNote": {
-    "message": "تعمل الإشعارات فقط أثناء تشغيل Chrome. يخبرك إشعار المساء بمقدار اليوم الذي لم يُسجَّل بعد."
+    "message": "لا تصل الإشعارات إلا وChrome يعمل، وهي تمر عبر إشعارات نظامك — فإن لم يظهر التجريبي أبدًا، فالحجب هناك لا هنا. ويخبرك إشعار المساء بما تبقّى من اليوم دون تسجيل."
   },
   "weeklyRecapSectionLabel": {
     "message": "ملخّص أسبوعي"
@@ -3478,5 +3478,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "العودة إلى اللون الافتراضي"
+  },
+  "reminderNextLabel": {
+    "message": "التذكير التالي: $DAY$ في $TIME$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "غدًا"
+  },
+  "reminderNoneScheduled": {
+    "message": "لا توجد تذكيرات مجدولة."
+  },
+  "reminderTestLabel": {
+    "message": "أرسل تذكيرًا تجريبيًا"
+  },
+  "reminderTestTooltip": {
+    "message": "يرسل واحدًا الآن، لترى إن كانت الإشعارات تصلك أصلًا."
+  },
+  "reminderTestSentToast": {
+    "message": "أُرسل. إن لم يظهر شيء، فنظامك يحجب إشعارات Chrome."
+  },
+  "reminderTestFailedToast": {
+    "message": "تعذّر الإرسال — أعد تحميل الصفحة وحاول مجددًا."
   }
 }

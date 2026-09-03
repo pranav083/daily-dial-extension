@@ -85,6 +85,7 @@ import {
   mostRecentWeekStart,
   multiDayFillSlotRange,
   normalizeAliases,
+  nextOccurrence,
   normalizeCategories,
   normalizeCategoryColor,
   noteReviewAsked,
@@ -3170,6 +3171,25 @@ function syncReminderInputs() {
   $("weekly-recap-time").value = settings.weeklyRecapTime;
   $("weekly-recap-day").disabled = !settings.weeklyRecapOn;
   $("weekly-recap-time").disabled = !settings.weeklyRecapOn;
+
+  // When the next one actually lands. Turning reminders on at 2pm with a 1pm
+  // time schedules the first for tomorrow, which is correct and looks exactly
+  // like nothing happening — the single most likely reason for "reminders
+  // don't work" that is not a system setting.
+  const next = $("reminder-next");
+  if (!settings.remindersOn) {
+    next.textContent = t("reminderNoneScheduled");
+  } else {
+    const soonest = settings.times
+      .map((hm) => nextOccurrence(hm))
+      .sort((a, b) => a - b)[0];
+    const when = new Date(soonest);
+    const isToday = when.toDateString() === new Date().toDateString();
+    next.textContent = t("reminderNextLabel", [
+      isToday ? t("dateToday") : t("reminderTomorrow"),
+      dateFmt({ hour: "2-digit", minute: "2-digit" }).format(when),
+    ]);
+  }
 }
 
 function saveReminders() {
@@ -3195,6 +3215,16 @@ function saveReminders() {
       ? t("remindersSetToast", [settings.times[0], settings.times[1]])
       : t("remindersOffToast")
   );
+}
+
+/** Fires one immediately, so "did that arrive?" is answerable now. */
+async function sendTestReminder() {
+  try {
+    await chrome.runtime.sendMessage({ type: "test-notification" });
+    toast(t("reminderTestSentToast"));
+  } catch {
+    toast(t("reminderTestFailedToast"));
+  }
 }
 
 /* ---------- appearance ---------- */
@@ -4057,6 +4087,7 @@ function wireEvents() {
   }
   $("challenge-clear").addEventListener("click", clearChallenge);
   $("challenge-restart").addEventListener("click", restartChallenge);
+  $("reminder-test").addEventListener("click", sendTestReminder);
   $("template-form").addEventListener("submit", (evt) => {
     evt.preventDefault();
     saveTemplateFromToday();

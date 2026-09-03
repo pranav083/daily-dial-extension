@@ -143,7 +143,7 @@
   "reminderToggleTooltip": "إشعاران في اليوم في الأوقات أدناه. تعملان فقط أثناء تشغيل Chrome.",
   "middayNudgeLabel": "تذكير منتصف اليوم",
   "eveningWrapupLabel": "ملخّص المساء",
-  "remindersNote": "تعمل الإشعارات فقط أثناء تشغيل Chrome. يخبرك إشعار المساء بمقدار اليوم الذي لم يُسجَّل بعد.",
+  "remindersNote": "لا تصل الإشعارات إلا وChrome يعمل، وهي تمر عبر إشعارات نظامك — فإن لم يظهر التجريبي أبدًا، فالحجب هناك لا هنا. ويخبرك إشعار المساء بما تبقّى من اليوم دون تسجيل.",
   "weeklyRecapSectionLabel": "ملخّص أسبوعي",
   "weeklyRecapToggleLabel": "إرسال ملخّص أسبوعي",
   "weeklyRecapToggleTooltip": "إشعار ملخّص مرة في الأسبوع: الوقت المسجَّل، الفئة الأبرز، أفضل يوم، والسلسلة.",
@@ -706,5 +706,12 @@
   "histColourByCategory": "اللون: الفئة الأبرز",
   "categoryColorAriaLabel": "لون $NAME$",
   "categoryColorTooltip": "اختر لون هذه الفئة",
-  "categoryColorResetTooltip": "العودة إلى اللون الافتراضي"
+  "categoryColorResetTooltip": "العودة إلى اللون الافتراضي",
+  "reminderNextLabel": "التذكير التالي: $DAY$ في $TIME$",
+  "reminderTomorrow": "غدًا",
+  "reminderNoneScheduled": "لا توجد تذكيرات مجدولة.",
+  "reminderTestLabel": "أرسل تذكيرًا تجريبيًا",
+  "reminderTestTooltip": "يرسل واحدًا الآن، لترى إن كانت الإشعارات تصلك أصلًا.",
+  "reminderTestSentToast": "أُرسل. إن لم يظهر شيء، فنظامك يحجب إشعارات Chrome.",
+  "reminderTestFailedToast": "تعذّر الإرسال — أعد تحميل الصفحة وحاول مجددًا."
 }

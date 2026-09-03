@@ -136,7 +136,7 @@
   "reminderToggleTooltip": "नीचे दिए समय पर दिन में दो सूचनाएँ। ये तभी आती हैं जब क्रोम चल रहा हो।",
   "middayNudgeLabel": "दोपहर का इशारा",
   "eveningWrapupLabel": "शाम का समापन",
-  "remindersNote": "सूचनाएँ तभी आती हैं जब क्रोम चल रहा हो। शाम वाली बताती है कि दिन का कितना हिस्सा अब भी दर्ज नहीं है।",
+  "remindersNote": "सूचनाएँ तभी आती हैं जब Chrome चल रहा हो, और वे आपके सिस्टम की सूचनाओं से होकर आती हैं — अगर जाँच वाली भी कभी न दिखे, तो Chrome वहाँ रोका जा रहा है, यहाँ नहीं। शाम वाली बताती है कि दिन का कितना हिस्सा अभी दर्ज नहीं है।",
   "weeklyRecapSectionLabel": "साप्ताहिक सारांश",
   "weeklyRecapToggleLabel": "साप्ताहिक सारांश भेजें",
   "weeklyRecapToggleTooltip": "हफ़्ते में एक बार सारांश सूचना: दर्ज समय, शीर्ष श्रेणी, सबसे अच्छा दिन, और लय।",
@@ -646,5 +646,12 @@
   "histColourByCategory": "रंग: मुख्य श्रेणी",
   "categoryColorAriaLabel": "$NAME$ का रंग",
   "categoryColorTooltip": "इस श्रेणी का रंग चुनें",
-  "categoryColorResetTooltip": "डिफ़ॉल्ट रंग पर लौटें"
+  "categoryColorResetTooltip": "डिफ़ॉल्ट रंग पर लौटें",
+  "reminderNextLabel": "अगला रिमाइंडर: $DAY$ $TIME$ बजे",
+  "reminderTomorrow": "कल",
+  "reminderNoneScheduled": "कोई रिमाइंडर निर्धारित नहीं।",
+  "reminderTestLabel": "जाँच के लिए रिमाइंडर भेजें",
+  "reminderTestTooltip": "अभी एक भेजता है, ताकि पता चले कि सूचनाएँ आप तक पहुँचती भी हैं या नहीं।",
+  "reminderTestSentToast": "भेज दिया। अगर कुछ नहीं दिखा, तो आपका सिस्टम Chrome की सूचनाएँ रोक रहा है।",
+  "reminderTestFailedToast": "भेजा नहीं जा सका — पेज दोबारा लोड करके फिर कोशिश करें।"
 }

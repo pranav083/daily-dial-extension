@@ -136,7 +136,7 @@
   "reminderToggleTooltip": "Zwei Benachrichtigungen täglich zu den unten genannten Zeiten. Sie erscheinen nur, während Chrome läuft.",
   "middayNudgeLabel": "Mittagserinnerung",
   "eveningWrapupLabel": "Abendabschluss",
-  "remindersNote": "Benachrichtigungen erscheinen nur, während Chrome läuft. Die abendliche zeigt, wie viel vom Tag noch nicht erfasst ist.",
+  "remindersNote": "Benachrichtigungen erscheinen nur, solange Chrome läuft, und laufen über die Benachrichtigungen deines Systems — kommt ein Test nie an, wird Chrome dort blockiert, nicht hier. Die abendliche nennt dir, wie viel des Tages noch nicht erfasst ist.",
   "weeklyRecapSectionLabel": "Wochenrückblick",
   "weeklyRecapToggleLabel": "Wochenrückblick senden",
   "weeklyRecapToggleTooltip": "Eine Zusammenfassung pro Woche: erfasste Zeit, Top-Kategorie, bester Tag und Serie.",
@@ -646,5 +646,12 @@
   "histColourByCategory": "Farbe: Hauptkategorie",
   "categoryColorAriaLabel": "Farbe für $NAME$",
   "categoryColorTooltip": "Farbe dieser Kategorie wählen",
-  "categoryColorResetTooltip": "Zurück zur Standardfarbe"
+  "categoryColorResetTooltip": "Zurück zur Standardfarbe",
+  "reminderNextLabel": "Nächste Erinnerung: $DAY$ um $TIME$",
+  "reminderTomorrow": "morgen",
+  "reminderNoneScheduled": "Keine Erinnerungen geplant.",
+  "reminderTestLabel": "Testerinnerung senden",
+  "reminderTestTooltip": "Sendet sofort eine, damit du siehst, ob Benachrichtigungen überhaupt ankommen.",
+  "reminderTestSentToast": "Gesendet. Wenn nichts erschien, blockiert dein System Chromes Benachrichtigungen.",
+  "reminderTestFailedToast": "Konnte nicht gesendet werden — Seite neu laden und erneut versuchen."
 }

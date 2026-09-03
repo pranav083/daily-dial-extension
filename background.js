@@ -364,6 +364,13 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 });
 
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  // One now, on demand. "Reminders don't work" is usually the system refusing
+  // Chrome's notifications rather than anything here, and there was no way to
+  // tell those apart without waiting until 1pm to find out.
+  if (msg?.type === "test-notification") {
+    notify(0).then(() => sendResponse({ ok: true })).catch(() => sendResponse({ ok: false }));
+    return true;
+  }
   if (msg?.type !== "reschedule") return false;
   syncAutoBackupAlarm();
   rescheduleAlarms().then(() => sendResponse({ ok: true }));

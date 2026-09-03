@@ -141,7 +141,7 @@
   "reminderToggleTooltip": "Два уведомления в день, в указанное ниже время. Работают, только пока запущен Chrome.",
   "middayNudgeLabel": "Напоминание в середине дня",
   "eveningWrapupLabel": "Вечерний итог",
-  "remindersNote": "Уведомления приходят только пока запущен Chrome. Вечернее сообщает, сколько дня ещё не отмечено.",
+  "remindersNote": "Уведомления приходят, только пока Chrome запущен, и идут через уведомления вашей системы — если тест так и не появился, Chrome заблокирован там, а не здесь. Вечернее сообщает, сколько дня ещё не записано.",
   "weeklyRecapSectionLabel": "Итоги недели",
   "weeklyRecapToggleLabel": "Присылать итоги недели",
   "weeklyRecapToggleTooltip": "Уведомление раз в неделю с сводкой: отслеженное время, главная категория, лучший день и серия.",
@@ -676,5 +676,12 @@
   "histColourByCategory": "Цвет: главная категория",
   "categoryColorAriaLabel": "Цвет для $NAME$",
   "categoryColorTooltip": "Выберите цвет этой категории",
-  "categoryColorResetTooltip": "Вернуть цвет по умолчанию"
+  "categoryColorResetTooltip": "Вернуть цвет по умолчанию",
+  "reminderNextLabel": "Следующее напоминание: $DAY$ в $TIME$",
+  "reminderTomorrow": "завтра",
+  "reminderNoneScheduled": "Напоминания не запланированы.",
+  "reminderTestLabel": "Отправить тестовое напоминание",
+  "reminderTestTooltip": "Отправит одно прямо сейчас, чтобы стало видно, доходят ли уведомления вообще.",
+  "reminderTestSentToast": "Отправлено. Если ничего не появилось, система блокирует уведомления Chrome.",
+  "reminderTestFailedToast": "Не удалось отправить — перезагрузите страницу и попробуйте снова."
 }

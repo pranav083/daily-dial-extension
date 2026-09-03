@@ -136,7 +136,7 @@
   "reminderToggleTooltip": "Deux notifications par jour aux heures ci-dessous. Elles ne se déclenchent que si Chrome tourne.",
   "middayNudgeLabel": "Rappel de midi",
   "eveningWrapupLabel": "Bilan du soir",
-  "remindersNote": "Les notifications ne se déclenchent que si Chrome tourne. Celle du soir indique quelle part de la journée reste non enregistrée.",
+  "remindersNote": "Les notifications n'arrivent que si Chrome est ouvert, et passent par les notifications de ton système — si un test n'apparaît jamais, c'est là que Chrome est bloqué, pas ici. Celle du soir indique la part de la journée encore non enregistrée.",
   "weeklyRecapSectionLabel": "Récap hebdomadaire",
   "weeklyRecapToggleLabel": "Envoyer un récap hebdomadaire",
   "weeklyRecapToggleTooltip": "Une notification résumé une fois par semaine : temps suivi, catégorie principale, meilleur jour et série.",
@@ -646,5 +646,12 @@
   "histColourByCategory": "Couleur : catégorie principale",
   "categoryColorAriaLabel": "Couleur de $NAME$",
   "categoryColorTooltip": "Choisir la couleur de cette catégorie",
-  "categoryColorResetTooltip": "Revenir à la couleur par défaut"
+  "categoryColorResetTooltip": "Revenir à la couleur par défaut",
+  "reminderNextLabel": "Prochain rappel : $DAY$ à $TIME$",
+  "reminderTomorrow": "demain",
+  "reminderNoneScheduled": "Aucun rappel programmé.",
+  "reminderTestLabel": "Envoyer un rappel de test",
+  "reminderTestTooltip": "En envoie un tout de suite, pour voir si les notifications te parviennent.",
+  "reminderTestSentToast": "Envoyé. Si rien n'est apparu, ton système bloque les notifications de Chrome.",
+  "reminderTestFailedToast": "Envoi impossible — recharge la page et réessaie."
 }

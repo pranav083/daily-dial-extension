@@ -449,7 +449,7 @@
     "message": "Resumen de la noche"
   },
   "remindersNote": {
-    "message": "Las notificaciones solo se activan mientras Chrome está en ejecución. La de la noche te dice cuánto del día sigue sin registrar."
+    "message": "Las notificaciones solo llegan mientras Chrome está abierto, y pasan por las notificaciones de tu sistema — si una prueba nunca aparece, es allí donde se bloquea Chrome, no aquí. La de la tarde te dice cuánto del día sigue sin registrar."
   },
   "weeklyRecapSectionLabel": {
     "message": "Resumen semanal"
@@ -2818,5 +2818,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "Volver al color predeterminado"
+  },
+  "reminderNextLabel": {
+    "message": "Próximo recordatorio: $DAY$ a las $TIME$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "mañana"
+  },
+  "reminderNoneScheduled": {
+    "message": "No hay recordatorios programados."
+  },
+  "reminderTestLabel": {
+    "message": "Enviar un recordatorio de prueba"
+  },
+  "reminderTestTooltip": {
+    "message": "Envía uno ahora, para que veas si las notificaciones te llegan."
+  },
+  "reminderTestSentToast": {
+    "message": "Enviado. Si no apareció nada, tu sistema está bloqueando las notificaciones de Chrome."
+  },
+  "reminderTestFailedToast": {
+    "message": "No se pudo enviar — recarga la página e inténtalo de nuevo."
   }
 }

@@ -617,7 +617,7 @@
     "description": "Label for the second daily reminder time field."
   },
   "remindersNote": {
-    "message": "Notifications only fire while Chrome is running. The evening one tells you how much of the day is still unlogged.",
+    "message": "Notifications only fire while Chrome is running, and they arrive through your system's own notifications — if a test never appears, Chrome is being blocked there rather than here. The evening one tells you how much of the day is still unlogged.",
     "description": "Note under the daily reminder time fields."
   },
   "weeklyRecapSectionLabel": {
@@ -3466,5 +3466,41 @@
   "categoryColorResetTooltip": {
     "message": "Back to the default colour",
     "description": "Category colour control."
+  },
+  "reminderNextLabel": {
+    "message": "Next reminder: $DAY$ at $TIME$",
+    "description": "Reminder settings.",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "tomorrow",
+    "description": "Reminder settings."
+  },
+  "reminderNoneScheduled": {
+    "message": "No reminders scheduled.",
+    "description": "Reminder settings."
+  },
+  "reminderTestLabel": {
+    "message": "Send a test reminder",
+    "description": "Reminder settings."
+  },
+  "reminderTestTooltip": {
+    "message": "Sends one now, so you can see whether notifications reach you at all.",
+    "description": "Reminder settings."
+  },
+  "reminderTestSentToast": {
+    "message": "Sent. If nothing appeared, your system is blocking Chrome's notifications.",
+    "description": "Reminder settings."
+  },
+  "reminderTestFailedToast": {
+    "message": "Could not send it — reload the page and try again.",
+    "description": "Reminder settings."
   }
 }

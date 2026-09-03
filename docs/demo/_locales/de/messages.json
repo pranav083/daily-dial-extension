@@ -449,7 +449,7 @@
     "message": "Abendabschluss"
   },
   "remindersNote": {
-    "message": "Benachrichtigungen erscheinen nur, während Chrome läuft. Die abendliche zeigt, wie viel vom Tag noch nicht erfasst ist."
+    "message": "Benachrichtigungen erscheinen nur, solange Chrome läuft, und laufen über die Benachrichtigungen deines Systems — kommt ein Test nie an, wird Chrome dort blockiert, nicht hier. Die abendliche nennt dir, wie viel des Tages noch nicht erfasst ist."
   },
   "weeklyRecapSectionLabel": {
     "message": "Wochenrückblick"
@@ -2818,5 +2818,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "Zurück zur Standardfarbe"
+  },
+  "reminderNextLabel": {
+    "message": "Nächste Erinnerung: $DAY$ um $TIME$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "morgen"
+  },
+  "reminderNoneScheduled": {
+    "message": "Keine Erinnerungen geplant."
+  },
+  "reminderTestLabel": {
+    "message": "Testerinnerung senden"
+  },
+  "reminderTestTooltip": {
+    "message": "Sendet sofort eine, damit du siehst, ob Benachrichtigungen überhaupt ankommen."
+  },
+  "reminderTestSentToast": {
+    "message": "Gesendet. Wenn nichts erschien, blockiert dein System Chromes Benachrichtigungen."
+  },
+  "reminderTestFailedToast": {
+    "message": "Konnte nicht gesendet werden — Seite neu laden und erneut versuchen."
   }
 }

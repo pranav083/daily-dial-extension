@@ -449,7 +449,7 @@
     "message": "晚间总结"
   },
   "remindersNote": {
-    "message": "通知仅在 Chrome 运行时发送。晚间通知会告诉你这一天还有多少时间未记录。"
+    "message": "通知只在 Chrome 运行时送达，并且经过系统自身的通知——如果测试也从未出现，是系统在拦截 Chrome，而不是这里。晚上的那条会告诉你当天还有多少没记录。"
   },
   "weeklyRecapSectionLabel": {
     "message": "每周回顾"
@@ -2653,5 +2653,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "恢复默认颜色"
+  },
+  "reminderNextLabel": {
+    "message": "下次提醒：$DAY$ $TIME$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "明天"
+  },
+  "reminderNoneScheduled": {
+    "message": "没有安排提醒。"
+  },
+  "reminderTestLabel": {
+    "message": "发送测试提醒"
+  },
+  "reminderTestTooltip": {
+    "message": "立即发送一条，看看通知是否能送达。"
+  },
+  "reminderTestSentToast": {
+    "message": "已发送。如果什么都没出现，是系统屏蔽了 Chrome 的通知。"
+  },
+  "reminderTestFailedToast": {
+    "message": "发送失败 — 请重新加载页面后再试。"
   }
 }

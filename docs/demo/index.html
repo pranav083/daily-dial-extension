@@ -583,9 +583,17 @@
             <label for="reminder-2" data-i18n="eveningWrapupLabel">Evening wrap-up</label>
             <input type="time" id="reminder-2" value="21:00">
           </div>
+          <p class="editor-note" id="reminder-next"></p>
+          <div class="footer-actions">
+            <button class="ghost-btn" id="reminder-test" data-i18n-title="reminderTestTooltip"
+                    title="Sends one now, so you can see whether notifications reach you at all."
+                    data-i18n="reminderTestLabel">Send a test reminder</button>
+          </div>
           <p class="editor-note" data-i18n="remindersNote">
-            Notifications only fire while Chrome is running. The evening one tells you how much
-            of the day is still unlogged.
+            Notifications only fire while Chrome is running, and they arrive through your
+            system's own notifications — if a test never appears, Chrome is being blocked
+            there rather than here. The evening one tells you how much of the day is still
+            unlogged.
           </p>
 
           <p class="section-label" style="margin-top:16px;" data-i18n="weeklyRecapSectionLabel">Weekly recap</p>

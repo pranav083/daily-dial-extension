@@ -449,7 +449,7 @@
     "message": "Bilan du soir"
   },
   "remindersNote": {
-    "message": "Les notifications ne se déclenchent que si Chrome tourne. Celle du soir indique quelle part de la journée reste non enregistrée."
+    "message": "Les notifications n'arrivent que si Chrome est ouvert, et passent par les notifications de ton système — si un test n'apparaît jamais, c'est là que Chrome est bloqué, pas ici. Celle du soir indique la part de la journée encore non enregistrée."
   },
   "weeklyRecapSectionLabel": {
     "message": "Récap hebdomadaire"
@@ -2818,5 +2818,34 @@
   },
   "categoryColorResetTooltip": {
     "message": "Revenir à la couleur par défaut"
+  },
+  "reminderNextLabel": {
+    "message": "Prochain rappel : $DAY$ à $TIME$",
+    "placeholders": {
+      "day": {
+        "content": "$1"
+      },
+      "time": {
+        "content": "$2"
+      }
+    }
+  },
+  "reminderTomorrow": {
+    "message": "demain"
+  },
+  "reminderNoneScheduled": {
+    "message": "Aucun rappel programmé."
+  },
+  "reminderTestLabel": {
+    "message": "Envoyer un rappel de test"
+  },
+  "reminderTestTooltip": {
+    "message": "En envoie un tout de suite, pour voir si les notifications te parviennent."
+  },
+  "reminderTestSentToast": {
+    "message": "Envoyé. Si rien n'est apparu, ton système bloque les notifications de Chrome."
+  },
+  "reminderTestFailedToast": {
+    "message": "Envoi impossible — recharge la page et réessaie."
   }
 }
