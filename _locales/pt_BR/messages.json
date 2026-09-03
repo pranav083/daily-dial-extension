@@ -2659,12 +2659,6 @@
   "challengeProgressTooltip": {
     "message": "Como vai este desafio: dias cumpridos, dias perdidos e se ainda dá para terminar."
   },
-  "challengeDayCounts": {
-    "message": "Este dia conta"
-  },
-  "challengeDayNotYet": {
-    "message": "Este dia não conta"
-  },
   "challengeGoalEachLogged": {
     "message": "Todo dia: qualquer registro"
   },
@@ -2725,5 +2719,41 @@
   },
   "challengeRestartedToast": {
     "message": "Desafio recomeçado a partir de hoje"
+  },
+  "challengeDayMetDetail": {
+    "message": "Este dia conta — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "Este dia não conta — $ACTUAL$ de $NEEDED$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "Este dia não conta — nada registrado"
+  },
+  "challengeStatusEnded": {
+    "message": "Encerrado"
+  },
+  "challengeEndedNote": {
+    "message": "Os $TARGET$ dias acabaram. Maior sequência: $BEST$.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

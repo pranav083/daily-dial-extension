@@ -619,8 +619,6 @@
   "challengeStatusOnTrack": "Auf Kurs",
   "challengeStatusComplete": "Geschafft",
   "challengeProgressTooltip": "Wie es um diese Challenge steht: gehaltene Tage, verpasste Tage und ob sie noch zu schaffen ist.",
-  "challengeDayCounts": "Dieser Tag zählt",
-  "challengeDayNotYet": "Dieser Tag zählt nicht",
   "challengeGoalEachLogged": "Jeden Tag: irgendetwas erfasst",
   "challengeGoalEachMinutes": "Jeden Tag: $AMOUNT$ $CATEGORY$",
   "challengeGoalEachScore": "Jeden Tag: Wertung $SCORE$ oder mehr",
@@ -629,5 +627,10 @@
   "challengeStatusBroken": "Gerissen",
   "challengeBrokenOn": "Die Serie endete am $DATE$. Längste bisher: $BEST$.",
   "challengeRestartLabel": "Ab heute neu starten",
-  "challengeRestartedToast": "Challenge ab heute neu gestartet"
+  "challengeRestartedToast": "Challenge ab heute neu gestartet",
+  "challengeDayMetDetail": "Dieser Tag zählt — $ACTUAL$",
+  "challengeDayShortDetail": "Dieser Tag zählt nicht — $ACTUAL$ von $NEEDED$",
+  "challengeDayNothingLogged": "Dieser Tag zählt nicht — nichts erfasst",
+  "challengeStatusEnded": "Beendet",
+  "challengeEndedNote": "Die $TARGET$ Tage sind um. Längste Serie: $BEST$."
 }

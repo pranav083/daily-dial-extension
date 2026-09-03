@@ -2659,12 +2659,6 @@
   "challengeProgressTooltip": {
     "message": "Où en est ce défi : jours tenus, jours manqués, et s'il peut encore être terminé."
   },
-  "challengeDayCounts": {
-    "message": "Ce jour compte"
-  },
-  "challengeDayNotYet": {
-    "message": "Ce jour ne compte pas"
-  },
   "challengeGoalEachLogged": {
     "message": "Chaque jour : n'importe quel enregistrement"
   },
@@ -2725,5 +2719,41 @@
   },
   "challengeRestartedToast": {
     "message": "Défi relancé à partir d'aujourd'hui"
+  },
+  "challengeDayMetDetail": {
+    "message": "Ce jour compte — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "Ce jour ne compte pas — $ACTUAL$ sur $NEEDED$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "Ce jour ne compte pas — rien d'enregistré"
+  },
+  "challengeStatusEnded": {
+    "message": "Terminé"
+  },
+  "challengeEndedNote": {
+    "message": "Les $TARGET$ jours sont écoulés. Plus longue série : $BEST$.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

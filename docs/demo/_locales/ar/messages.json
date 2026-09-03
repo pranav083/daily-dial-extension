@@ -3319,12 +3319,6 @@
   "challengeProgressTooltip": {
     "message": "كيف يسير هذا التحدي: الأيام المحقّقة، والأيام الفائتة، وهل ما زال إنهاؤه ممكنًا."
   },
-  "challengeDayCounts": {
-    "message": "هذا اليوم محتسب"
-  },
-  "challengeDayNotYet": {
-    "message": "هذا اليوم غير محتسب"
-  },
   "challengeGoalEachLogged": {
     "message": "كل يوم: أي تسجيل"
   },
@@ -3385,5 +3379,41 @@
   },
   "challengeRestartedToast": {
     "message": "أُعيد بدء التحدي من اليوم"
+  },
+  "challengeDayMetDetail": {
+    "message": "هذا اليوم محتسب — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "هذا اليوم غير محتسب — $ACTUAL$ من $NEEDED$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "هذا اليوم غير محتسب — لا يوجد أي تسجيل"
+  },
+  "challengeStatusEnded": {
+    "message": "انتهى"
+  },
+  "challengeEndedNote": {
+    "message": "انقضت الأيام $TARGET$. أطول سلسلة: $BEST$.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

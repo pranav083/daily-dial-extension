@@ -1567,6 +1567,30 @@ test("bestRun remembers the longest stretch even after a break", () => {
   assert.equal(p.status, "broken");
 });
 
+test("a challenge ends when its days are up", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 5 } }).challenge;
+  // Five days, three kept then a gap. Now it is day nine: the run is over.
+  const days = challengeDays("2026-08-11", [true, true, true, false, false, true, true, true, true]);
+  const p = challengeProgress(c, new Date(2026, 7, 19), days, cats);
+
+  assert.equal(p.elapsedDay, 9, "nine days have actually passed");
+  assert.equal(p.day, 5, "but the counter stops at the finish line, not 'day 9 of 5'");
+  assert.equal(p.finished, true);
+  assert.equal(p.status, "ended", "the days are up and the run never reached five");
+  assert.equal(p.bestRun, 3, "days six to nine are outside the window and do not count");
+});
+
+test("reaching the full run completes it, even if the days after lapse", () => {
+  const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 3 } }).challenge;
+  const days = challengeDays("2026-08-11", [true, true, true, false, false]);
+  const p = challengeProgress(c, new Date(2026, 7, 15), days, cats);
+
+  assert.equal(p.run, 3, "the run the window ended on");
+  assert.equal(p.bestRun, 3);
+  assert.equal(p.finished, true, "the three days are up");
+  assert.equal(p.status, "complete", "three in a row happened; the days after cannot undo it");
+});
+
 test("challengeProgress without a day map returns the counter alone", () => {
   // The chip only needs "day 4 of 10" and should not be handed a wrong tally.
   const c = normalizeSettings({ challenge: { name: "r", startKey: "2026-08-11", targetDays: 10 } }).challenge;

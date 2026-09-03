@@ -526,8 +526,9 @@ export function challengeDayMet(day, categories, goal, targetMin = DEFAULT_DAILY
  * @param {Array} [categories]
  * @param {number} [targetMin] the daily target a "score" goal is judged against
  * @returns {{day:number, targetDays:number|null, name:string, goal:object,
- *   run:number, bestRun:number, todayMet:boolean, brokenOn:string|null,
- *   status:"running"|"complete"|"broken"}|null}
+ *   day:number, elapsedDay:number, finished:boolean, run:number, bestRun:number,
+ *   todayMet:boolean, brokenOn:string|null,
+ *   status:"running"|"complete"|"broken"|"ended"}|null}
  */
 export function challengeProgress(challenge, now = new Date(), days, categories, targetMin = DEFAULT_DAILY_TARGET_MIN) {
   if (!challenge) return null;
@@ -545,11 +546,16 @@ export function challengeProgress(challenge, now = new Date(), days, categories,
 
   const span = challenge.targetDays ? Math.min(day, challenge.targetDays) : day;
   const dayAt = (i) => { const d = new Date(start); d.setDate(d.getDate() + i); return d; };
+  const finished = Boolean(challenge.targetDays) && day > challenge.targetDays;
 
-  // Every finished day, in order. Today is handled after: it cannot break a
-  // run it has not had the chance to finish.
+  // Every day of the run that has actually finished. Today is handled after,
+  // because it cannot break a run it has not had the chance to finish — but
+  // only while today is still inside the window. Once the run is over, its
+  // final day is an ordinary finished day like any other, and treating it as
+  // "today" silently dropped it from the count.
   let run = 0, bestRun = 0, brokenOn = null;
-  for (let i = 0; i < span - 1; i++) {
+  const elapsedInWindow = finished ? span : span - 1;
+  for (let i = 0; i < elapsedInWindow; i++) {
     const d = dayAt(i);
     if (challengeDayMet(days.get(dateKey(d)), categories, goal, targetMin)) {
       run++;
@@ -559,15 +565,27 @@ export function challengeProgress(challenge, now = new Date(), days, categories,
       run = 0;
     }
   }
-  const todayMet = day <= (challenge.targetDays ?? Infinity)
-    && challengeDayMet(days.get(dateKey(today)), categories, goal, targetMin);
+  const todayMet = !finished && challengeDayMet(days.get(dateKey(today)), categories, goal, targetMin);
   if (todayMet) run++;
   bestRun = Math.max(bestRun, run);
 
-  const status = challenge.targetDays && run >= challenge.targetDays ? "complete"
+  // Completion is judged on the best run, not the current one. Reaching
+  // twenty-one in a row and then stopping is still twenty-one in a row.
+  const status = challenge.targetDays && bestRun >= challenge.targetDays ? "complete"
+    : finished ? "ended"
     : brokenOn ? "broken"
     : "running";
-  return { ...base, run, bestRun, todayMet, brokenOn, status };
+  return {
+    ...base,
+    day: challenge.targetDays ? Math.min(day, challenge.targetDays) : day,
+    elapsedDay: day,
+    finished,
+    run,
+    bestRun,
+    todayMet,
+    brokenOn,
+    status,
+  };
 }
 
 export function normalizeSettings(saved) {

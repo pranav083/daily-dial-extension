@@ -619,8 +619,6 @@
   "challengeStatusOnTrack": "En bonne voie",
   "challengeStatusComplete": "Terminé",
   "challengeProgressTooltip": "Où en est ce défi : jours tenus, jours manqués, et s'il peut encore être terminé.",
-  "challengeDayCounts": "Ce jour compte",
-  "challengeDayNotYet": "Ce jour ne compte pas",
   "challengeGoalEachLogged": "Chaque jour : n'importe quel enregistrement",
   "challengeGoalEachMinutes": "Chaque jour : $AMOUNT$ de $CATEGORY$",
   "challengeGoalEachScore": "Chaque jour : score $SCORE$ ou plus",
@@ -629,5 +627,10 @@
   "challengeStatusBroken": "Rompu",
   "challengeBrokenOn": "La série s'est arrêtée le $DATE$. La plus longue : $BEST$.",
   "challengeRestartLabel": "Repartir d'aujourd'hui",
-  "challengeRestartedToast": "Défi relancé à partir d'aujourd'hui"
+  "challengeRestartedToast": "Défi relancé à partir d'aujourd'hui",
+  "challengeDayMetDetail": "Ce jour compte — $ACTUAL$",
+  "challengeDayShortDetail": "Ce jour ne compte pas — $ACTUAL$ sur $NEEDED$",
+  "challengeDayNothingLogged": "Ce jour ne compte pas — rien d'enregistré",
+  "challengeStatusEnded": "Terminé",
+  "challengeEndedNote": "Les $TARGET$ jours sont écoulés. Plus longue série : $BEST$."
 }

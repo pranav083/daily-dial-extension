@@ -2494,12 +2494,6 @@
   "challengeProgressTooltip": {
     "message": "このチャレンジの状況：達成した日、逃した日、そしてまだ達成可能かどうか。"
   },
-  "challengeDayCounts": {
-    "message": "この日は条件を満たしています"
-  },
-  "challengeDayNotYet": {
-    "message": "この日は条件を満たしていません"
-  },
   "challengeGoalEachLogged": {
     "message": "毎日：記録があればよい"
   },
@@ -2560,5 +2554,41 @@
   },
   "challengeRestartedToast": {
     "message": "チャレンジを今日から再開しました"
+  },
+  "challengeDayMetDetail": {
+    "message": "この日は条件を満たしています — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "この日は条件を満たしていません — $NEEDED$ のうち $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "この日は条件を満たしていません — 記録がありません"
+  },
+  "challengeStatusEnded": {
+    "message": "終了"
+  },
+  "challengeEndedNote": {
+    "message": "$TARGET$ 日が終わりました。最長連続は $BEST$ 日です。",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

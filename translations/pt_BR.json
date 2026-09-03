@@ -619,8 +619,6 @@
   "challengeStatusOnTrack": "No caminho",
   "challengeStatusComplete": "Concluído",
   "challengeProgressTooltip": "Como vai este desafio: dias cumpridos, dias perdidos e se ainda dá para terminar.",
-  "challengeDayCounts": "Este dia conta",
-  "challengeDayNotYet": "Este dia não conta",
   "challengeGoalEachLogged": "Todo dia: qualquer registro",
   "challengeGoalEachMinutes": "Todo dia: $AMOUNT$ de $CATEGORY$",
   "challengeGoalEachScore": "Todo dia: pontuação $SCORE$ ou mais",
@@ -629,5 +627,10 @@
   "challengeStatusBroken": "Interrompido",
   "challengeBrokenOn": "A sequência terminou em $DATE$. A maior até agora: $BEST$.",
   "challengeRestartLabel": "Recomeçar a partir de hoje",
-  "challengeRestartedToast": "Desafio recomeçado a partir de hoje"
+  "challengeRestartedToast": "Desafio recomeçado a partir de hoje",
+  "challengeDayMetDetail": "Este dia conta — $ACTUAL$",
+  "challengeDayShortDetail": "Este dia não conta — $ACTUAL$ de $NEEDED$",
+  "challengeDayNothingLogged": "Este dia não conta — nada registrado",
+  "challengeStatusEnded": "Encerrado",
+  "challengeEndedNote": "Os $TARGET$ dias acabaram. Maior sequência: $BEST$."
 }

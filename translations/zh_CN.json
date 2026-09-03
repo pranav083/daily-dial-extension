@@ -604,8 +604,6 @@
   "challengeStatusOnTrack": "进行顺利",
   "challengeStatusComplete": "已完成",
   "challengeProgressTooltip": "这项挑战的进展：完成的天数、错过的天数，以及是否还能完成。",
-  "challengeDayCounts": "这一天已计入",
-  "challengeDayNotYet": "这一天未计入",
   "challengeGoalEachLogged": "每天：有记录即可",
   "challengeGoalEachMinutes": "每天：$CATEGORY$ $AMOUNT$",
   "challengeGoalEachScore": "每天：评分 $SCORE$ 或以上",
@@ -614,5 +612,10 @@
   "challengeStatusBroken": "已中断",
   "challengeBrokenOn": "连续记录在 $DATE$ 中断。最长为 $BEST$ 天。",
   "challengeRestartLabel": "从今天重新开始",
-  "challengeRestartedToast": "挑战已从今天重新开始"
+  "challengeRestartedToast": "挑战已从今天重新开始",
+  "challengeDayMetDetail": "这一天已计入 — $ACTUAL$",
+  "challengeDayShortDetail": "这一天未计入 — $ACTUAL$ / $NEEDED$",
+  "challengeDayNothingLogged": "这一天未计入 — 没有任何记录",
+  "challengeStatusEnded": "已结束",
+  "challengeEndedNote": "$TARGET$ 天已结束。最长连续 $BEST$ 天。"
 }

@@ -679,8 +679,6 @@
   "challengeStatusOnTrack": "على المسار",
   "challengeStatusComplete": "مكتمل",
   "challengeProgressTooltip": "كيف يسير هذا التحدي: الأيام المحقّقة، والأيام الفائتة، وهل ما زال إنهاؤه ممكنًا.",
-  "challengeDayCounts": "هذا اليوم محتسب",
-  "challengeDayNotYet": "هذا اليوم غير محتسب",
   "challengeGoalEachLogged": "كل يوم: أي تسجيل",
   "challengeGoalEachMinutes": "كل يوم: $AMOUNT$ من $CATEGORY$",
   "challengeGoalEachScore": "كل يوم: درجة $SCORE$ أو أكثر",
@@ -689,5 +687,10 @@
   "challengeStatusBroken": "انقطع",
   "challengeBrokenOn": "انقطعت السلسلة في $DATE$. الأطول حتى الآن: $BEST$.",
   "challengeRestartLabel": "ابدأ من جديد اليوم",
-  "challengeRestartedToast": "أُعيد بدء التحدي من اليوم"
+  "challengeRestartedToast": "أُعيد بدء التحدي من اليوم",
+  "challengeDayMetDetail": "هذا اليوم محتسب — $ACTUAL$",
+  "challengeDayShortDetail": "هذا اليوم غير محتسب — $ACTUAL$ من $NEEDED$",
+  "challengeDayNothingLogged": "هذا اليوم غير محتسب — لا يوجد أي تسجيل",
+  "challengeStatusEnded": "انتهى",
+  "challengeEndedNote": "انقضت الأيام $TARGET$. أطول سلسلة: $BEST$."
 }

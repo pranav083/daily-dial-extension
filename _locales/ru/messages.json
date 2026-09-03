@@ -2989,12 +2989,6 @@
   "challengeProgressTooltip": {
     "message": "Как идёт этот вызов: выдержанные дни, пропущенные дни и остаётся ли он выполнимым."
   },
-  "challengeDayCounts": {
-    "message": "Этот день засчитан"
-  },
-  "challengeDayNotYet": {
-    "message": "Этот день не засчитан"
-  },
   "challengeGoalEachLogged": {
     "message": "Каждый день: хоть что-то записано"
   },
@@ -3055,5 +3049,41 @@
   },
   "challengeRestartedToast": {
     "message": "Вызов начат заново с сегодняшнего дня"
+  },
+  "challengeDayMetDetail": {
+    "message": "Этот день засчитан — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "Этот день не засчитан — $ACTUAL$ из $NEEDED$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "Этот день не засчитан — ничего не записано"
+  },
+  "challengeStatusEnded": {
+    "message": "Завершено"
+  },
+  "challengeEndedNote": {
+    "message": "$TARGET$ дней истекли. Самая длинная серия: $BEST$.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

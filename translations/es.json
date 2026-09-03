@@ -619,8 +619,6 @@
   "challengeStatusOnTrack": "En marcha",
   "challengeStatusComplete": "Completado",
   "challengeProgressTooltip": "Cómo va este reto: días cumplidos, días fallados y si aún se puede terminar.",
-  "challengeDayCounts": "Este día cuenta",
-  "challengeDayNotYet": "Este día no cuenta",
   "challengeGoalEachLogged": "Cada día: cualquier registro",
   "challengeGoalEachMinutes": "Cada día: $AMOUNT$ de $CATEGORY$",
   "challengeGoalEachScore": "Cada día: puntuación $SCORE$ o más",
@@ -629,5 +627,10 @@
   "challengeStatusBroken": "Roto",
   "challengeBrokenOn": "La racha terminó el $DATE$. La más larga: $BEST$.",
   "challengeRestartLabel": "Reiniciar desde hoy",
-  "challengeRestartedToast": "Reto reiniciado desde hoy"
+  "challengeRestartedToast": "Reto reiniciado desde hoy",
+  "challengeDayMetDetail": "Este día cuenta — $ACTUAL$",
+  "challengeDayShortDetail": "Este día no cuenta — $ACTUAL$ de $NEEDED$",
+  "challengeDayNothingLogged": "Este día no cuenta — no hay nada registrado",
+  "challengeStatusEnded": "Terminado",
+  "challengeEndedNote": "Los $TARGET$ días se acabaron. Racha más larga: $BEST$."
 }

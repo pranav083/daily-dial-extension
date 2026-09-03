@@ -2659,12 +2659,6 @@
   "challengeProgressTooltip": {
     "message": "Cómo va este reto: días cumplidos, días fallados y si aún se puede terminar."
   },
-  "challengeDayCounts": {
-    "message": "Este día cuenta"
-  },
-  "challengeDayNotYet": {
-    "message": "Este día no cuenta"
-  },
   "challengeGoalEachLogged": {
     "message": "Cada día: cualquier registro"
   },
@@ -2725,5 +2719,41 @@
   },
   "challengeRestartedToast": {
     "message": "Reto reiniciado desde hoy"
+  },
+  "challengeDayMetDetail": {
+    "message": "Este día cuenta — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "Este día no cuenta — $ACTUAL$ de $NEEDED$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "Este día no cuenta — no hay nada registrado"
+  },
+  "challengeStatusEnded": {
+    "message": "Terminado"
+  },
+  "challengeEndedNote": {
+    "message": "Los $TARGET$ días se acabaron. Racha más larga: $BEST$.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

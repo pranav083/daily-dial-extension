@@ -604,8 +604,6 @@
   "challengeStatusOnTrack": "順調",
   "challengeStatusComplete": "達成",
   "challengeProgressTooltip": "このチャレンジの状況：達成した日、逃した日、そしてまだ達成可能かどうか。",
-  "challengeDayCounts": "この日は条件を満たしています",
-  "challengeDayNotYet": "この日は条件を満たしていません",
   "challengeGoalEachLogged": "毎日：記録があればよい",
   "challengeGoalEachMinutes": "毎日：$CATEGORY$ を $AMOUNT$",
   "challengeGoalEachScore": "毎日：スコア $SCORE$ 以上",
@@ -614,5 +612,10 @@
   "challengeStatusBroken": "途切れました",
   "challengeBrokenOn": "$DATE$ で連続が途切れました。最長は $BEST$ 日です。",
   "challengeRestartLabel": "今日から再開",
-  "challengeRestartedToast": "チャレンジを今日から再開しました"
+  "challengeRestartedToast": "チャレンジを今日から再開しました",
+  "challengeDayMetDetail": "この日は条件を満たしています — $ACTUAL$",
+  "challengeDayShortDetail": "この日は条件を満たしていません — $NEEDED$ のうち $ACTUAL$",
+  "challengeDayNothingLogged": "この日は条件を満たしていません — 記録がありません",
+  "challengeStatusEnded": "終了",
+  "challengeEndedNote": "$TARGET$ 日が終わりました。最長連続は $BEST$ 日です。"
 }

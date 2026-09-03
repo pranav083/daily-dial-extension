@@ -2762,11 +2762,14 @@ function renderChallenge() {
   $("challenge-progress-name").textContent = progress.name;
 
   const status = $("challenge-status");
-  const tone = progress.status === "complete" ? "good" : progress.status === "broken" ? "critical" : "";
+  const tone = progress.status === "complete" ? "good"
+    : progress.status === "broken" || progress.status === "ended" ? "critical"
+    : "";
   status.className = `challenge-status${tone ? " " + tone : ""}`;
   status.textContent = t(
     progress.status === "complete" ? "challengeStatusComplete"
       : progress.status === "broken" ? "challengeStatusBroken"
+      : progress.status === "ended" ? "challengeStatusEnded"
       : "challengeStatusOnTrack"
   );
 
@@ -2797,19 +2800,43 @@ function renderChallenge() {
   const insideRun = offset >= 0 && (!progress.targetDays || offset < progress.targetDays);
   line.hidden = !insideRun;
   if (insideRun) {
+    // The number behind the verdict. "This day does not count" on its own is
+    // a judgement with its reason withheld — you cannot tell whether you are
+    // ten minutes short or have logged nothing at all.
+    const st = computeStats(state.slots, categories, null, scoreTarget());
     const met = challengeDayMet({ slots: state.slots }, categories, goal, scoreTarget());
-    line.textContent = t(met ? "challengeDayCounts" : "challengeDayNotYet");
+    let actual, needed;
+    if (goal.kind === "minutes") {
+      // Just the numbers: the line above already names the category, and
+      // repeating it read as "1h of Deep Work of 2h".
+      actual = fmtDuration(st.perCat[goal.categoryId] * SLOT_MIN);
+      needed = fmtDuration(goal.minutes);
+    } else if (goal.kind === "score") {
+      actual = st.score === null ? "—" : String(st.score);
+      needed = String(goal.score);
+    } else {
+      actual = fmtDuration(st.trackedMin);
+      needed = null;
+    }
+    line.textContent = met
+      ? t("challengeDayMetDetail", [actual])
+      : needed === null
+        ? t("challengeDayNothingLogged")
+        : t("challengeDayShortDetail", [actual, needed]);
   }
 
   const broken = $("challenge-broken");
-  broken.hidden = progress.status !== "broken";
+  const over = progress.status === "broken" || progress.status === "ended";
+  broken.hidden = !over;
   if (progress.status === "broken") {
     broken.textContent = t("challengeBrokenOn", [
       fmtFullDate(new Date(progress.brokenOn + "T00:00:00")),
       String(progress.bestRun),
     ]);
+  } else if (progress.status === "ended") {
+    broken.textContent = t("challengeEndedNote", [String(progress.targetDays), String(progress.bestRun)]);
   }
-  $("challenge-restart").hidden = progress.status !== "broken";
+  $("challenge-restart").hidden = !over;
 }
 
 /** Starts the same challenge again from today. A broken run is not a reason

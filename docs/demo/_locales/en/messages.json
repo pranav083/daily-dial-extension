@@ -3279,14 +3279,6 @@
     "message": "How this challenge is going: days kept, days missed, and whether it can still be finished.",
     "description": "Challenge goal and progress, shown in the UI."
   },
-  "challengeDayCounts": {
-    "message": "This day counts",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
-  "challengeDayNotYet": {
-    "message": "This day does not count",
-    "description": "Challenge goal and progress, shown in the UI."
-  },
   "challengeGoalEachLogged": {
     "message": "Each day: anything logged",
     "description": "Challenge goal and progress, shown in the UI."
@@ -3356,5 +3348,46 @@
   "challengeRestartedToast": {
     "message": "Challenge restarted from today",
     "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeDayMetDetail": {
+    "message": "This day counts — $ACTUAL$",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "This day does not count — $ACTUAL$ of $NEEDED$",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "This day does not count — nothing logged",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeStatusEnded": {
+    "message": "Ended",
+    "description": "Challenge goal and progress, shown in the UI."
+  },
+  "challengeEndedNote": {
+    "message": "The $TARGET$ days are up. Longest run: $BEST$.",
+    "description": "Challenge goal and progress, shown in the UI.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

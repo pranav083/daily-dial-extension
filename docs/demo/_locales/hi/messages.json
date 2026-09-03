@@ -2659,12 +2659,6 @@
   "challengeProgressTooltip": {
     "message": "यह चुनौती कैसी चल रही है: निभाए दिन, छूटे दिन, और क्या इसे अब भी पूरा किया जा सकता है।"
   },
-  "challengeDayCounts": {
-    "message": "यह दिन गिना जाएगा"
-  },
-  "challengeDayNotYet": {
-    "message": "यह दिन गिना नहीं जाएगा"
-  },
   "challengeGoalEachLogged": {
     "message": "हर दिन: कुछ भी दर्ज हो"
   },
@@ -2725,5 +2719,41 @@
   },
   "challengeRestartedToast": {
     "message": "चुनौती आज से फिर शुरू"
+  },
+  "challengeDayMetDetail": {
+    "message": "यह दिन गिना जाएगा — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "यह दिन गिना नहीं जाएगा — $NEEDED$ में से $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "यह दिन गिना नहीं जाएगा — कुछ दर्ज नहीं है"
+  },
+  "challengeStatusEnded": {
+    "message": "समाप्त"
+  },
+  "challengeEndedNote": {
+    "message": "$TARGET$ दिन पूरे हो गए। सबसे लंबा सिलसिला: $BEST$।",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

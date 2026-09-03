@@ -619,8 +619,6 @@
   "challengeStatusOnTrack": "पटरी पर",
   "challengeStatusComplete": "पूरा हुआ",
   "challengeProgressTooltip": "यह चुनौती कैसी चल रही है: निभाए दिन, छूटे दिन, और क्या इसे अब भी पूरा किया जा सकता है।",
-  "challengeDayCounts": "यह दिन गिना जाएगा",
-  "challengeDayNotYet": "यह दिन गिना नहीं जाएगा",
   "challengeGoalEachLogged": "हर दिन: कुछ भी दर्ज हो",
   "challengeGoalEachMinutes": "हर दिन: $CATEGORY$ में $AMOUNT$",
   "challengeGoalEachScore": "हर दिन: स्कोर $SCORE$ या अधिक",
@@ -629,5 +627,10 @@
   "challengeStatusBroken": "टूट गया",
   "challengeBrokenOn": "सिलसिला $DATE$ को टूटा। सबसे लंबा: $BEST$।",
   "challengeRestartLabel": "आज से फिर शुरू करें",
-  "challengeRestartedToast": "चुनौती आज से फिर शुरू"
+  "challengeRestartedToast": "चुनौती आज से फिर शुरू",
+  "challengeDayMetDetail": "यह दिन गिना जाएगा — $ACTUAL$",
+  "challengeDayShortDetail": "यह दिन गिना नहीं जाएगा — $NEEDED$ में से $ACTUAL$",
+  "challengeDayNothingLogged": "यह दिन गिना नहीं जाएगा — कुछ दर्ज नहीं है",
+  "challengeStatusEnded": "समाप्त",
+  "challengeEndedNote": "$TARGET$ दिन पूरे हो गए। सबसे लंबा सिलसिला: $BEST$।"
 }

@@ -33,8 +33,14 @@ The version here always matches `manifest.json`.
   meant nothing.
 - **"Restart from today"** appears when a run breaks, so a broken attempt does
   not mean retyping the name and re-picking the goal.
-- **The goal is stated on the card** — "Each day: 2h of Deep Work" — so
-  "this day does not count" carries its reason with it.
+- **The goal is stated on the card** — "Each day: 2h of Deep Work" — and the
+  day line carries the number behind its verdict: "This day does not count —
+  1h of 2h". A judgement with its reason withheld tells you nothing about
+  whether you are ten minutes short or have logged nothing at all.
+- **A challenge with a length now ends.** Past its last day the counter stops
+  at the finish line instead of reporting "day 25 of 21", and the verdict is
+  settled: Complete if the full run was ever reached, Ended if the days ran
+  out first. Both offer a restart.
 - Today never breaks a run. It is not over yet, and a tracker that marks your
   morning as a failure is one you close. It can only ever add to the run.
 

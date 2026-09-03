@@ -2659,12 +2659,6 @@
   "challengeProgressTooltip": {
     "message": "Wie es um diese Challenge steht: gehaltene Tage, verpasste Tage und ob sie noch zu schaffen ist."
   },
-  "challengeDayCounts": {
-    "message": "Dieser Tag zählt"
-  },
-  "challengeDayNotYet": {
-    "message": "Dieser Tag zählt nicht"
-  },
   "challengeGoalEachLogged": {
     "message": "Jeden Tag: irgendetwas erfasst"
   },
@@ -2725,5 +2719,41 @@
   },
   "challengeRestartedToast": {
     "message": "Challenge ab heute neu gestartet"
+  },
+  "challengeDayMetDetail": {
+    "message": "Dieser Tag zählt — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "Dieser Tag zählt nicht — $ACTUAL$ von $NEEDED$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "Dieser Tag zählt nicht — nichts erfasst"
+  },
+  "challengeStatusEnded": {
+    "message": "Beendet"
+  },
+  "challengeEndedNote": {
+    "message": "Die $TARGET$ Tage sind um. Längste Serie: $BEST$.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }

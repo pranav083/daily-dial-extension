@@ -2494,12 +2494,6 @@
   "challengeProgressTooltip": {
     "message": "这项挑战的进展：完成的天数、错过的天数，以及是否还能完成。"
   },
-  "challengeDayCounts": {
-    "message": "这一天已计入"
-  },
-  "challengeDayNotYet": {
-    "message": "这一天未计入"
-  },
   "challengeGoalEachLogged": {
     "message": "每天：有记录即可"
   },
@@ -2560,5 +2554,41 @@
   },
   "challengeRestartedToast": {
     "message": "挑战已从今天重新开始"
+  },
+  "challengeDayMetDetail": {
+    "message": "这一天已计入 — $ACTUAL$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      }
+    }
+  },
+  "challengeDayShortDetail": {
+    "message": "这一天未计入 — $ACTUAL$ / $NEEDED$",
+    "placeholders": {
+      "actual": {
+        "content": "$1"
+      },
+      "needed": {
+        "content": "$2"
+      }
+    }
+  },
+  "challengeDayNothingLogged": {
+    "message": "这一天未计入 — 没有任何记录"
+  },
+  "challengeStatusEnded": {
+    "message": "已结束"
+  },
+  "challengeEndedNote": {
+    "message": "$TARGET$ 天已结束。最长连续 $BEST$ 天。",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "best": {
+        "content": "$2"
+      }
+    }
   }
 }
