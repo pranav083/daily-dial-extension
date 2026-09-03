@@ -56,6 +56,22 @@ async function connect(url) {
   return { ws, send, evaluate };
 }
 
+/** Waits for Chrome's debug port rather than guessing at a fixed sleep.
+ *  A hardcoded 4.5s passed for months and then started failing on a machine
+ *  where Chrome took six seconds to boot — a red run that said nothing about
+ *  the extension. Polls until the port answers, then gives up loudly. */
+async function waitForChrome(port, timeoutMs = 45000) {
+  const deadline = Date.now() + timeoutMs;
+  for (;;) {
+    try {
+      return await (await fetch(`http://127.0.0.1:${port}/json/version`)).json();
+    } catch {
+      if (Date.now() > deadline) throw new Error(`Chrome never opened its debug port on ${port} within ${timeoutMs / 1000}s`);
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+}
+
 let page;
 async function shot(name) {
   await sleep(500);
@@ -71,8 +87,7 @@ async function shot(name) {
 }
 
 try {
-  await sleep(4500);
-  const version = await (await fetch(`http://127.0.0.1:${PORT}/json/version`)).json();
+  const version = await waitForChrome(PORT);
   const browser = await connect(version.webSocketDebuggerUrl);
   const loaded = await browser.send("Extensions.loadUnpacked", { path: root });
   browser.ws.close();
