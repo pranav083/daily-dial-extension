@@ -1072,8 +1072,11 @@ select {
   .topbar { align-items: flex-start; }
   .streak-banner { order: 3; }
   /* Below this the right-hand cluster is wider than the screen, so it wraps
-     within itself and gives up its right edge rather than running off it. */
-  .topbar-right { flex-wrap: wrap; margin-left: 0; row-gap: 8px; }
+     within itself and gives up its right edge rather than running off it.
+     `flex: 1 1 auto` is what makes that possible: with the `0 0 auto` it
+     carries at wider sizes it cannot shrink below its unwrapped width, so the
+     wrap never fires and the page scrolls sideways instead. */
+  .topbar-right { flex: 1 1 auto; min-width: 0; flex-wrap: wrap; margin-left: 0; row-gap: 8px; }
 }
 
 /* User-authored text runs in whatever script the user wrote it in, which has
@@ -1525,7 +1528,13 @@ select {
 
 /* Month nav mirrors .datenav so switching between Day and History feels
    like the same control, not two different widgets. */
-.hist-month-nav { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); margin-bottom: 14px; }
+/* Wraps: the nav carries arrows, a month label, a jump button and now a
+   colour-by select, which is more than a narrow screen can hold on one line. */
+.hist-month-nav {
+  display: flex; align-items: center; gap: 6px;
+  flex-wrap: wrap; row-gap: 8px; min-width: 0;
+  font-family: var(--font-mono); margin-bottom: 14px;
+}
 .hist-month-nav button {
   width: 30px; height: 30px;
   border-radius: 8px;
@@ -1715,7 +1724,7 @@ select {
 /* The calendar is capped at 500px, so it shares its card with the month
    summary rather than leaving half the width empty. */
 .hist-month-split { display: flex; gap: 26px; align-items: flex-start; flex-wrap: wrap; }
-.hist-month-main { flex: none; }
+.hist-month-main { flex: none; max-width: 100%; min-width: 0; }
 .hist-month-side { flex: 1; min-width: 240px; }
 .hist-month-side .stat-row { flex-wrap: wrap; }
 @media (max-width: 900px) {

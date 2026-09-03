@@ -29,6 +29,15 @@ The version here always matches `manifest.json`.
   and a value that is nearly a colour is how a category ends up rendering as
   nothing at all.
 
+### Fixed
+
+- **The page scrolled sideways on a phone.** Holding the top bar's right-hand
+  group to one row at desktop widths also stopped it shrinking at narrow ones,
+  so the wrap that was supposed to catch it never fired and the whole page ran
+  62px off the edge instead — in every language. The History month nav had
+  gained a control too many for one line on a small screen, and its calendar
+  column could not shrink.
+
 ## [1.37.0] — 2026-09-03
 
 ### Added
