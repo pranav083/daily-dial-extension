@@ -21,7 +21,6 @@
  */
 
 import { spawn, spawnSync } from "node:child_process";
-import { createHash } from "node:crypto";
 import { rmSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";

@@ -68,7 +68,22 @@ export default [
   },
   {
     files: ["scripts/**/*.mjs"],
-    languageOptions: { globals: { console: "readonly", process: "readonly" } },
+    // The browser-driving scripts run on Node's own globals — fetch and
+    // WebSocket have been global since Node 18, and timers and Buffer far
+    // longer. Without these declared, eslint reports them as undefined and
+    // `npm run check` fails on scripts that run perfectly.
+    languageOptions: {
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        fetch: "readonly",
+        WebSocket: "readonly",
+        Buffer: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        URL: "readonly",
+      },
+    },
     rules: { "no-console": "off" },
   },
 ];
