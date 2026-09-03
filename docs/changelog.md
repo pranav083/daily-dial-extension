@@ -15,6 +15,18 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.35.1] — 2026-09-02
+
+### Fixed
+
+- **A drag could only ever grow.** Dragging back over your own stroke to
+  shorten it did nothing, so a block painted a couple of hours too long had to
+  be let go of and erased rather than simply pulled back. The stroke was being
+  extended from the previous pointer position, which meant dragging backwards
+  repainted the same category onto itself — invisible, and indistinguishable
+  from the app ignoring you. It is now the span between where the press landed
+  and where the pointer is, so it follows in both directions until you let go.
+
 ## [1.35.0] — 2026-09-02
 
 ### Changed

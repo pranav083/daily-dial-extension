@@ -708,6 +708,9 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
   let isPaintingLocal = false;
   let lastLocal = null;
   let strokeFrom = null;
+  /** The slice as it was when the press landed, so a stroke can shrink as
+   *  well as grow without having to remember what it overwrote. */
+  let strokeBase = null;
 
   const localSlice = () => state.slots.slice(slotOffset, slotOffset + slotsInView);
   const writeSlice = (sub) => {
@@ -1050,23 +1053,6 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     return { cat, from, to: to + 1 };
   }
 
-  /**
-   * Whether painting may write over what is already in `local`.
-   *
-   * Empty time is free. Time already holding a *different* category is
-   * protected, because overwriting it is nearly always a slip — a stroke
-   * overshooting its neighbour — and the cost of that slip is silent data
-   * loss, while the cost of the protection is one extra gesture. Replacing
-   * on purpose is a second press, which no accidental drag performs.
-   *
-   * The eraser is exempt: removing is visible, reversible, and the point.
-   */
-  function occupiedByAnother(local, cat) {
-    if (cat === UNTRACKED) return false;
-    const existing = state.slots[slotOffset + local];
-    return existing !== UNTRACKED && existing !== cat;
-  }
-
   /** Says why nothing happened, at most once per stroke, naming what is
    *  already there so the message is about their day, not about a rule. */
   let hintedThisStroke = false;
@@ -1076,37 +1062,60 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
     toast(t("alreadyLoggedHint", [nameOf(state.slots[slotOffset + local])]));
   }
 
+  /**
+   * Paints one stroke: the span between where the press landed and where the
+   * pointer is now.
+   *
+   * On what may be written over: empty time is free, and time already holding
+   * a *different* category is protected, because overwriting it is nearly
+   * always a slip — a stroke overshooting its neighbour — where the cost of
+   * the slip is silent data loss and the cost of the protection is one extra
+   * gesture. Replacing on purpose is a second press, which no accidental drag
+   * performs. The eraser is exempt: removing is visible, reversible, and the
+   * whole point of it.
+   */
   function paintAtLocal(localIdx) {
     const cat = state.activePen === null ? UNTRACKED : state.activePen;
+
+    // The stroke is the span between where the press landed and where the
+    // pointer is now, rebuilt from the snapshot taken at pointerdown every
+    // time it moves.
+    //
+    // It used to extend from the previous position instead, which could only
+    // ever grow: dragging back across your own stroke repainted the same
+    // category onto itself and looked like nothing happening at all. An
+    // overshot block could not be pulled back — you had to let go and erase.
+    // A drag you cannot adjust until you have committed to it is the wrong
+    // way round.
+    const base = strokeBase ?? localSlice();
+
+    // Judged against the snapshot rather than the live slots, which already
+    // contain this stroke. Against the live ones, a shrinking drag would
+    // start treating its own paint as somebody else's block and refuse to
+    // take it back.
+    const occupied = (local) => {
+      if (cat === UNTRACKED) return false;
+      const existing = base[local];
+      return existing !== UNTRACKED && existing !== cat;
+    };
     // Erasing the future is always fine — it can only remove something that
     // shouldn't be there. Painting it is what gets refused.
-    const paintable = (local) =>
-      (cat === UNTRACKED || !isFutureSlot(slotOffset + local)) && !occupiedByAnother(local, cat);
+    const paintable = (local) => (cat === UNTRACKED || !isFutureSlot(slotOffset + local)) && !occupied(local);
 
-    if (lastLocal === null) {
-      if (cat !== UNTRACKED && isFutureSlot(slotOffset + localIdx)) return;
-      if (occupiedByAnother(localIdx, cat)) {
-        hintProtected(localIdx);
-        return;
-      }
-      const sub = localSlice();
-      sub[localIdx] = cat;
-      writeSlice(sub);
-    } else {
-      const filled = fillRange(localSlice(), lastLocal, localIdx, cat);
-      const sub = localSlice();
-      let blocked = -1;
-      // Keep only the part of the stroke that has already happened, rather
-      // than rejecting the whole drag — dragging across "now" should paint
-      // up to it, not do nothing. Occupied slots are skipped the same way,
-      // so a stroke overshooting into the next block leaves it intact.
-      for (let i = 0; i < slotsInView; i++) {
-        if (paintable(i)) sub[i] = filled[i];
-        else if (filled[i] !== sub[i] && occupiedByAnother(i, cat)) blocked = i;
-      }
-      writeSlice(sub);
-      if (blocked >= 0) hintProtected(blocked);
+    const filled = fillRange(base, strokeFrom ?? localIdx, localIdx, cat);
+    const sub = [...base];
+    let blocked = -1;
+    // Keep only the part of the stroke that has already happened, rather
+    // than rejecting the whole drag — dragging across "now" should paint
+    // up to it, not do nothing. Occupied slots are skipped the same way,
+    // so a stroke overshooting into the next block leaves it intact.
+    for (let i = 0; i < slotsInView; i++) {
+      if (filled[i] === base[i]) continue; // outside the stroke, or already this pen
+      if (paintable(i)) sub[i] = filled[i];
+      else if (occupied(i)) blocked = i;
     }
+    writeSlice(sub);
+    if (blocked >= 0) hintProtected(blocked);
     lastLocal = localIdx;
   }
 
@@ -1167,6 +1176,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
       showJustPainted(slotOffset + a, slotOffset + b);
     }
     lastLocal = null;
+    strokeBase = null;
     onStrokeEnd();
   }
 
@@ -1223,6 +1233,7 @@ function createDialEngine({ svgId, segId, needleId, centerTimeId, centerSubId, s
       // Synthetic or already-released pointers can't be captured; painting still works.
     }
     strokeFrom = idx;
+    strokeBase = localSlice();
     paintAtLocal(idx);
     render();
     showTooltip(evt, slotOffset + idx);
@@ -2203,7 +2214,7 @@ async function captureTabToPng(node) {
     // screenshot behaves and is left alone deliberately — quietly shrinking
     // the page to fit would produce an image of something the user never saw.
     if (rect.bottom > window.innerHeight + 1 || rect.right > window.innerWidth + 1) {
-      console.info("Daily Dial: part of the view is off-screen and will not be in the image");
+      console.warn("Daily Dial: part of the view is off-screen and will not be in the image");
     }
 
     const canvas = document.createElement("canvas");
