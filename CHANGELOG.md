@@ -8,6 +8,17 @@ The version here always matches `manifest.json`.
 
 ## [Unreleased]
 
+## [1.40.2] — 2026-09-03
+
+### Fixed
+
+- **The Firefox listing showed a generic puzzle piece instead of the dial.**
+  AMO renders a listing icon at 32, 64 and 128px, and takes it from the
+  manifest on the *first* submission only; the icon set went 16, 32, 48, 128,
+  so the size AMO leads with was the one size missing and it fell back to its
+  placeholder. There is now a 64px icon, carrying the full five wedges since
+  64 is well clear of the size where they stop being legible.
+
 ## [1.40.1] — 2026-09-03
 
 ### Fixed

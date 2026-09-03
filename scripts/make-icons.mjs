@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Regenerates icons/icon-{16,32,48,128}.png from one definition.
+ * Regenerates icons/icon-{16,32,48,64,128}.png from one definition.
  *
  * Run with: npm run icons
  * Requires Google Chrome installed; run only when the mark changes.
@@ -75,6 +75,24 @@ const SIZES = [
       [112, 170, ORANGE],
       [182, 240, GREEN],
       [252, 300, PINK],
+    ],
+  },
+  {
+    // AMO's listing icon. 64px is well clear of the ~32px threshold where the
+    // wedges turn to mush, so it carries the full five — the mark people see
+    // on the store page should be the detailed one, not the toolbar's.
+    px: 64,
+    radius: 0.85,
+    ring: 0.35,
+    needleWidth: 0.05,
+    cornerRadius: 0.21,
+    gap: 2.75,
+    wedges: [
+      [20, 95, BLUE],
+      [100, 150, ORANGE],
+      [158, 205, GREEN],
+      [212, 250, PINK],
+      [258, 300, BLUE],
     ],
   },
   {

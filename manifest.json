@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_appName__",
   "default_locale": "en",
-  "version": "1.40.1",
+  "version": "1.40.2",
   "description": "__MSG_appDescription__",
   "permissions": [
     "storage",
@@ -37,6 +37,7 @@
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
     "48": "icons/icon-48.png",
+    "64": "icons/icon-64.png",
     "128": "icons/icon-128.png"
   },
   "content_security_policy": {
